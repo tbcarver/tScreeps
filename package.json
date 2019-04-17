@@ -1,0 +1,12 @@
+{
+  "name": "screeps-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@types/lodash": "^4.14.123",
+    "@types/screeps": "^2.5.3",
+    "screeps-modules": "^1.1.1",
+    "webpack": "3.12.0"
+  }
+}
