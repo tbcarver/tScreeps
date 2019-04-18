@@ -1,12 +1,21 @@
 
+var debug = require("./debug");
 var creepsStore = require("./creepsStore");
+var harvester = require("./creeps/harvester");
 var { creepsSpawnRules } = require("./creepsRules");
 
 var creepsController = {};
 
 creepsController.tick = function() {
 
-	var creepsStatistics = {};
+	var creepsStatistics = {
+		harvesters: {
+			energy: {
+				spawn: 0,
+				controller: 0
+			}
+		}
+	};
 
 	for (var index in Game.creeps) {
 
@@ -17,28 +26,32 @@ creepsController.tick = function() {
 			creepsStore.remove(creep);
 
 		} else {
-		
-			// creepsStatus.count[creep.memory.type]
+
+			debug(creep.name, ": ", creep.memory);
 
 			switch (creep.memory.type) {
 
 				case "harvester":
 					harvester.act(creep);
+					creepsStatistics.harvesters[creep.memory.resourceType][creep.memory.targetStucture]++;
 					break;
 			}
 		}
 	}
 
-	// this.spawnHarvesters(creepsStatistics.harvesters, creepsSpawnRules.harvesters);
+	if (!global.spawn.spawning && global.spawn.energy >= global.spawn.energyCapacity) {
+
+		spawnHarvesters(creepsStatistics.harvesters, creepsSpawnRules.harvesters);
+	}
 }
 
-creepsController.spawnHarvesters = function(harvestersStatistics, harvestersSpawnRules) {
+function spawnHarvesters(harvestersStatistics, harvestersSpawnRules) {
 
 	for (var resourceTypeName in harvestersSpawnRules) {
 
-		var resourceType = harvestersSpawnRules[resourceTypeName];
+		var resourceTypes = harvestersSpawnRules[resourceTypeName];
 
-		for (var targetStuctureName in resourceType) {
+		for (var targetStuctureName in resourceTypes) {
 
 			var harvesterCount = resourceTypes[targetStuctureName];
 

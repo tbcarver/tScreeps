@@ -4,11 +4,13 @@ var coreMath = require("../../lib/core/extensions/coreMath")
 
 var harvester = {};
 
-harvester.spawnHarvester = function(id, resourceType, targetStucture) {
+harvester.spawn = function(id, resourceType, targetStucture) {
 
 	var harvesterMemory = {
 		type: "harvester",
+		resourceType: resourceType,
 		resourceId: "",
+		targetStucture: targetStucture,
 		targetId: ""
 	}
 
@@ -17,7 +19,7 @@ harvester.spawnHarvester = function(id, resourceType, targetStucture) {
 		case "energy":
 
 			var sources = global.room.find(FIND_SOURCES);
-			var randomIndex = coreMath.randomInteger(0, sources.length);
+			var randomIndex = coreMath.randomInteger(0, sources.length - 1);
 
 			harvesterMemory.resourceId = sources[randomIndex].id;
 			break;
@@ -31,79 +33,68 @@ harvester.spawnHarvester = function(id, resourceType, targetStucture) {
 
 		case "controller":
 
-			var target = global.room.find(FIND_STRUCTURES, { filter: { structureType: STRUCTURE_CONTROLLER } });
-			harvesterMemory.targetId = target.id;
+			var controllers = global.room.find(FIND_STRUCTURES, { filter: { structureType: STRUCTURE_CONTROLLER } });
+			var randomIndex = coreMath.randomInteger(0, controllers.length - 1);
+
+			harvesterMemory.targetId = controllers[randomIndex].id;
 			break;
 	}
 
 	if (harvesterMemory.resourceId && harvesterMemory.targetStucture) {
 
-		var result = spawn.spawnCreep([WORK, CARRY, MOVE], id, harvesterMemory);
+		var result = spawn.spawnCreep([WORK, CARRY, MOVE], id, { memory: harvesterMemory });
 
 		debug(`harvester spawned: ${id} resource: ${resourceType} storage: ${targetStucture}`);
 	}
 }
 
-harvester.harvestLegacy = function(spawn) {
+harvester.act = function(creep) {
 
-	var storage = spawn;
+	if (creep.memory.state === "harvesting" || creep.carry[RESOURCE_ENERGY] === 0) {
 
-	for (var index in Game.creeps) {
+		if (creep.memory.state !== "harvesting") {
 
-		var creep = Game.creeps[index];
-
-		if (creep.memory.role) {
-
-
-		// debug(creep.name, ": ", creep.carry[RESOURCE_ENERGY]);
-		debug(creep.name, ": ", creep);
-
-		if (creep.memory.sourceId || creep.carry[RESOURCE_ENERGY] === 0) {
-
-			var source = Game.getObjectById(creep.memory.sourceId);
-
-			if (!source) {
-
-				source = creep.pos.findClosestByPath(FIND_SOURCES);
-				creep.memory.sourceId = source.id;
-				creep.memory.storageId = "";
-			}
-
-			// debug("source: ", source);
-
-			if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
-
-				// debug(creep.name, ": moving to source");
-				creep.moveTo(source);
-			}
+			creep.memory.state = "harvesting";
 		}
 
-		if (creep.memory.storageId || creep.carry[RESOURCE_ENERGY] === creep.carryCapacity) {
+		var resource = Game.getObjectById(creep.memory.resourceId);
 
-			creep.memory.sourceId = "";
-			creep.memory.storageId = storage.id;
+		if (resource) {
 
-			// storage = Game.getObjectById(Memory.structureIds.controller);
-			storage = creep.pos.findClosestByPath(FIND_STRUCTURES, { filter: { structureType: STRUCTURE_CONTROLLER } });
+			if (creep.harvest(resource) == ERR_NOT_IN_RANGE) {
 
-			// debug("storage: ", storage);
-
-			if (creep.transfer(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-
-				// debug(creep.name, ": moving to storage");
-				creep.moveTo(storage);
+				creep.moveTo(resource);
 			}
+
+		} else {
+
+			debug("ERROR: Harvester resource not found for id: " + creep.memory.resourceId);
 		}
 
-		}
 	}
 
-	// const target = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
-	// if (target) {
-	// 	if (creep.harvest(target) == ERR_NOT_IN_RANGE) {
-	// 		creep.moveTo(target);
-	// 	}
-	// }
+	if (creep.memory.state === "transferring" || creep.carry[creep.memory.resourceType] === creep.carryCapacity) {
+
+		if (creep.memory.state !== "transferring") {
+
+			creep.memory.state = "transferring";
+		}
+
+		var target = Game.getObjectById(creep.memory.targetId);
+
+		if (target) {
+
+			if (creep.transfer(target, creep.memory.resourceType) == ERR_NOT_IN_RANGE) {
+
+				creep.moveTo(target);
+			}
+
+		} else {
+
+			debug("ERROR: Harvester target not found for id: " + creep.memory.targetId);
+		}
+	}
 }
+
 
 module.exports = harvester
