@@ -1,34 +1,43 @@
 
 var debug = require("./debug");
-var harvester = require("./harvester");
+var creep = require("./creeps/creep");
+var harvester = require("./creeps/harvester");
+var creepsController = require("./creepsController");
+
 
 console.log("time: " + Game.time);
 
-var spawn = Game.spawns["spawn1"];
+global.spawn = Game.spawns["spawn1"];
+global.room = spawn.room;
 // debug("spawn: ", spawn);
 
 
 // debug("Game: ", Game);
 // debug("structures: ", Game.structures);
 
-var room = spawn.room;
 // debug("room: ", room);
 
-if (!Memory.structureIds) {
-	Memory.structureIds = {};
-}
+// if (!Memory.structureIds) {
+// 	Memory.structureIds = {};
+// }
 
-if (!Memory.structureIds.controller) {
+// if (!Memory.structureIds.controller) {
 
-	var controller = room.find(FIND_STRUCTURES, {filter: {structureType: STRUCTURE_CONTROLLER}});
-	Memory.structureIds.controller = controller.id;
-}
+// 	var controller = room.find(FIND_STRUCTURES, { filter: { structureType: STRUCTURE_CONTROLLER } });
+// 	Memory.structureIds.controller = controller.id;
+// }
 
 // debug("controller: ", controller);
 
+// RawMemory.set("{}");
 
-
+// debug("RawMemory: ", RawMemory.get());
 // debug("Memory: ", Memory);
+// debug("Creeps: ", Game.creeps);
 
 //  harvester.createHarvesters(spawn);
- harvester.harvest(spawn);
+// harvester.harvestLegacy(spawn);
+// creep.cleanTheDead();
+
+
+creepsController.tick();

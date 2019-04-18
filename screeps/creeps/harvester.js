@@ -1,27 +1,59 @@
 
-var debug = require("./debug");
-var creep = require("./creep");
+var debug = require("../debug");
+var coreMath = require("../../lib/core/extensions/coreMath")
 
 var harvester = {};
 
-harvester.createHarvesters = function(spawn) {
+harvester.spawnHarvester = function(id, resourceType, targetStucture) {
 
-	if (!spawn.spawning && spawn.energy >= 300) {
+	var harvesterMemory = {
+		type: "harvester",
+		resourceId: "",
+		targetId: ""
+	}
 
-		var name = "h" + creep.getNextCreepNumber();
-		var result = spawn.spawnCreep([WORK, CARRY, MOVE], name, { role: "harvester" });
-		// debug("create creep: ", result);
-		// spawn.createCreep([WORK, CARRY, MOVE, MOVE], null, {role: 'harvester'});
+	switch (resourceType) {
+
+		case "energy":
+
+			var sources = global.room.find(FIND_SOURCES);
+			var randomIndex = coreMath.randomInteger(0, sources.length);
+
+			harvesterMemory.resourceId = sources[randomIndex].id;
+			break;
+	}
+
+	switch (targetStucture) {
+		case "spawn":
+
+			harvesterMemory.targetId = global.spawn.id;
+			break;
+
+		case "controller":
+
+			var target = global.room.find(FIND_STRUCTURES, { filter: { structureType: STRUCTURE_CONTROLLER } });
+			harvesterMemory.targetId = target.id;
+			break;
+	}
+
+	if (harvesterMemory.resourceId && harvesterMemory.targetStucture) {
+
+		var result = spawn.spawnCreep([WORK, CARRY, MOVE], id, harvesterMemory);
+
+		debug(`harvester spawned: ${id} resource: ${resourceType} storage: ${targetStucture}`);
 	}
 }
 
-harvester.harvest = function(spawn) {
+harvester.harvestLegacy = function(spawn) {
 
 	var storage = spawn;
 
 	for (var index in Game.creeps) {
 
 		var creep = Game.creeps[index];
+
+		if (creep.memory.role) {
+
 
 		// debug(creep.name, ": ", creep.carry[RESOURCE_ENERGY]);
 		debug(creep.name, ": ", creep);
@@ -33,7 +65,7 @@ harvester.harvest = function(spawn) {
 			if (!source) {
 
 				source = creep.pos.findClosestByPath(FIND_SOURCES);
-				creep.memory.sourceId = source.id;				
+				creep.memory.sourceId = source.id;
 				creep.memory.storageId = "";
 			}
 
@@ -50,9 +82,9 @@ harvester.harvest = function(spawn) {
 
 			creep.memory.sourceId = "";
 			creep.memory.storageId = storage.id;
-			
+
 			// storage = Game.getObjectById(Memory.structureIds.controller);
-			storage = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: {structureType: STRUCTURE_CONTROLLER}});
+			storage = creep.pos.findClosestByPath(FIND_STRUCTURES, { filter: { structureType: STRUCTURE_CONTROLLER } });
 
 			// debug("storage: ", storage);
 
@@ -61,6 +93,8 @@ harvester.harvest = function(spawn) {
 				// debug(creep.name, ": moving to storage");
 				creep.moveTo(storage);
 			}
+		}
+
 		}
 	}
 

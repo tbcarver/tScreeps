@@ -36,6 +36,11 @@
 		result = await api.raw.game.roomStatus(myRoom);
 		console.log("roomStatus: ", result);
 
+		result = await api.raw.user.memory.get("creeps");
+		console.log("memory: ", result);
+
+		
+
 		// var test = await api.auth('screeps@email.com', 'notMyPass')
 
 		// await api.auth('carver230620', '5560');
