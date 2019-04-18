@@ -1,0 +1,106 @@
+{
+	"creeps": {},
+	"powerCreeps": {},
+	"spawns": {
+		"spawn1": {
+			"room": {
+				"name": "W5N3",
+				"energyAvailable": 0,
+				"energyCapacityAvailable": 0,
+				"visual": {
+					"roomName": "W5N3"
+				}
+			},
+			"pos": {
+				"x": 10,
+				"y": 20,
+				"roomName": "W5N3"
+			},
+			"id": "47bb779d6269ed0",
+			"name": "spawn1",
+			"energy": 300,
+			"energyCapacity": 300,
+			"spawning": null,
+			"owner": {
+				"username": "carver230620"
+			},
+			"my": true,
+			"hits": 5000,
+			"hitsMax": 5000,
+			"structureType": "spawn"
+		}
+	},
+	"structures": {
+		"47bb779d6269ed0": {
+			"room": {
+				"name": "W5N3",
+				"energyAvailable": 0,
+				"energyCapacityAvailable": 0,
+				"visual": {
+					"roomName": "W5N3"
+				}
+			},
+			"pos": {
+				"x": 10,
+				"y": 20,
+				"roomName": "W5N3"
+			},
+			"id": "47bb779d6269ed0",
+			"name": "spawn1",
+			"energy": 300,
+			"energyCapacity": 300,
+			"spawning": null,
+			"owner": {
+				"username": "carver230620"
+			},
+			"my": true,
+			"hits": 5000,
+			"hitsMax": 5000,
+			"structureType": "spawn"
+		}
+	},
+	"flags": {},
+	"constructionSites": {},
+	"rooms": {
+		"W5N3": {
+			"name": "W5N3",
+			"energyAvailable": 0,
+			"energyCapacityAvailable": 0,
+			"visual": {
+				"roomName": "W5N3"
+			}
+		}
+	},
+	"time": 46255,
+	"cpuLimit": 500,
+	"cpu": {
+		"tickLimit": 500,
+		"limit": 100,
+		"bucket": 10000
+	},
+	"map": {},
+	"gcl": {
+		"level": 1,
+		"progress": 0,
+		"progressTotal": 1000000
+	},
+	"gpl": {
+		"level": 0,
+		"progress": 0,
+		"progressTotal": 1000
+	},
+	"market": {
+		"credits": 0,
+		"incomingTransactions": [],
+		"outgoingTransactions": [],
+		"orders": {}
+	},
+	"resources": {
+		"token": 0
+	},
+	"shard": {
+		"name": "appserver03",
+		"type": "normal",
+		"ptr": false
+	}
+}
