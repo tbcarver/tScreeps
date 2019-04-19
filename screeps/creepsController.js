@@ -27,7 +27,7 @@ creepsController.tick = function() {
 
 		} else {
 
-			debug(creep.name, ": ", creep.memory);
+			// debug(creep.name, ": ", creep.memory);
 
 			switch (creep.memory.type) {
 

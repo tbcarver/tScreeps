@@ -66,7 +66,13 @@ class ScreepsWebpackPlugin {
 
           return client.refreshToken()
             .then((token) => {
-              return client.commit(branch, modules)
+              
+              var renamedModules = {};
+
+              renamedModules["main"] = modules["main.js"];
+              renamedModules["main.js.map"] = "module.exports = " + modules["main.js.map"];
+
+              return client.commit(branch, renamedModules)
                 .then((body) => {
                   compilation.applyPlugins(AFTER_COMMIT, body)
                 })

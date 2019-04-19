@@ -16,28 +16,28 @@
 
 		const myRoom = "W5N3";
 
-		// var result = await api.raw.register.submit("testuser", "testuser", "1234");
+		// var result = await api.raw.register.submit("carver230620-sandbox", "carver230620-sandbox", "1234");
 
-		await api.auth('carver230620', '5560');
+		await api.auth('carver230620-sandbox', '1234');
 
 		result = await api.raw.auth.me();
 		console.log("me: ", result);
 		
-		// result = await api.raw.game.placeSpawn("W5N3", 15, 15, "spawn1");
-		// console.log(result);
+		result = await api.raw.game.placeSpawn("W4N1", 42, 8, "spawn1");
+		console.log(result);
 
 		// result = await api.raw.user.respawn();
 		// console.log("respawn: ", result);
 
-		result = await api.raw.user.worldStatus();
-		console.log("worldStatus: ", result);
-		result = await api.raw.game.roomOverview(myRoom);
-		console.log("roomOverview: ", result);
-		result = await api.raw.game.roomStatus(myRoom);
-		console.log("roomStatus: ", result);
+		// result = await api.raw.user.worldStatus();
+		// console.log("worldStatus: ", result);
+		// result = await api.raw.game.roomOverview(myRoom);
+		// console.log("roomOverview: ", result);
+		// result = await api.raw.game.roomStatus(myRoom);
+		// console.log("roomStatus: ", result);
 
-		result = await api.raw.user.memory.get("creeps");
-		console.log("memory: ", result);
+		// result = await api.raw.user.memory.get("");
+		// console.log("memory: ", result);
 
 		
 

@@ -70,7 +70,6 @@ harvester.act = function(creep) {
 
 			debug("ERROR: Harvester resource not found for id: " + creep.memory.resourceId);
 		}
-
 	}
 
 	if (creep.memory.state === "transferring" || creep.carry[creep.memory.resourceType] === creep.carryCapacity) {

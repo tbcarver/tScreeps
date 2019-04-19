@@ -2,8 +2,8 @@
 var creepsSpawnRules = {
 	harvesters: {
 		energy: {
-			spawn: 2,
-			controller: 5
+			spawn: 3,
+			controller: 9
 		}
 	}
 }

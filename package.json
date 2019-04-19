@@ -8,6 +8,7 @@
     "@types/screeps": "^2.5.3",
     "screeps-api": "^1.8.1",
     "screeps-modules": "^1.1.1",
+    "source-map": "^0.6.1",
     "webpack": "3.12.0"
   }
 }

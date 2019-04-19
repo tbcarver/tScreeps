@@ -1,19 +1,45 @@
 
 var debug = require("./debug");
-var creep = require("./creeps/creep");
-var harvester = require("./creeps/harvester");
+var sourceMap = require("./sourceMap");
 var creepsController = require("./creepsController");
 
+try {
 
-console.log("time: " + Game.time);
+	debug.yellow("tick: ", Game.time);
+	global.spawn = Game.spawns["spawn1"];
+	global.room = spawn.room;
 
-global.spawn = Game.spawns["spawn1"];
-global.room = spawn.room;
+	if (Math.random() < .2) {
+	
+		debug.blue("spawn: ", global.spawn);
+	}
 
-if (Math.random() < .2) {
+	creepsController.tick();
 
-	debug("spawn: ", global.spawn);
+} catch (error) {
+	
+	if (error instanceof Error) {
+
+		sourceMap.logStackTrace(error);
+
+	} else {
+
+		throw error;
+	}
 }
+
+
+// console.log("time: " + Game.time);
+
+// global.spawn = Game.spawns["spawn1"];
+// global.room = spawn.room;
+
+// if (Math.random() < .2) {
+
+// 	debug("spawn: ", global.spawn);
+// }
+
+// creepsController.tick();
 
 
 
@@ -45,7 +71,6 @@ if (Math.random() < .2) {
 // creep.cleanTheDead();
 
 
-creepsController.tick();
 
 
 // var target = global.room.find(FIND_STRUCTURES, { filter: { structureType: STRUCTURE_CONTROLLER } });
