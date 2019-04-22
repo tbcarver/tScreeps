@@ -33,18 +33,22 @@ harvester.spawn = function(id, resourceType, targetStucture) {
 
 		case "controller":
 
-			var controllers = global.room.find(FIND_STRUCTURES, { filter: { structureType: STRUCTURE_CONTROLLER } });
-			var randomIndex = coreMath.randomInteger(0, controllers.length - 1);
-
-			harvesterMemory.targetId = controllers[randomIndex].id;
+			harvesterMemory.targetId = global.controller.id;
 			break;
 	}
 
 	if (harvesterMemory.resourceId && harvesterMemory.targetStucture) {
 
-		var result = spawn.spawnCreep([WORK, CARRY, MOVE], id, { memory: harvesterMemory });
+		var result = spawn.spawnCreep([WORK, CARRY, MOVE, MOVE], id, { memory: harvesterMemory });
 
-		debug(`harvester spawned: ${id} resource: ${resourceType} storage: ${targetStucture}`);
+		if (result === OK) {
+
+			debug.yellow(`harvester spawning: ${id} resource: ${resourceType} storage: ${targetStucture} memory: `, harvesterMemory);
+
+		} else {
+
+			debug.red(`pather not spawning: ${result}`);
+		}
 	}
 }
 

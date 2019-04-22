@@ -2,16 +2,24 @@
 var debug = require("./debug");
 var creepsStore = require("./creepsStore");
 var harvester = require("./creeps/harvester");
+var pather = require("./creeps/pather");
 var { creepsSpawnRules } = require("./creepsRules");
 
 var creepsController = {};
 
 creepsController.tick = function() {
 
+	cleanTheDead();
+
 	var creepsStatistics = {
 		harvesters: {
 			energy: {
 				spawn: 0,
+				controller: 0
+			}
+		},
+		pathers: {
+			spawn: {
 				controller: 0
 			}
 		}
@@ -25,9 +33,9 @@ creepsController.tick = function() {
 
 			creepsStore.remove(creep);
 
-		} else {
+			debug.yellow(`creep died: ${creep.id} type: ${creep.memory.type}`);
 
-			// debug(creep.name, ": ", creep.memory);
+		} else {
 
 			switch (creep.memory.type) {
 
@@ -35,13 +43,39 @@ creepsController.tick = function() {
 					harvester.act(creep);
 					creepsStatistics.harvesters[creep.memory.resourceType][creep.memory.targetStucture]++;
 					break;
+
+				case "pather":
+					pather.act(creep);
+					creepsStatistics.pathers[creep.memory.sourceName][creep.memory.targetName]++;
+					break;
 			}
 		}
 	}
 
 	if (!global.spawn.spawning && global.spawn.energy >= global.spawn.energyCapacity) {
 
+		spawnPathers(creepsStatistics.pathers, creepsSpawnRules.pathers);
 		spawnHarvesters(creepsStatistics.harvesters, creepsSpawnRules.harvesters);
+	}
+}
+
+function spawnPathers(pathersStatistics, pathersSpawnRules) {
+
+	for (var sourceName in pathersSpawnRules) {
+
+		var targets = pathersSpawnRules[sourceName];
+
+		for (var targetName in targets) {
+
+			var pathersCount = targets[targetName];
+
+			if (pathersStatistics[sourceName][targetName] < pathersCount) {
+
+				var id = creepsStore.getNextCreepId();
+
+				pather.spawn(id, sourceName, targetName);
+			}
+		}
 	}
 }
 
@@ -53,14 +87,25 @@ function spawnHarvesters(harvestersStatistics, harvestersSpawnRules) {
 
 		for (var targetStuctureName in resourceTypes) {
 
-			var harvesterCount = resourceTypes[targetStuctureName];
+			var harvestersCount = resourceTypes[targetStuctureName];
 
-			if (harvestersStatistics[resourceTypeName][targetStuctureName] < harvesterCount) {
+			if (harvestersStatistics[resourceTypeName][targetStuctureName] < harvestersCount) {
 
 				var id = creepsStore.getNextCreepId();
 
 				harvester.spawn(id, resourceTypeName, targetStuctureName);
 			}
+		}
+	}
+}
+
+function cleanTheDead() {
+
+	for (var name in Memory.creeps) {
+
+		if (Game.creeps[name] === undefined) {
+
+			delete Memory.creeps[name];
 		}
 	}
 }

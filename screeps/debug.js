@@ -18,7 +18,23 @@ debug.blue = function(...logs) {
 debug.yellow = function(...logs) {
 
 	var message = buildMessage(logs);
-	message = buildColor(message, "#dbab79");
+	message = buildColor(message, "yellow");
+
+	console.log(message);
+}
+
+debug.red = function(...logs) {
+
+	var message = buildMessage(logs);
+	message = buildColor(message, "red");
+
+	console.log(message);
+}
+
+debug.gray = function(...logs) {
+
+	var message = buildMessage(logs);
+	message = buildColor(message, "#b3b3b3");
 
 	console.log(message);
 }
