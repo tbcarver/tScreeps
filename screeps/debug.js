@@ -7,7 +7,7 @@ function debug(...logs) {
 	console.log(message);
 }
 
-debug.blue = function(...logs) {
+debug.primary = function(...logs) {
 
 	var message = buildMessage(logs);
 	message = buildColor(message, "#6fbbef");
@@ -15,18 +15,18 @@ debug.blue = function(...logs) {
 	console.log(message);
 }
 
-debug.yellow = function(...logs) {
+debug.highlight = function(...logs) {
 
 	var message = buildMessage(logs);
-	message = buildColor(message, "yellow");
+	message = buildColor(message, "highlight");
 
 	console.log(message);
 }
 
-debug.red = function(...logs) {
+debug.danger = function(...logs) {
 
 	var message = buildMessage(logs);
-	message = buildColor(message, "red");
+	message = buildColor(message, "danger");
 
 	console.log(message);
 }
@@ -50,7 +50,7 @@ function buildMessage(logs) {
 			log = JSON.stringify(log);
 		}
 
-		message += log;
+		message += log + " ";
 	}
 
 	return message;

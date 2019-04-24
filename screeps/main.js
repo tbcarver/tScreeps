@@ -3,6 +3,7 @@ try {
 
 	var debug = require("./debug");
 	var test = require("./test");
+	var roomTools = require("./roomTools");
 	var creepsController = require("./creepsController");
 
 	debug.gray("tick: ", Game.time);
@@ -13,15 +14,17 @@ try {
 
 	if (Math.random() < .2) {
 
-		debug.blue("spawn: ", global.spawn);
+		debug.primary("spawn: ", global.spawn);
 	}
 
 	if (Math.random() < .2) {
 
-		debug.blue("controller: ", global.controller);
+		debug.primary("controller: ", global.controller);
 	}
 
 	test();
+	// roomTools.createConstructionSites();
+	// roomTools.lookAt();
 	creepsController.tick();
 
 } catch (error) {

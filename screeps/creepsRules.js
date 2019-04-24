@@ -1,16 +1,13 @@
 
 var creepsSpawnRules = {
+	builders: 2,
 	harvesters: {
 		energy: {
-			spawn: 1,
-			controller: 9
+			spawn: 2,
+			controller: 4
 		}
 	},
-	pathers: {
-		spawn: {
-			controller: 0
-		}
-	}
+	repairers: 2
 }
 
 

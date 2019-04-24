@@ -1,8 +1,9 @@
 
 var debug = require("./debug");
 var creepsStore = require("./creepsStore");
+var builder = require("./creeps/builder");
 var harvester = require("./creeps/harvester");
-var pather = require("./creeps/pather");
+var repairer = require("./creeps/repairer");
 var { creepsSpawnRules } = require("./creepsRules");
 
 var creepsController = {};
@@ -12,17 +13,14 @@ creepsController.tick = function() {
 	cleanTheDead();
 
 	var creepsStatistics = {
+		builders: 0,
 		harvesters: {
 			energy: {
 				spawn: 0,
 				controller: 0
 			}
 		},
-		pathers: {
-			spawn: {
-				controller: 0
-			}
-		}
+		repairers: 0
 	};
 
 	for (var index in Game.creeps) {
@@ -33,20 +31,27 @@ creepsController.tick = function() {
 
 			creepsStore.remove(creep);
 
-			debug.yellow(`creep died: ${creep.id} type: ${creep.memory.type}`);
+			debug.highlight(`creep died: ${creep.id} type: ${creep.memory.type}`);
 
 		} else {
 
+			debug.primary(`creep act: ${creep.id} type: ${creep.memory.type}`);
+
 			switch (creep.memory.type) {
+
+				case "builder":
+					builder.act(creep);
+					creepsStatistics.builders++;
+					break;
 
 				case "harvester":
 					harvester.act(creep);
-					creepsStatistics.harvesters[creep.memory.resourceType][creep.memory.targetStucture]++;
+					creepsStatistics.harvesters[creep.memory.resourceType][creep.memory.targetStructure]++;
 					break;
 
-				case "pather":
-					pather.act(creep);
-					creepsStatistics.pathers[creep.memory.sourceName][creep.memory.targetName]++;
+				case "repairer":
+					repairer.act(creep);
+					creepsStatistics.repairers++;
 					break;
 			}
 		}
@@ -54,28 +59,22 @@ creepsController.tick = function() {
 
 	if (!global.spawn.spawning && global.spawn.energy >= global.spawn.energyCapacity) {
 
-		spawnPathers(creepsStatistics.pathers, creepsSpawnRules.pathers);
+		debug.highlight("spawn chance");
+
+		// NOTE: Order here is prioritized by creep type
 		spawnHarvesters(creepsStatistics.harvesters, creepsSpawnRules.harvesters);
+		spawnBuilders(creepsStatistics.builders, creepsSpawnRules.builders);
+		spawnRepairers(creepsStatistics.repairers, creepsSpawnRules.repairers);
 	}
 }
 
-function spawnPathers(pathersStatistics, pathersSpawnRules) {
+function spawnBuilders(buildersCount, buildersSpawnRulesCount) {
 
-	for (var sourceName in pathersSpawnRules) {
+	if (buildersCount < buildersSpawnRulesCount) {
 
-		var targets = pathersSpawnRules[sourceName];
+		var id = creepsStore.getNextCreepId();
 
-		for (var targetName in targets) {
-
-			var pathersCount = targets[targetName];
-
-			if (pathersStatistics[sourceName][targetName] < pathersCount) {
-
-				var id = creepsStore.getNextCreepId();
-
-				pather.spawn(id, sourceName, targetName);
-			}
-		}
+		builder.spawn(id);
 	}
 }
 
@@ -85,19 +84,30 @@ function spawnHarvesters(harvestersStatistics, harvestersSpawnRules) {
 
 		var resourceTypes = harvestersSpawnRules[resourceTypeName];
 
-		for (var targetStuctureName in resourceTypes) {
+		for (var targetStructureName in resourceTypes) {
 
-			var harvestersCount = resourceTypes[targetStuctureName];
+			var harvestersCount = resourceTypes[targetStructureName];
 
-			if (harvestersStatistics[resourceTypeName][targetStuctureName] < harvestersCount) {
+			if (harvestersStatistics[resourceTypeName][targetStructureName] < harvestersCount) {
 
 				var id = creepsStore.getNextCreepId();
 
-				harvester.spawn(id, resourceTypeName, targetStuctureName);
+				harvester.spawn(id, resourceTypeName, targetStructureName);
 			}
 		}
 	}
 }
+
+function spawnRepairers(repairersCount, repairersSpawnRulesCount) {
+
+	if (repairersCount < repairersSpawnRulesCount) {
+
+		var id = creepsStore.getNextCreepId();
+
+		repairer.spawn(id);
+	}
+}
+
 
 function cleanTheDead() {
 

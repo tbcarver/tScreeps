@@ -4,13 +4,13 @@ var coreMath = require("../../lib/core/extensions/coreMath")
 
 var harvester = {};
 
-harvester.spawn = function(id, resourceType, targetStucture) {
+harvester.spawn = function(id, resourceType, targetStructure) {
 
 	var harvesterMemory = {
 		type: "harvester",
 		resourceType: resourceType,
 		resourceId: "",
-		targetStucture: targetStucture,
+		targetStructure: targetStructure,
 		targetId: ""
 	}
 
@@ -25,7 +25,7 @@ harvester.spawn = function(id, resourceType, targetStucture) {
 			break;
 	}
 
-	switch (targetStucture) {
+	switch (targetStructure) {
 		case "spawn":
 
 			harvesterMemory.targetId = global.spawn.id;
@@ -37,24 +37,24 @@ harvester.spawn = function(id, resourceType, targetStucture) {
 			break;
 	}
 
-	if (harvesterMemory.resourceId && harvesterMemory.targetStucture) {
+	if (harvesterMemory.resourceId && harvesterMemory.targetStructure) {
 
 		var result = spawn.spawnCreep([WORK, CARRY, MOVE, MOVE], id, { memory: harvesterMemory });
 
 		if (result === OK) {
 
-			debug.yellow(`harvester spawning: ${id} resource: ${resourceType} storage: ${targetStucture} memory: `, harvesterMemory);
+			debug.highlight(`harvester spawning: ${id} resource: ${resourceType} storage: ${targetStructure} memory: `, harvesterMemory);
 
 		} else {
 
-			debug.red(`pather not spawning: ${result}`);
+			debug.danger(`pather not spawning: ${result}`);
 		}
 	}
 }
 
 harvester.act = function(creep) {
 
-	if (creep.memory.state === "harvesting" || creep.carry[RESOURCE_ENERGY] === 0) {
+	if (creep.memory.state === "harvesting" || creep.carry[creep.memory.resourceType] === 0) {
 
 		if (creep.memory.state !== "harvesting") {
 
