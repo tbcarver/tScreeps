@@ -12,9 +12,13 @@ harvester.spawn = function(id, resourceType, structureType) {
 		type: "harvester",
 		resourceType: resourceType,
 		resourceId: "",
-		structureType: structureType,
-		structureId: "",
-		structurePos: undefined
+		structures: [
+			{
+				type: structureType,
+				id: "",
+				pos: undefined
+			}
+		],
 	}
 
 	var structure;
@@ -43,7 +47,8 @@ harvester.spawn = function(id, resourceType, structureType) {
 			if (extensions.length > 0) {
 
 				structure = extensions[0];
-				harvesterMemory.structurePos = structure.pos;
+				harvesterMemory.structures[0].id = structure.id;
+				harvesterMemory.structures[0].pos = structure.pos;
 				bodyParts = [WORK, CARRY, CARRY, MOVE];
 			}
 
@@ -77,7 +82,8 @@ harvester.spawn = function(id, resourceType, structureType) {
 			if (containers.length > 0) {
 
 				structure = containers[0];
-				harvesterMemory.structurePos = structure.pos;
+				harvesterMemory.structures[0].id = structure.id;
+				harvesterMemory.structures[0].pos = structure.pos;
 
 				if (global.room.energyCapacityAvailable >= 400) {
 					bodyParts = [WORK, CARRY, CARRY, MOVE, MOVE];
@@ -89,7 +95,6 @@ harvester.spawn = function(id, resourceType, structureType) {
 
 	if (structure) {
 
-		harvesterMemory.structureId = structure.id;
 		var resource;
 
 		switch (resourceType) {
@@ -155,7 +160,7 @@ harvester.act = function(creep) {
 			creep.memory.state = "transferring";
 		}
 
-		var structure = Game.getObjectById(creep.memory.structureId);
+		var structure = Game.getObjectById(creep.memory.structures[0].id);
 
 		if (structure) {
 
@@ -166,7 +171,7 @@ harvester.act = function(creep) {
 
 		} else {
 
-			debug.danger("Harvester structure not found for id: " + creep.memory.structureId);
+			debug.danger("Harvester structure not found for id: " + creep.memory.structures[0].id);
 		}
 	}
 }
