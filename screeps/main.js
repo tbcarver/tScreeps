@@ -2,14 +2,14 @@
 try {
 
 	var debug = require("./debug");
-	var test = require("./test");
-	var roomTools = require("./roomTools");
+	var test = require("./tools/testTools");
+	var roomTools = require("./tools/roomTools");
 	var creepsController = require("./creepsController");
 
 	global.spawn = Game.spawns["spawn1"];
 	global.room = spawn.room;
 	global.controller = spawn.room.controller;
-
+	// console.log(global.controller.activateSafeMode())
 	debug.muted(`tick: ${Game.time} energy: ${global.room.energyAvailable}`);
 
 	if (Math.random() < .2) {
@@ -23,7 +23,7 @@ try {
 	// }
 
 	test();
-	// roomTools.createConstructionRoad();
+	// roomTools.removeConstructionSite();
 	
 	// roomTools.lookAt();
 	creepsController.tick();

@@ -1,15 +1,13 @@
 
 var debug = require("../debug");
-var roomTools = require("../roomTools");
+var findTools = require("../tools/findTools");
 
 var builder = {};
 
 builder.spawn = function(id) {
 
-	var result;
 	var builderMemory = {
-		type: "builder",
-		state: "harvesting"
+		type: "builder"
 	}
 
 	const sites = global.room.find(FIND_CONSTRUCTION_SITES);
@@ -18,17 +16,17 @@ builder.spawn = function(id) {
 
 		var result = spawn.spawnCreep([WORK, WORK, CARRY, MOVE], id, {
 			memory: builderMemory,
-			energyStructures: roomTools.getAllEnergyStructures()
+			energyStructures: findTools.findAllEnergyStructures()
 		});
-	}
 
-	if (result === OK) {
-
-		debug.highlight(`builder spawning: ${id} memory: `, builderMemory);
-
-	} else {
-
-		debug.warning(`builder did not spawn: ${result}`);
+		if (result === OK) {
+	
+			debug.highlight(`builder spawning: ${id} memory: `, builderMemory);
+	
+		} else {
+	
+			debug.warning(`builder did not spawn: ${result}`);
+		}
 	}
 }
 
@@ -41,18 +39,25 @@ builder.act = function(creep) {
 			creep.memory.state = "harvesting";
 		}
 
-		const target = creep.pos.findClosestByPath(FIND_SOURCES);
+		var resource = findTools.findClosestEnergy(creep.pos);
 
-		if (target) {
+		if (resource) {
 
-			if (creep.harvest(target) == ERR_NOT_IN_RANGE) {
+			if (resource.structureType) {
 
-				creep.moveTo(target);
+				if (creep.withdraw(resource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+					creep.moveTo(resource);
+				}
+
+			} else {
+
+				if (creep.harvest(resource) == ERR_NOT_IN_RANGE) {
+					creep.moveTo(resource);
+				}
 			}
-
 		} else {
 
-			debug.warning(`builder cannot find any sources. ticks: ${creep.ticksToLive}`);
+			debug.warning("builder resource not found");
 		}
 	}
 

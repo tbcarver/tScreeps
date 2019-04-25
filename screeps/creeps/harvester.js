@@ -1,12 +1,13 @@
 
 var debug = require("../debug");
-var roomTools = require("../roomTools");
+var findTools = require("../tools/findTools");
 
 var harvester = {};
 
 harvester.spawn = function(id, resourceType, structureType) {
 
 	var spawned = false;
+	var bodyParts = [WORK, CARRY, MOVE, MOVE];
 	var harvesterMemory = {
 		type: "harvester",
 		resourceType: resourceType,
@@ -20,16 +21,11 @@ harvester.spawn = function(id, resourceType, structureType) {
 
 	switch (structureType) {
 
-		case STRUCTURE_SPAWN:
-
-			structure = global.spawn;
-			break;
-
 		case STRUCTURE_EXTENSION:
 
 			var extensions = global.room.find(FIND_MY_STRUCTURES, {
 				filter: {
-					structureType: STRUCTURE_EXTENSION
+					structureType: structureType
 				}
 			});
 
@@ -38,7 +34,7 @@ harvester.spawn = function(id, resourceType, structureType) {
 				return !_.some(Memory.creeps, creepMemory => {
 
 					return creepMemory.type === "harvester" &&
-						creepMemory.structureType === STRUCTURE_EXTENSION &&
+						creepMemory.structureType === structureType &&
 						creepMemory.structurePos.x === extension.pos.x &&
 						creepMemory.structurePos.y === extension.pos.y
 				});
@@ -48,13 +44,46 @@ harvester.spawn = function(id, resourceType, structureType) {
 
 				structure = extensions[0];
 				harvesterMemory.structurePos = structure.pos;
+				bodyParts = [WORK, CARRY, CARRY, MOVE];
 			}
 
 			break;
 
-		case STRUCTURE_CONTROLLER:
+		case STRUCTURE_CONTAINER:
 
-			structure = global.controller;
+			var containers = global.room.find(FIND_STRUCTURES, {
+				filter: {
+					structureType: structureType
+				}
+			});
+
+			containers = containers.filter(container => {
+
+				var count = _.reduce(Memory.creeps, (count, creepMemory) => {
+
+					if (creepMemory.type === "harvester" &&
+						creepMemory.structureType === structureType &&
+						creepMemory.structurePos.x === container.pos.x &&
+						creepMemory.structurePos.y === container.pos.y) {
+						count++
+					}
+
+					return count;
+				}, 0);
+
+				return count <= 2;
+			});
+
+			if (containers.length > 0) {
+
+				structure = containers[0];
+				harvesterMemory.structurePos = structure.pos;
+
+				if (global.room.energyCapacityAvailable >= 400) {
+					bodyParts = [WORK, CARRY, CARRY, MOVE, MOVE];
+				}
+			}
+
 			break;
 	}
 
@@ -75,15 +104,15 @@ harvester.spawn = function(id, resourceType, structureType) {
 
 			harvesterMemory.resourceId = resource.id;
 
-			var result = spawn.spawnCreep([WORK, CARRY, MOVE, MOVE], id, {
+			var result = spawn.spawnCreep(bodyParts, id, {
 				memory: harvesterMemory,
-				energyStructures: roomTools.getAllEnergyStructures()
+				energyStructures: findTools.findAllEnergyStructures()
 			});
 
 			if (result === OK) {
 
 				spawned = true;
-				debug.highlight(`harvester spawning: ${id} resource: ${resourceType} storage: ${structureType} memory: `, harvesterMemory);
+				debug.highlight(`harvester spawning: ${id} resource: ${resourceType} structure: ${structureType} memory: `, harvesterMemory);
 
 			} else {
 

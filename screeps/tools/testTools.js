@@ -1,9 +1,16 @@
 
-var debug = require("./debug");
+var debug = require("../debug");
 
 function tick() {
 
 	
+	// debug("sources", global.room.find(FIND_SOURCES));
+
+	// const target = global.room.find(FIND_MY_STRUCTURES, {
+	// 	filter: structure => structure.hits < structure.hitsMax
+	// });
+
+	// debug.danger("damaged", target)
 
 	// debug.danger("Game.creeps", _.size(Game.creeps))
 	// debug.danger("Memory.creeps", _.size(Memory.creeps))
@@ -14,21 +21,35 @@ function tick() {
 	// 	}
 	// });
 
-	// debug.danger("ALL EXTENSIONS", extensions.length, extensions)
+	// var structureType = STRUCTURE_CONTAINER;
+	// var containers = global.room.find(FIND_STRUCTURES, {
+	// 	filter: {
+	// 		structureType: structureType
+	// 	}
+	// });
 
-	// extensions = extensions.filter(extension => {
+	// debug.danger("ALL EXTENSIONS", containers.length, containers)
 
-	// 	return ! _.some(Memory.creeps, creepMemory => {
+	// containers = containers.filter(container => {
 
-	// 		return creepMemory.type === "harvester" &&
-	// 			creepMemory.structureType === STRUCTURE_EXTENSION &&
-	// 			creepMemory.structurePos.x === extension.pos.x &&
-	// 			creepMemory.structurePos.y === extension.pos.y
-	// 	});
+	// 	var count = _.reduce(Memory.creeps, (count, creepMemory) => {
+
+	// 		if (creepMemory.type === "harvester" &&
+	// 			creepMemory.structureType === structureType &&
+	// 			creepMemory.structurePos.x === container.pos.x &&
+	// 			creepMemory.structurePos.y === container.pos.y) {
+	// 			count++
+	// 		}
+	// 		debug.highlight("count", count);
+
+	// 		return count;
+	// 	}, 0);
+
+	// 	return count <= 2;
 	// });
 
 
-	// debug.danger("FILTERED EXTENSIONS", extensions.length, extensions)
+	// debug.danger("FILTERED EXTENSIONS", containers.length, containers)
 
 
 	

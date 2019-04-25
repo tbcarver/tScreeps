@@ -2,6 +2,7 @@
 var debug = require("./debug");
 var creepsStore = require("./creepsStore");
 var builder = require("./creeps/builder");
+var energizer = require("./creeps/energizer");
 var harvester = require("./creeps/harvester");
 var repairer = require("./creeps/repairer");
 var { creepsSpawnRules } = require("./creepsRules");
@@ -14,11 +15,14 @@ creepsController.tick = function() {
 
 	var creepsStatistics = {
 		builders: 0,
+		energizers: {
+			[STRUCTURE_SPAWN]: 0,
+			[STRUCTURE_CONTROLLER]: 0
+		},
 		harvesters: {
 			[RESOURCE_ENERGY]: {
-				[STRUCTURE_SPAWN]: 0,
 				[STRUCTURE_EXTENSION]: 0,
-				[STRUCTURE_CONTROLLER]: 0
+				[STRUCTURE_CONTAINER]: 0,
 			}
 		},
 		repairers: 0
@@ -45,6 +49,12 @@ creepsController.tick = function() {
 					creepsStatistics.builders++;
 					break;
 
+				case "energizer":
+
+					energizer.act(creep);
+					creepsStatistics.energizers[creep.memory.structureType]++;
+					break;
+
 				case "harvester":
 
 					harvester.act(creep);
@@ -59,7 +69,7 @@ creepsController.tick = function() {
 		}
 	}
 
-	debug.primary(`creep tick:`, creepsStatistics);
+	debug.muted(`creep tick:`, creepsStatistics);
 
 	if (!global.spawn.spawning && global.room.energyAvailable >= 250) {
 
@@ -67,6 +77,7 @@ creepsController.tick = function() {
 
 		// NOTE: Order here is prioritized by creep type
 		spawnHarvesters(creepsStatistics.harvesters, creepsSpawnRules.harvesters);
+		spawnEnergizers(creepsStatistics.energizers, creepsSpawnRules.energizers);
 		spawnBuilders(creepsStatistics.builders, creepsSpawnRules.builders);
 		spawnRepairers(creepsStatistics.repairers, creepsSpawnRules.repairers);
 	}
@@ -82,6 +93,25 @@ function spawnBuilders(buildersCount, buildersSpawnRulesCount) {
 	}
 }
 
+function spawnEnergizers(energizersStatistics, energizersSpawnRules) {
+
+	for (var structureType in energizersSpawnRules) {
+
+		var energizersCount = energizersSpawnRules[structureType];
+
+		if (energizersStatistics[structureType] < energizersCount) {
+
+			var id = creepsStore.getNextCreepId();
+
+			var spawned = energizer.spawn(id, structureType);
+
+			if (spawned) {
+				break;
+			}
+		}
+	}
+}
+
 function spawnHarvesters(harvestersStatistics, harvestersSpawnRules) {
 
 	for (var resourceType in harvestersSpawnRules) {
@@ -93,7 +123,7 @@ function spawnHarvesters(harvestersStatistics, harvestersSpawnRules) {
 			var harvestersCount = harvestersSpawnRules[resourceType][structureType];
 
 			if (harvestersStatistics[resourceType][structureType] < harvestersCount) {
-				
+
 				var id = creepsStore.getNextCreepId();
 
 				var spawned = harvester.spawn(id, resourceType, structureType);
