@@ -6,24 +6,25 @@ try {
 	var roomTools = require("./roomTools");
 	var creepsController = require("./creepsController");
 
-	debug.gray("tick: ", Game.time);
-
 	global.spawn = Game.spawns["spawn1"];
 	global.room = spawn.room;
 	global.controller = spawn.room.controller;
 
-	if (Math.random() < .2) {
-
-		debug.primary("spawn: ", global.spawn);
-	}
+	debug.muted(`tick: ${Game.time} energy: ${global.room.energyAvailable}`);
 
 	if (Math.random() < .2) {
 
-		debug.primary("controller: ", global.controller);
+		debug.muted("spawn: ", global.spawn);
 	}
+
+	// if (Math.random() < .2) {
+
+	// 	debug.muted("controller: ", global.controller);
+	// }
 
 	test();
-	// roomTools.createConstructionSites();
+	// roomTools.createConstructionRoad();
+	
 	// roomTools.lookAt();
 	creepsController.tick();
 

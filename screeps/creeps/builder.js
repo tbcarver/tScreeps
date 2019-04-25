@@ -1,5 +1,6 @@
 
 var debug = require("../debug");
+var roomTools = require("../roomTools");
 
 var builder = {};
 
@@ -11,11 +12,14 @@ builder.spawn = function(id) {
 		state: "harvesting"
 	}
 
-	const target = global.room.find(FIND_CONSTRUCTION_SITES);
+	const sites = global.room.find(FIND_CONSTRUCTION_SITES);
 
-	if (target) {
+	if (sites.length > 0) {
 
-		result = spawn.spawnCreep([WORK, WORK, CARRY, MOVE], id, { memory: builderMemory });
+		var result = spawn.spawnCreep([WORK, WORK, CARRY, MOVE], id, {
+			memory: builderMemory,
+			energyStructures: roomTools.getAllEnergyStructures()
+		});
 	}
 
 	if (result === OK) {
@@ -24,7 +28,7 @@ builder.spawn = function(id) {
 
 	} else {
 
-		debug.danger(`builder not spawning: ${result}`);
+		debug.warning(`builder did not spawn: ${result}`);
 	}
 }
 
@@ -48,7 +52,7 @@ builder.act = function(creep) {
 
 		} else {
 
-			debug.danger("ERROR: builder cannot find any sources.");
+			debug.warning(`builder cannot find any sources. ticks: ${creep.ticksToLive}`);
 		}
 	}
 
@@ -70,7 +74,12 @@ builder.act = function(creep) {
 
 		} else {
 
-			debug.danger("ERROR: builder cannot find any construction sites.");
+			debug.warning(`builder cannot find any construction sites. ticks: ${creep.ticksToLive}`);
+
+			if (creep.transfer(global.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+
+				creep.moveTo(global.controller);
+			}
 		}
 	}
 }

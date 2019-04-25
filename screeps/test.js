@@ -3,6 +3,39 @@ var debug = require("./debug");
 
 function tick() {
 
+	
+
+	// debug.danger("Game.creeps", _.size(Game.creeps))
+	// debug.danger("Memory.creeps", _.size(Memory.creeps))
+
+	// var extensions = global.room.find(FIND_MY_STRUCTURES, {
+	// 	filter: {
+	// 		structureType: STRUCTURE_EXTENSION
+	// 	}
+	// });
+
+	// debug.danger("ALL EXTENSIONS", extensions.length, extensions)
+
+	// extensions = extensions.filter(extension => {
+
+	// 	return ! _.some(Memory.creeps, creepMemory => {
+
+	// 		return creepMemory.type === "harvester" &&
+	// 			creepMemory.structureType === STRUCTURE_EXTENSION &&
+	// 			creepMemory.structurePos.x === extension.pos.x &&
+	// 			creepMemory.structurePos.y === extension.pos.y
+	// 	});
+	// });
+
+
+	// debug.danger("FILTERED EXTENSIONS", extensions.length, extensions)
+
+
+	
+	// const target = global.room.find(FIND_CONSTRUCTION_SITES);
+
+	// debug.highlight("sites", target);
+
 	// var roadBuilder = require("./builders/roadBuilder.js");
 
 	// roadBuilder.build(global.spawn, global.controller);

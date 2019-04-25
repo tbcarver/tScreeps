@@ -10,14 +10,15 @@ var creepsController = {};
 
 creepsController.tick = function() {
 
-	cleanTheDead();
+	cleanUpTheDead();
 
 	var creepsStatistics = {
 		builders: 0,
 		harvesters: {
-			energy: {
-				spawn: 0,
-				controller: 0
+			[RESOURCE_ENERGY]: {
+				[STRUCTURE_SPAWN]: 0,
+				[STRUCTURE_EXTENSION]: 0,
+				[STRUCTURE_CONTROLLER]: 0
 			}
 		},
 		repairers: 0
@@ -35,7 +36,7 @@ creepsController.tick = function() {
 
 		} else {
 
-			debug.primary(`creep act: ${creep.id} type: ${creep.memory.type}`);
+			// debug.primary(`creep act: type: ${creep.memory.type} ticks: ${creep.ticksToLive}`);
 
 			switch (creep.memory.type) {
 
@@ -45,8 +46,9 @@ creepsController.tick = function() {
 					break;
 
 				case "harvester":
+
 					harvester.act(creep);
-					creepsStatistics.harvesters[creep.memory.resourceType][creep.memory.targetStructure]++;
+					creepsStatistics.harvesters[creep.memory.resourceType][creep.memory.structureType]++;
 					break;
 
 				case "repairer":
@@ -57,9 +59,11 @@ creepsController.tick = function() {
 		}
 	}
 
-	if (!global.spawn.spawning && global.spawn.energy >= global.spawn.energyCapacity) {
+	debug.primary(`creep tick:`, creepsStatistics);
 
-		debug.highlight("spawn chance");
+	if (!global.spawn.spawning && global.room.energyAvailable >= 250) {
+
+		debug.highlight("spawn chance", global.room.energyAvailable);
 
 		// NOTE: Order here is prioritized by creep type
 		spawnHarvesters(creepsStatistics.harvesters, creepsSpawnRules.harvesters);
@@ -80,20 +84,28 @@ function spawnBuilders(buildersCount, buildersSpawnRulesCount) {
 
 function spawnHarvesters(harvestersStatistics, harvestersSpawnRules) {
 
-	for (var resourceTypeName in harvestersSpawnRules) {
+	for (var resourceType in harvestersSpawnRules) {
 
-		var resourceTypes = harvestersSpawnRules[resourceTypeName];
+		var structureTypes = harvestersSpawnRules[resourceType];
 
-		for (var targetStructureName in resourceTypes) {
+		for (var structureType in structureTypes) {
 
-			var harvestersCount = resourceTypes[targetStructureName];
+			var harvestersCount = harvestersSpawnRules[resourceType][structureType];
 
-			if (harvestersStatistics[resourceTypeName][targetStructureName] < harvestersCount) {
-
+			if (harvestersStatistics[resourceType][structureType] < harvestersCount) {
+				
 				var id = creepsStore.getNextCreepId();
 
-				harvester.spawn(id, resourceTypeName, targetStructureName);
+				var spawned = harvester.spawn(id, resourceType, structureType);
+
+				if (spawned) {
+					break;
+				}
 			}
+		}
+
+		if (spawned) {
+			break;
 		}
 	}
 }
@@ -108,8 +120,7 @@ function spawnRepairers(repairersCount, repairersSpawnRulesCount) {
 	}
 }
 
-
-function cleanTheDead() {
+function cleanUpTheDead() {
 
 	for (var name in Memory.creeps) {
 

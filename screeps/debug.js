@@ -15,10 +15,18 @@ debug.primary = function(...logs) {
 	console.log(message);
 }
 
-debug.highlight = function(...logs) {
+debug.secondary = function(...logs) {
 
 	var message = buildMessage(logs);
-	message = buildColor(message, "highlight");
+	message = buildColor(message, "#6c757d");
+
+	console.log(message);
+}
+
+debug.warning = function(...logs) {
+
+	var message = buildMessage(logs);
+	message = buildColor(message, "orange");
 
 	console.log(message);
 }
@@ -26,15 +34,23 @@ debug.highlight = function(...logs) {
 debug.danger = function(...logs) {
 
 	var message = buildMessage(logs);
-	message = buildColor(message, "danger");
+	message = buildColor(message, "red");
 
 	console.log(message);
 }
 
-debug.gray = function(...logs) {
+debug.highlight = function(...logs) {
 
 	var message = buildMessage(logs);
-	message = buildColor(message, "#b3b3b3");
+	message = buildColor(message, "yellow");
+
+	console.log(message);
+}
+
+debug.muted = function(...logs) {
+
+	var message = buildMessage(logs);
+	message = buildColor(message, "#6c757d");
 
 	console.log(message);
 }

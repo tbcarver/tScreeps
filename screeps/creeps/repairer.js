@@ -1,5 +1,6 @@
 
 var debug = require("../debug");
+var roomTools = require("../roomTools");
 
 var repairer = {};
 
@@ -10,7 +11,10 @@ repairer.spawn = function(id) {
 		state: "harvesting"
 	}
 
-	var result = spawn.spawnCreep([WORK, WORK, CARRY, MOVE], id, { memory: repairerMemory });
+	var result = spawn.spawnCreep([WORK, WORK, CARRY, MOVE], id, {
+		memory: repairerMemory,
+		energyStructures: roomTools.getAllEnergyStructures()
+	});
 
 	if (result === OK) {
 
@@ -18,7 +22,7 @@ repairer.spawn = function(id) {
 
 	} else {
 
-		debug.danger(`repairer not spawning: ${result}`);
+		debug.warning(`repairer did not spawn: ${result}`);
 	}
 }
 
@@ -42,7 +46,7 @@ repairer.act = function(creep) {
 
 		} else {
 
-			debug.danger("ERROR: repairer cannot find any sources.");
+			debug.warning("repairer cannot find any sources.");
 		}
 	}
 
@@ -66,7 +70,12 @@ repairer.act = function(creep) {
 
 		} else {
 
-			debug.danger("ERROR: repairer cannot find any damaged structures.");
+			debug.warning("repairer cannot find any damaged structures.");
+
+			if (creep.transfer(global.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+
+				creep.moveTo(global.controller);
+			}
 		}
 	}
 }
