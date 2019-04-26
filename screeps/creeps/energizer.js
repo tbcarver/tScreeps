@@ -90,25 +90,19 @@ energizer.act = function(creep) {
 			creep.memory.state = "transferring";
 		}
 
-		
-		if (creep.transfer(global.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+		var structure = Game.getObjectById(creep.memory.structureId);
 
-			creep.moveTo(global.controller);
+		if (structure) {
+
+			if (creep.transfer(structure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+
+				creep.moveTo(structure);
+			}
+
+		} else {
+
+			debug.danger("energizer structure not found:" + creep.memory.structureId);
 		}
-
-		// var structure = Game.getObjectById(creep.memory.structureId);
-
-		// if (structure) {
-
-		// 	if (creep.transfer(structure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-
-		// 		creep.moveTo(structure);
-		// 	}
-
-		// } else {
-
-		// 	debug.danger("energizer structure not found:" + creep.memory.structureId);
-		// }
 	}
 }
 

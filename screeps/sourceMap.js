@@ -6,8 +6,16 @@ var { SourceMapConsumer } = require('source-map');
 var sourceMap = {};
 
 sourceMap.logStackTrace = function(error) {
-	const errorMessage = getSourceMapStackTrace(error);
-	console.log(`<span style="color: tomato">${errorMessage}</span>`);
+
+	try {
+
+		const errorMessage = getSourceMapStackTrace(error);
+		console.log(`<span style="color: tomato">${errorMessage}</span>`);
+
+	} catch (sourceMapError) {
+
+		console.log(`<span style="color: tomato">source map failed: ${error}</span>`);
+	}
 }
 
 function getSourceMapStackTrace(error) {

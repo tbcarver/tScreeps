@@ -40,11 +40,12 @@ creepsController.tick = function() {
 
 		} else {
 
-			debug.primary(`creep act: type: ${creep.memory.type} ticks: ${creep.ticksToLive}`);
+			// debug.temp(`creep act: type: ${creep.memory.type} ticks: ${creep.ticksToLive}`);
 
 			switch (creep.memory.type) {
 
 				case "builder":
+
 					builder.act(creep);
 					creepsStatistics.builders++;
 					break;
@@ -74,6 +75,7 @@ creepsController.tick = function() {
 	if (!global.spawn.spawning && global.room.energyAvailable >= 250) {
 
 		debug.highlight("spawn chance", global.room.energyAvailable);
+		// debug.temp("creep stats:", creepsStatistics, creepsSpawnRules)
 
 		// NOTE: Order here is prioritized by creep type
 		spawnHarvesters(creepsStatistics.harvesters, creepsSpawnRules.harvesters);
