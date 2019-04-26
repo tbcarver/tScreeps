@@ -7,8 +7,8 @@ var creepsSpawnRules = {
 	},
 	harvesters: {
 		[RESOURCE_ENERGY]: {
-			[STRUCTURE_EXTENSION]: 2,
-			[STRUCTURE_CONTAINER]: 4
+			[STRUCTURE_EXTENSION]: 1,
+			[STRUCTURE_CONTAINER]: 0
 		}
 	},
 	repairers: 1

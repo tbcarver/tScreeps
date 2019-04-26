@@ -16,8 +16,7 @@ roomTools.createConstructionExtension = function() {
 
 	var positions =
 
-		[{ "x": "3", "y": "19", "roomName": "W5N3" }, { "x": "6", "y": "19", "roomName": "W5N3" }]
-
+	[{"x":"3","y":"20","roomName":"W5N3"},{"x":"5","y":"19","roomName":"W5N3"},{"x":"8","y":"24","roomName":"W5N3"},{"x":"8","y":"23","roomName":"W5N3"}]
 	this.createConstructionSite(positions, STRUCTURE_EXTENSION);
 }
 
@@ -28,6 +27,19 @@ roomTools.createConstructionContainer = function() {
 		[{ "x": "25", "y": "6", "roomName": "W5N3" }, { "x": "12", "y": "19", "roomName": "W5N3" }]
 
 	this.createConstructionSite(positions, STRUCTURE_CONTAINER);
+}
+
+roomTools.createConstructionSite = function(positions, structureType, name) {
+
+	if (positions.length > 0) {
+
+		for (var index in positions) {
+
+			var position = new RoomPosition(positions[index].x, positions[index].y, positions[index].roomName);
+			var result = global.room.createConstructionSite(position, structureType, name);
+			debug.highlight(`created construction site: type: ${STRUCTURE_ROAD}: ${result}`);
+		}
+	}
 }
 
 roomTools.removeConstructionSite = function() {
@@ -61,7 +73,7 @@ roomTools.destroyStructure = function() {
 
 	var positions =
 
-		[{ "x": "16", "y": "3", "roomName": "W5N3" }, { "x": "16", "y": "2", "roomName": "W5N3" }]
+	[{"x":"4","y":"20","roomName":"W5N3"},{"x":"6","y":"19","roomName":"W5N3"}]
 
 	if (positions.length > 0) {
 

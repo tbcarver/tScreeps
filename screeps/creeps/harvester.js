@@ -1,6 +1,7 @@
 
 var debug = require("../debug");
 var findTools = require("../tools/findTools");
+var coreArray = require("../../lib/core/extensions/coreArray");
 
 var harvester = {};
 
@@ -12,13 +13,12 @@ harvester.spawn = function(id, resourceType, structureType) {
 		type: "harvester",
 		resourceType: resourceType,
 		resourceId: "",
-		structures: [
-			{
-				type: structureType,
-				id: "",
-				pos: undefined
-			}
-		],
+		structures: [{
+			type: structureType,
+			id: "",
+			pos: undefined
+		}],
+		activeStructureIndex: 0
 	}
 
 	var structure;
@@ -26,6 +26,8 @@ harvester.spawn = function(id, resourceType, structureType) {
 	switch (structureType) {
 
 		case STRUCTURE_EXTENSION:
+
+			const maxExtensionsPerCreep = 2;
 
 			var extensions = global.room.find(FIND_MY_STRUCTURES, {
 				filter: {
@@ -35,14 +37,16 @@ harvester.spawn = function(id, resourceType, structureType) {
 
 			extensions = extensions.filter(extension => {
 
-				return !_.some(Memory.creeps, creepMemory => {
+				var countStructures = countHarvesterStructuresAtPosition(structureType, extension.pos.x,
+					extension.pos.y);
 
-					return creepMemory.type === "harvester" &&
-						creepMemory.structureType === structureType &&
-						creepMemory.structurePos.x === extension.pos.x &&
-						creepMemory.structurePos.y === extension.pos.y
-				});
+					debug.temp("countStructures",countStructures)
+
+				return countStructures <= maxExtensionsPerCreep;
 			});
+
+			
+			debug.temp("extensions",extensions)
 
 			if (extensions.length > 0) {
 
@@ -50,11 +54,31 @@ harvester.spawn = function(id, resourceType, structureType) {
 				harvesterMemory.structures[0].id = structure.id;
 				harvesterMemory.structures[0].pos = structure.pos;
 				bodyParts = [WORK, CARRY, CARRY, MOVE];
+
+				for (var index = 1; index < maxExtensionsPerCreep; index++) {
+
+					var nextExtension = structure.pos.findClosestByPath(FIND_STRUCTURES, {
+						filter: structure => structure.structureType == structureType
+					});
+					
+			debug.temp("nextExtension",nextExtension)
+
+					if (nextExtension) {
+
+						harvesterMemory.structures.push({
+							type: structureType,
+							id: nextStructure.id,
+							pos: nextStructure.pos
+						})
+					}
+				}
 			}
 
 			break;
 
 		case STRUCTURE_CONTAINER:
+
+			const maxCreepsPerContainer = 2;
 
 			var containers = global.room.find(FIND_STRUCTURES, {
 				filter: {
@@ -62,21 +86,12 @@ harvester.spawn = function(id, resourceType, structureType) {
 				}
 			});
 
-			containers = containers.filter(container => {
+			containers = containers.filter(extension => {
 
-				var count = _.reduce(Memory.creeps, (count, creepMemory) => {
+				var countStructures = countHarvesterStructuresAtPosition(structureType, extension.pos.x,
+					extension.pos.y);
 
-					if (creepMemory.type === "harvester" &&
-						creepMemory.structureType === structureType &&
-						creepMemory.structurePos.x === container.pos.x &&
-						creepMemory.structurePos.y === container.pos.y) {
-						count++
-					}
-
-					return count;
-				}, 0);
-
-				return count <= 2;
+				return countStructures <= maxCreepsPerContainer;
 			});
 
 			if (containers.length > 0) {
@@ -149,7 +164,7 @@ harvester.act = function(creep) {
 
 		} else {
 
-			debug.danger("Harvester resource not found for id: " + creep.memory.resourceId);
+			debug.danger("harvester structure not found: " + creep.memory.resourceId);
 		}
 	}
 
@@ -160,20 +175,51 @@ harvester.act = function(creep) {
 			creep.memory.state = "transferring";
 		}
 
-		var structure = Game.getObjectById(creep.memory.structures[0].id);
+		var structure = Game.getObjectById(creep.memory.structures[creep.memory.activeStructureIndex].id);
 
 		if (structure) {
 
-			if (creep.transfer(structure, creep.memory.resourceType) == ERR_NOT_IN_RANGE) {
+			var transferResult = creep.transfer(structure, creep.memory.resourceType);
+
+			if (transferResult == ERR_NOT_IN_RANGE) {
 
 				creep.moveTo(structure);
+
+			} else if (transferResult == ERR_FULL) {
+
+				if (creep.memory.structures.length > 1) {
+					
+					creep.memory.activeStructureIndex = coreArray.incrementArrayIndex(creep.memory.activeStructureIndex);
+				}
 			}
 
 		} else {
 
-			debug.danger("Harvester structure not found for id: " + creep.memory.structures[0].id);
+			debug.danger("harvester structure not found: " + creep.memory.structures[0].id);
 		}
 	}
+}
+
+function countHarvesterStructuresAtPosition(structureType, x, y) {
+
+	var result = _.reduce(Memory.creeps, (countStructures, creepMemory) => {
+
+		if (creepMemory.type === "harvester") {
+
+			positions = creepMemory.structures.foreach(structure => {
+
+				if (structure.type === structureType && structure.pos.x === x &&
+					structure.pos.y === y) {
+					countStructures++;
+				}
+			});
+		}
+
+		debug.temp("FILTER")
+		return countStructures;
+	}, 0);
+
+	return result;
 }
 
 

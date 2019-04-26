@@ -40,7 +40,7 @@ creepsController.tick = function() {
 
 		} else {
 
-			// debug.primary(`creep act: type: ${creep.memory.type} ticks: ${creep.ticksToLive}`);
+			debug.primary(`creep act: type: ${creep.memory.type} ticks: ${creep.ticksToLive}`);
 
 			switch (creep.memory.type) {
 
@@ -77,9 +77,9 @@ creepsController.tick = function() {
 
 		// NOTE: Order here is prioritized by creep type
 		spawnHarvesters(creepsStatistics.harvesters, creepsSpawnRules.harvesters);
-		spawnEnergizers(creepsStatistics.energizers, creepsSpawnRules.energizers);
-		spawnBuilders(creepsStatistics.builders, creepsSpawnRules.builders);
-		spawnRepairers(creepsStatistics.repairers, creepsSpawnRules.repairers);
+		// spawnEnergizers(creepsStatistics.energizers, creepsSpawnRules.energizers);
+		// spawnBuilders(creepsStatistics.builders, creepsSpawnRules.builders);
+		// spawnRepairers(creepsStatistics.repairers, creepsSpawnRules.repairers);
 	}
 }
 

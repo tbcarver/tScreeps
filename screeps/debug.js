@@ -47,6 +47,15 @@ debug.highlight = function(...logs) {
 	console.log(message);
 }
 
+debug.temp = function(...logs) {
+
+	var message = buildMessage(logs);
+	message = buildColor(message, "lime");
+	message = `<span style='font-weight:bold'>${message}</span>`;
+
+	console.log(message);
+}
+
 debug.muted = function(...logs) {
 
 	var message = buildMessage(logs);

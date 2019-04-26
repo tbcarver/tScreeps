@@ -14,17 +14,17 @@
 			port: 21025,
 		});
 
-		const myRoom = "W5N3";
+		const myRoom = "W7N3";
 
 		// var result = await api.raw.register.submit("carver230620-sandbox", "carver230620-sandbox", "1234");
 
-		await api.auth('carver230620-sandbox', '1234');
+		// await api.auth('carver230620-sandbox', '1234');
 
-		result = await api.raw.auth.me();
-		console.log("me: ", result);
+		// result = await api.raw.auth.me();
+		// console.log("me: ", result);
 		
-		result = await api.raw.game.placeSpawn("W4N1", 42, 8, "spawn1");
-		console.log(result);
+		// result = await api.raw.game.placeSpawn("W4N1", 42, 8, "spawn1");
+		// console.log(result);
 
 		// result = await api.raw.user.respawn();
 		// console.log("respawn: ", result);
@@ -43,11 +43,13 @@
 
 		// var test = await api.auth('screeps@email.com', 'notMyPass')
 
-		// await api.auth('carver230620', '5560');
-		// var user = await api.me();		
-		// console.log(user)
+		await api.auth('gilmartin206077', '8080');
+		var user = await api.me();		
+		console.log(user)
 		// result = await api.raw.auth.me();
 		// console.log(result)
+		result = await api.raw.game.placeSpawn(myRoom, 22, 10, "spawn1");
+		console.log(result);
 
 		// console.log("done")
 
@@ -83,10 +85,10 @@
 
 		// result = await api.raw.user.worldStatus();
 		// console.log("worldStatus: ", result);
-		// result = await api.raw.game.roomOverview("W5N3");
-		// console.log("roomOverview: ", result);
-		// result = await api.raw.game.roomStatus("W5N3");
-		// console.log("roomStatus: ", result);
+		result = await api.raw.game.roomOverview(myRoom);
+		console.log("roomOverview: ", result);
+		result = await api.raw.game.roomStatus(myRoom);
+		console.log("roomStatus: ", result);
 
 
 	} catch (error) {

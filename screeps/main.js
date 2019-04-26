@@ -23,8 +23,8 @@ try {
 	// }
 
 	test();
-	// roomTools.removeConstructionSite();
-	
+	//  roomTools.createConstructionExtension();
+	// roomTools.destroyStructure();
 	// roomTools.lookAt();
 	creepsController.tick();
 
