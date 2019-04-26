@@ -1,17 +1,17 @@
 
 var creepsSpawnRules = {
-	builders: 6,
+	builders: 3,
 	energizers: {
-		[STRUCTURE_SPAWN]: 1,
+		[STRUCTURE_SPAWN]: 2,
 		[STRUCTURE_CONTROLLER]: 1
 	},
 	harvesters: {
 		[RESOURCE_ENERGY]: {
-			[STRUCTURE_EXTENSION]: 5,
-			[STRUCTURE_CONTAINER]: 0
+			[STRUCTURE_EXTENSION]: 3,
+			[STRUCTURE_CONTAINER]: 2
 		}
 	},
-	repairers: 1
+	repairers: 2
 }
 
 

@@ -81,7 +81,7 @@ creepsController.tick = function() {
 		// debug.temp("creep stats:", creepsStatistics, creepsSpawnRules)
 
 		// NOTE: Order here is prioritized by creep type
-		// spawnHarvesters(creepsStatistics.harvesters, creepsSpawnRules.harvesters);
+		spawnHarvesters(creepsStatistics.harvesters, creepsSpawnRules.harvesters);
 		spawnEnergizers(creepsStatistics.energizers, creepsSpawnRules.energizers);
 		spawnBuilders(creepsStatistics.builders, creepsSpawnRules.builders);
 		spawnRepairers(creepsStatistics.repairers, creepsSpawnRules.repairers);

@@ -1,5 +1,7 @@
 
 var debug = require("../debug");
+var creepBase = require("./creepBase");
+var spawnTools = require("../tools/spawnTools");
 var findTools = require("../tools/findTools");
 var coreArray = require("../../lib/core/extensions/coreArray");
 
@@ -49,7 +51,6 @@ harvester.spawn = function(id, resourceType, structureType) {
 				structure = extensions[0];
 				harvesterMemory.structures[0].id = structure.id;
 				harvesterMemory.structures[0].pos = structure.pos;
-				bodyParts = [WORK, CARRY, CARRY, MOVE];
 
 				for (var index = 1; index < maxExtensionsPerCreep; index++) {
 
@@ -65,6 +66,18 @@ harvester.spawn = function(id, resourceType, structureType) {
 							pos: nextExtension.pos
 						})
 					}
+				}
+
+				bodyParts = [WORK, CARRY, CARRY, MOVE];
+	
+				var spawnCapacity = spawnTools.calculateSpawnCapacity();
+
+				if (spawnCapacity >= 400) {
+					bodyParts = [WORK, CARRY, CARRY, MOVE, MOVE];
+				}
+
+				if (spawnCapacity >= 600) {
+					bodyParts = [WORK, WORK, CARRY, CARRY, MOVE, MOVE];
 				}
 			}
 
@@ -94,8 +107,14 @@ harvester.spawn = function(id, resourceType, structureType) {
 				harvesterMemory.structures[0].id = structure.id;
 				harvesterMemory.structures[0].pos = structure.pos;
 
+				var spawnCapacity = spawnTools.calculateSpawnCapacity();
+
 				if (global.room.energyCapacityAvailable >= 400) {
 					bodyParts = [WORK, CARRY, CARRY, MOVE, MOVE];
+				}
+
+				if (global.room.energyCapacityAvailable >= 600) {
+					bodyParts = [WORK, WORK, CARRY, CARRY, MOVE, MOVE];
 				}
 			}
 
@@ -140,69 +159,72 @@ harvester.spawn = function(id, resourceType, structureType) {
 
 harvester.act = function(creep) {
 
-	if (creep.memory.state === "harvesting" || creep.carry[creep.memory.resourceType] === 0) {
+	if (!creepBase.act(creep)) {
 
-		if (creep.memory.state !== "harvesting") {
+		if (creep.memory.state === "harvesting" || creep.carry[creep.memory.resourceType] === 0) {
 
-			creep.memory.state = "harvesting";
-		}
+			if (creep.memory.state !== "harvesting") {
 
-		var resource = Game.getObjectById(creep.memory.resourceId);
-
-		if (resource) {
-
-			if (creep.harvest(resource) == ERR_NOT_IN_RANGE) {
-
-				creep.moveTo(resource);
+				creep.memory.state = "harvesting";
 			}
 
-		} else {
+			var resource = Game.getObjectById(creep.memory.resourceId);
 
-			debug.danger("harvester structure not found: " + creep.memory.resourceId);
+			if (resource) {
+
+				if (creep.harvest(resource) == ERR_NOT_IN_RANGE) {
+
+					creep.moveTo(resource);
+				}
+
+			} else {
+
+				debug.danger("harvester structure not found: " + creep.memory.resourceId);
+			}
 		}
-	}
 
-	if (creep.memory.state === "transferring" || creep.carry[creep.memory.resourceType] === creep.carryCapacity) {
+		if (creep.memory.state === "transferring" || creep.carry[creep.memory.resourceType] === creep.carryCapacity) {
 
-		if (creep.memory.state !== "transferring") {
+			if (creep.memory.state !== "transferring") {
 
-			creep.memory.state = "transferring";
-		}
+				creep.memory.state = "transferring";
+			}
 
-		var structure = Game.getObjectById(creep.memory.structures[creep.memory.activeStructureIndex].id);
+			var structure = Game.getObjectById(creep.memory.structures[creep.memory.activeStructureIndex].id);
 
-		// debug.temp("creep.memory.activeStructureIndex", creep.memory.activeStructureIndex);
-		// debug.temp("structure.id", structure.id);
-		// debug.temp("structure", creep.memory.structures);
-		if (structure) {
+			// debug.temp("creep.memory.activeStructureIndex", creep.memory.activeStructureIndex);
+			// debug.temp("structure.id", structure.id);
+			// debug.temp("structure", creep.memory.structures);
+			if (structure) {
 
-			var transferResult = creep.transfer(structure, creep.memory.resourceType);
+				var transferResult = creep.transfer(structure, creep.memory.resourceType);
 
-			if (transferResult == ERR_NOT_IN_RANGE) {
+				if (transferResult == ERR_NOT_IN_RANGE) {
 
-				creep.moveTo(structure);
+					creep.moveTo(structure);
 
-			} else if (transferResult == ERR_FULL) {
+				} else if (transferResult == ERR_FULL) {
 
-				if (creep.memory.structures.length > 1) {
+					if (creep.memory.structures.length > 1) {
 
-					creep.memory.activeStructureIndex = coreArray.incrementArrayIndex(creep.memory.structures, creep.memory.activeStructureIndex);
-					var transferResult = creep.transfer(structure, creep.memory.resourceType);
+						creep.memory.activeStructureIndex = coreArray.incrementArrayIndex(creep.memory.structures, creep.memory.activeStructureIndex);
+						var transferResult = creep.transfer(structure, creep.memory.resourceType);
 
-					if (transferResult == ERR_NOT_IN_RANGE) {
+						if (transferResult == ERR_NOT_IN_RANGE) {
 
-						creep.moveTo(structure);
+							creep.moveTo(structure);
 
-					} else if (transferResult == ERR_FULL && creep.carry[creep.memory.resourceType] < creep.carryCapacity) {
-						
-						creep.memory.state = "harvesting";
+						} else if (transferResult == ERR_FULL && creep.carry[creep.memory.resourceType] < creep.carryCapacity) {
+
+							creep.memory.state = "harvesting";
+						}
 					}
 				}
+
+			} else {
+
+				debug.danger("harvester structure not found: " + creep.memory.structures[0].id);
 			}
-
-		} else {
-
-			debug.danger("harvester structure not found: " + creep.memory.structures[0].id);
 		}
 	}
 }

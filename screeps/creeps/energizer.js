@@ -1,5 +1,6 @@
 
 var debug = require("../debug");
+var creepBase = require("./creepBase");
 var findTools = require("../tools/findTools");
 
 var energizer = {};
@@ -54,57 +55,61 @@ energizer.spawn = function(id, structureType) {
 
 energizer.act = function(creep) {
 
-	if (creep.memory.state === "harvesting" || creep.carry[RESOURCE_ENERGY] === 0) {
 
-		if (creep.memory.state !== "harvesting") {
+	if (!creepBase.act(creep)) {
 
-			creep.memory.state = "harvesting";
+		if (creep.memory.state === "harvesting" || creep.carry[RESOURCE_ENERGY] === 0) {
+
+			if (creep.memory.state !== "harvesting") {
+
+				creep.memory.state = "harvesting";
+			}
+
+			var resource = findTools.findClosestEnergy(creep.pos);
+
+			if (resource) {
+
+				if (resource.structureType) {
+
+					if (creep.withdraw(resource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+						creep.moveTo(resource);
+					}
+
+				} else {
+
+					if (creep.harvest(resource) == ERR_NOT_IN_RANGE) {
+						creep.moveTo(resource);
+					}
+				}
+			} else {
+
+				debug.warning("energizer resource not found");
+			}
 		}
 
-		var resource = findTools.findClosestEnergy(creep.pos);
+		if (creep.memory.state === "transferring" || creep.carry[RESOURCE_ENERGY] === creep.carryCapacity) {
 
-		if (resource) {
+			if (creep.memory.state !== "transferring") {
 
-			if (resource.structureType) {
+				creep.memory.state = "transferring";
+			}
 
-				if (creep.withdraw(resource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-					creep.moveTo(resource);
+			var structure = Game.getObjectById(creep.memory.structureId);
+
+
+			// TODO: check for full and go harvest if energy cap is available
+
+			if (structure) {
+
+				if (creep.transfer(structure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+
+					creep.moveTo(structure);
 				}
 
 			} else {
 
-				if (creep.harvest(resource) == ERR_NOT_IN_RANGE) {
-					creep.moveTo(resource);
-				}
+				debug.danger("energizer structure not found:" + creep.memory.structureId);
 			}
-		} else {
-
-			debug.warning("energizer resource not found");
-		}
-	}
-
-	if (creep.memory.state === "transferring" || creep.carry[RESOURCE_ENERGY] === creep.carryCapacity) {
-
-		if (creep.memory.state !== "transferring") {
-
-			creep.memory.state = "transferring";
-		}
-
-		var structure = Game.getObjectById(creep.memory.structureId);
-
-
-// TODO: check for full and go harvest if energy cap is available
-
-		if (structure) {
-
-			if (creep.transfer(structure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-
-				creep.moveTo(structure);
-			}
-
-		} else {
-
-			debug.danger("energizer structure not found:" + creep.memory.structureId);
 		}
 	}
 }

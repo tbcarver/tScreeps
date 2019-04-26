@@ -3,6 +3,23 @@ var debug = require("../debug");
 
 function tick() {
 
+	// function calculateSpawnCapacity() {
+
+
+	// 	var extensions = global.room.find(FIND_MY_STRUCTURES, {
+	// 		filter: { structureType: STRUCTURE_EXTENSION }
+	// 	});
+
+
+	// 	var availableExtensionEnergy = extensions.reduce((total, extension) => total + (extension.energy), 0);
+
+
+	// 	return global.spawn.energyCapacity + availableExtensionEnergy;
+	// }
+
+
+	// debug.temp("calculateSpawnCapacity", calculateSpawnCapacity())
+
 	// var structureType = STRUCTURE_EXTENSION;
 
 	// var extensions = global.room.find(FIND_MY_STRUCTURES, {
@@ -26,36 +43,6 @@ function tick() {
 
 	// 	});
 	// });
-
-	function getEnergizerContainerPositions() {
-
-
-		var result = _.reduce(Memory.creeps, (filteredPositions, creepMemory) => {
-
-			if (creepMemory.type === "energizer") {
-
-				positions = creepMemory.structures.reduce((structurePositions, structure) => {
-
-					if (structure.type === STRUCTURE_CONTAINER &&
-						structure.pos) {
-						debug.primary("structure.pos", structure.pos)
-						structurePositions.push(structure);
-					}
-
-					return structurePositions;
-				}, []);
-
-				debug.primary("positions", positions)
-				if (positions.length > 0) {
-					filteredPositions.push(positions);
-				}
-			}
-
-			debug.primary("filteredPositions", filteredPositions)
-			return filteredPositions;
-
-		}, []);
-	}
 
 	// debug.highlight("result", result);
 

@@ -13,17 +13,15 @@ try {
 	debug.muted(`tick: ${Game.time} energy: ${global.room.energyAvailable}`);
 
 	if (Math.random() < .2) {
-
 		debug.muted("spawn: ", global.spawn);
 	}
 
-	// if (Math.random() < .2) {
-
-	// 	debug.muted("controller: ", global.controller);
-	// }
+	if (Math.random() < .2) {
+		debug.muted("controller: ", global.controller);
+	}
 
 	test();
-	//  roomTools.createConstructionExtension();
+	//  roomTools.createConstructionWalls();
 	// roomTools.destroyStructure();
 	// roomTools.lookAt();
 	roomTools.visualizeStructureHealth();
