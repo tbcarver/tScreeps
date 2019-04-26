@@ -10,7 +10,7 @@ repairer.spawn = function(id) {
 		type: "repairer"
 	}
 
-	var result = spawn.spawnCreep([WORK, WORK, CARRY, MOVE], id, {
+	var result = spawn.spawnCreep([WORK, CARRY, MOVE, MOVE], id, {
 		memory: repairerMemory,
 		energyStructures: findTools.findAllEnergyStructures()
 	});
@@ -63,8 +63,9 @@ repairer.act = function(creep) {
 			creep.memory.state = "repairing";
 		}
 
-		const target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
-			filter: structure => structure.hits < structure.hitsMax
+		const target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+			filter: structure => structure.hits < structure.hitsMax &&
+				structure.type !== STRUCTURE_WALL
 		});
 
 		if (target) {
@@ -78,9 +79,11 @@ repairer.act = function(creep) {
 
 			debug.warning("repairer cannot find any damaged structures");
 
-			if (creep.transfer(global.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+			// TODO: change the -20 to be less than a percent of max capacity
 
-				creep.moveTo(global.controller);
+			if (creep.carry[RESOURCE_ENERGY] < creep.carryCapacity - 20) {
+						
+				creep.memory.state = "harvesting";
 			}
 		}
 	}

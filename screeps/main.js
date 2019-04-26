@@ -26,6 +26,7 @@ try {
 	//  roomTools.createConstructionExtension();
 	// roomTools.destroyStructure();
 	// roomTools.lookAt();
+	roomTools.visualizeStructureHealth();
 	creepsController.tick();
 
 } catch (error) {

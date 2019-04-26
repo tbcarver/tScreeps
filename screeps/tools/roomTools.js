@@ -7,7 +7,7 @@ roomTools.createConstructionRoad = function() {
 
 	var positions =
 
-		[{ "x": "16", "y": "1", "roomName": "W5N3" }, { "x": "17", "y": "1", "roomName": "W5N3" }, { "x": "18", "y": "1", "roomName": "W5N3" }, { "x": "19", "y": "1", "roomName": "W5N3" }, { "x": "20", "y": "2", "roomName": "W5N3" }, { "x": "21", "y": "3", "roomName": "W5N3" }, { "x": "22", "y": "4", "roomName": "W5N3" }, { "x": "23", "y": "5", "roomName": "W5N3" }, { "x": "24", "y": "6", "roomName": "W5N3" }]
+		[{ "x": "16", "y": "14", "roomName": "W5N3" }, { "x": "17", "y": "13", "roomName": "W5N3" }, { "x": "18", "y": "12", "roomName": "W5N3" }, { "x": "19", "y": "11", "roomName": "W5N3" }, { "x": "20", "y": "10", "roomName": "W5N3" }, { "x": "21", "y": "9", "roomName": "W5N3" }, { "x": "22", "y": "8", "roomName": "W5N3" }, { "x": "19", "y": "2", "roomName": "W5N3" }, { "x": "20", "y": "3", "roomName": "W5N3" }, { "x": "21", "y": "4", "roomName": "W5N3" }, { "x": "22", "y": "5", "roomName": "W5N3" }, { "x": "23", "y": "6", "roomName": "W5N3" }, { "x": "24", "y": "7", "roomName": "W5N3" }, { "x": "23", "y": "8", "roomName": "W5N3" }, { "x": "24", "y": "8", "roomName": "W5N3" }, { "x": "25", "y": "8", "roomName": "W5N3" }, { "x": "23", "y": "7", "roomName": "W5N3" }]
 
 	this.createConstructionSite(positions, STRUCTURE_ROAD);
 }
@@ -16,7 +16,9 @@ roomTools.createConstructionExtension = function() {
 
 	var positions =
 
-	[{"x":"3","y":"20","roomName":"W5N3"},{"x":"5","y":"19","roomName":"W5N3"},{"x":"8","y":"24","roomName":"W5N3"},{"x":"8","y":"23","roomName":"W5N3"}]
+
+	[{"x":"3","y":"18","roomName":"W5N3"},{"x":"5","y":"18","roomName":"W5N3"},{"x":"7","y":"19","roomName":"W5N3"},{"x":"7","y":"18","roomName":"W5N3"}]
+
 	this.createConstructionSite(positions, STRUCTURE_EXTENSION);
 }
 
@@ -45,8 +47,8 @@ roomTools.createConstructionSite = function(positions, structureType, name) {
 roomTools.removeConstructionSite = function() {
 
 	var positions =
-	 
-	[{"x":"12","y":"19","roomName":"W5N3"}]
+
+		[{ "x": "12", "y": "19", "roomName": "W5N3" }]
 
 	if (positions.length > 0) {
 
@@ -73,8 +75,8 @@ roomTools.destroyStructure = function() {
 
 	var positions =
 
-	[{"x":"4","y":"20","roomName":"W5N3"},{"x":"6","y":"19","roomName":"W5N3"}]
-
+	
+[{"x":"3","y":"20","roomName":"W5N3"},{"x":"5","y":"20","roomName":"W5N3"},{"x":"8","y":"23","roomName":"W5N3"},{"x":"8","y":"24","roomName":"W5N3"}]
 	if (positions.length > 0) {
 
 		for (var index in positions) {
@@ -112,7 +114,7 @@ roomTools.lookAt = function() {
 			// var looked = global.room.lookAt(global.spawn);
 			// var looked = global.room.lookAt(15, 15);
 			// debug.danger(positions[index]);
-			debug.danger(looked);
+			debug.primary(looked);
 		}
 	}
 }
@@ -143,6 +145,19 @@ roomTools.visualize = function(pathToObject, pathFromObject) {
 		// global.room.visual.rect(0, 0, location, .60, .60, {fill:"#777"})
 	}
 	// global.room.visual.circle(global.spawn.pos.x + 5, global.spawn.pos.y + 5, {radius:.30,fill:"danger"});
+}
+
+roomTools.visualizeStructureHealth = function() {
+
+	const targets = global.room.find(FIND_STRUCTURES, {
+		filter: structure => structure.hits < structure.hitsMax &&
+			structure.type !== STRUCTURE_WALL
+	});
+
+	for (var index in targets) {
+
+		global.room.visual.circle(targets[index].pos, { radius: .3, stroke: "red", fill: "transparent" });
+	}
 }
 
 

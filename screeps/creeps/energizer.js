@@ -92,6 +92,9 @@ energizer.act = function(creep) {
 
 		var structure = Game.getObjectById(creep.memory.structureId);
 
+
+// TODO: check for full and go harvest if energy cap is available
+
 		if (structure) {
 
 			if (creep.transfer(structure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {

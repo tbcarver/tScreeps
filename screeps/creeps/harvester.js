@@ -35,8 +35,6 @@ harvester.spawn = function(id, resourceType, structureType) {
 				}
 			});
 
-			debug.temp("extensions", extensions.length, extensions.map(extension => extension.id))
-
 			extensions = extensions.filter(extension => {
 
 				var occupiedPositions = getHarvesterStructurePositions(structureType);
@@ -45,9 +43,6 @@ harvester.spawn = function(id, resourceType, structureType) {
 
 				return !isExtensionOccupied;
 			});
-
-
-			debug.temp("filtered extensions", extensions.length, extensions.map(extension => extension.id))
 
 			if (extensions.length > 0) {
 
@@ -192,6 +187,16 @@ harvester.act = function(creep) {
 				if (creep.memory.structures.length > 1) {
 
 					creep.memory.activeStructureIndex = coreArray.incrementArrayIndex(creep.memory.structures, creep.memory.activeStructureIndex);
+					var transferResult = creep.transfer(structure, creep.memory.resourceType);
+
+					if (transferResult == ERR_NOT_IN_RANGE) {
+
+						creep.moveTo(structure);
+
+					} else if (transferResult == ERR_FULL && creep.carry[creep.memory.resourceType] < creep.carryCapacity) {
+						
+						creep.memory.state = "harvesting";
+					}
 				}
 			}
 
@@ -231,19 +236,15 @@ function getHarvesterStructurePositions(structureType) {
 
 			positions = creepMemory.structures.reduce((structurePositions, structure) => {
 
-				debug.primary("structure.pos", structure.pos)
 				structurePositions.push(structure.pos);
 
 				return structurePositions;
 			}, []);
 
-			debug.primary("positions", positions)
 			filteredPositions.push(...positions);
 		}
 
-		debug.primary("filteredPositions", filteredPositions)
 		return filteredPositions;
-
 	}, []);
 
 	return result;

@@ -63,6 +63,9 @@ creepsController.tick = function() {
 					break;
 
 				case "repairer":
+
+					// debug.temp("repairer:", creep)
+					// debug.temp("repairer memory:", creep.memory)
 					repairer.act(creep);
 					creepsStatistics.repairers++;
 					break;
@@ -74,14 +77,14 @@ creepsController.tick = function() {
 
 	if (!global.spawn.spawning && global.room.energyAvailable >= 250) {
 
-		debug.highlight("spawn chance", global.room.energyAvailable);
+		debug.primary("spawn chance", global.room.energyAvailable);
 		// debug.temp("creep stats:", creepsStatistics, creepsSpawnRules)
 
 		// NOTE: Order here is prioritized by creep type
-		spawnHarvesters(creepsStatistics.harvesters, creepsSpawnRules.harvesters);
-		// spawnEnergizers(creepsStatistics.energizers, creepsSpawnRules.energizers);
-		// spawnBuilders(creepsStatistics.builders, creepsSpawnRules.builders);
-		// spawnRepairers(creepsStatistics.repairers, creepsSpawnRules.repairers);
+		// spawnHarvesters(creepsStatistics.harvesters, creepsSpawnRules.harvesters);
+		spawnEnergizers(creepsStatistics.energizers, creepsSpawnRules.energizers);
+		spawnBuilders(creepsStatistics.builders, creepsSpawnRules.builders);
+		spawnRepairers(creepsStatistics.repairers, creepsSpawnRules.repairers);
 	}
 }
 
