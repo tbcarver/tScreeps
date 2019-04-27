@@ -65,7 +65,8 @@ energizer.act = function(creep) {
 				creep.memory.state = "harvesting";
 			}
 
-			var resource = findTools.findClosestEnergy(creep.pos);
+			var structure = Game.getObjectById(creep.memory.structureId);
+			var resource = findTools.findClosestEnergy(structure.pos);
 
 			if (resource) {
 
@@ -96,14 +97,17 @@ energizer.act = function(creep) {
 
 			var structure = Game.getObjectById(creep.memory.structureId);
 
-
-			// TODO: check for full and go harvest if energy cap is available
-
 			if (structure) {
 
-				if (creep.transfer(structure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+				var transferResult = creep.transfer(structure, RESOURCE_ENERGY);
+				
+				if (transferResult == ERR_NOT_IN_RANGE) {
 
 					creep.moveTo(structure);
+
+				} else if (transferResult == ERR_FULL && creep.carry[RESOURCE_ENERGY] / creep.carryCapacity < .30) {
+
+					creep.memory.state = "harvesting";
 				}
 
 			} else {

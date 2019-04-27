@@ -5,6 +5,7 @@ var builder = require("./creeps/builder");
 var energizer = require("./creeps/energizer");
 var harvester = require("./creeps/harvester");
 var repairer = require("./creeps/repairer");
+var wallRepairer = require("./creeps/wallRepairer");
 var { creepsSpawnRules } = require("./creepsRules");
 
 var creepsController = {};
@@ -25,7 +26,8 @@ creepsController.tick = function() {
 				[STRUCTURE_CONTAINER]: 0,
 			}
 		},
-		repairers: 0
+		repairers: 0,
+		wallsRepairer: 0
 	};
 
 	for (var index in Game.creeps) {
@@ -58,16 +60,27 @@ creepsController.tick = function() {
 
 				case "harvester":
 
+					if (creep.memory.structureType === STRUCTURE_CONTAINER) {
+						
+					debug.temp("creep memory:", creep.memory)
+					}
+
 					harvester.act(creep);
 					creepsStatistics.harvesters[creep.memory.resourceType][creep.memory.structureType]++;
 					break;
 
 				case "repairer":
 
-					// debug.temp("repairer:", creep)
-					// debug.temp("repairer memory:", creep.memory)
+					// debug.temp("creep:", creep)
+					// debug.temp("creep memory:", creep.memory)
 					repairer.act(creep);
 					creepsStatistics.repairers++;
+					break;
+
+				case "wallRepairer":
+
+					wallRepairer.act(creep);
+					creepsStatistics.wallsRepairer++;
 					break;
 			}
 		}
@@ -85,6 +98,7 @@ creepsController.tick = function() {
 		spawnEnergizers(creepsStatistics.energizers, creepsSpawnRules.energizers);
 		spawnBuilders(creepsStatistics.builders, creepsSpawnRules.builders);
 		spawnRepairers(creepsStatistics.repairers, creepsSpawnRules.repairers);
+		spawnWallers(creepsStatistics.wallsRepairer, creepsSpawnRules.wallsRepairer);
 	}
 }
 
@@ -152,6 +166,16 @@ function spawnRepairers(repairersCount, repairersSpawnRulesCount) {
 		var id = creepsStore.getNextCreepId();
 
 		repairer.spawn(id);
+	}
+}
+
+function spawnWallers(wallersCount, wallersSpawnRulesCount) {
+
+	if (wallersCount < wallersSpawnRulesCount) {
+
+		var id = creepsStore.getNextCreepId();
+
+		wallRepairer.spawn(id);
 	}
 }
 

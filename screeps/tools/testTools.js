@@ -1,7 +1,24 @@
 
 var debug = require("../debug");
+var findTools = require("./findTools");
 
 function tick() {
+
+	
+// var positions = 
+
+// [{"x":"28","y":"26","roomName":"W6S0"},{"x":"27","y":"26","roomName":"W6S0"},{"x":"26","y":"26","roomName":"W6S0"},{"x":"25","y":"26","roomName":"W6S0"},{"x":"28","y":"25","roomName":"W6S0"},{"x":"27","y":"24","roomName":"W6S0"},{"x":"26","y":"23","roomName":"W6S0"},{"x":"25","y":"22","roomName":"W6S0"}]
+// if (positions.length > 0) {
+
+// 	for (var index in positions) {
+
+// 		var position = new RoomPosition(positions[index].x, positions[index].y, positions[index].roomName);
+
+// 		// var result = PathFinder.search(global.spawn.pos, { pos: position, range: 3 });
+// 		debug.temp("pathfinder", findTools.isInRange(global.spawn.pos, position, 3));
+// 	}
+// }
+
 
 	// function calculateSpawnCapacity() {
 

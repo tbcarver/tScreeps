@@ -3,6 +3,7 @@ var debug = require("../debug");
 var creepBase = require("./creepBase");
 var spawnTools = require("../tools/spawnTools");
 var findTools = require("../tools/findTools");
+var { harvesterRules } = require("../creepsRules");
 var coreArray = require("../../lib/core/extensions/coreArray");
 
 var harvester = {};
@@ -29,8 +30,6 @@ harvester.spawn = function(id, resourceType, structureType) {
 
 		case STRUCTURE_EXTENSION:
 
-			const maxExtensionsPerCreep = 2;
-
 			var extensions = global.room.find(FIND_MY_STRUCTURES, {
 				filter: {
 					structureType: structureType
@@ -52,7 +51,7 @@ harvester.spawn = function(id, resourceType, structureType) {
 				harvesterMemory.structures[0].id = structure.id;
 				harvesterMemory.structures[0].pos = structure.pos;
 
-				for (var index = 1; index < maxExtensionsPerCreep; index++) {
+				for (var index = 1; index < harvesterRules.maxExtensionsPerCreep; index++) {
 
 					var nextExtension = structure.pos.findClosestByPath(FIND_STRUCTURES, {
 						filter: nextStructure => nextStructure.structureType == structureType &&
@@ -69,7 +68,7 @@ harvester.spawn = function(id, resourceType, structureType) {
 				}
 
 				bodyParts = [WORK, CARRY, CARRY, MOVE];
-	
+
 				var spawnCapacity = spawnTools.calculateSpawnCapacity();
 
 				if (spawnCapacity >= 400) {
@@ -85,8 +84,6 @@ harvester.spawn = function(id, resourceType, structureType) {
 
 		case STRUCTURE_CONTAINER:
 
-			const maxCreepsPerContainer = 2;
-
 			var containers = global.room.find(FIND_STRUCTURES, {
 				filter: {
 					structureType: structureType
@@ -98,7 +95,7 @@ harvester.spawn = function(id, resourceType, structureType) {
 				var countStructures = countHarvesterStructuresAtPosition(structureType, extension.pos.x,
 					extension.pos.y);
 
-				return countStructures <= maxCreepsPerContainer;
+				return countStructures <= harvesterRules.maxCreepsPerContainer;
 			});
 
 			if (containers.length > 0) {
@@ -183,7 +180,21 @@ harvester.act = function(creep) {
 			}
 		}
 
-		if (creep.memory.state === "transferring" || creep.carry[creep.memory.resourceType] === creep.carryCapacity) {
+		if (creep.memory.state === "alternateTransferring") {
+			
+			var container = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+				filter: structure => structure.structureType === STRUCTURE_CONTAINER &&
+					structure.store[RESOURCE_ENERGY] / structure.storeCapacity < .80
+			});
+
+			debug.warning("harvester transferring to alternate container", container);
+
+			if (creep.transfer(container, creep.memory.resourceType) == ERR_NOT_IN_RANGE) {
+
+				creep.moveTo(container);
+			}
+
+		} if (creep.memory.state === "transferring" || creep.carry[creep.memory.resourceType] === creep.carryCapacity) {
 
 			if (creep.memory.state !== "transferring") {
 
@@ -214,9 +225,13 @@ harvester.act = function(creep) {
 
 							creep.moveTo(structure);
 
-						} else if (transferResult == ERR_FULL && creep.carry[creep.memory.resourceType] < creep.carryCapacity) {
+						} else if (transferResult == ERR_FULL && creep.carry[creep.memory.resourceType] / creep.carryCapacity < .30) {
 
 							creep.memory.state = "harvesting";
+
+						} else if (transferResult == ERR_FULL && creep.memory.structureType === STRUCTURE_CONTAINER) {
+
+							creep.memory.state = "alternateTransferring";
 						}
 					}
 				}

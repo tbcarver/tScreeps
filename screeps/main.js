@@ -20,8 +20,13 @@ try {
 		debug.muted("controller: ", global.controller);
 	}
 
+	// if (Math.random() < .2) {
+	// 	debug.muted("sources: ", global.room.find(FIND_SOURCES));
+	// }
+
 	test();
-	//  roomTools.createConstructionWalls();
+	//  roomTools.createConstructionRoad();
+	//  roomTools.createConstructionContainer();
 	// roomTools.destroyStructure();
 	// roomTools.lookAt();
 	roomTools.visualizeStructureHealth();

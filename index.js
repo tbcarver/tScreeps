@@ -16,7 +16,27 @@
 
 		const myRoom = "W7N3";
 
+		// var result = await api.raw.register.submit("carver230620", "carver230620", "5560");
+		// console.log("register: ", result);
+		await api.auth('carver230620', '5560');
+		result = await api.raw.game.placeSpawn("W6S0", 29, 26, "spawn1");
+		console.log("spawn: ", result);
+		
+		// var result = await api.raw.register.submit("gilmartin206077", "gilmartin206077", "8080");
+		// console.log("register: ", result);
+		await api.auth('gilmartin206077', '8080');
+		result = await api.raw.game.placeSpawn("W5S0", 20, 30, "spawn1");
+		console.log("spawn: ", result);
+		
+		// var result = await api.raw.register.submit("robinson223537", "robinson223537", "0421");
+		// console.log("register: ", result);
+		await api.auth('robinson223537', '0421');
+		result = await api.raw.game.placeSpawn("W6N1", 27, 28, "spawn1");
+		console.log("spawn: ", result);
+		
 		// var result = await api.raw.register.submit("carver230620-sandbox", "carver230620-sandbox", "1234");
+		// result = await api.raw.game.placeSpawn("W4N1", 42, 8, "spawn1");
+
 
 		// await api.auth('carver230620-sandbox', '1234');
 
@@ -43,13 +63,13 @@
 
 		// var test = await api.auth('screeps@email.com', 'notMyPass')
 
-		await api.auth('gilmartin206077', '8080');
-		var user = await api.me();		
-		console.log(user)
-		// result = await api.raw.auth.me();
-		// console.log(result)
-		result = await api.raw.game.placeSpawn(myRoom, 22, 10, "spawn1");
-		console.log(result);
+		// await api.auth('gilmartin206077', '8080');
+		// var user = await api.me();		
+		// console.log(user)
+		// // result = await api.raw.auth.me();
+		// // console.log(result)
+		// result = await api.raw.game.placeSpawn(myRoom, 22, 10, "spawn1");
+		// console.log(result);
 
 		// console.log("done")
 

@@ -4,15 +4,15 @@ var creepBase = require("./creepBase");
 var spawnTools = require("../tools/spawnTools");
 var findTools = require("../tools/findTools");
 
-var repairer = {};
+var wallRepairer = {};
 
-repairer.spawn = function(id) {
+wallRepairer.spawn = function(id) {
 
 	var bodyParts = [WORK, CARRY, MOVE, MOVE];
-	var repairerMemory = {
-		type: "repairer"
+	var wallerMemory = {
+		type: "wallRepairer"
 	}
-	
+
 	var spawnCapacity = spawnTools.calculateSpawnCapacity();
 
 	if (spawnCapacity >= 400) {
@@ -23,22 +23,29 @@ repairer.spawn = function(id) {
 		bodyParts = [WORK, WORK, CARRY, CARRY, MOVE, MOVE];
 	}
 
-	var result = spawn.spawnCreep(bodyParts, id, {
-		memory: repairerMemory,
-		energyStructures: findTools.findAllEnergyStructures()
+	const targets = global.room.find(FIND_STRUCTURES, {
+		filter: structure => structure.structureType === STRUCTURE_WALL
 	});
 
-	if (result === OK) {
+	if (targets.length > 0) {
 
-		debug.highlight(`repairer spawning: ${id} memory: `, repairerMemory);
+		var result = spawn.spawnCreep(bodyParts, id, {
+			memory: wallerMemory,
+			energyStructures: findTools.findAllEnergyStructures()
+		});
 
-	} else {
+		if (result === OK) {
 
-		debug.warning(`repairer did not spawn: ${result}`);
+			debug.highlight(`wallRepairer spawning: ${id} memory: `, wallerMemory);
+
+		} else {
+
+			debug.warning(`wallRepairer did not spawn: ${result}`);
+		}
 	}
 }
 
-repairer.act = function(creep) {
+wallRepairer.act = function(creep) {
 
 	if (!creepBase.act(creep)) {
 
@@ -67,7 +74,7 @@ repairer.act = function(creep) {
 				}
 			} else {
 
-				debug.warning("repairer resource not found");
+				debug.warning("wallRepairer resource not found");
 			}
 		}
 
@@ -78,10 +85,19 @@ repairer.act = function(creep) {
 				creep.memory.state = "repairing";
 			}
 
-			const target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-				filter: structure => structure.hits < structure.hitsMax &&
-					structure.structureType !== STRUCTURE_WALL
-			});
+			var target;
+
+			for (var count = 1; count <= 10; count++) {
+
+				target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+					filter: structure => structure.structureType === STRUCTURE_WALL &&
+						structure.hits < (2000 * count)
+				});
+
+				if (target) {
+					break;
+				}
+			}
 
 			if (target) {
 
@@ -92,11 +108,11 @@ repairer.act = function(creep) {
 
 			} else {
 
-				debug.warning("repairer cannot find any damaged structures");
+				debug.warning(`wallRepairer cannot find any walls. ticks: ${creep.ticksToLive}`);
 
-				if (creep.carry[RESOURCE_ENERGY] / creep.carryCapacity < .30) {
+				if (creep.transfer(global.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 
-					creep.memory.state = "harvesting";
+					creep.moveTo(global.controller);
 				}
 			}
 		}
@@ -104,4 +120,4 @@ repairer.act = function(creep) {
 }
 
 
-module.exports = repairer
+module.exports = wallRepairer
