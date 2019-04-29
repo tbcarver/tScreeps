@@ -55,65 +55,62 @@ energizer.spawn = function(id, structureType) {
 
 energizer.act = function(creep) {
 
+	if (creep.memory.state === "harvesting" || creep.carry[RESOURCE_ENERGY] === 0) {
 
-	if (!creepBase.act(creep)) {
+		if (creep.memory.state !== "harvesting") {
 
-		if (creep.memory.state === "harvesting" || creep.carry[RESOURCE_ENERGY] === 0) {
+			creep.memory.state = "harvesting";
+		}
 
-			if (creep.memory.state !== "harvesting") {
+		var structure = Game.getObjectById(creep.memory.structureId);
+		var resource = findTools.findClosestEnergy(structure.pos);
+		// TODO: once found stick with it unless it is a container that is empty
+
+		if (resource) {
+
+			if (resource.structureType) {
+
+				if (creep.withdraw(resource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+					creep.moveTo(resource);
+				}
+
+			} else {
+
+				if (creep.harvest(resource) == ERR_NOT_IN_RANGE) {
+					creep.moveTo(resource);
+				}
+			}
+		} else {
+
+			debug.warning("energizer resource not found");
+		}
+	}
+
+	if (creep.memory.state === "transferring" || creep.carry[RESOURCE_ENERGY] === creep.carryCapacity) {
+
+		if (creep.memory.state !== "transferring") {
+
+			creep.memory.state = "transferring";
+		}
+
+		var structure = Game.getObjectById(creep.memory.structureId);
+
+		if (structure) {
+
+			var transferResult = creep.transfer(structure, RESOURCE_ENERGY);
+
+			if (transferResult == ERR_NOT_IN_RANGE) {
+
+				creep.moveTo(structure);
+
+			} else if (transferResult == ERR_FULL && creep.carry[RESOURCE_ENERGY] / creep.carryCapacity < .30) {
 
 				creep.memory.state = "harvesting";
 			}
 
-			var structure = Game.getObjectById(creep.memory.structureId);
-			var resource = findTools.findClosestEnergy(structure.pos);
+		} else {
 
-			if (resource) {
-
-				if (resource.structureType) {
-
-					if (creep.withdraw(resource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-						creep.moveTo(resource);
-					}
-
-				} else {
-
-					if (creep.harvest(resource) == ERR_NOT_IN_RANGE) {
-						creep.moveTo(resource);
-					}
-				}
-			} else {
-
-				debug.warning("energizer resource not found");
-			}
-		}
-
-		if (creep.memory.state === "transferring" || creep.carry[RESOURCE_ENERGY] === creep.carryCapacity) {
-
-			if (creep.memory.state !== "transferring") {
-
-				creep.memory.state = "transferring";
-			}
-
-			var structure = Game.getObjectById(creep.memory.structureId);
-
-			if (structure) {
-
-				var transferResult = creep.transfer(structure, RESOURCE_ENERGY);
-				
-				if (transferResult == ERR_NOT_IN_RANGE) {
-
-					creep.moveTo(structure);
-
-				} else if (transferResult == ERR_FULL && creep.carry[RESOURCE_ENERGY] / creep.carryCapacity < .30) {
-
-					creep.memory.state = "harvesting";
-				}
-
-			} else {
-
-				debug.danger("energizer structure not found:" + creep.memory.structureId);
-			}
+			debug.danger("energizer structure not found:" + creep.memory.structureId);
 		}
 	}
 }

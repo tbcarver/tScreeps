@@ -9,7 +9,7 @@ var wallRepairer = {};
 wallRepairer.spawn = function(id) {
 
 	var bodyParts = [WORK, CARRY, MOVE, MOVE];
-	var wallerMemory = {
+	var wallRepairerMemory = {
 		type: "wallRepairer"
 	}
 
@@ -30,13 +30,13 @@ wallRepairer.spawn = function(id) {
 	if (targets.length > 0) {
 
 		var result = spawn.spawnCreep(bodyParts, id, {
-			memory: wallerMemory,
+			memory: wallRepairerMemory,
 			energyStructures: findTools.findAllEnergyStructures()
 		});
 
 		if (result === OK) {
 
-			debug.highlight(`wallRepairer spawning: ${id} memory: `, wallerMemory);
+			debug.highlight(`wallRepairer spawning: ${id} memory: `, wallRepairerMemory);
 
 		} else {
 
@@ -47,73 +47,70 @@ wallRepairer.spawn = function(id) {
 
 wallRepairer.act = function(creep) {
 
-	if (!creepBase.act(creep)) {
+	if (creep.memory.state === "harvesting" || creep.carry[RESOURCE_ENERGY] === 0) {
 
-		if (creep.memory.state === "harvesting" || creep.carry[RESOURCE_ENERGY] === 0) {
+		if (creep.memory.state !== "harvesting") {
 
-			if (creep.memory.state !== "harvesting") {
+			creep.memory.state = "harvesting";
+		}
 
-				creep.memory.state = "harvesting";
-			}
+		var resource = findTools.findClosestEnergy(creep.pos);
 
-			var resource = findTools.findClosestEnergy(creep.pos);
+		if (resource) {
 
-			if (resource) {
+			if (resource.structureType) {
 
-				if (resource.structureType) {
-
-					if (creep.withdraw(resource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-						creep.moveTo(resource);
-					}
-
-				} else {
-
-					if (creep.harvest(resource) == ERR_NOT_IN_RANGE) {
-						creep.moveTo(resource);
-					}
+				if (creep.withdraw(resource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+					creep.moveTo(resource);
 				}
+
 			} else {
 
-				debug.warning("wallRepairer resource not found");
+				if (creep.harvest(resource) == ERR_NOT_IN_RANGE) {
+					creep.moveTo(resource);
+				}
+			}
+		} else {
+
+			debug.warning("wallRepairer resource not found");
+		}
+	}
+
+	if (creep.memory.state === "repairing" || creep.carry[RESOURCE_ENERGY] === creep.carryCapacity) {
+
+		if (creep.memory.state !== "repairing") {
+
+			creep.memory.state = "repairing";
+		}
+
+		var target;
+
+		for (var count = 1; count <= 50; count++) {
+
+			target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+				filter: structure => structure.structureType === STRUCTURE_WALL &&
+					structure.hits < (2000 * count)
+			});
+
+			if (target) {
+				break;
 			}
 		}
 
-		if (creep.memory.state === "repairing" || creep.carry[RESOURCE_ENERGY] === creep.carryCapacity) {
+		if (target) {
 
-			if (creep.memory.state !== "repairing") {
+			if (creep.repair(target) == ERR_NOT_IN_RANGE) {
 
-				creep.memory.state = "repairing";
+				creep.moveTo(target);
 			}
 
-			var target;
+		} else {
 
-			for (var count = 1; count <= 10; count++) {
+			debug.warning(`wallRepairer cannot find any walls. ticks: ${creep.ticksToLive}`);
 
-				target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-					filter: structure => structure.structureType === STRUCTURE_WALL &&
-						structure.hits < (2000 * count)
-				});
+			if (creep.transfer(global.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 
-				if (target) {
-					break;
-				}
-			}
-
-			if (target) {
-
-				if (creep.repair(target) == ERR_NOT_IN_RANGE) {
-
-					creep.moveTo(target);
-				}
-
-			} else {
-
-				debug.warning(`wallRepairer cannot find any walls. ticks: ${creep.ticksToLive}`);
-
-				if (creep.transfer(global.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-
-					creep.moveTo(global.controller);
-				}
+				creep.moveTo(global.controller);
 			}
 		}
 	}

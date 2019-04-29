@@ -27,7 +27,7 @@ roomTools.createConstructionContainer = function() {
 	var positions =
 
 		
-[{"x":"31","y":"6","roomName":"W6S0"}]
+[{"x":"35","y":"17","roomName":"W6S0"}]
 
 	this.createConstructionSite(positions, STRUCTURE_CONTAINER);
 }
@@ -37,8 +37,7 @@ roomTools.createConstructionWalls = function() {
 	var positions =
 
 
-	[{"x":"26","y":"8","roomName":"W6S0"},{"x":"26","y":"7","roomName":"W6S0"},{"x":"26","y":"6","roomName":"W6S0"},{"x":"26","y":"5","roomName":"W6S0"},{"x":"26","y":"4","roomName":"W6S0"},{"x":"26","y":"3","roomName":"W6S0"},{"x":"26","y":"2","roomName":"W6S0"},{"x":"36","y":"2","roomName":"W6S0"},{"x":"37","y":"2","roomName":"W6S0"},{"x":"38","y":"2","roomName":"W6S0"},{"x":"39","y":"2","roomName":"W6S0"},{"x":"40","y":"2","roomName":"W6S0"},{"x":"41","y":"2","roomName":"W6S0"},{"x":"42","y":"2","roomName":"W6S0"},{"x":"43","y":"2","roomName":"W6S0"},{"x":"44","y":"2","roomName":"W6S0"},{"x":"47","y":"17","roomName":"W6S0"},{"x":"47","y":"16","roomName":"W6S0"},{"x":"47","y":"15","roomName":"W6S0"},{"x":"47","y":"14","roomName":"W6S0"},{"x":"47","y":"13","roomName":"W6S0"},{"x":"47","y":"12","roomName":"W6S0"},{"x":"47","y":"11","roomName":"W6S0"},{"x":"47","y":"10","roomName":"W6S0"},{"x":"47","y":"9","roomName":"W6S0"},{"x":"47","y":"8","roomName":"W6S0"},{"x":"47","y":"7","roomName":"W6S0"}]
-	
+	[{"x":"23","y":"19","roomName":"W6S0"},{"x":"23","y":"20","roomName":"W6S0"},{"x":"23","y":"21","roomName":"W6S0"},{"x":"23","y":"22","roomName":"W6S0"},{"x":"23","y":"23","roomName":"W6S0"},{"x":"23","y":"24","roomName":"W6S0"},{"x":"23","y":"25","roomName":"W6S0"},{"x":"23","y":"26","roomName":"W6S0"},{"x":"23","y":"27","roomName":"W6S0"},{"x":"23","y":"28","roomName":"W6S0"},{"x":"23","y":"29","roomName":"W6S0"},{"x":"23","y":"30","roomName":"W6S0"},{"x":"23","y":"31","roomName":"W6S0"},{"x":"23","y":"32","roomName":"W6S0"},{"x":"23","y":"33","roomName":"W6S0"},{"x":"24","y":"33","roomName":"W6S0"},{"x":"25","y":"33","roomName":"W6S0"}]
 	this.createConstructionSite(positions, STRUCTURE_WALL);
 }
 
@@ -87,8 +86,8 @@ roomTools.destroyStructure = function() {
 
 	var positions =
 
+	[{"x":"26","y":"20","roomName":"W6S0"},{"x":"26","y":"21","roomName":"W6S0"},{"x":"26","y":"32","roomName":"W6S0"},{"x":"26","y":"31","roomName":"W6S0"},{"x":"26","y":"30","roomName":"W6S0"},{"x":"26","y":"29","roomName":"W6S0"},{"x":"26","y":"28","roomName":"W6S0"},{"x":"26","y":"27","roomName":"W6S0"},{"x":"26","y":"26","roomName":"W6S0"},{"x":"26","y":"25","roomName":"W6S0"},{"x":"26","y":"24","roomName":"W6S0"},{"x":"26","y":"23","roomName":"W6S0"},{"x":"26","y":"22","roomName":"W6S0"}]
 	
-[{"x":"3","y":"20","roomName":"W5N3"},{"x":"5","y":"20","roomName":"W5N3"},{"x":"8","y":"23","roomName":"W5N3"},{"x":"8","y":"24","roomName":"W5N3"}]
 	if (positions.length > 0) {
 
 		for (var index in positions) {

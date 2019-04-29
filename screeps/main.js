@@ -25,8 +25,8 @@ try {
 	// }
 
 	test();
-	//  roomTools.createConstructionRoad();
 	//  roomTools.createConstructionContainer();
+	//  roomTools.createConstructionWalls();
 	// roomTools.destroyStructure();
 	// roomTools.lookAt();
 	roomTools.visualizeStructureHealth();

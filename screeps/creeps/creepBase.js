@@ -3,27 +3,41 @@ var debug = require("../debug");
 
 var creepBase = {};
 
-creepBase.act = function(creep) {
+creepBase.spawn = function(inherited, ...args) {
+	
+	var id = getNextCreepId();
+	var waitForSpawn = inherited.spawn(id, ...args);
 
-	var acted = false;
+	return waitForSpawn;
+}
 
-	// if (creep.ticksToLive < 50) {
+creepBase.act = function(creep, inherited) {
 
-	// 	var result = global.spawn.renewCreep(creep);
-		
-	// 	if (result == OK) {
+	if (creep.ticksToLive < 50) {
+				
+		if (creep.transfer(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 
-	// 		debug.highlight("creep was renewed. " + creep.ticksToLive);
+			creep.moveTo(structure);
+		}
+	} else {
 
-	// 	} else if (result == ERR_NOT_IN_RANGE) {
-			
-	// 		debug.temp("creep going to renew. " + creep.ticksToLive);
-	// 		creep.moveTo(global.spawn);
-	// 		acted = true;
-	// 	}
-	// }
+		inherited.act(creep);
+	}
+}
 
-	return acted;
+function getNextCreepId() {
+
+	if (!Memory.nextCreepId) {
+
+		Memory.nextCreepId = 1;
+	}
+
+	var nextCreepId = parseInt(Memory.nextCreepId);
+	nextCreepId++
+
+	Memory.nextCreepId = nextCreepId;
+
+	return nextCreepId;
 }
 
 
