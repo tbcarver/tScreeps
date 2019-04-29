@@ -1,6 +1,5 @@
 
 var debug = require("../debug");
-var creepBase = require("./creepBase");
 var spawnTools = require("../tools/spawnTools");
 var findTools = require("../tools/findTools");
 

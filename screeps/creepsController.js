@@ -50,19 +50,19 @@ creepsController.tick = function() {
 
 				case "builder":
 
-					builder.act(creep);
+					creepBase.act(builder, creep);
 					creepsStatistics.builders++;
 					break;
 
 				case "defender":
 
-					defender.act(creep);
+					creepBase.act(defender, creep);
 					creepsStatistics.defenders++;
 					break;
 
 				case "energizer":
 
-					energizer.act(creep);
+					creepBase.act(energizer, creep);
 					creepsStatistics.energizers[creep.memory.structureType]++;
 					break;
 
@@ -70,19 +70,19 @@ creepsController.tick = function() {
 
 					// debug.temp("creep:", creep)
 					// debug.temp("creep memory:", creep.memory)
-					harvester.act(creep);
+					creepBase.act(harvester, creep);
 					creepsStatistics.harvesters[creep.memory.resourceType][creep.memory.structureType]++;
 					break;
 
 				case "repairer":
 
-					repairer.act(creep);
+					creepBase.act(repairer, creep);
 					creepsStatistics.repairers++;
 					break;
 
 				case "wallRepairer":
 
-					wallRepairer.act(creep);
+					creepBase.act(wallRepairer, creep);
 					creepsStatistics.wallsRepairer++;
 					break;
 			}

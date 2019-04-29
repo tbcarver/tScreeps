@@ -1,6 +1,5 @@
 
 var debug = require("../debug");
-var creepBase = require("./creepBase");
 var spawnTools = require("../tools/spawnTools");
 var findTools = require("../tools/findTools");
 
@@ -24,22 +23,30 @@ repairer.spawn = function(id) {
 		bodyParts = [WORK, WORK, CARRY, CARRY, MOVE, MOVE];
 	}
 
-	var result = spawn.spawnCreep(bodyParts, id, {
-		memory: repairerMemory,
-		energyStructures: findTools.findAllEnergyStructures()
+	const targets = global.room.find(FIND_STRUCTURES, {
+		filter: structure => structure.hits < structure.hitsMax &&
+			structure.structureType !== STRUCTURE_WALL
 	});
 
-	if (result === OK) {
+	if (targets.length >= 6) {
 
-		debug.highlight(`repairer spawning: ${id} memory: `, repairerMemory);
+		var result = spawn.spawnCreep(bodyParts, id, {
+			memory: repairerMemory,
+			energyStructures: findTools.findAllEnergyStructures()
+		});
 
-	} else if (ERR_NOT_ENOUGH_ENERGY) {
+		if (result === OK) {
 
-		waitForSpawn = true;
+			debug.highlight(`repairer spawning: ${id} memory: `, repairerMemory);
 
-	} else {
+		} else if (ERR_NOT_ENOUGH_ENERGY) {
 
-		debug.warning(`repairer did not spawn: ${result}`);
+			waitForSpawn = true;
+
+		} else {
+
+			debug.warning(`repairer did not spawn: ${result}`);
+		}
 	}
 
 	return waitForSpawn;

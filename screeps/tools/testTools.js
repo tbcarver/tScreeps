@@ -4,6 +4,21 @@ var findTools = require("./findTools");
 
 function tick() {
 
+// 	var bodyParts = [WORK, CARRY, MOVE, MOVE, MOVE, MOVE];
+	
+// 	var result = spawn.spawnCreep(bodyParts, "TEST2", {
+// 		memory: {},
+// 		energyStructures: findTools.findAllEnergyStructures()
+// 	});
+
+	
+// // [{"x":"47","y":"27","roomName":"W6S0"}]
+// //[{"x":"47","y":"41","roomName":"W6S0"}]
+
+// debug.temp(Game.creeps["TEST"].moveTo(44, 41))
+// debug.temp("f", Game.creeps["TEST"].fatigue)
+// debug.temp(Game.creeps["TEST2"].moveTo(45, 41))
+// debug.temp("f", Game.creeps["TEST2"].fatigue)
 	
 // var positions = 
 

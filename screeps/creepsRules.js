@@ -1,24 +1,24 @@
 
 var creepsSpawnRules = {
-	builders: 2,
+	builders: 4,
 	defenders: 4,
 	energizers: {
 		[STRUCTURE_SPAWN]: 2,
-		[STRUCTURE_CONTROLLER]: 6
+		[STRUCTURE_CONTROLLER]: 8
 	},
 	harvesters: {
 		[RESOURCE_ENERGY]: {
 			[STRUCTURE_EXTENSION]: 4,
-			[STRUCTURE_CONTAINER]: 8
+			[STRUCTURE_CONTAINER]: 10
 		}
 	},
-	repairers: 2,
+	repairers: 4,
 	wallsRepairer: 2
 }
 
 var harvesterRules = {
 	maxExtensionsPerCreep: 2,
-	maxCreepsPerContainer: 2
+	maxCreepsPerContainer: 3
 }
 
 

@@ -2,57 +2,33 @@
 var debug = require("../debug");
 var findTools = require("../tools/findTools");
 
-var energizer = {};
+var containerEnergizer = {};
 
-energizer.spawn = function(id, structureType) {
+containerEnergizer.spawn = function(id) {
 
-	var spawned = false;
 	var bodyParts = [WORK, CARRY, MOVE, MOVE];
-	var energizerMemory = {
-		type: "energizer",
-		structureType: structureType,
-		structureId: ""
+	var containerEnergizerMemory = {
+		type: "containerEnergizer"
 	}
 
-	var structure;
+	containerEnergizerMemory.structureId = structure.id;
 
-	switch (structureType) {
+	var result = spawn.spawnCreep(bodyParts, id, {
+		memory: containerEnergizerMemory,
+		energyStructures: findTools.findAllEnergyStructures()
+	});
 
-		case STRUCTURE_SPAWN:
+	if (result === OK) {
 
-			structure = global.spawn;
-			break;
+		debug.highlight(`containerEnergizer spawning: ${id} memory: `, containerEnergizerMemory);
 
-		case STRUCTURE_CONTROLLER:
+	} else {
 
-			structure = global.controller;
-			break;
+		debug.warning(`containerEnergizer did not spawn: ${result}`);
 	}
-
-	if (structure) {
-
-		energizerMemory.structureId = structure.id;
-
-		var result = spawn.spawnCreep(bodyParts, id, {
-			memory: energizerMemory,
-			energyStructures: findTools.findAllEnergyStructures()
-		});
-
-		if (result === OK) {
-
-			spawned = true;
-			debug.highlight(`energizer spawning: ${id} structure: ${structureType} memory: `, energizerMemory);
-
-		} else {
-
-			debug.warning(`energizer did not spawn: ${result}`);
-		}
-	}
-
-	return spawned;
 }
 
-energizer.act = function(creep) {
+containerEnergizer.act = function(creep) {
 
 	if (creep.memory.state === "harvesting" || creep.carry[RESOURCE_ENERGY] === 0) {
 
@@ -81,7 +57,7 @@ energizer.act = function(creep) {
 			}
 		} else {
 
-			debug.warning("energizer resource not found");
+			debug.warning("containerEnergizer resource not found");
 		}
 	}
 
@@ -109,9 +85,9 @@ energizer.act = function(creep) {
 
 		} else {
 
-			debug.danger("energizer structure not found:" + creep.memory.structureId);
+			debug.danger("containerEnergizer structure not found:" + creep.memory.structureId);
 		}
 	}
 }
 
-module.exports = energizer
+module.exports = containerEnergizer

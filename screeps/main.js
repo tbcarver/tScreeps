@@ -25,10 +25,11 @@ try {
 	// }
 
 	test();
-	//  roomTools.createConstructionContainer();
+	//  roomTools.createConstructionRoad();
 	//  roomTools.createConstructionWalls();
 	// roomTools.destroyStructure();
 	// roomTools.lookAt();
+	// debug.primary("log", global.room.getEventLog(true));
 	roomTools.visualizeStructureHealth();
 	creepsController.tick();
 

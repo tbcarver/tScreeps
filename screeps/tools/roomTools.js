@@ -7,8 +7,8 @@ roomTools.createConstructionRoad = function() {
 
 	var positions =
 
-	[{"x":"33","y":"15","roomName":"W6S0"},{"x":"34","y":"15","roomName":"W6S0"},{"x":"35","y":"15","roomName":"W6S0"},{"x":"34","y":"16","roomName":"W6S0"},{"x":"33","y":"17","roomName":"W6S0"},{"x":"33","y":"16","roomName":"W6S0"},{"x":"36","y":"15","roomName":"W6S0"},{"x":"36","y":"14","roomName":"W6S0"},{"x":"36","y":"13","roomName":"W6S0"},{"x":"36","y":"12","roomName":"W6S0"},{"x":"35","y":"12","roomName":"W6S0"},{"x":"35","y":"11","roomName":"W6S0"},{"x":"35","y":"10","roomName":"W6S0"},{"x":"36","y":"10","roomName":"W6S0"},{"x":"36","y":"11","roomName":"W6S0"}]
 
+	[{"x":"35","y":"34","roomName":"W6S0"},{"x":"33","y":"34","roomName":"W6S0"}]
 	this.createConstructionSite(positions, STRUCTURE_ROAD);
 }
 
