@@ -10,7 +10,8 @@ try {
 	global.room = spawn.room;
 	global.controller = spawn.room.controller;
 	// console.log(global.controller.activateSafeMode())
-	debug.muted(`tick: ${Game.time} energy: ${global.room.energyAvailable}`);
+	debug.muted(`tick: ${Game.time} energy: ${global.room.energyAvailable} spawning:`,
+		global.spawn.spawning ? global.spawn.spawning.remainingTime : "" );
 
 	if (Math.random() < .2) {
 		debug.muted("spawn: ", global.spawn);
@@ -30,6 +31,7 @@ try {
 	// roomTools.destroyStructure();
 	// roomTools.lookAt();
 	// debug.primary("log", global.room.getEventLog(true));
+	roomTools.consoleEnemies();
 	roomTools.visualizeStructureHealth();
 	creepsController.tick();
 

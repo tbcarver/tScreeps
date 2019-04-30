@@ -8,7 +8,7 @@ roomTools.createConstructionRoad = function() {
 	var positions =
 
 
-	[{"x":"35","y":"34","roomName":"W6S0"},{"x":"33","y":"34","roomName":"W6S0"}]
+		[{ "x": "35", "y": "34", "roomName": "W6S0" }, { "x": "33", "y": "34", "roomName": "W6S0" }]
 	this.createConstructionSite(positions, STRUCTURE_ROAD);
 }
 
@@ -16,8 +16,8 @@ roomTools.createConstructionExtension = function() {
 
 	var positions =
 
-	
-[{"x":"39","y":"36","roomName":"W6S0"},{"x":"39","y":"37","roomName":"W6S0"}]
+
+		[{ "x": "39", "y": "36", "roomName": "W6S0" }, { "x": "39", "y": "37", "roomName": "W6S0" }]
 
 	this.createConstructionSite(positions, STRUCTURE_EXTENSION);
 }
@@ -26,8 +26,8 @@ roomTools.createConstructionContainer = function() {
 
 	var positions =
 
-		
-[{"x":"35","y":"17","roomName":"W6S0"}]
+
+		[{ "x": "35", "y": "17", "roomName": "W6S0" }]
 
 	this.createConstructionSite(positions, STRUCTURE_CONTAINER);
 }
@@ -37,7 +37,7 @@ roomTools.createConstructionWalls = function() {
 	var positions =
 
 
-	[{"x":"23","y":"19","roomName":"W6S0"},{"x":"23","y":"20","roomName":"W6S0"},{"x":"23","y":"21","roomName":"W6S0"},{"x":"23","y":"22","roomName":"W6S0"},{"x":"23","y":"23","roomName":"W6S0"},{"x":"23","y":"24","roomName":"W6S0"},{"x":"23","y":"25","roomName":"W6S0"},{"x":"23","y":"26","roomName":"W6S0"},{"x":"23","y":"27","roomName":"W6S0"},{"x":"23","y":"28","roomName":"W6S0"},{"x":"23","y":"29","roomName":"W6S0"},{"x":"23","y":"30","roomName":"W6S0"},{"x":"23","y":"31","roomName":"W6S0"},{"x":"23","y":"32","roomName":"W6S0"},{"x":"23","y":"33","roomName":"W6S0"},{"x":"24","y":"33","roomName":"W6S0"},{"x":"25","y":"33","roomName":"W6S0"}]
+		[{ "x": "23", "y": "19", "roomName": "W6S0" }, { "x": "23", "y": "20", "roomName": "W6S0" }, { "x": "23", "y": "21", "roomName": "W6S0" }, { "x": "23", "y": "22", "roomName": "W6S0" }, { "x": "23", "y": "23", "roomName": "W6S0" }, { "x": "23", "y": "24", "roomName": "W6S0" }, { "x": "23", "y": "25", "roomName": "W6S0" }, { "x": "23", "y": "26", "roomName": "W6S0" }, { "x": "23", "y": "27", "roomName": "W6S0" }, { "x": "23", "y": "28", "roomName": "W6S0" }, { "x": "23", "y": "29", "roomName": "W6S0" }, { "x": "23", "y": "30", "roomName": "W6S0" }, { "x": "23", "y": "31", "roomName": "W6S0" }, { "x": "23", "y": "32", "roomName": "W6S0" }, { "x": "23", "y": "33", "roomName": "W6S0" }, { "x": "24", "y": "33", "roomName": "W6S0" }, { "x": "25", "y": "33", "roomName": "W6S0" }]
 	this.createConstructionSite(positions, STRUCTURE_WALL);
 }
 
@@ -58,10 +58,10 @@ roomTools.removeConstructionSite = function() {
 
 	var positions =
 
-	
-[{"x":"34","y":"7","roomName":"W6S0"},{"x":"33","y":"7","roomName":"W6S0"},{"x":"33","y":"8","roomName":"W6S0"},{"x":"32","y":"8","roomName":"W6S0"},{"x":"32","y":"9","roomName":"W6S0"},{"x":"31","y":"9","roomName":"W6S0"}]
 
-if (positions.length > 0) {
+		[{ "x": "34", "y": "7", "roomName": "W6S0" }, { "x": "33", "y": "7", "roomName": "W6S0" }, { "x": "33", "y": "8", "roomName": "W6S0" }, { "x": "32", "y": "8", "roomName": "W6S0" }, { "x": "32", "y": "9", "roomName": "W6S0" }, { "x": "31", "y": "9", "roomName": "W6S0" }]
+
+	if (positions.length > 0) {
 
 		for (var index in positions) {
 
@@ -86,8 +86,8 @@ roomTools.destroyStructure = function() {
 
 	var positions =
 
-	[{"x":"26","y":"20","roomName":"W6S0"},{"x":"26","y":"21","roomName":"W6S0"},{"x":"26","y":"32","roomName":"W6S0"},{"x":"26","y":"31","roomName":"W6S0"},{"x":"26","y":"30","roomName":"W6S0"},{"x":"26","y":"29","roomName":"W6S0"},{"x":"26","y":"28","roomName":"W6S0"},{"x":"26","y":"27","roomName":"W6S0"},{"x":"26","y":"26","roomName":"W6S0"},{"x":"26","y":"25","roomName":"W6S0"},{"x":"26","y":"24","roomName":"W6S0"},{"x":"26","y":"23","roomName":"W6S0"},{"x":"26","y":"22","roomName":"W6S0"}]
-	
+		[{ "x": "26", "y": "20", "roomName": "W6S0" }, { "x": "26", "y": "21", "roomName": "W6S0" }, { "x": "26", "y": "32", "roomName": "W6S0" }, { "x": "26", "y": "31", "roomName": "W6S0" }, { "x": "26", "y": "30", "roomName": "W6S0" }, { "x": "26", "y": "29", "roomName": "W6S0" }, { "x": "26", "y": "28", "roomName": "W6S0" }, { "x": "26", "y": "27", "roomName": "W6S0" }, { "x": "26", "y": "26", "roomName": "W6S0" }, { "x": "26", "y": "25", "roomName": "W6S0" }, { "x": "26", "y": "24", "roomName": "W6S0" }, { "x": "26", "y": "23", "roomName": "W6S0" }, { "x": "26", "y": "22", "roomName": "W6S0" }]
+
 	if (positions.length > 0) {
 
 		for (var index in positions) {
@@ -127,6 +127,23 @@ roomTools.lookAt = function() {
 			// debug.danger(positions[index]);
 			debug.primary(looked);
 		}
+	}
+}
+
+roomTools.consoleEnemies = function() {
+
+	const enemies = global.room.find(FIND_HOSTILE_CREEPS);
+
+	if (enemies.length > 0) {
+
+		var percentageHealth = "";
+
+		for (enemy of enemies) {
+
+			percentageHealth += Math.floor((enemy.hits / enemy.hitsMax) * 100) + "% ";
+		}
+
+		debug.danger("Enemies!", percentageHealth);
 	}
 }
 

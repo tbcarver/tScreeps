@@ -7,7 +7,7 @@ var coreArray = require("../../lib/core/extensions/coreArray");
 
 var harvester = {};
 
-harvester.spawn = function(id, resourceType, structureType) {
+harvester.spawn = function(id, spawnResult, resourceType, structureType) {
 
 	var spawned = false;
 	var bodyParts = [WORK, CARRY, MOVE, MOVE];

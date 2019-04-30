@@ -5,7 +5,7 @@ var findTools = require("../tools/findTools");
 
 var builder = {};
 
-builder.spawn = function(id) {
+builder.spawn = function(id, spawnResult) {
 
 	var bodyParts = [WORK, CARRY, MOVE, MOVE];
 	var builderMemory = {
@@ -33,6 +33,7 @@ builder.spawn = function(id) {
 
 		if (result === OK) {
 
+			spawnResult.spawned = true;
 			debug.highlight(`builder spawning: ${id} memory: `, builderMemory);
 
 		} else {
@@ -40,6 +41,8 @@ builder.spawn = function(id) {
 			debug.warning(`builder did not spawn: ${result}`);
 		}
 	}
+
+	return spawnResult;
 }
 
 builder.act = function(creep) {

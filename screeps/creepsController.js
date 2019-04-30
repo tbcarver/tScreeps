@@ -2,10 +2,11 @@
 var debug = require("./debug");
 var creepBase = require("./creeps/creepBase");
 var builder = require("./creeps/builder");
+var controllerEnergizer = require("./creeps/energizers/controllerEnergizer");
 var defender = require("./creeps/defender");
-var energizer = require("./creeps/energizer");
 var harvester = require("./creeps/harvester");
 var repairer = require("./creeps/repairer");
+var spawnEnergizer = require("./creeps/energizers/spawnEnergizer");
 var wallRepairer = require("./creeps/wallRepairer");
 var { creepsSpawnRules } = require("./creepsRules");
 
@@ -17,11 +18,8 @@ creepsController.tick = function() {
 
 	var creepsStatistics = {
 		builders: 0,
+		controllerEnergizers: 0,
 		defenders: 0,
-		energizers: {
-			[STRUCTURE_SPAWN]: 0,
-			[STRUCTURE_CONTROLLER]: 0
-		},
 		harvesters: {
 			[RESOURCE_ENERGY]: {
 				[STRUCTURE_EXTENSION]: 0,
@@ -29,7 +27,8 @@ creepsController.tick = function() {
 			}
 		},
 		repairers: 0,
-		wallsRepairer: 0
+		spawnEnergizers: 0,
+		wallRepairers: 0
 	};
 
 	for (var index in Game.creeps) {
@@ -54,16 +53,16 @@ creepsController.tick = function() {
 					creepsStatistics.builders++;
 					break;
 
+				case "controllerEnergizer":
+
+					creepBase.act(controllerEnergizer, creep);
+					creepsStatistics.controllerEnergizers++;
+					break;
+
 				case "defender":
 
 					creepBase.act(defender, creep);
 					creepsStatistics.defenders++;
-					break;
-
-				case "energizer":
-
-					creepBase.act(energizer, creep);
-					creepsStatistics.energizers[creep.memory.structureType]++;
 					break;
 
 				case "harvester":
@@ -80,10 +79,16 @@ creepsController.tick = function() {
 					creepsStatistics.repairers++;
 					break;
 
+				case "spawnEnergizer":
+
+					creepBase.act(spawnEnergizer, creep);
+					creepsStatistics.spawnEnergizers++;
+					break;
+
 				case "wallRepairer":
 
 					creepBase.act(wallRepairer, creep);
-					creepsStatistics.wallsRepairer++;
+					creepsStatistics.wallRepairers++;
 					break;
 			}
 		}
@@ -97,49 +102,60 @@ creepsController.tick = function() {
 		// debug.temp("creep stats:", creepsStatistics, creepsSpawnRules)
 
 		// NOTE: Order here is prioritized by creep type
-		var waitForSpawn = false;
+		var spawnResult = {
+			waitForSpawn: false,
+			spawned: false
+		};
 
-		waitForSpawn = spawn(waitForSpawn, spawnDefenders, creepsStatistics.defenders, creepsSpawnRules.defenders);
-		waitForSpawn = spawn(waitForSpawn, spawnRepairers, creepsStatistics.repairers, creepsSpawnRules.repairers);
-		waitForSpawn = spawn(waitForSpawn, spawnBuilders, creepsStatistics.builders, creepsSpawnRules.builders);
-		waitForSpawn = spawn(waitForSpawn, spawnHarvesters, creepsStatistics.harvesters, creepsSpawnRules.harvesters);
-		waitForSpawn = spawn(waitForSpawn, spawnEnergizers, creepsStatistics.energizers, creepsSpawnRules.energizers);
-		waitForSpawn = spawn(waitForSpawn, spawnWallRepairers, creepsStatistics.wallsRepairer, creepsSpawnRules.wallsRepairer);
+		spawnResult = spawn(spawnResult, repairer, creepsStatistics.repairers, creepsSpawnRules.repairers);
+		spawnResult = spawn(spawnResult, defender, creepsStatistics.defenders, creepsSpawnRules.defenders);
+		spawnResult = spawnTemp(spawnResult, spawnHarvesters, creepsStatistics.harvesters, creepsSpawnRules.harvesters);
+		spawnResult = spawn(spawnResult, spawnEnergizer, creepsStatistics.spawnEnergizers, creepsSpawnRules.spawnEnergizers);
+		spawnResult = spawn(spawnResult, controllerEnergizer, creepsStatistics.controllerEnergizers, creepsSpawnRules.controllerEnergizers);
+		spawnResult = spawn(spawnResult, builder, creepsStatistics.builders, creepsSpawnRules.builders);
+		spawnResult = spawn(spawnResult, wallRepairer, creepsStatistics.wallRepairers, creepsSpawnRules.wallRepairers);
 	}
 }
 
-function spawn(waitForSpawn, spawner, creepsStatistics, creepsSpawnRules) {
+function spawn(previousSpawnResult, inheritedCreep, creepsCurrentCount, creepsSpawnRulesCount) {
 
-	var resultWaitForSpawn = false;
+	debug.temp("previousSpawnResult", previousSpawnResult, creepsCurrentCount, creepsSpawnRulesCount)
 
-	if (!waitForSpawn && spawner) {
+	if (!previousSpawnResult.waitForSpawn && !previousSpawnResult.spawned) {
 
-		resultWaitForSpawn = spawner(creepsStatistics, creepsSpawnRules);
+		if (creepsCurrentCount < creepsSpawnRulesCount) {
+
+			var spawnResult = creepBase.spawn(inheritedCreep);
+
+			if (spawnResult && spawnResult.waitForSpawn) {
+				previousSpawnResult.spawned = spawnResult.waitForSpawn;
+			}
+
+			if (spawnResult && spawnResult.spawned) {
+				previousSpawnResult.spawned = spawnResult.spawned;
+			}
+		}
 	}
 
-	return resultWaitForSpawn;
+	return previousSpawnResult;
 }
 
-function spawnBuilders(buildersCount, buildersSpawnRulesCount) {
+function spawnTemp(previousSpawnResult, spawner, creepsStatistics, creepsSpawnRules) {
 
-	if (buildersCount < buildersSpawnRulesCount) {
+	if (!previousSpawnResult.spawned && !previousSpawnResult.waitForSpawn) {
 
-		creepBase.spawn(builder);
+		var spawnResult = spawner(creepsStatistics, creepsSpawnRules);
+
+		if (spawnResult && spawnResult.waitForSpawn) {
+			previousSpawnResult.spawned = spawnResult.waitForSpawn;
+		}
+
+		if (spawnResult && spawnResult.spawned) {
+			previousSpawnResult.spawned = spawnResult.spawned;
+		}
 	}
 
-	return false;
-}
-
-function spawnDefenders(defendersCount, defendersSpawnRulesCount) {
-
-	var waitForSpawn = false;
-
-	if (defendersCount < defendersSpawnRulesCount) {
-
-		waitForSpawn = creepBase.spawn(defender);
-	}
-
-	return waitForSpawn;
+	return previousSpawnResult;
 }
 
 function spawnEnergizers(energizersStatistics, energizersSpawnRules) {
@@ -157,8 +173,6 @@ function spawnEnergizers(energizersStatistics, energizersSpawnRules) {
 			}
 		}
 	}
-
-	return false;
 }
 
 function spawnHarvesters(harvestersStatistics, harvestersSpawnRules) {
@@ -185,30 +199,6 @@ function spawnHarvesters(harvestersStatistics, harvestersSpawnRules) {
 			break;
 		}
 	}
-
-	return false;
-}
-
-function spawnRepairers(repairersCount, repairersSpawnRulesCount) {
-
-	var waitForSpawn = false;
-
-	if (repairersCount < repairersSpawnRulesCount) {
-
-		waitForSpawn = creepBase.spawn(repairer);
-	}
-
-	return waitForSpawn;
-}
-
-function spawnWallRepairers(wallRepairersCount, wallRepairersSpawnRulesCount) {
-
-	if (wallRepairersCount < wallRepairersSpawnRulesCount) {
-
-		creepBase.spawn(wallRepairer);
-	}
-
-	return false;
 }
 
 function cleanUpTheDead() {

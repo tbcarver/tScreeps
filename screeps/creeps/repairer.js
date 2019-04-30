@@ -5,9 +5,8 @@ var findTools = require("../tools/findTools");
 
 var repairer = {};
 
-repairer.spawn = function(id) {
+repairer.spawn = function(id, spawnResult) {
 
-	var waitForSpawn = false;
 	var bodyParts = [WORK, CARRY, MOVE, MOVE];
 	var repairerMemory = {
 		type: "repairer"
@@ -37,11 +36,12 @@ repairer.spawn = function(id) {
 
 		if (result === OK) {
 
+			spawnResult.spawned = true;
 			debug.highlight(`repairer spawning: ${id} memory: `, repairerMemory);
 
 		} else if (ERR_NOT_ENOUGH_ENERGY) {
 
-			waitForSpawn = true;
+			spawnResult.waitForSpawn = true;
 
 		} else {
 
@@ -49,7 +49,7 @@ repairer.spawn = function(id) {
 		}
 	}
 
-	return waitForSpawn;
+	return spawnResult;
 }
 
 repairer.act = function(creep) {

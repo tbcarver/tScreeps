@@ -5,7 +5,7 @@ var findTools = require("../tools/findTools");
 
 var wallRepairer = {};
 
-wallRepairer.spawn = function(id) {
+wallRepairer.spawn = function(id, spawnResult) {
 
 	var bodyParts = [WORK, CARRY, MOVE, MOVE];
 	var wallRepairerMemory = {
@@ -35,6 +35,7 @@ wallRepairer.spawn = function(id) {
 
 		if (result === OK) {
 
+			spawnResult.spawned = true;
 			debug.highlight(`wallRepairer spawning: ${id} memory: `, wallRepairerMemory);
 
 		} else {
@@ -42,6 +43,8 @@ wallRepairer.spawn = function(id) {
 			debug.warning(`wallRepairer did not spawn: ${result}`);
 		}
 	}
+
+	return spawnResult;
 }
 
 wallRepairer.act = function(creep) {

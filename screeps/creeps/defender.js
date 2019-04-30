@@ -5,9 +5,8 @@ var findTools = require("../tools/findTools");
 
 var defender = {};
 
-defender.spawn = function(id) {
+defender.spawn = function(id, spawnResult) {
 
-	var waitForSpawn = false;
 	var bodyParts = [RANGED_ATTACK, MOVE, MOVE, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH];
 	var defenderMemory = {
 		type: "defender"
@@ -34,11 +33,12 @@ defender.spawn = function(id) {
 
 		if (result === OK) {
 
+			spawnResult.spawned = true;
 			debug.highlight(`defender spawning: ${id} memory: `, defenderMemory);
 
 		} else if (ERR_NOT_ENOUGH_ENERGY) {
 
-			waitForSpawn = true;
+			spawnResult.waitForSpawn = true;
 
 		} else {
 
@@ -46,7 +46,7 @@ defender.spawn = function(id) {
 		}
 	}
 
-	return waitForSpawn;
+	return spawnResult;
 }
 
 defender.act = function(creep) {

@@ -4,15 +4,20 @@ var findTools = require("../tools/findTools");
 
 var creepBase = {};
 
-creepBase.spawn = function(inherited, ...args) {
+creepBase.spawn = function(inheritedCreep, ...args) {
+	
+	var spawnResult = {
+		waitForSpawn: false,
+		spawned: false
+	};
 
 	var id = getNextCreepId();
-	var waitForSpawn = inherited.spawn(id, ...args);
+	spawnResult = inheritedCreep.spawn(id, spawnResult, ...args);
 
-	return waitForSpawn;
+	return spawnResult;
 }
 
-creepBase.act = function(inherited, creep) {
+creepBase.act = function(inheritedCreep, creep) {
 
 	if (creep.ticksToLive < 50) {
 
@@ -22,7 +27,7 @@ creepBase.act = function(inherited, creep) {
 		}
 	} else {
 
-		inherited.act(creep);
+		inheritedCreep.act(creep);
 	}
 
 	var droppedEnergy = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
