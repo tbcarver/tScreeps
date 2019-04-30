@@ -4,6 +4,7 @@ try {
 	var debug = require("./debug");
 	var test = require("./tools/testTools");
 	var roomTools = require("./tools/roomTools");
+	var visualizeTools = require("./tools/visualizeTools");
 	var creepsController = require("./creepsController");
 
 	global.spawn = Game.spawns["spawn1"];
@@ -28,12 +29,20 @@ try {
 	test();
 	//  roomTools.createConstructionRoad();
 	//  roomTools.createConstructionWalls();
-	// roomTools.destroyStructure();
+	// roomTools.removeConstructionSite();
 	// roomTools.lookAt();
 	// debug.primary("log", global.room.getEventLog(true));
+	// roomTools.createFlag("graveyard", COLOR_GREY, [{"x":"26","y":"26","roomName":"W6S0"}]);
+
 	roomTools.consoleEnemies();
-	roomTools.visualizeStructureHealth();
+	visualizeTools.visualizeStructureHealth();
+	visualizeTools.visualizeFlags();
+	// roomTools.visualizeCreepByType("defender", "blue");
+	// roomTools.visualizeCreepByType("wallRepairer", "cyan");
+
 	creepsController.tick();
+
+	Memory.state.lastSpawnEnergy = global.spawn.energy;
 
 } catch (error) {
 
@@ -47,4 +56,10 @@ try {
 
 		throw error;
 	}
+}
+
+function initialize() {
+
+	// Memory.state = {};
+	// Memory.state.lastSpawnEnergy = 0;
 }

@@ -119,8 +119,6 @@ creepsController.tick = function() {
 
 function spawn(previousSpawnResult, inheritedCreep, creepsCurrentCount, creepsSpawnRulesCount) {
 
-	debug.temp("previousSpawnResult", previousSpawnResult, creepsCurrentCount, creepsSpawnRulesCount)
-
 	if (!previousSpawnResult.waitForSpawn && !previousSpawnResult.spawned) {
 
 		if (creepsCurrentCount < creepsSpawnRulesCount) {

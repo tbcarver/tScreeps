@@ -7,8 +7,8 @@ roomTools.createConstructionRoad = function() {
 
 	var positions =
 
-
-		[{ "x": "35", "y": "34", "roomName": "W6S0" }, { "x": "33", "y": "34", "roomName": "W6S0" }]
+	
+[{"x":"37","y":"17","roomName":"W6S0"},{"x":"35","y":"19","roomName":"W6S0"},{"x":"34","y":"20","roomName":"W6S0"},{"x":"33","y":"35","roomName":"W6S0"},{"x":"35","y":"35","roomName":"W6S0"},{"x":"30","y":"4","roomName":"W6S0"},{"x":"32","y":"4","roomName":"W6S0"},{"x":"33","y":"4","roomName":"W6S0"},{"x":"34","y":"4","roomName":"W6S0"},{"x":"31","y":"4","roomName":"W6S0"}]
 	this.createConstructionSite(positions, STRUCTURE_ROAD);
 }
 
@@ -30,6 +30,19 @@ roomTools.createConstructionContainer = function() {
 		[{ "x": "35", "y": "17", "roomName": "W6S0" }]
 
 	this.createConstructionSite(positions, STRUCTURE_CONTAINER);
+}
+
+roomTools.createFlag = function(name, colorConstant, positions) {
+
+	if (positions.length > 0) {
+
+		for (var index in positions) {
+
+			var position = new RoomPosition(positions[index].x, positions[index].y, positions[index].roomName);
+			var result = global.room.createFlag(position, name, colorConstant);
+			debug.highlight(`flag created: ${result} ${name} ${colorConstant}`);
+		}
+	}
 }
 
 roomTools.createConstructionWalls = function() {
@@ -59,7 +72,7 @@ roomTools.removeConstructionSite = function() {
 	var positions =
 
 
-		[{ "x": "34", "y": "7", "roomName": "W6S0" }, { "x": "33", "y": "7", "roomName": "W6S0" }, { "x": "33", "y": "8", "roomName": "W6S0" }, { "x": "32", "y": "8", "roomName": "W6S0" }, { "x": "32", "y": "9", "roomName": "W6S0" }, { "x": "31", "y": "9", "roomName": "W6S0" }]
+	[{"x":"26","y":"26","roomName":"W6S0"},{"x":"26","y":"25","roomName":"W6S0"},{"x":"26","y":"27","roomName":"W6S0"}]
 
 	if (positions.length > 0) {
 
@@ -86,8 +99,7 @@ roomTools.destroyStructure = function() {
 
 	var positions =
 
-		[{ "x": "26", "y": "20", "roomName": "W6S0" }, { "x": "26", "y": "21", "roomName": "W6S0" }, { "x": "26", "y": "32", "roomName": "W6S0" }, { "x": "26", "y": "31", "roomName": "W6S0" }, { "x": "26", "y": "30", "roomName": "W6S0" }, { "x": "26", "y": "29", "roomName": "W6S0" }, { "x": "26", "y": "28", "roomName": "W6S0" }, { "x": "26", "y": "27", "roomName": "W6S0" }, { "x": "26", "y": "26", "roomName": "W6S0" }, { "x": "26", "y": "25", "roomName": "W6S0" }, { "x": "26", "y": "24", "roomName": "W6S0" }, { "x": "26", "y": "23", "roomName": "W6S0" }, { "x": "26", "y": "22", "roomName": "W6S0" }]
-
+	[{"x":"28","y":"20","roomName":"W6S0"},{"x":"28","y":"22","roomName":"W6S0"},{"x":"28","y":"21","roomName":"W6S0"},{"x":"28","y":"25","roomName":"W6S0"},{"x":"28","y":"26","roomName":"W6S0"},{"x":"28","y":"27","roomName":"W6S0"},{"x":"28","y":"28","roomName":"W6S0"},{"x":"28","y":"29","roomName":"W6S0"},{"x":"28","y":"30","roomName":"W6S0"},{"x":"36","y":"17","roomName":"W6S0"},{"x":"36","y":"18","roomName":"W6S0"},{"x":"35","y":"18","roomName":"W6S0"}]
 	if (positions.length > 0) {
 
 		for (var index in positions) {
@@ -184,7 +196,27 @@ roomTools.visualizeStructureHealth = function() {
 
 	for (var index in targets) {
 
-		global.room.visual.circle(targets[index].pos, { radius: .3, stroke: "red", fill: "transparent" });
+		global.room.visual.circle(targets[index].pos, { radius: .25, stroke: "red", fill: "transparent" });
+	}
+}
+
+roomTools.visualizeFlags = function() {
+
+	const flags = global.room.find(FIND_FLAGS);
+
+	for (var index in flags) {
+		var pos = flags[index].pos;
+		global.room.visual.line(pos.x, pos.y, pos.x, pos.y - 1, {width: .2, color:"red"});
+	}
+}
+
+roomTools.visualizeCreepByType = function(creepType, color) {
+
+	const targets = _.filter(Game.creeps, creep => creep.memory.type === creepType);
+
+	for (var index in targets) {
+
+		global.room.visual.circle(targets[index].pos, { radius: .25, stroke: color, fill: color });
 	}
 }
 

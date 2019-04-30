@@ -5,7 +5,7 @@ var findTools = require("../tools/findTools");
 var creepBase = {};
 
 creepBase.spawn = function(inheritedCreep, ...args) {
-	
+
 	var spawnResult = {
 		waitForSpawn: false,
 		spawned: false
@@ -19,11 +19,27 @@ creepBase.spawn = function(inheritedCreep, ...args) {
 
 creepBase.act = function(inheritedCreep, creep) {
 
-	if (creep.ticksToLive < 50) {
+	if (creep.ticksToLive < 25) {
 
-		if (creep.transfer(global.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+		if (creep.carry[RESOURCE_ENERGY] === 0) {
 
-			creep.moveTo(global.controller);
+			creep.moveTo(target);
+
+		} else {
+
+			var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+				filter: structure => structure.structureType == STRUCTURE_CONTAINER &&
+					structure.store[RESOURCE_ENERGY] > 200
+			});
+
+			if (!target) {
+				target = global.controller;
+			}
+
+			if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+
+				creep.moveTo(target);
+			}
 		}
 	} else {
 
