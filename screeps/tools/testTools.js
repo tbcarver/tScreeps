@@ -1,8 +1,12 @@
 
 var debug = require("../debug");
 var findTools = require("./findTools");
+var spawnTools = require("./spawnTools");
 
 function tick() {
+
+
+	// spawnTools.calculateBodyCost()
 
 // 	var bodyParts = [WORK, CARRY, MOVE, MOVE, MOVE, MOVE];
 	

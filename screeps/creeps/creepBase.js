@@ -23,7 +23,14 @@ creepBase.act = function(inheritedCreep, creep) {
 
 		if (creep.carry[RESOURCE_ENERGY] === 0) {
 
-			creep.moveTo(target);
+			if (Game.flags["graveyard"]) {
+
+				creep.moveTo(Game.flags["graveyard"].pos);
+
+			} else {
+
+				creep.moveTo(global.spawn);
+			}
 
 		} else {
 

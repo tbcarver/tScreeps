@@ -3,6 +3,7 @@ try {
 
 	var debug = require("./debug");
 	var test = require("./tools/testTools");
+	var constructionTools = require("./tools/constructionTools");
 	var roomTools = require("./tools/roomTools");
 	var visualizeTools = require("./tools/visualizeTools");
 	var creepsController = require("./creepsController");
@@ -27,12 +28,14 @@ try {
 	// }
 
 	test();
-	//  roomTools.createConstructionRoad();
-	//  roomTools.createConstructionWalls();
-	// roomTools.removeConstructionSite();
+	//  constructionTools.createConstructionRoad();
+	//  constructionTools.createConstructionWalls();
+	// constructionTools.removeConstructionSite();
+	// constructionTools.destroyStructure();
 	// roomTools.lookAt();
 	// debug.primary("log", global.room.getEventLog(true));
 	// roomTools.createFlag("graveyard", COLOR_GREY, [{"x":"26","y":"26","roomName":"W6S0"}]);
+	// roomTools.consoleWall();
 
 	roomTools.consoleEnemies();
 	visualizeTools.visualizeStructureHealth();

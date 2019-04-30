@@ -87,7 +87,7 @@ wallRepairer.act = function(creep) {
 
 		var target;
 
-		for (var count = 1; count <= 50; count++) {
+		for (var count = 1; count <= 100; count++) {
 
 			target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
 				filter: structure => structure.structureType === STRUCTURE_WALL &&

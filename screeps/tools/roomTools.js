@@ -3,35 +3,6 @@
 var debug = require("../debug");
 var roomTools = {};
 
-roomTools.createConstructionRoad = function() {
-
-	var positions =
-
-	
-[{"x":"37","y":"17","roomName":"W6S0"},{"x":"35","y":"19","roomName":"W6S0"},{"x":"34","y":"20","roomName":"W6S0"},{"x":"33","y":"35","roomName":"W6S0"},{"x":"35","y":"35","roomName":"W6S0"},{"x":"30","y":"4","roomName":"W6S0"},{"x":"32","y":"4","roomName":"W6S0"},{"x":"33","y":"4","roomName":"W6S0"},{"x":"34","y":"4","roomName":"W6S0"},{"x":"31","y":"4","roomName":"W6S0"}]
-	this.createConstructionSite(positions, STRUCTURE_ROAD);
-}
-
-roomTools.createConstructionExtension = function() {
-
-	var positions =
-
-
-		[{ "x": "39", "y": "36", "roomName": "W6S0" }, { "x": "39", "y": "37", "roomName": "W6S0" }]
-
-	this.createConstructionSite(positions, STRUCTURE_EXTENSION);
-}
-
-roomTools.createConstructionContainer = function() {
-
-	var positions =
-
-
-		[{ "x": "35", "y": "17", "roomName": "W6S0" }]
-
-	this.createConstructionSite(positions, STRUCTURE_CONTAINER);
-}
-
 roomTools.createFlag = function(name, colorConstant, positions) {
 
 	if (positions.length > 0) {
@@ -41,82 +12,6 @@ roomTools.createFlag = function(name, colorConstant, positions) {
 			var position = new RoomPosition(positions[index].x, positions[index].y, positions[index].roomName);
 			var result = global.room.createFlag(position, name, colorConstant);
 			debug.highlight(`flag created: ${result} ${name} ${colorConstant}`);
-		}
-	}
-}
-
-roomTools.createConstructionWalls = function() {
-
-	var positions =
-
-
-		[{ "x": "23", "y": "19", "roomName": "W6S0" }, { "x": "23", "y": "20", "roomName": "W6S0" }, { "x": "23", "y": "21", "roomName": "W6S0" }, { "x": "23", "y": "22", "roomName": "W6S0" }, { "x": "23", "y": "23", "roomName": "W6S0" }, { "x": "23", "y": "24", "roomName": "W6S0" }, { "x": "23", "y": "25", "roomName": "W6S0" }, { "x": "23", "y": "26", "roomName": "W6S0" }, { "x": "23", "y": "27", "roomName": "W6S0" }, { "x": "23", "y": "28", "roomName": "W6S0" }, { "x": "23", "y": "29", "roomName": "W6S0" }, { "x": "23", "y": "30", "roomName": "W6S0" }, { "x": "23", "y": "31", "roomName": "W6S0" }, { "x": "23", "y": "32", "roomName": "W6S0" }, { "x": "23", "y": "33", "roomName": "W6S0" }, { "x": "24", "y": "33", "roomName": "W6S0" }, { "x": "25", "y": "33", "roomName": "W6S0" }]
-	this.createConstructionSite(positions, STRUCTURE_WALL);
-}
-
-roomTools.createConstructionSite = function(positions, structureType, name) {
-
-	if (positions.length > 0) {
-
-		for (var index in positions) {
-
-			var position = new RoomPosition(positions[index].x, positions[index].y, positions[index].roomName);
-			var result = global.room.createConstructionSite(position, structureType, name);
-			debug.highlight(`created construction site: type: ${STRUCTURE_ROAD}: ${result}`);
-		}
-	}
-}
-
-roomTools.removeConstructionSite = function() {
-
-	var positions =
-
-
-	[{"x":"26","y":"26","roomName":"W6S0"},{"x":"26","y":"25","roomName":"W6S0"},{"x":"26","y":"27","roomName":"W6S0"}]
-
-	if (positions.length > 0) {
-
-		for (var index in positions) {
-
-			var sites = room.find(FIND_CONSTRUCTION_SITES, {
-				filter: (site) => site.pos.x == positions[index].x &&
-					site.pos.y == positions[index].y
-			});
-
-			if (sites) {
-
-				for (site of sites) {
-
-					var result = site.remove();
-					debug.highlight("removed construction site:", result);
-				}
-			}
-		}
-	}
-}
-
-roomTools.destroyStructure = function() {
-
-	var positions =
-
-	[{"x":"28","y":"20","roomName":"W6S0"},{"x":"28","y":"22","roomName":"W6S0"},{"x":"28","y":"21","roomName":"W6S0"},{"x":"28","y":"25","roomName":"W6S0"},{"x":"28","y":"26","roomName":"W6S0"},{"x":"28","y":"27","roomName":"W6S0"},{"x":"28","y":"28","roomName":"W6S0"},{"x":"28","y":"29","roomName":"W6S0"},{"x":"28","y":"30","roomName":"W6S0"},{"x":"36","y":"17","roomName":"W6S0"},{"x":"36","y":"18","roomName":"W6S0"},{"x":"35","y":"18","roomName":"W6S0"}]
-	if (positions.length > 0) {
-
-		for (var index in positions) {
-
-			var structures = room.find(FIND_STRUCTURES, {
-				filter: (structure) => structure.pos.x == positions[index].x &&
-					structure.pos.y == positions[index].y
-			});
-
-			if (structures) {
-
-				for (structure of structures) {
-
-					var result = structure.destroy();
-					debug.highlight("destroyed structure site:", result);
-				}
-			}
 		}
 	}
 }
@@ -156,6 +51,18 @@ roomTools.consoleEnemies = function() {
 		}
 
 		debug.danger("Enemies!", percentageHealth);
+	}
+}
+
+roomTools.consoleWall = function() {
+
+	const target = global.spawn.pos.findClosestByRange(FIND_STRUCTURES, {
+		filter: structure => structure.structureType === STRUCTURE_WALL
+	});
+
+	if (target) {
+
+		debug.primary("wall", target);
 	}
 }
 

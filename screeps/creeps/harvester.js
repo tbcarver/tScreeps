@@ -2,7 +2,7 @@
 var debug = require("../debug");
 var spawnTools = require("../tools/spawnTools");
 var findTools = require("../tools/findTools");
-var { harvesterRules } = require("../creepsRules");
+var { maxExtensionsPerEnergizer, maxEnergizersPerContainer } = require("../creepsRules");
 var coreArray = require("../../lib/core/extensions/coreArray");
 
 var harvester = {};
@@ -50,7 +50,7 @@ harvester.spawn = function(id, spawnResult, resourceType, structureType) {
 				harvesterMemory.structures[0].id = structure.id;
 				harvesterMemory.structures[0].pos = structure.pos;
 
-				for (var index = 1; index < harvesterRules.maxExtensionsPerCreep; index++) {
+				for (var index = 1; index < maxExtensionsPerEnergizer; index++) {
 
 					var nextExtension = structure.pos.findClosestByRange(FIND_STRUCTURES, {
 						filter: nextStructure => nextStructure.structureType == structureType &&
@@ -94,7 +94,7 @@ harvester.spawn = function(id, spawnResult, resourceType, structureType) {
 				var countStructures = countHarvesterStructuresAtPosition(structureType, container.pos.x,
 					container.pos.y);
 
-				return countStructures < harvesterRules.maxCreepsPerContainer;
+				return countStructures < maxEnergizersPerContainer;
 			});
 
 			if (containers.length > 0) {

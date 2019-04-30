@@ -15,11 +15,11 @@ defender.spawn = function(id, spawnResult) {
 	var spawnCapacity = spawnTools.calculateSpawnCapacity();
 
 	if (spawnCapacity >= 400) {
-		bodyParts.push(...[MOVE, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH]);
+		bodyParts.push(...[TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH]);
 	}
 
 	if (spawnCapacity >= 600) {
-		bodyParts.push(...[RANGED_ATTACK, MOVE, MOVE, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH]);
+		bodyParts.push(...[RANGED_ATTACK, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH,]);
 	}
 
 	const targets = global.room.find(FIND_HOSTILE_CREEPS);
@@ -30,6 +30,7 @@ defender.spawn = function(id, spawnResult) {
 			memory: defenderMemory,
 			energyStructures: findTools.findAllEnergyStructures()
 		});
+		debug("result", result);
 
 		if (result === OK) {
 
