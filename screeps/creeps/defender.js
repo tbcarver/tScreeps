@@ -30,7 +30,6 @@ defender.spawn = function(id, spawnResult) {
 			memory: defenderMemory,
 			energyStructures: findTools.findAllEnergyStructures()
 		});
-		debug("result", result);
 
 		if (result === OK) {
 

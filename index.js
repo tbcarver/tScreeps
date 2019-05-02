@@ -18,30 +18,35 @@
 
 		// var result = await api.raw.register.submit("carver230620", "carver230620", "5560");
 		// console.log("register: ", result);
-		await api.auth('carver230620', '5560');
-		result = await api.raw.game.placeSpawn("W6S0", 29, 26, "spawn1");
-		console.log("spawn: ", result);
+		// await api.auth('carver230620', '5560');
+		// result = await api.raw.game.placeSpawn("W6S0", 29, 26, "spawn1");
+		// console.log("spawn: ", result);
 		
-		// var result = await api.raw.register.submit("gilmartin206077", "gilmartin206077", "8080");
-		// console.log("register: ", result);
-		await api.auth('gilmartin206077', '8080');
-		result = await api.raw.game.placeSpawn("W5S0", 20, 30, "spawn1");
-		console.log("spawn: ", result);
+		// // var result = await api.raw.register.submit("gilmartin206077", "gilmartin206077", "8080");
+		// // console.log("register: ", result);
+		// await api.auth('gilmartin206077', '8080');
+		// result = await api.raw.game.placeSpawn("W5S0", 20, 30, "spawn1");
+		// console.log("spawn: ", result);
 		
-		// var result = await api.raw.register.submit("robinson223537", "robinson223537", "0421");
-		// console.log("register: ", result);
-		await api.auth('robinson223537', '0421');
-		result = await api.raw.game.placeSpawn("W6N1", 27, 28, "spawn1");
-		console.log("spawn: ", result);
+		// // var result = await api.raw.register.submit("robinson223537", "robinson223537", "0421");
+		// // console.log("register: ", result);
+		// await api.auth('robinson223537', '0421');
+		// result = await api.raw.game.placeSpawn("W6N1", 27, 28, "spawn1");
+		// console.log("spawn: ", result);
 		
 		// var result = await api.raw.register.submit("carver230620-sandbox", "carver230620-sandbox", "1234");
 		// result = await api.raw.game.placeSpawn("W4N1", 42, 8, "spawn1");
 
 
 		// await api.auth('carver230620-sandbox', '1234');
+		await api.auth('carver230620', '5560');
 
 		// result = await api.raw.auth.me();
 		// console.log("me: ", result);
+
+		// result = await api.raw.user.console("console.log(Object.getPrototypeOf(Game.creeps[Object.keys(Game.creeps)[0]]))");
+		result = await api.raw.user.console("var creep1Name = Object.keys(Game.creeps)) console.log(Object.getPrototypeOf(Game.creeps[creep1Name]))");
+		console.log("me: ", result);
 		
 		// result = await api.raw.game.placeSpawn("W4N1", 42, 8, "spawn1");
 		// console.log(result);
@@ -105,10 +110,10 @@
 
 		// result = await api.raw.user.worldStatus();
 		// console.log("worldStatus: ", result);
-		result = await api.raw.game.roomOverview(myRoom);
-		console.log("roomOverview: ", result);
-		result = await api.raw.game.roomStatus(myRoom);
-		console.log("roomStatus: ", result);
+		// result = await api.raw.game.roomOverview(myRoom);
+		// console.log("roomOverview: ", result);
+		// result = await api.raw.game.roomStatus(myRoom);
+		// console.log("roomStatus: ", result);
 
 
 	} catch (error) {

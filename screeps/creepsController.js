@@ -24,12 +24,6 @@ creepsController.tick = function() {
 		controllerEnergizers: 0,
 		defenders: 0,
 		extensionEnergizers: 0,
-		harvesters: {
-			[RESOURCE_ENERGY]: {
-				[STRUCTURE_EXTENSION]: 0,
-				[STRUCTURE_CONTAINER]: 0,
-			}
-		},
 		repairers: 0,
 		spawnEnergizers: 0,
 		wallRepairers: 0
@@ -41,6 +35,7 @@ creepsController.tick = function() {
 
 		// debug.temp(`creep act: type: ${creep.memory.type} ticks: ${creep.ticksToLive}`);
 
+		// NOTE: A poor man's type of polymorphism is used here because of CPU cycle performance consideration.
 		switch (creep.memory.type) {
 
 			case "builder":
@@ -73,16 +68,10 @@ creepsController.tick = function() {
 				creepsStatistics.extensionEnergizers++;
 				break;
 
-			case "harvester":
+			case "repairer":
 
 				// debug.temp("creep:", creep)
 				// debug.temp("creep memory:", creep.memory)
-				creepBase.act(harvester, creep);
-				creepsStatistics.harvesters[creep.memory.resourceType][creep.memory.structureType]++;
-				break;
-
-			case "repairer":
-
 				creepBase.act(repairer, creep);
 				creepsStatistics.repairers++;
 				break;
@@ -101,22 +90,21 @@ creepsController.tick = function() {
 		}
 	}
 
-	debug.muted(`creep tick:`, Object.keys(Game.creeps).length, creepsStatistics);
+	debug.muted(`creeps:`, Object.keys(Game.creeps).length, creepsStatistics);
 
 	if (!global.spawn.spawning && global.room.energyAvailable >= 250) {
 
 		debug.primary("spawn chance", global.room.energyAvailable);
 		// debug.temp("creep stats:", creepsStatistics, creepsSpawnRules)
 
-		// NOTE: Order here is prioritized by creep type
 		var spawnResult = {
 			waitForSpawn: false,
 			spawned: false
 		};
 
+		// NOTE: Order here is prioritized by creep type
 		spawnResult = spawn(spawnResult, repairer, creepsStatistics.repairers, creepsSpawnRules.repairers);
 		spawnResult = spawn(spawnResult, defender, creepsStatistics.defenders, creepsSpawnRules.defenders);
-		spawnResult = spawnTemp(spawnResult, spawnHarvesters, creepsStatistics.harvesters, creepsSpawnRules.harvesters);
 		spawnResult = spawn(spawnResult, spawnEnergizer, creepsStatistics.spawnEnergizers, creepsSpawnRules.spawnEnergizers);
 		spawnResult = spawn(spawnResult, extensionEnergizer, creepsStatistics.extensionEnergizers, creepsSpawnRules.extensionEnergizers);
 		spawnResult = spawn(spawnResult, containerEnergizer, creepsStatistics.containerEnergizers, creepsSpawnRules.containerEnergizers);
@@ -145,67 +133,6 @@ function spawn(previousSpawnResult, inheritedCreep, creepsCurrentCount, creepsSp
 	}
 
 	return previousSpawnResult;
-}
-
-function spawnTemp(previousSpawnResult, spawner, creepsStatistics, creepsSpawnRules) {
-
-	if (!previousSpawnResult.spawned && !previousSpawnResult.waitForSpawn) {
-
-		var spawnResult = spawner(creepsStatistics, creepsSpawnRules);
-
-		if (spawnResult && spawnResult.waitForSpawn) {
-			previousSpawnResult.spawned = spawnResult.waitForSpawn;
-		}
-
-		if (spawnResult && spawnResult.spawned) {
-			previousSpawnResult.spawned = spawnResult.spawned;
-		}
-	}
-
-	return previousSpawnResult;
-}
-
-function spawnEnergizers(energizersStatistics, energizersSpawnRules) {
-
-	for (var structureType in energizersSpawnRules) {
-
-		var energizersCount = energizersSpawnRules[structureType];
-
-		if (energizersStatistics[structureType] < energizersCount) {
-
-			var spawned = creepBase.spawn(energizer, structureType);
-
-			if (spawned) {
-				break;
-			}
-		}
-	}
-}
-
-function spawnHarvesters(harvestersStatistics, harvestersSpawnRules) {
-
-	for (var resourceType in harvestersSpawnRules) {
-
-		var structureTypes = harvestersSpawnRules[resourceType];
-
-		for (var structureType in structureTypes) {
-
-			var harvestersCount = harvestersSpawnRules[resourceType][structureType];
-
-			if (harvestersStatistics[resourceType][structureType] < harvestersCount) {
-
-				var spawned = creepBase.spawn(harvester, resourceType, structureType);
-
-				if (spawned) {
-					break;
-				}
-			}
-		}
-
-		if (spawned) {
-			break;
-		}
-	}
 }
 
 function cleanUpTheDead() {

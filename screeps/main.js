@@ -32,7 +32,7 @@ try {
 	//  constructionTools.createConstructionWalls();
 	// constructionTools.removeConstructionSite();
 	// constructionTools.destroyStructure();
-	// roomTools.lookAt();
+	roomTools.lookAt();
 	// debug.primary("log", global.room.getEventLog(true));
 	// roomTools.createFlag("graveyard", COLOR_GREY, [{"x":"26","y":"26","roomName":"W6S0"}]);
 	// roomTools.consoleWall();

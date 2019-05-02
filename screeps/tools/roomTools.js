@@ -19,7 +19,8 @@ roomTools.createFlag = function(name, colorConstant, positions) {
 roomTools.lookAt = function() {
 
 	var positions =
-		[{ "x": "16", "y": "15", "roomName": "W5N3" }]
+
+	[{"x":"24","y":"7","roomName":"W6S0"}]
 
 	if (positions.length > 0) {
 
@@ -43,14 +44,14 @@ roomTools.consoleEnemies = function() {
 
 	if (enemies.length > 0) {
 
-		var percentageHealth = "";
+		var health = "";
 
 		for (enemy of enemies) {
 
-			percentageHealth += Math.floor((enemy.hits / enemy.hitsMax) * 100) + "% ";
+			health += enemy.hits + " " + Math.ceil((enemy.hits / enemy.hitsMax) * 100) + "% ";
 		}
 
-		debug.danger("Enemies!", percentageHealth);
+		debug.danger("Enemies!", health);
 	}
 }
 
