@@ -36,8 +36,8 @@ constructionTools.createConstructionWalls = function() {
 
 	var positions =
 
+	[{"x":"29","y":"42","roomName":"W6S0"}]
 
-	[{"x":"24","y":"9","roomName":"W6S0"},{"x":"24","y":"8","roomName":"W6S0"},{"x":"24","y":"7","roomName":"W6S0"},{"x":"24","y":"6","roomName":"W6S0"},{"x":"24","y":"5","roomName":"W6S0"},{"x":"24","y":"4","roomName":"W6S0"},{"x":"24","y":"3","roomName":"W6S0"},{"x":"24","y":"2","roomName":"W6S0"}]
 		this.createConstructionSite(positions, STRUCTURE_WALL);
 }
 

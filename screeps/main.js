@@ -32,7 +32,7 @@ try {
 	//  constructionTools.createConstructionWalls();
 	// constructionTools.removeConstructionSite();
 	// constructionTools.destroyStructure();
-	roomTools.lookAt();
+	// roomTools.lookAt();
 	// debug.primary("log", global.room.getEventLog(true));
 	// roomTools.createFlag("graveyard", COLOR_GREY, [{"x":"26","y":"26","roomName":"W6S0"}]);
 	// roomTools.consoleWall();
@@ -46,6 +46,8 @@ try {
 	creepsController.tick();
 
 	Memory.state.lastSpawnEnergy = global.spawn.energy;
+
+	// console.log(JSON.stringify(Game.spawns["spawn1"].room.lookAt(29, 25)))
 
 } catch (error) {
 

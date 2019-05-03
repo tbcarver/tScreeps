@@ -2,41 +2,107 @@
 var debug = require("../debug");
 var findTools = require("./findTools");
 var spawnTools = require("./spawnTools");
+var testObject = require("../creeps/energizers/extensionEnergizer");
 
 function tick() {
 
+	
+
+	// function MyCreep() {
+
+		
+	// 	Creep.call(this, 0);
+
+	// }
+
+    // MyCreep.prototype = Object.create(Creep.prototype);
+
+
+
+	// for (var index in Game.creeps) {
+
+	// 	var creep = Game.creeps[index];
+
+
+	// 	// debug.temp(global.Creep);
+	// 	// debug.temp(global.RoomObject);
+
+
+	// 	var myCreep = new MyCreep();
+
+	// 	myCreep = Object.assign(myCreep, creep)
+
+	// 	// debug.temp("creep", myCreep);
+	// 	// debug.temp("test", Object.getPrototypeOf(myCreep));
+
+	// 	// myCreep.say("hello");
+	// 	// creep.say("hello");
+	// }
+
+
+	// function getHarvesterStructurePositions(structureType) {
+
+	// 	var result = _.reduce(Memory.creeps, (filteredPositions, creepMemory) => {
+
+	// 		if (creepMemory.type === "extensionEnergizer") {
+
+	// 			positions = creepMemory.structures.reduce((structurePositions, structure) => {
+
+	// 				structurePositions.push(structure.pos);
+
+	// 				return structurePositions;
+	// 			}, []);
+
+	// 			filteredPositions.push(...positions);
+	// 		}
+
+	// 		return filteredPositions;
+	// 	}, []);
+
+	// 	return result;
+	// }
+
+	// 	var occupiedPositions = getHarvesterStructurePositions(STRUCTURE_EXTENSION);
+
+	// 	debug.temp(occupiedPositions)
+
+	// var isExtensionOccupied = occupiedPositions.some(occupiedPos => occupiedPos.x === extension.pos.x &&
+	// 	occupiedPos.y === extension.pos.y)
+
+
+	// debug.temp(occupiedPositions)
 
 	// spawnTools.calculateBodyCost()
 
-// 	var bodyParts = [WORK, CARRY, MOVE, MOVE, MOVE, MOVE];
-	
-// 	var result = spawn.spawnCreep(bodyParts, "TEST2", {
-// 		memory: {},
-// 		energyStructures: findTools.findAllEnergyStructures()
-// 	});
+	// 	var bodyParts = [WORK, CARRY, MOVE, MOVE, MOVE, MOVE];
 
-	
-// // [{"x":"47","y":"27","roomName":"W6S0"}]
-// //[{"x":"47","y":"41","roomName":"W6S0"}]
+	// 	var result = spawn.spawnCreep(bodyParts, "TEST2", {
+	// 		memory: {},
+	// 		energyStructures: findTools.findAllEnergyStructures()
+	// 	});
 
-// debug.temp(Game.creeps["TEST"].moveTo(44, 41))
-// debug.temp("f", Game.creeps["TEST"].fatigue)
-// debug.temp(Game.creeps["TEST2"].moveTo(45, 41))
-// debug.temp("f", Game.creeps["TEST2"].fatigue)
-	
-// var positions = 
 
-// [{"x":"28","y":"26","roomName":"W6S0"},{"x":"27","y":"26","roomName":"W6S0"},{"x":"26","y":"26","roomName":"W6S0"},{"x":"25","y":"26","roomName":"W6S0"},{"x":"28","y":"25","roomName":"W6S0"},{"x":"27","y":"24","roomName":"W6S0"},{"x":"26","y":"23","roomName":"W6S0"},{"x":"25","y":"22","roomName":"W6S0"}]
-// if (positions.length > 0) {
+	// // [{"x":"47","y":"27","roomName":"W6S0"}]
+	// //[{"x":"47","y":"41","roomName":"W6S0"}]
 
-// 	for (var index in positions) {
+	// debug.temp(Game.creeps["TEST"].moveTo(44, 41))
+	// debug.temp("f", Game.creeps["TEST"].fatigue)
+	// debug.temp(Game.creeps["TEST2"].moveTo(45, 41))
+	// debug.temp("f", Game.creeps["TEST2"].fatigue)
 
-// 		var position = new RoomPosition(positions[index].x, positions[index].y, positions[index].roomName);
+	// var positions = 
 
-// 		// var result = PathFinder.search(global.spawn.pos, { pos: position, range: 3 });
-// 		debug.temp("pathfinder", findTools.isInRange(global.spawn.pos, position, 3));
-// 	}
-// }
+	// [{"x":"28","y":"26","roomName":"W6S0"},{"x":"27","y":"26","roomName":"W6S0"},{"x":"26","y":"26","roomName":"W6S0"},{"x":"25","y":"26","roomName":"W6S0"},{"x":"28","y":"25","roomName":"W6S0"},{"x":"27","y":"24","roomName":"W6S0"},{"x":"26","y":"23","roomName":"W6S0"},{"x":"25","y":"22","roomName":"W6S0"}]
+	// if (positions.length > 0) {
+
+	// 	for (var index in positions) {
+
+	// 		var position = new RoomPosition(positions[index].x, positions[index].y, positions[index].roomName);
+
+	// 		// var result = PathFinder.search(global.spawn.pos, { pos: position, range: 3 });
+	// 		debug.temp("pathfinder", findTools.isInRange(global.spawn.pos, position, 3));
+	// 	}
+	// }
 
 
 	// function calculateSpawnCapacity() {

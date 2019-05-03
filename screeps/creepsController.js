@@ -64,6 +64,8 @@ creepsController.tick = function() {
 
 			case "extensionEnergizer":
 
+				// debug.temp("creep:", creep)
+				// debug.temp("creep memory:", creep.memory)
 				creepBase.act(extensionEnergizer, creep);
 				creepsStatistics.extensionEnergizers++;
 				break;
@@ -108,8 +110,8 @@ creepsController.tick = function() {
 		spawnResult = spawn(spawnResult, spawnEnergizer, creepsStatistics.spawnEnergizers, creepsSpawnRules.spawnEnergizers);
 		spawnResult = spawn(spawnResult, extensionEnergizer, creepsStatistics.extensionEnergizers, creepsSpawnRules.extensionEnergizers);
 		spawnResult = spawn(spawnResult, containerEnergizer, creepsStatistics.containerEnergizers, creepsSpawnRules.containerEnergizers);
-		spawnResult = spawn(spawnResult, controllerEnergizer, creepsStatistics.controllerEnergizers, creepsSpawnRules.containerEnergizers);
 		spawnResult = spawn(spawnResult, builder, creepsStatistics.builders, creepsSpawnRules.builders);
+		spawnResult = spawn(spawnResult, controllerEnergizer, creepsStatistics.controllerEnergizers, creepsSpawnRules.containerEnergizers);
 		spawnResult = spawn(spawnResult, wallRepairer, creepsStatistics.wallRepairers, creepsSpawnRules.wallRepairers);
 	}
 }

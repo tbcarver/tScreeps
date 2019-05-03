@@ -22,13 +22,13 @@ extensionEnergizer.spawn = function(id, spawnResult) {
 
 	var extensions = global.room.find(FIND_MY_STRUCTURES, {
 		filter: {
-			structureType: STRUCTURE_CONTROLLER
+			structureType: STRUCTURE_EXTENSION
 		}
 	});
 
 	extensions = extensions.filter(extension => {
 
-		var occupiedPositions = getHarvesterStructurePositions(STRUCTURE_CONTROLLER);
+		var occupiedPositions = getHarvesterStructurePositions(STRUCTURE_EXTENSION);
 		var isExtensionOccupied = occupiedPositions.some(occupiedPos => occupiedPos.x === extension.pos.x &&
 			occupiedPos.y === extension.pos.y)
 
@@ -44,7 +44,7 @@ extensionEnergizer.spawn = function(id, spawnResult) {
 		for (var index = 1; index < maxExtensionsPerEnergizer; index++) {
 
 			var nextExtension = structure.pos.findClosestByRange(FIND_STRUCTURES, {
-				filter: nextStructure => nextStructure.structureType == STRUCTURE_CONTROLLER &&
+				filter: nextStructure => nextStructure.structureType == STRUCTURE_EXTENSION &&
 					nextStructure.id !== structure.id
 			});
 
@@ -72,7 +72,7 @@ extensionEnergizer.spawn = function(id, spawnResult) {
 
 	var resource = structure.pos.findClosestByRange(FIND_SOURCES);
 
-	if (resource) {
+	if (extensionEnergizerMemory.structures.length > 0 && resource) {
 
 		extensionEnergizerMemory.resourceId = resource.id;
 
@@ -183,7 +183,7 @@ function getHarvesterStructurePositions(structureType) {
 
 	var result = _.reduce(Memory.creeps, (filteredPositions, creepMemory) => {
 
-		if (creepMemory.type === "extensionEnergizer" && creepMemory.structureType === structureType) {
+		if (creepMemory.type === "extensionEnergizer") {
 
 			positions = creepMemory.structures.reduce((structurePositions, structure) => {
 
