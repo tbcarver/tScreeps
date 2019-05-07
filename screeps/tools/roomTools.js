@@ -20,7 +20,7 @@ roomTools.lookAt = function() {
 
 	var positions =
 
-	[{"x":"24","y":"7","roomName":"W6S0"}]
+		[{ "x": "24", "y": "7", "roomName": "W6S0" }]
 
 	if (positions.length > 0) {
 
@@ -48,7 +48,8 @@ roomTools.consoleEnemies = function() {
 
 		for (enemy of enemies) {
 
-			health += enemy.hits + " " + Math.ceil((enemy.hits / enemy.hitsMax) * 100) + "% ";
+			health += enemy.hits + " " + Math.ceil((enemy.hits / enemy.hitsMax) * 100) + "% " +
+				enemy.ticksToLive + " ";
 		}
 
 		debug.danger("Enemies!", health);
@@ -114,7 +115,7 @@ roomTools.visualizeFlags = function() {
 
 	for (var index in flags) {
 		var pos = flags[index].pos;
-		global.room.visual.line(pos.x, pos.y, pos.x, pos.y - 1, {width: .2, color:"red"});
+		global.room.visual.line(pos.x, pos.y, pos.x, pos.y - 1, { width: .2, color: "red" });
 	}
 }
 

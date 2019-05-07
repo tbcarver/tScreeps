@@ -1,25 +1,15 @@
 
 var debug = require("../debug");
-var spawnTools = require("../tools/spawnTools");
+var bodyPartsFactory = require("./bodies/bodyPartsFactory");
 var findTools = require("../tools/findTools");
 
 var builder = {};
 
-builder.spawn = function(id, spawnResult) {
+builder.spawn = function(id, creepsCurrentCount, spawnResult) {
 
-	var bodyParts = [WORK, CARRY, MOVE, MOVE];
+	var bodyParts = bodyPartsFactory.getBodyParts("worker");
 	var builderMemory = {
 		type: "builder"
-	}
-
-	var spawnCapacity = spawnTools.calculateSpawnCapacity();
-
-	if (spawnCapacity >= 400) {
-		bodyParts = [WORK, WORK, CARRY, MOVE, MOVE];
-	}
-
-	if (spawnCapacity >= 600) {
-		bodyParts = [WORK, WORK, CARRY, CARRY, MOVE, MOVE];
 	}
 
 	const sites = global.room.find(FIND_CONSTRUCTION_SITES);

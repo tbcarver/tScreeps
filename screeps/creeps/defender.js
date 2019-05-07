@@ -1,30 +1,31 @@
 
 var debug = require("../debug");
+var { maxWaitingDefenders } = require("../creepsRules");
 var spawnTools = require("../tools/spawnTools");
 var findTools = require("../tools/findTools");
 
 var defender = {};
 
-defender.spawn = function(id, spawnResult) {
-
-	var bodyParts = [RANGED_ATTACK, MOVE, MOVE, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH];
-	var defenderMemory = {
-		type: "defender"
-	}
-
-	var spawnCapacity = spawnTools.calculateSpawnCapacity();
-
-	if (spawnCapacity >= 400) {
-		bodyParts.push(...[TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH]);
-	}
-
-	if (spawnCapacity >= 600) {
-		bodyParts.push(...[RANGED_ATTACK, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH,]);
-	}
+defender.spawn = function(id, creepsCurrentCount, spawnResult) {
 
 	const targets = global.room.find(FIND_HOSTILE_CREEPS);
 
-	if (targets.length > 0) {
+	if (targets.length > 0 || creepsCurrentCount < maxWaitingDefenders) {
+
+		var bodyParts = [RANGED_ATTACK, MOVE, MOVE, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH];
+		var defenderMemory = {
+			type: "defender"
+		}
+
+		var spawnCapacity = spawnTools.calculateSpawnCapacity();
+
+		if (spawnCapacity >= 400) {
+			bodyParts.push(...[TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH]);
+		}
+
+		if (spawnCapacity >= 600) {
+			bodyParts.push(...[RANGED_ATTACK, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH,]);
+		}
 
 		var result = spawn.spawnCreep(bodyParts, id, {
 			memory: defenderMemory,
@@ -39,6 +40,8 @@ defender.spawn = function(id, spawnResult) {
 		} else if (ERR_NOT_ENOUGH_ENERGY) {
 
 			spawnResult.waitForSpawn = true;
+			debug.highlight(`defender did not spawn waiting for energy`,
+				spawnTools.calculateBodyCost(bodyParts));
 
 		} else {
 
@@ -60,7 +63,7 @@ defender.act = function(creep) {
 		}
 	} else {
 
-		debug.warning("defender hostile creep not found");
+		creep.moveTo(Game.flags["barracks"].pos);
 	}
 }
 

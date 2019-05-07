@@ -1,12 +1,13 @@
 
 var debug = require("../../debug");
+var bodyPartsFactory = require("../bodies/bodyPartsFactory");
 var findTools = require("../../tools/findTools");
 
 var controllerEnergizer = {};
 
-controllerEnergizer.spawn = function(id, spawnResult) {
+controllerEnergizer.spawn = function(id, creepsCurrentCount, spawnResult) {
 
-	var bodyParts = [WORK, CARRY, MOVE, MOVE];
+	var bodyParts = bodyPartsFactory.getBodyParts("energizer");
 	var controllerEnergizerMemory = {
 		type: "controllerEnergizer"
 	}

@@ -23,7 +23,7 @@ findTools.findClosestEnergy = function(pos) {
 
 	var energy = pos.findClosestByRange(FIND_STRUCTURES, {
 		filter: structure => structure.structureType == STRUCTURE_CONTAINER &&
-			structure.store[RESOURCE_ENERGY] > 200 && this.isInRange(pos, structure.pos, findRange)
+			structure.store[RESOURCE_ENERGY] > 100 && this.isInRange(pos, structure.pos, findRange)
 	});
 
 	if (!energy) {

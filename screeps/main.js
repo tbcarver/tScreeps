@@ -1,4 +1,7 @@
 
+// TODO: Test and fix spawn chance.
+//  Defenders are taking so long every one else dies during an attack.
+
 try {
 
 	var debug = require("./debug");
@@ -15,13 +18,13 @@ try {
 	debug.muted(`tick: ${Game.time} energy: ${global.room.energyAvailable} spawning:`,
 		global.spawn.spawning ? global.spawn.spawning.remainingTime : "" );
 
-	if (Math.random() < .2) {
-		debug.muted("spawn: ", global.spawn);
-	}
+	// if (Math.random() < .2) {
+	// 	debug.muted("spawn: ", global.spawn);
+	// }
 
-	if (Math.random() < .2) {
-		debug.muted("controller: ", global.controller);
-	}
+	// if (Math.random() < .2) {
+	// 	debug.muted("controller: ", global.controller);
+	// }
 
 	// if (Math.random() < .2) {
 	// 	debug.muted("sources: ", global.room.find(FIND_SOURCES));
@@ -29,12 +32,12 @@ try {
 
 	test();
 	//  constructionTools.createConstructionRoad();
-	//  constructionTools.createConstructionWalls();
+	//  constructionTools.createConstructionExtension();
 	// constructionTools.removeConstructionSite();
 	// constructionTools.destroyStructure();
 	// roomTools.lookAt();
 	// debug.primary("log", global.room.getEventLog(true));
-	// roomTools.createFlag("graveyard", COLOR_GREY, [{"x":"26","y":"26","roomName":"W6S0"}]);
+	// roomTools.createFlag("barracks", COLOR_BLUE, [{"x":"26","y":"22","roomName":"W6S0"}]);
 	// roomTools.consoleWall();
 
 	roomTools.consoleEnemies();
@@ -45,7 +48,7 @@ try {
 
 	creepsController.tick();
 
-	Memory.state.lastSpawnEnergy = global.spawn.energy;
+	Memory.state.lastRoomEnergyAvailable = global.room.energyAvailable;
 
 	// console.log(JSON.stringify(Game.spawns["spawn1"].room.lookAt(29, 25)))
 

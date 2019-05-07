@@ -1,14 +1,13 @@
 
 var debug = require("../../debug");
-var spawnTools = require("../../tools/spawnTools");
+var bodyPartsFactory = require("../bodies/bodyPartsFactory");
 var findTools = require("../../tools/findTools");
 var { maxEnergizersPerContainer } = require("../../creepsRules");
 
 var containerEnergizer = {};
 
-containerEnergizer.spawn = function(id, spawnResult) {
+containerEnergizer.spawn = function(id, creepsCurrentCount, spawnResult) {
 
-	var bodyParts = [WORK, CARRY, MOVE, MOVE];
 	var containerEnergizerMemory = {
 		type: "containerEnergizer",
 		resourceId: "",
@@ -17,33 +16,30 @@ containerEnergizer.spawn = function(id, spawnResult) {
 	}
 
 	var structure;
-	var containers = global.room.find(FIND_STRUCTURES, {
-		filter: {
-			structureType: STRUCTURE_CONTAINER
-		}
-	});
 
-	containers = containers.filter(container => {
+	// Evenly distribute creeps to each container up to the max creeps per container
+	for (var energizersPerContainer = 1; energizersPerContainer <= maxEnergizersPerContainer; energizersPerContainer++) {
 
-		var countStructures = countHarvestersAtStructurePosition(container.pos.x, container.pos.y);
+		var containers = global.room.find(FIND_STRUCTURES, {
+			filter: {
+				structureType: STRUCTURE_CONTAINER
+			}
+		});
 
-		return countStructures < maxEnergizersPerContainer;
-	});
+		containers = containers.filter(container => {
 
-	if (containers.length > 0) {
+			var countEnergizers = countContainerEnergizersAtStructurePosition(container.pos.x, container.pos.y);
 
-		structure = containers[0];
-		containerEnergizerMemory.structureId = structure.id;
-		containerEnergizerMemory.structurePos = structure.pos;		
+			return countEnergizers < energizersPerContainer;
+		});
+		
+		if (containers.length > 0) {
 
-		var spawnCapacity = spawnTools.calculateSpawnCapacity();
+			structure = containers[0];
+			containerEnergizerMemory.structureId = structure.id;
+			containerEnergizerMemory.structurePos = structure.pos;
 
-		if (spawnCapacity >= 400) {
-			bodyParts = [WORK, CARRY, CARRY, MOVE, MOVE];
-		}
-
-		if (spawnCapacity >= 600) {
-			bodyParts = [WORK, WORK, CARRY, CARRY, MOVE, MOVE];
+			break;
 		}
 	}
 
@@ -54,6 +50,7 @@ containerEnergizer.spawn = function(id, spawnResult) {
 		if (resource) {
 
 			containerEnergizerMemory.resourceId = resource.id;
+			var bodyParts = bodyPartsFactory.getBodyParts("energizer");
 
 			var result = spawn.spawnCreep(bodyParts, id, {
 				memory: containerEnergizerMemory,
@@ -109,8 +106,6 @@ containerEnergizer.act = function(creep) {
 				structure.store[RESOURCE_ENERGY] / structure.storeCapacity < .80
 		});
 
-		debug.warning("containerEnergizer transferring to alternate container");
-
 		if (creep.transfer(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 
 			creep.moveTo(container);
@@ -149,7 +144,7 @@ containerEnergizer.act = function(creep) {
 	}
 }
 
-function countHarvestersAtStructurePosition(x, y) {
+function countContainerEnergizersAtStructurePosition(x, y) {
 
 	var result = _.reduce(Memory.creeps, (countStructures, creepMemory) => {
 

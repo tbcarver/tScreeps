@@ -1,15 +1,14 @@
 
 var debug = require("../../debug");
-var spawnTools = require("../../tools/spawnTools");
+var bodyPartsFactory = require("../bodies/bodyPartsFactory");
 var findTools = require("../../tools/findTools");
 var { maxExtensionsPerEnergizer } = require("../../creepsRules");
 var coreArray = require("../../../lib/core/extensions/coreArray");
 
 var extensionEnergizer = {};
 
-extensionEnergizer.spawn = function(id, spawnResult) {
+extensionEnergizer.spawn = function(id, creepsCurrentCount, spawnResult) {
 
-	var bodyParts = [WORK, CARRY, MOVE, MOVE];
 	var extensionEnergizerMemory = {
 		type: "extensionEnergizer",
 		resourceId: "",
@@ -26,7 +25,7 @@ extensionEnergizer.spawn = function(id, spawnResult) {
 		}
 	});
 
-	extensions = extensions.filter(extension => {
+	availableExtensions = extensions.filter(extension => {
 
 		var occupiedPositions = getHarvesterStructurePositions(STRUCTURE_EXTENSION);
 		var isExtensionOccupied = occupiedPositions.some(occupiedPos => occupiedPos.x === extension.pos.x &&
@@ -35,17 +34,19 @@ extensionEnergizer.spawn = function(id, spawnResult) {
 		return !isExtensionOccupied;
 	});
 
-	if (extensions.length > 0) {
+	if (availableExtensions.length > 0) {
 
-		structure = extensions[0];
+		structure = availableExtensions[0];
+		var nextExtension = structure;
 		extensionEnergizerMemory.structures[0].id = structure.id;
 		extensionEnergizerMemory.structures[0].pos = structure.pos;
 
 		for (var index = 1; index < maxExtensionsPerEnergizer; index++) {
 
-			var nextExtension = structure.pos.findClosestByRange(FIND_STRUCTURES, {
+			nextExtension = nextExtension.pos.findClosestByRange(FIND_STRUCTURES, {
 				filter: nextStructure => nextStructure.structureType == STRUCTURE_EXTENSION &&
-					nextStructure.id !== structure.id
+					_.map(availableExtensions, availableExtension => availableExtension.id).includes(nextStructure.id) &&
+					!_.map(extensionEnergizerMemory.structures, structure => structure.id).includes(nextStructure.id)
 			});
 
 			if (nextExtension) {
@@ -56,18 +57,6 @@ extensionEnergizer.spawn = function(id, spawnResult) {
 				})
 			}
 		}
-
-		bodyParts = [WORK, CARRY, CARRY, MOVE];
-
-		var spawnCapacity = spawnTools.calculateSpawnCapacity();
-
-		if (spawnCapacity >= 400) {
-			bodyParts = [WORK, CARRY, CARRY, MOVE, MOVE];
-		}
-
-		if (spawnCapacity >= 600) {
-			bodyParts = [WORK, WORK, CARRY, CARRY, MOVE, MOVE];
-		}
 	}
 
 	var resource = structure.pos.findClosestByRange(FIND_SOURCES);
@@ -75,6 +64,7 @@ extensionEnergizer.spawn = function(id, spawnResult) {
 	if (extensionEnergizerMemory.structures.length > 0 && resource) {
 
 		extensionEnergizerMemory.resourceId = resource.id;
+		var bodyParts = bodyPartsFactory.getBodyParts("energizer");
 
 		var result = spawn.spawnCreep(bodyParts, id, {
 			memory: extensionEnergizerMemory,
@@ -91,7 +81,7 @@ extensionEnergizer.spawn = function(id, spawnResult) {
 			debug.warning(`extensionEnergizer did not spawn: ${result}`);
 		}
 	} else {
-		
+
 		debug.warning(`extensionEnergizer did not spawn no resources found`);
 	}
 
@@ -107,10 +97,7 @@ extensionEnergizer.act = function(creep) {
 			creep.memory.state = "harvesting";
 		}
 
-		var resource = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-			filter: structure => structure.structureType == STRUCTURE_CONTAINER &&
-				structure.store[RESOURCE_ENERGY] > 800 && findTools.isInRange(creep.pos, structure.pos, 15)
-		});
+		var resource = findTools.findClosestEnergy(global.spawn.pos);
 
 		if (resource) {
 

@@ -6,9 +6,8 @@ spawnTools.calculateSpawnCapacity = function() {
 
 	var spawnCapacity = global.room.energyAvailable;
 
-	// Check for not maxed out 300 energy capacity
-	if (!(global.spawn.energy < 300 && global.room.energyAvailable < 350 &&
-		Memory.state.lastSpawnEnergy < global.spawn.energy)) {
+	// Check if energy is still accumulating
+	if (Memory.state.lastRoomEnergyAvailable != global.room.energyAvailable) {
 
 		var extensions = global.room.find(FIND_MY_STRUCTURES, {
 			filter: { structureType: STRUCTURE_EXTENSION }
@@ -24,7 +23,7 @@ spawnTools.calculateSpawnCapacity = function() {
 
 spawnTools.calculateBodyCost = function(bodyParts) {
 
-	var cost = body.reduce(function(cost, part) {
+	var cost = bodyParts.reduce(function(cost, part) {
 		return cost + BODYPART_COST[part];
 	}, 0);
 

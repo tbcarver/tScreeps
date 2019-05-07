@@ -1,25 +1,15 @@
 
 var debug = require("../debug");
-var spawnTools = require("../tools/spawnTools");
+var bodyPartsFactory = require("./bodies/bodyPartsFactory");
 var findTools = require("../tools/findTools");
 
 var wallRepairer = {};
 
-wallRepairer.spawn = function(id, spawnResult) {
+wallRepairer.spawn = function(id, creepsCurrentCount, spawnResult) {
 
-	var bodyParts = [WORK, CARRY, MOVE, MOVE];
+	var bodyParts = bodyPartsFactory.getBodyParts("worker");
 	var wallRepairerMemory = {
 		type: "wallRepairer"
-	}
-
-	var spawnCapacity = spawnTools.calculateSpawnCapacity();
-
-	if (spawnCapacity >= 400) {
-		bodyParts = [WORK, WORK, CARRY, MOVE, MOVE];
-	}
-
-	if (spawnCapacity >= 600) {
-		bodyParts = [WORK, WORK, CARRY, CARRY, MOVE, MOVE];
 	}
 
 	const targets = global.room.find(FIND_STRUCTURES, {
@@ -87,7 +77,7 @@ wallRepairer.act = function(creep) {
 
 		var target;
 
-		for (var count = 1; count <= 100; count++) {
+		for (var count = 1; count <= 150; count++) {
 
 			target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
 				filter: structure => structure.structureType === STRUCTURE_WALL &&

@@ -4,7 +4,7 @@ var findTools = require("../tools/findTools");
 
 var creepBase = {};
 
-creepBase.spawn = function(inheritedCreep, ...args) {
+creepBase.spawn = function(inheritedCreep, creepsCurrentCount, ...args) {
 
 	var spawnResult = {
 		waitForSpawn: false,
@@ -12,7 +12,7 @@ creepBase.spawn = function(inheritedCreep, ...args) {
 	};
 
 	var id = getNextCreepId();
-	spawnResult = inheritedCreep.spawn(id, spawnResult, ...args);
+	spawnResult = inheritedCreep.spawn(id, creepsCurrentCount, spawnResult, ...args);
 
 	return spawnResult;
 }
