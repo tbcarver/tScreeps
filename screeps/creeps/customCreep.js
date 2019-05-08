@@ -5,7 +5,7 @@ var findTools = require("../tools/findTools");
 function CustomCreep(creep) {
 
 	this.creep = creep;
-	this.creepMemory = creep.memory;
+	this.memory = creep.memory;
 	this.type = creep.memory.type;
 	this.state = creep.memory.state;
 }

@@ -1,16 +1,16 @@
 
-var debug = require("../debug");
-var CustomCreep = require("./customCreep");
-var findTools = require("../tools/findTools");
+var debug = require("../../../debug");
+var CustomCreep = require("../../customCreep");
+var findTools = require("../../../tools/findTools");
 
-function EnergyWorker(creep) {
+function Energizer(creep) {
 
 	CustomCreep.call(this, creep);
 }
 
-EnergyWorker.prototype = Object.create(CustomCreep.prototype);
+Energizer.prototype = Object.create(CustomCreep.prototype);
 
-EnergyWorker.prototype.act = function() {
+Energizer.prototype.act = function() {
 
 	if (!CustomCreep.prototype.act.call(this)) {
 
@@ -42,18 +42,18 @@ EnergyWorker.prototype.act = function() {
 			}
 		}
 
-		if (this.state === "working" || creep.carry[RESOURCE_ENERGY] === creep.carryCapacity) {
+		if (this.state === "energizing" || creep.carry[RESOURCE_ENERGY] === creep.carryCapacity) {
 
-			if (this.state !== "working") {
-				this.state = "working";
+			if (this.state !== "energizing") {
+				this.state = "energizing";
 			}
 
-			this.work();
+			this.energize();
 		}
 	}
 }
 
-EnergyWorker.prototype.work = function() {
+Energizer.prototype.energize = function() {
 }
 
 

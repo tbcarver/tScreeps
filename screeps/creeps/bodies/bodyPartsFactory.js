@@ -1,7 +1,7 @@
 
 var services = require("../../services");
 var energizerBodyPartsStrategy = require("./energizerBodyPartsStrategy");
-var workerBodyPartsStrategy = require("./workerBodyPartsStrategy");
+var energyWorkerBodyPartsStrategy = require("./energyWorkerBodyPartsStrategy");
 
 var bodyPartsFactory = {};
 
@@ -16,8 +16,8 @@ bodyPartsFactory.getBodyParts = function(bodyPartsStrategyName) {
 			bodyPartsStrategy = energizerBodyPartsStrategy;
 			break;
 
-		case "worker":
-			bodyPartsStrategy = workerBodyPartsStrategy;
+		case "energyWorker":
+			bodyPartsStrategy = energyWorkerBodyPartsStrategy;
 			break;
 	}
 

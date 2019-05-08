@@ -1,85 +1,40 @@
 
-var debug = require("../../debug");
-var bodyPartsFactory = require("../bodies/bodyPartsFactory");
-var findTools = require("../../tools/findTools");
+var Energizer = require("./energizer");
 
-var spawnEnergizer = {};
+function SpawnEnergizer(creep) {
 
-spawnEnergizer.spawn = function(id, creepsCurrentCount, spawnResult) {
-
-	var bodyParts = bodyPartsFactory.getBodyParts("energizer");
-	var spawnEnergizerMemory = {
-		type: "spawnEnergizer"
-	}
-
-	var result = spawn.spawnCreep(bodyParts, id, {
-		memory: spawnEnergizerMemory,
-		energyStructures: findTools.findAllEnergyStructures()
-	});
-
-	if (result === OK) {
-
-		spawnResult.spawned = true;
-		debug.highlight(`spawnEnergizer spawning: ${id} memory: `, spawnEnergizerMemory);
-
-	} else {
-
-		debug.warning(`spawnEnergizer did not spawn: ${result}`);
-	}
-
-	return spawnResult;
+	Energizer.call(this, creep);
 }
 
-spawnEnergizer.act = function(creep) {
+SpawnEnergizer.prototype = Object.create(Energizer.prototype);
 
-	if (creep.memory.state === "harvesting" || creep.carry[RESOURCE_ENERGY] === 0) {
+SpawnEnergizer.prototype.act = function() {
 
-		if (creep.memory.state !== "harvesting") {
+	Energizer.prototype.act.call(this);
+}
 
-			creep.memory.state = "harvesting";
-		}
+SpawnEnergizer.prototype.energize = function() {
 
-		var resource = findTools.findClosestEnergy(global.spawn.pos);
-		// TODO: once found stick with it unless it is a container that is empty
+	var transferResult = this.creep.transfer(global.spawn, RESOURCE_ENERGY);
 
-		if (resource) {
+	if (transferResult == ERR_NOT_IN_RANGE) {
 
-			if (resource.structureType) {
+		this.creep.moveTo(global.spawn);
 
-				if (creep.withdraw(resource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-					creep.moveTo(resource);
-				}
+	} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
 
-			} else {
-
-				if (creep.harvest(resource) == ERR_NOT_IN_RANGE) {
-					creep.moveTo(resource);
-				}
-			}
-		} else {
-
-			debug.warning("spawnEnergizer resource not found");
-		}
-	}
-
-	if (creep.memory.state === "transferring" || creep.carry[RESOURCE_ENERGY] === creep.carryCapacity) {
-
-		if (creep.memory.state !== "transferring") {
-
-			creep.memory.state = "transferring";
-		}
-
-		var transferResult = creep.transfer(global.spawn, RESOURCE_ENERGY);
-
-		if (transferResult == ERR_NOT_IN_RANGE) {
-
-			creep.moveTo(global.spawn);
-
-		} else if (transferResult == ERR_FULL && creep.carry[RESOURCE_ENERGY] / creep.carryCapacity < .30) {
-
-			creep.memory.state = "harvesting";
-		}
+		this.state = "harvesting";
 	}
 }
 
-module.exports = spawnEnergizer
+SpawnEnergizer.initializeSpawn = function(creepsCurrentCount) {
+
+	var creepMemory = {
+		type: "spawnEnergizer",
+		bodyType: "energizer"
+	}
+
+	return creepMemory;
+}
+
+module.exports = SpawnEnergizer

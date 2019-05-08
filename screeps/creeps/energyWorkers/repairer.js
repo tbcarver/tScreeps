@@ -1,5 +1,5 @@
 
-var debug = require("../debug");
+var debug = require("../../../debug");
 var EnergyWorker = require("./energyWorker");
 
 function Repairer(creep) {
@@ -16,23 +16,23 @@ Repairer.prototype.act = function() {
 
 Repairer.prototype.work = function() {
 
-	const target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+	const target = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 		filter: structure => structure.hits < structure.hitsMax &&
 			structure.structureType !== STRUCTURE_WALL
 	});
 
 	if (target) {
 
-		if (creep.repair(target) == ERR_NOT_IN_RANGE) {
+		if (this.creep.repair(target) == ERR_NOT_IN_RANGE) {
 
-			creep.moveTo(target);
+			this.creep.moveTo(target);
 		}
 
 	} else {
 
-		debug.warning("Repairer cannot find any damaged structures");
+		// debug.warning("Repairer cannot find any damaged structures");
 
-		if (creep.carry[RESOURCE_ENERGY] / creep.carryCapacity < .30) {
+		if (this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
 
 			this.state = "harvesting";
 		}
@@ -52,7 +52,7 @@ Repairer.initializeSpawn = function(creepsCurrentCount) {
 
 		creepMemory = {
 			type: "repairer",
-			bodyType: "worker"
+			bodyType: "energyWorker"
 		}
 	}
 

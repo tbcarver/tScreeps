@@ -1,7 +1,7 @@
 
-var workerBodyPartsStrategy = {};
+var energyWorkerBodyPartsStrategy = {};
 
-workerBodyPartsStrategy.getBodyPartsObject = function(spawnCapacity) {
+energyWorkerBodyPartsStrategy.getBodyPartsObject = function(spawnCapacity) {
 
 	var bodyPartsObject = {
 		move: 1,
@@ -28,4 +28,4 @@ workerBodyPartsStrategy.getBodyPartsObject = function(spawnCapacity) {
 }
 
 
-module.exports = workerBodyPartsStrategy;
+module.exports = energyWorkerBodyPartsStrategy;

@@ -1,23 +1,57 @@
 
-var debug = require("../../debug");
-var bodyPartsFactory = require("../bodies/bodyPartsFactory");
-var findTools = require("../../tools/findTools");
-var { maxExtensionsPerEnergizer } = require("../../creepsRules");
-var coreArray = require("../../../lib/core/extensions/coreArray");
+var Energizer = require("./energizer");
 
-var extensionEnergizer = {};
+function ExtensionEnergizer(creep) {
 
-extensionEnergizer.spawn = function(id, creepsCurrentCount, spawnResult) {
+	Energizer.call(this, creep);
+}
 
-	var extensionEnergizerMemory = {
-		type: "extensionEnergizer",
-		resourceId: "",
-		structures: [{
-			id: "",
-			pos: {}
-		}],
-		activeStructureIndex: 0
+ExtensionEnergizer.prototype = Object.create(Energizer.prototype);
+
+ExtensionEnergizer.prototype.act = function() {
+
+	Energizer.prototype.act.call(this);
+}
+
+ExtensionEnergizer.prototype.energize = function() {
+
+	var extension = Game.getObjectById(this.memory.extensions[this.memory.activeExtensionIndex].id);
+
+	if (extension) {
+
+		var transferResult = this.creep.transfer(extension, RESOURCE_ENERGY);
+
+		if (transferResult == ERR_NOT_IN_RANGE) {
+
+			this.creep.moveTo(extension);
+
+		} else if (transferResult == ERR_FULL) {
+
+			if (this.memory.extensions.length > 1) {
+
+				this.memory.activeExtensionIndex = coreArray.incrementArrayIndex(this.memory.extensions, this.memory.activeExtensionIndex);
+				var transferResult = this.creep.transfer(extension, RESOURCE_ENERGY);
+
+				if (transferResult == ERR_NOT_IN_RANGE) {
+
+					this.creep.moveTo(extension);
+				}
+			}
+
+			if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+
+				this.state = "harvesting";
+			}
+		}
+	} else {
+
+		debug.danger("extensionEnergizer extension not found: " + this.memory.extensions[0].id);
 	}
+}
+
+ExtensionEnergizer.initializeSpawn = function(creepsCurrentCount) {
+
+	var creepMemory;
 
 	var extensions = global.room.find(FIND_MY_STRUCTURES, {
 		filter: {
@@ -36,22 +70,30 @@ extensionEnergizer.spawn = function(id, creepsCurrentCount, spawnResult) {
 
 	if (availableExtensions.length > 0) {
 
-		structure = availableExtensions[0];
-		var nextExtension = structure;
-		extensionEnergizerMemory.structures[0].id = structure.id;
-		extensionEnergizerMemory.structures[0].pos = structure.pos;
+		creepMemory = {
+			type: "extensionEnergizer",
+			extensions: [{
+				id: "",
+				pos: {}
+			}],
+			activeExtensionIndex: 0
+		};
+
+		var nextExtension = availableExtensions[0];
+		creepMemory.extensions[0].id = nextExtension.id;
+		creepMemory.extensions[0].pos = nextExtension.pos;
 
 		for (var index = 1; index < maxExtensionsPerEnergizer; index++) {
 
 			nextExtension = nextExtension.pos.findClosestByRange(FIND_STRUCTURES, {
 				filter: nextStructure => nextStructure.structureType == STRUCTURE_EXTENSION &&
 					_.map(availableExtensions, availableExtension => availableExtension.id).includes(nextStructure.id) &&
-					!_.map(extensionEnergizerMemory.structures, structure => structure.id).includes(nextStructure.id)
+					!_.map(creepMemory.extensions, extension => extension.id).includes(nextStructure.id)
 			});
 
 			if (nextExtension) {
 
-				extensionEnergizerMemory.structures.push({
+				creepMemory.extensions.push({
 					id: nextExtension.id,
 					pos: nextExtension.pos
 				})
@@ -59,134 +101,7 @@ extensionEnergizer.spawn = function(id, creepsCurrentCount, spawnResult) {
 		}
 	}
 
-	var resource = structure.pos.findClosestByRange(FIND_SOURCES);
-
-	if (extensionEnergizerMemory.structures.length > 0 && resource) {
-
-		extensionEnergizerMemory.resourceId = resource.id;
-		var bodyParts = bodyPartsFactory.getBodyParts("energizer");
-
-		var result = spawn.spawnCreep(bodyParts, id, {
-			memory: extensionEnergizerMemory,
-			energyStructures: findTools.findAllEnergyStructures()
-		});
-
-		if (result === OK) {
-
-			spawnResult.spawned = true;
-			debug.highlight(`extensionEnergizer spawning: ${id} memory: `, extensionEnergizerMemory);
-
-		} else {
-
-			debug.warning(`extensionEnergizer did not spawn: ${result}`);
-		}
-	} else {
-
-		debug.warning(`extensionEnergizer did not spawn no resources found`);
-	}
-
-	return spawnResult;
+	return creepMemory;
 }
 
-extensionEnergizer.act = function(creep) {
-
-	if (creep.memory.state === "harvesting" || creep.carry[RESOURCE_ENERGY] === 0) {
-
-		if (creep.memory.state !== "harvesting") {
-
-			creep.memory.state = "harvesting";
-		}
-
-		var resource = findTools.findClosestEnergy(global.spawn.pos);
-
-		if (resource) {
-
-			if (creep.withdraw(resource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-
-				creep.moveTo(resource);
-			}
-
-		} else {
-
-			resource = Game.getObjectById(creep.memory.resourceId);
-
-			if (resource) {
-
-				if (creep.harvest(resource) == ERR_NOT_IN_RANGE) {
-
-					creep.moveTo(resource);
-				}
-
-			} else {
-
-				debug.danger("extensionEnergizer structure not found: " + creep.memory.resourceId);
-			}
-		}
-	}
-
-	if (creep.memory.state === "transferring" || creep.carry[RESOURCE_ENERGY] === creep.carryCapacity) {
-
-		if (creep.memory.state !== "transferring") {
-
-			creep.memory.state = "transferring";
-		}
-
-		var structure = Game.getObjectById(creep.memory.structures[creep.memory.activeStructureIndex].id);
-
-		if (structure) {
-
-			var transferResult = creep.transfer(structure, RESOURCE_ENERGY);
-
-			if (transferResult == ERR_NOT_IN_RANGE) {
-
-				creep.moveTo(structure);
-
-			} else if (transferResult == ERR_FULL) {
-
-				if (creep.memory.structures.length > 1) {
-
-					creep.memory.activeStructureIndex = coreArray.incrementArrayIndex(creep.memory.structures, creep.memory.activeStructureIndex);
-					var transferResult = creep.transfer(structure, RESOURCE_ENERGY);
-
-					if (transferResult == ERR_NOT_IN_RANGE) {
-
-						creep.moveTo(structure);
-					}
-				}
-
-				if (transferResult == ERR_FULL && creep.carry[RESOURCE_ENERGY] / creep.carryCapacity < .30) {
-
-					creep.memory.state = "harvesting";
-				}
-			}
-		} else {
-
-			debug.danger("extensionEnergizer structure not found: " + creep.memory.structures[0].id);
-		}
-	}
-}
-
-function getHarvesterStructurePositions(structureType) {
-
-	var result = _.reduce(Memory.creeps, (filteredPositions, creepMemory) => {
-
-		if (creepMemory.type === "extensionEnergizer") {
-
-			positions = creepMemory.structures.reduce((structurePositions, structure) => {
-
-				structurePositions.push(structure.pos);
-
-				return structurePositions;
-			}, []);
-
-			filteredPositions.push(...positions);
-		}
-
-		return filteredPositions;
-	}, []);
-
-	return result;
-}
-
-
-module.exports = extensionEnergizer
+module.exports = ExtensionEnergizer
