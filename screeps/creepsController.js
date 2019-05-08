@@ -1,15 +1,6 @@
 
 var debug = require("./debug");
-var creepBase = require("./creeps/creepBase");
-var builder = require("./creeps/builder");
-var containerEnergizer = require("./creeps/energizers/containerEnergizer");
-var controllerEnergizer = require("./creeps/energizers/controllerEnergizer");
-var defender = require("./creeps/defender");
-var extensionEnergizer = require("./creeps/energizers/extensionEnergizer");
-var repairer = require("./creeps/repairer");
-var spawnEnergizer = require("./creeps/energizers/spawnEnergizer");
-var wallRepairer = require("./creeps/wallRepairer");
-var { creepsSpawnRules } = require("./creepsRules");
+var customCreepFactory = require("./creeps/customCreepFactory");
 
 var creepsController = {};
 
@@ -31,109 +22,14 @@ creepsController.tick = function() {
 	for (var index in Game.creeps) {
 
 		var creep = Game.creeps[index];
+		var customCreep = customCreepFactory(creep, creepsStatistics);
 
 		// debug.temp(`creep act: type: ${creep.memory.type} ticks: ${creep.ticksToLive}`);
-
-		// NOTE: A poor man's type of polymorphism is used here because of CPU cycle performance consideration.
-		switch (creep.memory.type) {
-
-			case "builder":
-
-				creepBase.act(builder, creep);
-				creepsStatistics.builders++;
-				break;
-
-			case "containerEnergizer":
-
-				creepBase.act(containerEnergizer, creep);
-				creepsStatistics.containerEnergizers++;
-				break;
-
-			case "controllerEnergizer":
-
-				creepBase.act(controllerEnergizer, creep);
-				creepsStatistics.controllerEnergizers++;
-				break;
-
-			case "defender":
-
-				creepBase.act(defender, creep);
-				creepsStatistics.defenders++;
-				break;
-
-			case "extensionEnergizer":
-
-				// debug.temp("creep:", creep)
-				// debug.temp("creep memory:", creep.memory)
-				creepBase.act(extensionEnergizer, creep);
-				creepsStatistics.extensionEnergizers++;
-				break;
-
-			case "repairer":
-
-				// debug.temp("creep:", creep)
-				// debug.temp("creep memory:", creep.memory)
-				creepBase.act(repairer, creep);
-				creepsStatistics.repairers++;
-				break;
-
-			case "spawnEnergizer":
-			
-				creepBase.act(spawnEnergizer, creep);
-				creepsStatistics.spawnEnergizers++;
-				break;
-
-			case "wallRepairer":
-
-				creepBase.act(wallRepairer, creep);
-				creepsStatistics.wallRepairers++;
-				break;
-		}
+		customCreep.act();
 	}
 
 	debug.muted(`creeps:`, Object.keys(Game.creeps).length, creepsStatistics);
-
-	if (!global.spawn.spawning && global.room.energyAvailable >= 250) {
-
-		debug.primary("spawn chance", global.room.energyAvailable);
-		// debug.temp("creep stats:", creepsStatistics, creepsSpawnRules)
-
-		var spawnResult = {
-			waitForSpawn: false,
-			spawned: false
-		};
-
-		// NOTE: Order here is prioritized by creep type
-		spawnResult = spawn(spawnResult, repairer, creepsStatistics.repairers, creepsSpawnRules.repairers);
-		spawnResult = spawn(spawnResult, spawnEnergizer, creepsStatistics.spawnEnergizers, creepsSpawnRules.spawnEnergizers);
-		spawnResult = spawn(spawnResult, defender, creepsStatistics.defenders, creepsSpawnRules.defenders);
-		spawnResult = spawn(spawnResult, containerEnergizer, creepsStatistics.containerEnergizers, creepsSpawnRules.containerEnergizers);
-		spawnResult = spawn(spawnResult, extensionEnergizer, creepsStatistics.extensionEnergizers, creepsSpawnRules.extensionEnergizers);
-		spawnResult = spawn(spawnResult, builder, creepsStatistics.builders, creepsSpawnRules.builders);
-		spawnResult = spawn(spawnResult, controllerEnergizer, creepsStatistics.controllerEnergizers, creepsSpawnRules.controllerEnergizers);
-		spawnResult = spawn(spawnResult, wallRepairer, creepsStatistics.wallRepairers, creepsSpawnRules.wallRepairers);
-	}
-}
-
-function spawn(previousSpawnResult, inheritedCreep, creepsCurrentCount, creepsSpawnRulesCount) {
-
-	if (!previousSpawnResult.waitForSpawn && !previousSpawnResult.spawned) {
-
-		if (creepsCurrentCount < creepsSpawnRulesCount) {
-
-			var spawnResult = creepBase.spawn(inheritedCreep, creepsCurrentCount);
-
-			if (spawnResult && spawnResult.waitForSpawn) {
-				previousSpawnResult.waitForSpawn = spawnResult.waitForSpawn;
-			}
-
-			if (spawnResult && spawnResult.spawned) {
-				previousSpawnResult.spawned = spawnResult.spawned;
-			}
-		}
-	}
-
-	return previousSpawnResult;
+	customCreepSpawner.spawnCreep(creepsStatistics);
 }
 
 function cleanUpTheDead() {

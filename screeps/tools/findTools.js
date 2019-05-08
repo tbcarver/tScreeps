@@ -19,17 +19,30 @@ findTools.findAllEnergyStructures = function() {
 // NOTE: Order is important.
 findTools.findClosestEnergy = function(pos) {
 
-	var findRange = 10;
-
 	var energy = pos.findClosestByRange(FIND_STRUCTURES, {
 		filter: structure => structure.structureType == STRUCTURE_CONTAINER &&
-			structure.store[RESOURCE_ENERGY] > 100 && this.isInRange(pos, structure.pos, findRange)
+			structure.store[RESOURCE_ENERGY] > 100 && this.isInRange(pos, structure.pos, 10)
 	});
 
 	if (!energy) {
 
 		energy = pos.findClosestByRange(FIND_SOURCES, {
-			filter: resource => this.isInRange(pos, resource.pos, findRange)
+			filter: resource => this.isInRange(pos, resource.pos, 10)
+		});
+	}
+
+	if (!energy) {
+
+		energy = pos.findClosestByRange(FIND_STRUCTURES, {
+			filter: structure => structure.structureType == STRUCTURE_CONTAINER &&
+			structure.store[RESOURCE_ENERGY] > 100 && this.isInRange(pos, structure.pos, 20)
+		});
+	}
+
+	if (!energy) {
+
+		energy = pos.findClosestByRange(FIND_SOURCES, {
+			filter: resource => this.isInRange(pos, resource.pos, 20)
 		});
 	}
 
