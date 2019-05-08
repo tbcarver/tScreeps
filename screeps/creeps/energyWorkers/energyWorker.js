@@ -1,7 +1,7 @@
 
-var debug = require("../../../debug");
-var CustomCreep = require("../../customCreep");
-var findTools = require("../../../tools/findTools");
+var debug = require("../../debug");
+var CustomCreep = require("../customCreep");
+var findTools = require("../../tools/findTools");
 
 function EnergyWorker(creep) {
 
@@ -57,4 +57,4 @@ EnergyWorker.prototype.work = function() {
 }
 
 
-module.exports = Repairer
+module.exports = EnergyWorker

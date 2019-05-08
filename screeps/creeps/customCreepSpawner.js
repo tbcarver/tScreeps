@@ -41,7 +41,7 @@ function trySpawn(previousSpawnResult, customCreep, creepsCurrentCount, creepsSp
 
 		if (creepsCurrentCount < creepsSpawnRulesCount) {
 
-			var creepMemory = customCreep.initializeSpawn(creepsCurrentCount);
+			var creepMemory = customCreep.initializeSpawnCreepMemory(creepsCurrentCount);
 			var spawnResult = spawn(creepMemory);
 
 			if (spawnResult && spawnResult.waitForSpawn) {

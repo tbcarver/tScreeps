@@ -1,13 +1,19 @@
 {
   "name": "screeps-project",
   "version": "1.0.0",
-  "license": "MIT",
+  "author": "Tyler Carver <carver230620@cua.ed>",
+  "scripts": {
+    "deploy": "webpack",
+    "test": "mocha --recursive"
+  },
   "dependencies": {
     "@screeps/common": "^2.9.0",
     "@types/lodash": "^4.14.123",
     "@types/screeps": "^2.5.3",
+    "mocha": "^6.1.4",
     "screeps-api": "^1.8.1",
     "screeps-modules": "^1.1.1",
+    "simple-mock": "^0.8.0",
     "source-map": "^0.6.1",
     "webpack": "3.12.0"
   }

@@ -1,5 +1,5 @@
 
-var services = require("../../services");
+var tools = require("../../tools/tools");
 var energizerBodyPartsStrategy = require("./energizerBodyPartsStrategy");
 var energyWorkerBodyPartsStrategy = require("./energyWorkerBodyPartsStrategy");
 
@@ -23,7 +23,7 @@ bodyPartsFactory.getBodyParts = function(bodyPartsStrategyName) {
 
 	if (bodyPartsStrategy) {
 
-		var spawnCapacity = services.spawnTools.calculateSpawnCapacity();
+		var spawnCapacity = tools.spawnTools.calculateSpawnCapacity();
 		bodyPartsObject = bodyPartsStrategy.getBodyPartsObject(spawnCapacity);
 
 		if (bodyPartsObject) {
