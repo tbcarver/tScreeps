@@ -12,12 +12,12 @@ energyWorkerBodyPartsStrategy.getBodyPartsObject = function(spawnCapacity) {
 	var numberOf100s = Math.floor(spawnCapacity / 100);
 	var numberOf50s = spawnCapacity >= (numberOf100s * 100) + 50 ? 1 : 0;
 
-	if (spawnCapacity < 400) {
+	if (spawnCapacity >= 300 && spawnCapacity < 400) {
 
 		bodyPartsObject.work = numberOf100s - 1;
 		bodyPartsObject.carry = 1 + (numberOf50s * 1);
 
-	} else {
+	} else if (spawnCapacity >= 400) {
 
 		bodyPartsObject.work = numberOf100s - 2;
 		bodyPartsObject.carry = 2 + (numberOf50s * 1);

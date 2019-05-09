@@ -5,16 +5,15 @@ function CustomCreep(creep) {
 	this.creep = creep;
 	this.memory = creep.memory;
 	this.type = creep.memory.type;
-	this.state = creep.memory.state;
-}
-
-CustomCreep.prototype.state = {
-	get(){
-
-	},
-	set(){
-		creep.memory.state = 
-	}
+	
+    Object.defineProperty(this, 'state', {
+        get: function() {
+            return this.memory.state;
+        },
+        set: function(state) {
+            this.memory.state = state
+        }
+    });
 }
 
 CustomCreep.prototype.act = function() {

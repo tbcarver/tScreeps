@@ -2,6 +2,19 @@
 
 var roomTools = {};
 
+roomTools.isDropContainer = function(container) {
+
+	var energyStructures = global.room.find(FIND_MY_STRUCTURES, {
+		filter: {
+			structureType: STRUCTURE_EXTENSION
+		}
+	});
+
+	energyStructures.push(global.spawn);
+
+	return energyStructures;
+}
+
 roomTools.createFlag = function(name, colorConstant, positions) {
 
 	if (positions.length > 0) {

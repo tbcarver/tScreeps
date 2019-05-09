@@ -15,8 +15,6 @@ Repairer.prototype.act = function() {
 
 Repairer.prototype.work = function() {
 
-	debug.temp("WORK")
-
 	const target = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 		filter: structure => structure.hits < structure.hitsMax &&
 			structure.structureType !== STRUCTURE_WALL
