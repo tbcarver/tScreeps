@@ -1,0 +1,10 @@
+{
+  "name": "@types/coreScreeps",
+  "version": "1.0.0",
+  "main": "",
+  "author": "Tyler Carver <carver230620@cua.edu>",
+  "scripts": {
+    "build-npm-package-tarball": "npm pack"
+  },
+  "typeScriptVersion": "2.6"
+}

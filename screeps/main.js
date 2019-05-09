@@ -4,7 +4,7 @@
 
 try {
 
-	var debug = require("./debug");
+	var debug = require("../lib/coreVendor/screeps/debug");
 	var test = require("./tools/testTools");
 	var constructionTools = require("./tools/constructionTools");
 	var roomTools = require("./tools/roomTools");
@@ -33,7 +33,7 @@ try {
 
 	test();
 	//  constructionTools.createConstructionRoad();
-	//  constructionTools.createConstructionExtension();
+	//  constructionTools.createConstructionContainer();
 	// constructionTools.removeConstructionSite();
 	// constructionTools.destroyStructure();
 	// roomTools.lookAt();

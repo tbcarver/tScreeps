@@ -25,7 +25,7 @@ constructionTools.createConstructionContainer = function() {
 	var positions =
 
 
-		[{ "x": "35", "y": "17", "roomName": "W6S0" }]
+	[{"x":"33","y":"32","roomName":"W6S0"}]
 
 	this.createConstructionSite(positions, STRUCTURE_CONTAINER);
 }
@@ -83,8 +83,8 @@ constructionTools.removeConstructionSite = function() {
 constructionTools.destroyStructure = function() {
 
 	var positions =
-	[{"x":"26","y":"3","roomName":"W6S0"},{"x":"26","y":"4","roomName":"W6S0"},{"x":"26","y":"5","roomName":"W6S0"},{"x":"26","y":"6","roomName":"W6S0"},{"x":"26","y":"7","roomName":"W6S0"}]
-	
+
+	[{"x":"33","y":"32","roomName":"W6S0"}]
 
 	if (positions.length > 0) {
 

@@ -2,17 +2,35 @@
 
 var roomTools = {};
 
+var neighborDifferentials = [
+	{ x: -1, y: -1 },
+	{ x: -1, y: 0 },
+	{ x: -1, y: 1 },
+	{ x: 0, y: -1 },
+	{ x: 0, y: 1 },
+	{ x: 1, y: -1 },
+	{ x: 1, y: 0 },
+	{ x: 1, y: 1 },
+];
+
 roomTools.isDropContainer = function(container) {
 
-	var energyStructures = global.room.find(FIND_MY_STRUCTURES, {
-		filter: {
-			structureType: STRUCTURE_EXTENSION
+	var isDropContainer = false;
+	var sources = global.room.find(FIND_SOURCES);
+
+	for (var source of sources) {
+		for (var neighborDifferential of neighborDifferentials) {
+
+			if (source.pos.x + neighborDifferential.x === container.x &&
+				source.pos.y + neighborDifferential.y === container.y) {
+
+				isDropContainer = true;
+				break;
+			}
 		}
-	});
+	}
 
-	energyStructures.push(global.spawn);
-
-	return energyStructures;
+	return isDropContainer;
 }
 
 roomTools.createFlag = function(name, colorConstant, positions) {
