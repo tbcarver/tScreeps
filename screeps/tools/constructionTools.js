@@ -6,7 +6,7 @@ constructionTools.createConstructionRoad = function() {
 
 	var positions =
 
-	[{"x":"31","y":"6","roomName":"W6S0"}]
+	[{"x":"29","y":"29","roomName":"W6S0"},{"x":"29","y":"21","roomName":"W6S0"}]
 
 	this.createConstructionSite(positions, STRUCTURE_ROAD);
 }
@@ -24,7 +24,7 @@ constructionTools.createConstructionContainer = function() {
 
 	var positions =
 
-	[{"x":"35","y":"6","roomName":"W6S0"}]
+	[{"x":"32","y":"25","roomName":"W6S0"},{"x":"31","y":"9","roomName":"W6S0"}]
 
 	this.createConstructionSite(positions, STRUCTURE_CONTAINER);
 }
@@ -46,7 +46,7 @@ constructionTools.createConstructionSite = function(positions, structureType, na
 
 			var position = new RoomPosition(positions[index].x, positions[index].y, positions[index].roomName);
 			var result = room.createConstructionSite(position, structureType, name);
-			debug.highlight(`created construction site: type: ${STRUCTURE_ROAD}: ${result}`);
+			debug.highlight(`created construction site: type: ${structureType}: ${result}`);
 		}
 	}
 }
@@ -55,8 +55,7 @@ constructionTools.removeConstructionSite = function() {
 
 	var positions =
 
-
-	[{"x":"26","y":"26","roomName":"W6S0"},{"x":"26","y":"25","roomName":"W6S0"},{"x":"26","y":"27","roomName":"W6S0"}]
+	[{"x":"29","y":"29","roomName":"W6S0"},{"x":"29","y":"21","roomName":"W6S0"}]
 
 	if (positions.length > 0) {
 
@@ -83,7 +82,7 @@ constructionTools.destroyStructure = function() {
 
 	var positions =
 
-	[{"x":"32","y":"25","roomName":"W6S0"},{"x":"31","y":"9","roomName":"W6S0"}]
+	[{"x":"29","y":"21","roomName":"W6S0"},{"x":"29","y":"29","roomName":"W6S0"}]
 
 	if (positions.length > 0) {
 

@@ -8,6 +8,7 @@ try {
 	var test = require("./tools/testTools");
 	var constructionTools = require("./tools/constructionTools");
 	var roomTools = require("./tools/roomTools");
+	var spawnTools = require("./tools/spawnTools");
 	var visualizeTools = require("./tools/visualizeTools");
 	var creepsController = require("./creepsController");
 
@@ -16,7 +17,8 @@ try {
 	global.room = spawn.room;
 	global.controller = spawn.room.controller;
 	// console.log(controller.activateSafeMode())
-	debug.muted(`tick: ${Game.time} energy: ${room.energyAvailable} spawning:`,
+	var spawnCapacity = spawnTools.calculateSpawnCapacity();
+	debug.muted(`tick: ${Game.time} energy: ${room.energyAvailable} capacity ${spawnCapacity} spawning:`,
 		spawn.spawning ? spawn.spawning.remainingTime : "" );
 
 	// if (Math.random() < .2) {
@@ -35,7 +37,7 @@ try {
 	//  constructionTools.createConstructionRoad();
 	//  constructionTools.createConstructionContainer();
 	// constructionTools.removeConstructionSite();
-	constructionTools.destroyStructure();
+	// constructionTools.destroyStructure();
 	// roomTools.lookAt();
 	// debug.primary("log", room.getEventLog(true));
 	// roomTools.createFlag("barracks", COLOR_BLUE, [{"x":"26","y":"22","roomName":"W6S0"}]);

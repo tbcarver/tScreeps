@@ -51,6 +51,7 @@ customCreepFactory.buildCreep = function(creep, creepsStatistics) {
 
 		case "extensionEnergizer":
 
+			// creep.suicide();
 			// debug.temp("creep:", creep)
 			// debug.temp("creep memory:", creep.memory)
 			customCreep = new ExtensionEnergizer(creep);

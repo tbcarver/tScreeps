@@ -17,19 +17,23 @@ DropContainerHarvester.prototype.act = function() {
 		if (this.state === "harvesting") {
 
 			var resource = Game.getObjectById(this.memory.resourceId);
+			var container = Game.getObjectById(this.memory.containerId);
 
-			if (resource) {
+			if (resource && container) {
 
-				var result = this.creep.harvest(resource);
+				if (container.store.energy < container.storeCapacity) {
 
-				if (result !== OK) {
+					var result = this.creep.harvest(resource);
 
-					debug.danger("dropContainerHarvester harvest failed:", result);
+					if (result !== OK) {
+	
+						debug.danger("dropContainerHarvester harvest failed:", result);
+					}
 				}
-
 			} else {
 
-				debug.danger("dropContainerHarvester resource not found:", this.memory.resourceId);
+				debug.danger("dropContainerHarvester resource or container not found:",
+					this.memory.resourceId, this.memory.containerId);
 			}
 		}
 

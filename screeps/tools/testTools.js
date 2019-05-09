@@ -5,11 +5,9 @@ var spawnTools = require("./spawnTools");
 var testObject = require("../creeps/energizers/extensionEnergizer");
 
 function tick() {
-
 	
 	// var targets = room.find(FIND_STRUCTURES, {
-	// 	filter: structure => structure.structureType == STRUCTURE_CONTAINER &&
-	// 		!roomTools.isDropContainer(structure)
+	// 	filter: structure => structure.structureType == STRUCTURE_CONTAINER
 	// });
 
 	// debug.temp(_.map(targets, target => target.pos));

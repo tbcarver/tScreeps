@@ -2,7 +2,7 @@
 
 var roomTools = {};
 
-var neighborDifferentials = [
+var adjacentDifferentials = [
 	{ x: -1, y: -1 },
 	{ x: -1, y: 0 },
 	{ x: -1, y: 1 },
@@ -19,10 +19,12 @@ roomTools.isDropContainer = function(container) {
 	var sources = room.find(FIND_SOURCES);
 
 	for (var source of sources) {
-		for (var neighborDifferential of neighborDifferentials) {
+		for (var adjacentDifferential of adjacentDifferentials) {
 
-			if (source.pos.x + neighborDifferential.x === container.pos.x &&
-				source.pos.y + neighborDifferential.y === container.pos.y) {
+			// TODO: use the isAdjacent to function of RoomPosition
+
+			if (source.pos.x + adjacentDifferential.x === container.pos.x &&
+				source.pos.y + adjacentDifferential.y === container.pos.y) {
 
 				isDropContainer = true;
 				break;

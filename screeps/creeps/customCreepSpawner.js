@@ -1,5 +1,6 @@
 
 var findTools = require("../tools/findTools");
+var spawnTools = require("../tools/spawnTools");
 var { creepsSpawnRules } = require("../creepsRules");
 var bodyPartsFactory = require("./bodies/bodyPartsFactory");
 
@@ -81,7 +82,8 @@ function spawnCreep(creepMemory) {
 		if (result === OK) {
 	
 			spawnResult.spawned = true;
-			debug.highlight(`${creepMemory.type} spawning: ${id} memory: `, creepMemory);
+			debug.highlight(`${creepMemory.type} spawning: ${id} cost: ${spawnTools.calculateBodyCost(bodyParts)}
+				memory:`, creepMemory);
 	
 		} else if (ERR_NOT_ENOUGH_ENERGY && creepMemory.waitForSpawn) {
 	

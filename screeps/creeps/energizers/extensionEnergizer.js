@@ -1,5 +1,7 @@
 
 var Energizer = require("./energizer");
+var { maxExtensionsPerEnergizer } = require("../../creepsRules");
+var coreArray = require("../../../lib/core/extensions/coreArray");
 
 function ExtensionEnergizer(creep) {
 
@@ -59,9 +61,9 @@ ExtensionEnergizer.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 		}
 	});
 
+	var occupiedPositions = getCreepExtensionPositions();
 	availableExtensions = extensions.filter(extension => {
 
-		var occupiedPositions = getHarvesterStructurePositions(STRUCTURE_EXTENSION);
 		var isExtensionOccupied = occupiedPositions.some(occupiedPos => occupiedPos.x === extension.pos.x &&
 			occupiedPos.y === extension.pos.y)
 
@@ -72,6 +74,7 @@ ExtensionEnergizer.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 
 		creepMemory = {
 			type: "extensionEnergizer",
+			bodyPartsType: "energizer",
 			extensions: [{
 				id: "",
 				pos: {}
@@ -79,29 +82,59 @@ ExtensionEnergizer.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 			activeExtensionIndex: 0
 		};
 
-		var nextExtension = availableExtensions[0];
+		var nextExtension = spawn.pos.findClosestByRange(FIND_STRUCTURES, {
+			filter: nextStructure => nextStructure.structureType == STRUCTURE_EXTENSION &&
+				_.map(availableExtensions, availableExtension => availableExtension.id).includes(nextStructure.id)
+		});
+
 		creepMemory.extensions[0].id = nextExtension.id;
 		creepMemory.extensions[0].pos = nextExtension.pos;
+		// debug.temp("next", nextExtension.pos, 0);
 
 		for (var index = 1; index < maxExtensionsPerEnergizer; index++) {
-
+			// NOTE: The structures must be adjacent
 			nextExtension = nextExtension.pos.findClosestByRange(FIND_STRUCTURES, {
 				filter: nextStructure => nextStructure.structureType == STRUCTURE_EXTENSION &&
 					_.map(availableExtensions, availableExtension => availableExtension.id).includes(nextStructure.id) &&
 					!_.map(creepMemory.extensions, extension => extension.id).includes(nextStructure.id)
 			});
 
-			if (nextExtension) {
-
-				creepMemory.extensions.push({
-					id: nextExtension.id,
-					pos: nextExtension.pos
-				})
+			if (!nextExtension) {
+				break;
 			}
+
+			// debug.temp("next", nextExtension.pos, index);
+
+			creepMemory.extensions.push({
+				id: nextExtension.id,
+				pos: nextExtension.pos
+			});
 		}
 	}
 
 	return creepMemory;
+}
+
+function getCreepExtensionPositions() {
+
+	var result = _.reduce(Memory.creeps, (filteredPositions, creepMemory) => {
+
+		if (creepMemory.type === "extensionEnergizer") {
+
+			positions = creepMemory.extensions.reduce((extensionPositions, extension) => {
+
+				extensionPositions.push(extension.pos);
+
+				return extensionPositions;
+			}, []);
+
+			filteredPositions.push(...positions);
+		}
+
+		return filteredPositions;
+	}, []);
+
+	return result;
 }
 
 module.exports = ExtensionEnergizer

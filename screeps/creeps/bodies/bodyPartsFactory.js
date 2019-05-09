@@ -33,14 +33,14 @@ bodyPartsFactory.getBodyParts = function(bodyPartsStrategyName) {
 
 		if (bodyPartsObject) {
 
-			bodyParts = toBodyParts(bodyPartsObject);
+			bodyParts = this.toBodyParts(bodyPartsObject);
 		}
 	}
 
 	return bodyParts;
 }
 
-function toBodyParts(bodyPartsObject) {
+bodyPartsFactory.toBodyParts = function(bodyPartsObject) {
 
 	var bodyParts = [];
 
