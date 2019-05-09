@@ -7,7 +7,7 @@ var defender = {};
 
 defender.spawn = function(id, creepsCurrentCount, spawnResult) {
 
-	const targets = global.room.find(FIND_HOSTILE_CREEPS);
+	const targets = room.find(FIND_HOSTILE_CREEPS);
 
 	if (targets.length > 0 || creepsCurrentCount < maxWaitingDefenders) {
 

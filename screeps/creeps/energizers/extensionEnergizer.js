@@ -53,7 +53,7 @@ ExtensionEnergizer.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 
 	var creepMemory;
 
-	var extensions = global.room.find(FIND_MY_STRUCTURES, {
+	var extensions = room.find(FIND_MY_STRUCTURES, {
 		filter: {
 			structureType: STRUCTURE_EXTENSION
 		}

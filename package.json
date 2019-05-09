@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@screeps/common": "^2.9.0",
-    "@types/coreScreeps": "./types-coreScreeps-1.0.0.tgz",
+    "@types/coreScreeps": "./types-coreScreeps-1.0.1.tgz",
     "@types/lodash": "^4.14.123",
     "@types/screeps": "^2.5.3",
     "mocha": "^6.1.4",

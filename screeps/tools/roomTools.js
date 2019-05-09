@@ -16,13 +16,13 @@ var neighborDifferentials = [
 roomTools.isDropContainer = function(container) {
 
 	var isDropContainer = false;
-	var sources = global.room.find(FIND_SOURCES);
+	var sources = room.find(FIND_SOURCES);
 
 	for (var source of sources) {
 		for (var neighborDifferential of neighborDifferentials) {
 
-			if (source.pos.x + neighborDifferential.x === container.x &&
-				source.pos.y + neighborDifferential.y === container.y) {
+			if (source.pos.x + neighborDifferential.x === container.pos.x &&
+				source.pos.y + neighborDifferential.y === container.pos.y) {
 
 				isDropContainer = true;
 				break;
@@ -40,7 +40,7 @@ roomTools.createFlag = function(name, colorConstant, positions) {
 		for (var index in positions) {
 
 			var position = new RoomPosition(positions[index].x, positions[index].y, positions[index].roomName);
-			var result = global.room.createFlag(position, name, colorConstant);
+			var result = room.createFlag(position, name, colorConstant);
 			debug.highlight(`flag created: ${result} ${name} ${colorConstant}`);
 		}
 	}
@@ -58,10 +58,10 @@ roomTools.lookAt = function() {
 
 			var position = new RoomPosition(positions[index].x, positions[index].y, positions[index].roomName);
 
-			var looked = global.room.lookAt(position);
-			// var looked = global.room.lookAt(positions[index]);
-			// var looked = global.room.lookAt(global.spawn);
-			// var looked = global.room.lookAt(15, 15);
+			var looked = room.lookAt(position);
+			// var looked = room.lookAt(positions[index]);
+			// var looked = room.lookAt(global.spawn);
+			// var looked = room.lookAt(15, 15);
 			// debug.danger(positions[index]);
 			debug.primary(looked);
 		}
@@ -70,7 +70,7 @@ roomTools.lookAt = function() {
 
 roomTools.consoleEnemies = function() {
 
-	const enemies = global.room.find(FIND_HOSTILE_CREEPS);
+	const enemies = room.find(FIND_HOSTILE_CREEPS);
 
 	if (enemies.length > 0) {
 
@@ -88,7 +88,7 @@ roomTools.consoleEnemies = function() {
 
 roomTools.consoleWall = function() {
 
-	const target = global.spawn.pos.findClosestByRange(FIND_STRUCTURES, {
+	const target = spawn.pos.findClosestByRange(FIND_STRUCTURES, {
 		filter: structure => structure.structureType === STRUCTURE_WALL
 	});
 
@@ -100,9 +100,9 @@ roomTools.consoleWall = function() {
 
 roomTools.visualize = function(pathToObject, pathFromObject) {
 
-	var path = global.room.findPath(pathToObject.pos, pathFromObject.pos, { ignoreCreeps: true });
+	var path = room.findPath(pathToObject.pos, pathFromObject.pos, { ignoreCreeps: true });
 
-	// debug.danger(global.spawn.pos);
+	// debug.danger(spawn.pos);
 
 	for (var location of path) {
 
@@ -119,33 +119,33 @@ roomTools.visualize = function(pathToObject, pathFromObject) {
 		}
 
 		// 	debug.danger(location)
-		// 	global.room.visual.rect(0, 0, location, 15, 15, {fill:"#777"})
-		global.room.visual.circle(location, { radius: 1 / 2, fill: "danger" });
-		// global.room.visual.rect(0, 0, location, .60, .60, {fill:"#777"})
+		// 	room.visual.rect(0, 0, location, 15, 15, {fill:"#777"})
+		room.visual.circle(location, { radius: 1 / 2, fill: "danger" });
+		// room.visual.rect(0, 0, location, .60, .60, {fill:"#777"})
 	}
-	// global.room.visual.circle(global.spawn.pos.x + 5, global.spawn.pos.y + 5, {radius:.30,fill:"danger"});
+	// room.visual.circle(spawn.pos.x + 5, spawn.pos.y + 5, {radius:.30,fill:"danger"});
 }
 
 roomTools.visualizeStructureHealth = function() {
 
-	const targets = global.room.find(FIND_STRUCTURES, {
+	const targets = room.find(FIND_STRUCTURES, {
 		filter: structure => structure.hits < structure.hitsMax &&
 			structure.structureType !== STRUCTURE_WALL
 	});
 
 	for (var index in targets) {
 
-		global.room.visual.circle(targets[index].pos, { radius: .25, stroke: "red", fill: "transparent" });
+		room.visual.circle(targets[index].pos, { radius: .25, stroke: "red", fill: "transparent" });
 	}
 }
 
 roomTools.visualizeFlags = function() {
 
-	const flags = global.room.find(FIND_FLAGS);
+	const flags = room.find(FIND_FLAGS);
 
 	for (var index in flags) {
 		var pos = flags[index].pos;
-		global.room.visual.line(pos.x, pos.y, pos.x, pos.y - 1, { width: .2, color: "red" });
+		room.visual.line(pos.x, pos.y, pos.x, pos.y - 1, { width: .2, color: "red" });
 	}
 }
 
@@ -155,7 +155,7 @@ roomTools.visualizeCreepByType = function(creepType, color) {
 
 	for (var index in targets) {
 
-		global.room.visual.circle(targets[index].pos, { radius: .25, stroke: color, fill: color });
+		room.visual.circle(targets[index].pos, { radius: .25, stroke: color, fill: color });
 	}
 }
 

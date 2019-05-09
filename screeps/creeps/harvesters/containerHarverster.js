@@ -1,7 +1,7 @@
 
 var CustomCreep = require("../customCreep");
+var roomTools = require("../../tools/roomTools");
 var { maxEnergizersPerContainer } = require("../../creepsRules");
-
 
 function ContainerHarvester(creep) {
 
@@ -40,7 +40,8 @@ ContainerHarvester.prototype.act = function() {
 
 			var container = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 				filter: container => container.structureType === STRUCTURE_CONTAINER &&
-					container.store[RESOURCE_ENERGY] / container.storeCapacity < .80
+					container.store[RESOURCE_ENERGY] / container.storeCapacity < .80 &&
+					!roomTools.isDropContainer(structure)
 			});
 
 			if (this.creep.transfer(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
@@ -83,7 +84,7 @@ ContainerHarvester.prototype.act = function() {
 	}
 }
 
-ContainerHarvester.spawn = function(creepsCurrentCount) {
+ContainerHarvester.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 
 	var creepMemory
 	var container;
@@ -91,10 +92,9 @@ ContainerHarvester.spawn = function(creepsCurrentCount) {
 	// Evenly distribute creeps to each container up to the max creeps per container
 	for (var energizersPerContainer = 1; energizersPerContainer <= maxEnergizersPerContainer; energizersPerContainer++) {
 
-		var containers = global.room.find(FIND_STRUCTURES, {
-			filter: {
-				structureType: STRUCTURE_CONTAINER
-			}
+		var containers = room.find(FIND_STRUCTURES, {
+			filter: structure => structure.structureType == STRUCTURE_CONTAINER &&
+				!roomTools.isDropContainer(structure)
 		});
 
 		containers = containers.filter(container => {

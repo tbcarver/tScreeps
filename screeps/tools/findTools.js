@@ -4,7 +4,7 @@ var findTools = {};
 // NOTE: Order is important.
 findTools.findAllEnergyStructures = function() {
 
-	var energyStructures = global.room.find(FIND_MY_STRUCTURES, {
+	var energyStructures = room.find(FIND_MY_STRUCTURES, {
 		filter: {
 			structureType: STRUCTURE_EXTENSION
 		}

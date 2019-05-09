@@ -46,7 +46,7 @@ constructionTools.createConstructionSite = function(positions, structureType, na
 		for (var index in positions) {
 
 			var position = new RoomPosition(positions[index].x, positions[index].y, positions[index].roomName);
-			var result = global.room.createConstructionSite(position, structureType, name);
+			var result = room.createConstructionSite(position, structureType, name);
 			debug.highlight(`created construction site: type: ${STRUCTURE_ROAD}: ${result}`);
 		}
 	}

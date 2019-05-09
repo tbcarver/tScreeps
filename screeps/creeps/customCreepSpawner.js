@@ -6,6 +6,7 @@ var bodyPartsFactory = require("./bodies/bodyPartsFactory");
 var Builder = require("./energyWorkers/builder");
 var ContainerHarvester = require("./harvesters/containerHarverster");
 var ControllerEnergizer = require("./energizers/controllerEnergizer");
+var DropContainerHarvester = require("./harvesters/dropContainerHarvester");
 var ExtensionEnergizer = require("./energizers/extensionEnergizer");
 var Repairer = require("./energyWorkers/repairer");
 var SpawnEnergizer = require("./energizers/spawnEnergizer");
@@ -15,9 +16,9 @@ var customCreepSpawner = {};
 
 customCreepSpawner.spawnCreep = function(creepsStatistics) {
 
-	if (!global.spawn.spawning && global.room.energyAvailable >= 250) {
+	if (!spawn.spawning && room.energyAvailable >= 250) {
 
-		debug.primary("spawn chance", global.room.energyAvailable);
+		debug.primary("spawn chance", room.energyAvailable);
 		// debug.temp("creep stats:", creepsStatistics, creepsSpawnRules)
 
 		var spawnResult = {
@@ -26,25 +27,26 @@ customCreepSpawner.spawnCreep = function(creepsStatistics) {
 		};
 
 		// NOTE: Order here is prioritized by creep type
-		spawnResult = trySpawn(spawnResult, Repairer, creepsStatistics.repairers, creepsSpawnRules.repairers);
-		spawnResult = trySpawn(spawnResult, SpawnEnergizer, creepsStatistics.spawnEnergizers, creepsSpawnRules.spawnEnergizers);
-		// spawnResult = trySpawn(spawnResult, Defender, creepsStatistics.defenders, creepsSpawnRules.defenders);
-		spawnResult = trySpawn(spawnResult, ContainerHarvester, creepsStatistics.containerHarvesters, creepsSpawnRules.containerHarvesters);
-		spawnResult = trySpawn(spawnResult, ExtensionEnergizer, creepsStatistics.extensionEnergizers, creepsSpawnRules.extensionEnergizers);
-		spawnResult = trySpawn(spawnResult, Builder, creepsStatistics.builders, creepsSpawnRules.builders);
-		spawnResult = trySpawn(spawnResult, ControllerEnergizer, creepsStatistics.controllerEnergizers, creepsSpawnRules.controllerEnergizers);
-		spawnResult = trySpawn(spawnResult, WallRepairer, creepsStatistics.wallRepairers, creepsSpawnRules.wallRepairers);
+		spawnResult = trySpawnCreep(spawnResult, Repairer, creepsStatistics.repairers, creepsSpawnRules.repairers);
+		spawnResult = trySpawnCreep(spawnResult, SpawnEnergizer, creepsStatistics.spawnEnergizers, creepsSpawnRules.spawnEnergizers);
+		// spawnResult = trySpawnCreep(spawnResult, Defender, creepsStatistics.defenders, creepsSpawnRules.defenders);
+		spawnResult = trySpawnCreep(spawnResult, DropContainerHarvester, creepsStatistics.dropContainerHarvesters, creepsSpawnRules.dropContainerHarvesters);
+		spawnResult = trySpawnCreep(spawnResult, ContainerHarvester, creepsStatistics.containerHarvesters, creepsSpawnRules.containerHarvesters);
+		spawnResult = trySpawnCreep(spawnResult, ExtensionEnergizer, creepsStatistics.extensionEnergizers, creepsSpawnRules.extensionEnergizers);
+		spawnResult = trySpawnCreep(spawnResult, Builder, creepsStatistics.builders, creepsSpawnRules.builders);
+		spawnResult = trySpawnCreep(spawnResult, ControllerEnergizer, creepsStatistics.controllerEnergizers, creepsSpawnRules.controllerEnergizers);
+		spawnResult = trySpawnCreep(spawnResult, WallRepairer, creepsStatistics.wallRepairers, creepsSpawnRules.wallRepairers);
 	}
 }
 
-function trySpawn(previousSpawnResult, customCreep, creepsCurrentCount, creepsSpawnRulesCount) {
+function trySpawnCreep(previousSpawnResult, customCreep, creepsCurrentCount, creepsSpawnRulesCount) {
 
 	if (!previousSpawnResult.waitForSpawn && !previousSpawnResult.spawned) {
 
 		if (creepsCurrentCount < creepsSpawnRulesCount) {
 
 			var creepMemory = customCreep.initializeSpawnCreepMemory(creepsCurrentCount);
-			var spawnResult = spawn(creepMemory);
+			var spawnResult = spawnCreep(creepMemory);
 
 			if (spawnResult && spawnResult.waitForSpawn) {
 				previousSpawnResult.waitForSpawn = spawnResult.waitForSpawn;
@@ -59,7 +61,7 @@ function trySpawn(previousSpawnResult, customCreep, creepsCurrentCount, creepsSp
 	return previousSpawnResult;
 }
 
-function spawn(creepMemory) {
+function spawnCreep(creepMemory) {
 
 	var spawnResult = {
 		waitForSpawn: false,
@@ -71,7 +73,7 @@ function spawn(creepMemory) {
 		var id = getNextCreepId();
 		var bodyParts = bodyPartsFactory.getBodyParts(creepMemory.bodyPartsType);
 	
-		var result = global.spawn.spawnCreep(bodyParts, id, {
+		var result = spawn.spawnCreep(bodyParts, id, {
 			memory: creepMemory,
 			energyStructures: findTools.findAllEnergyStructures()
 		});

@@ -1,11 +1,12 @@
 
 var creepsSpawnRules = {
 	builders: 3,
-	containerHarvesters: 0,
+	containerHarvesters: 1,
 	controllerEnergizers: 0,
 	defenders: 0,
+	dropContainerHarvesters: 0,
 	extensionEnergizers: 0,
-	repairers: 3,
+	repairers: 2,
 	spawnEnergizers: 0,
 	wallRepairers: 0
 }

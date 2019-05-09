@@ -38,7 +38,7 @@ Builder.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 
 	var creepMemory;
 
-	const targets = global.room.find(FIND_CONSTRUCTION_SITES);
+	const targets = room.find(FIND_CONSTRUCTION_SITES);
 
 	if (targets.length > 0) {
 

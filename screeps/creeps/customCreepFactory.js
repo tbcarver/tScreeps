@@ -2,6 +2,7 @@
 var Builder = require("./energyWorkers/builder");
 var ContainerHarvester = require("./harvesters/containerHarverster");
 var ControllerEnergizer = require("./energizers/controllerEnergizer");
+var DropContainerHarvester = require("./harvesters/dropContainerHarvester");
 var ExtensionEnergizer = require("./energizers/extensionEnergizer");
 var Repairer = require("./energyWorkers/repairer");
 var SpawnEnergizer = require("./energizers/spawnEnergizer");
@@ -27,7 +28,7 @@ customCreepFactory.buildCreep = function(creep, creepsStatistics) {
 		case "containerHarvester":
 
 			customCreep = new ContainerHarvester(creep);
-			creepsStatistics.containerHarvester++;
+			creepsStatistics.containerHarvesters++;
 			break;
 
 		case "controllerEnergizer":
@@ -41,6 +42,12 @@ customCreepFactory.buildCreep = function(creep, creepsStatistics) {
 		// 	customCreep = new Defender(creep);
 		// 	creepsStatistics.defenders++;
 		// 	break;
+
+		case "dropContainerHarvester":
+
+			customCreep = new DropContainerHarvester(creep);
+			creepsStatistics.dropContainerHarvesters++;
+			break;
 
 		case "extensionEnergizer":
 

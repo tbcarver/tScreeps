@@ -42,7 +42,7 @@ Repairer.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 
 	var creepMemory;
 
-	const targets = global.room.find(FIND_STRUCTURES, {
+	const targets = room.find(FIND_STRUCTURES, {
 		filter: structure => structure.hits < structure.hitsMax &&
 			structure.structureType !== STRUCTURE_WALL
 	});

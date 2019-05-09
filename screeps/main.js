@@ -4,7 +4,7 @@
 
 try {
 
-	var debug = require("../lib/coreVendor/screeps/debug");
+	var debug = require("../lib/coreVendor/coreScreeps/debug");
 	var test = require("./tools/testTools");
 	var constructionTools = require("./tools/constructionTools");
 	var roomTools = require("./tools/roomTools");
@@ -15,9 +15,9 @@ try {
 	global.spawn = Game.spawns["spawn1"];
 	global.room = spawn.room;
 	global.controller = spawn.room.controller;
-	// console.log(global.controller.activateSafeMode())
-	debug.muted(`tick: ${Game.time} energy: ${global.room.energyAvailable} spawning:`,
-		global.spawn.spawning ? global.spawn.spawning.remainingTime : "" );
+	// console.log(controller.activateSafeMode())
+	debug.muted(`tick: ${Game.time} energy: ${room.energyAvailable} spawning:`,
+		spawn.spawning ? spawn.spawning.remainingTime : "" );
 
 	// if (Math.random() < .2) {
 	// 	debug.muted("spawn: ", global.spawn);
@@ -28,7 +28,7 @@ try {
 	// }
 
 	// if (Math.random() < .2) {
-	// 	debug.muted("sources: ", global.room.find(FIND_SOURCES));
+	// 	debug.muted("sources: ", room.find(FIND_SOURCES));
 	// }
 
 	test();
@@ -37,7 +37,7 @@ try {
 	// constructionTools.removeConstructionSite();
 	// constructionTools.destroyStructure();
 	// roomTools.lookAt();
-	// debug.primary("log", global.room.getEventLog(true));
+	// debug.primary("log", room.getEventLog(true));
 	// roomTools.createFlag("barracks", COLOR_BLUE, [{"x":"26","y":"22","roomName":"W6S0"}]);
 	// roomTools.consoleWall();
 
@@ -49,7 +49,7 @@ try {
 
 	creepsController.tick();
 
-	Memory.state.lastRoomEnergyAvailable = global.room.energyAvailable;
+	Memory.state.lastRoomEnergyAvailable = room.energyAvailable;
 
 	// console.log(JSON.stringify(Game.spawns["spawn1"].room.lookAt(29, 25)))
 

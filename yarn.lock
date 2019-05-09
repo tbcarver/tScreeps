@@ -14,6 +14,10 @@
   version "1.0.0"
   resolved "./types-coreScreeps-1.0.0.tgz#bbe30b3a8c7d943f0e3e1f104e277b9015bdf269"
 
+"@types/coreScreeps@./types-coreScreeps-1.0.1.tgz":
+  version "1.0.1"
+  resolved "./types-coreScreeps-1.0.1.tgz#7740ee37b984d68f7df66c0a94f1f4003695f04f"
+
 "@types/lodash@^4.14.123":
   version "4.14.123"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.123.tgz#39be5d211478c8dd3bdae98ee75bb7efe4abfe4d"

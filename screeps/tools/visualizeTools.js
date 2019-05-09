@@ -4,9 +4,9 @@ var visualizeTools = {};
 
 visualizeTools.visualize = function(pathToObject, pathFromObject) {
 
-	var path = global.room.findPath(pathToObject.pos, pathFromObject.pos, { ignoreCreeps: true });
+	var path = room.findPath(pathToObject.pos, pathFromObject.pos, { ignoreCreeps: true });
 
-	// debug.danger(global.spawn.pos);
+	// debug.danger(spawn.pos);
 
 	for (var location of path) {
 
@@ -23,34 +23,34 @@ visualizeTools.visualize = function(pathToObject, pathFromObject) {
 		}
 
 		// 	debug.danger(location)
-		// 	global.room.visual.rect(0, 0, location, 15, 15, {fill:"#777"})
-		global.room.visual.circle(location, { radius: 1 / 2, fill: "danger" });
-		// global.room.visual.rect(0, 0, location, .60, .60, {fill:"#777"})
+		// 	room.visual.rect(0, 0, location, 15, 15, {fill:"#777"})
+		room.visual.circle(location, { radius: 1 / 2, fill: "danger" });
+		// room.visual.rect(0, 0, location, .60, .60, {fill:"#777"})
 	}
-	// global.room.visual.circle(global.spawn.pos.x + 5, global.spawn.pos.y + 5, {radius:.30,fill:"danger"});
+	// room.visual.circle(spawn.pos.x + 5, spawn.pos.y + 5, {radius:.30,fill:"danger"});
 }
 
 visualizeTools.visualizeStructureHealth = function() {
 
-	const targets = global.room.find(FIND_STRUCTURES, {
+	const targets = room.find(FIND_STRUCTURES, {
 		filter: structure => structure.hits < structure.hitsMax &&
 			structure.structureType !== STRUCTURE_WALL
 	});
 
 	for (var index in targets) {
 
-		global.room.visual.circle(targets[index].pos, { radius: .25, stroke: "red", fill: "transparent" });
+		room.visual.circle(targets[index].pos, { radius: .25, stroke: "red", fill: "transparent" });
 	}
 }
 
 visualizeTools.visualizeFlags = function() {
 
-	const flags = global.room.find(FIND_FLAGS);
+	const flags = room.find(FIND_FLAGS);
 
 	for (var index in flags) {
 		var pos = flags[index].pos;
 		var color = getColorFromConstant(flags[index].color);
-		global.room.visual.line(pos.x, pos.y, pos.x, pos.y - 1, { width: .2, color: color });
+		room.visual.line(pos.x, pos.y, pos.x, pos.y - 1, { width: .2, color: color });
 	}
 }
 
@@ -60,7 +60,7 @@ visualizeTools.visualizeCreepByType = function(creepType, color) {
 
 	for (var index in targets) {
 
-		global.room.visual.circle(targets[index].pos, { radius: .25, stroke: color, fill: color });
+		room.visual.circle(targets[index].pos, { radius: .25, stroke: color, fill: color });
 	}
 }
 

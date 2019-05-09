@@ -13,6 +13,7 @@ creepsController.tick = function() {
 		containerHarvesters: 0,
 		controllerEnergizers: 0,
 		defenders: 0,
+		dropContainerHarvesters: 0,
 		extensionEnergizers: 0,
 		repairers: 0,
 		spawnEnergizers: 0,

@@ -1,10 +1,18 @@
 
 var findTools = require("./findTools");
+var roomTools = require("./roomTools");
 var spawnTools = require("./spawnTools");
 var testObject = require("../creeps/energizers/extensionEnergizer");
 
 function tick() {
 
+	
+	// var targets = room.find(FIND_STRUCTURES, {
+	// 	filter: structure => structure.structureType == STRUCTURE_CONTAINER &&
+	// 		!roomTools.isDropContainer(structure)
+	// });
+
+	// debug.temp(_.map(targets, target => target.pos));
 	
 
 	// function MyCreep() {
@@ -24,7 +32,7 @@ function tick() {
 
 
 	// 	// debug.temp(global.Creep);
-	// 	// debug.temp(global.RoomObject);
+	// 	// debug.temp(room.Object);
 
 
 	// 	var myCreep = new MyCreep();
@@ -98,8 +106,8 @@ function tick() {
 
 	// 		var position = new RoomPosition(positions[index].x, positions[index].y, positions[index].roomName);
 
-	// 		// var result = PathFinder.search(global.spawn.pos, { pos: position, range: 3 });
-	// 		debug.temp("pathfinder", findTools.isInRange(global.spawn.pos, position, 3));
+	// 		// var result = PathFinder.search(spawn.pos, { pos: position, range: 3 });
+	// 		debug.temp("pathfinder", findTools.isInRange(spawn.pos, position, 3));
 	// 	}
 	// }
 
@@ -107,7 +115,7 @@ function tick() {
 	// function calculateSpawnCapacity() {
 
 
-	// 	var extensions = global.room.find(FIND_MY_STRUCTURES, {
+	// 	var extensions = room.find(FIND_MY_STRUCTURES, {
 	// 		filter: { structureType: STRUCTURE_EXTENSION }
 	// 	});
 
@@ -115,7 +123,7 @@ function tick() {
 	// 	var availableExtensionEnergy = extensions.reduce((total, extension) => total + (extension.energy), 0);
 
 
-	// 	return global.spawn.energyCapacity + availableExtensionEnergy;
+	// 	return spawn.energyCapacity + availableExtensionEnergy;
 	// }
 
 
@@ -123,7 +131,7 @@ function tick() {
 
 	// var structureType = STRUCTURE_EXTENSION;
 
-	// var extensions = global.room.find(FIND_MY_STRUCTURES, {
+	// var extensions = room.find(FIND_MY_STRUCTURES, {
 	// 	filter: {
 	// 		structureType: structureType
 	// 	}
@@ -148,9 +156,9 @@ function tick() {
 	// debug.highlight("result", result);
 
 
-	// debug("sources", global.room.find(FIND_SOURCES));
+	// debug("sources", room.find(FIND_SOURCES));
 
-	// const target = global.room.find(FIND_MY_STRUCTURES, {
+	// const target = room.find(FIND_MY_STRUCTURES, {
 	// 	filter: structure => structure.hits < structure.hitsMax
 	// });
 
@@ -159,14 +167,14 @@ function tick() {
 	// debug.danger("Game.creeps", _.size(Game.creeps))
 	// debug.danger("Memory.creeps", _.size(Memory.creeps))
 
-	// var extensions = global.room.find(FIND_MY_STRUCTURES, {
+	// var extensions = room.find(FIND_MY_STRUCTURES, {
 	// 	filter: {
 	// 		structureType: STRUCTURE_EXTENSION
 	// 	}
 	// });
 
 	// var structureType = STRUCTURE_CONTAINER;
-	// var containers = global.room.find(FIND_STRUCTURES, {
+	// var containers = room.find(FIND_STRUCTURES, {
 	// 	filter: {
 	// 		structureType: structureType
 	// 	}
@@ -197,7 +205,7 @@ function tick() {
 
 
 
-	// const target = global.room.find(FIND_CONSTRUCTION_SITES);
+	// const target = room.find(FIND_CONSTRUCTION_SITES);
 
 	// debug.highlight("sites", target);
 
@@ -205,15 +213,15 @@ function tick() {
 
 	// roadBuilder.build(global.spawn, global.controller);
 
-	// var foundPath = PathFinder.search(global.spawn.pos, global.controller.pos);
-	// var foundPath = global.room.findPath(global.spawn.pos, global.controller.pos, {serialize: true});
+	// var foundPath = PathFinder.search(spawn.pos, controller.pos);
+	// var foundPath = room.findPath(spawn.pos, controller.pos, {serialize: true});
 
-	// var serializedPath = global.room.findPath(source, target, {serialize: true});
+	// var serializedPath = room.findPath(source, target, {serialize: true});
 
 	// debug.primary(foundPath);
 	// debug.danger("room: ", Room);
 	// debug.danger(Room.serializePath(foundPath));
-	// console.log(global.room.find(FIND_SOURCES));
+	// console.log(room.find(FIND_SOURCES));
 
 
 
@@ -221,7 +229,7 @@ function tick() {
 	// console.log("time: " + Game.time);
 
 	// global.spawn = Game.spawns["spawn1"];
-	// global.room = spawn.room;
+	// room. = spawn.room;
 
 	// if (Math.random() < .2) {
 
@@ -262,14 +270,14 @@ function tick() {
 
 
 
-	// var target = global.room.find(FIND_STRUCTURES, { filter: { structureType: STRUCTURE_CONTROLLER } });
+	// var target = room.find(FIND_STRUCTURES, { filter: { structureType: STRUCTURE_CONTROLLER } });
 	// debug("target: ", target);
 
 	// debug("targetid: ", target.id);
 	// var gotObject = Game.getObjectById(target.id);
 	// debug("gotObject: ", gotObject);
 
-	// var sources = global.room.find(FIND_SOURCES);
+	// var sources = room.find(FIND_SOURCES);
 
 	// for (var source of sources) {
 

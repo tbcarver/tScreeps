@@ -1,90 +1,53 @@
 
 var CustomCreep = require("../customCreep");
-var findTools = require("../../tools/findTools");
+var roomTools = require("../../tools/roomTools");
 var { maxEnergizersPerContainer } = require("../../creepsRules");
 
-
-function ContainerEnergizer(creep) {
+function DropContainerHarvester(creep) {
 
 	CustomCreep.call(this, creep);
 }
 
-ContainerEnergizer.prototype = Object.create(CustomCreep.prototype);
+DropContainerHarvester.prototype = Object.create(CustomCreep.prototype);
 
-ContainerEnergizer.prototype.act = function() {
+DropContainerHarvester.prototype.act = function() {
 
 	if (!CustomCreep.prototype.act.call(this)) {
 
-		if (this.state === "harvesting" || this.creep.carry[RESOURCE_ENERGY] === 0) {
+		if (this.state === "harvesting") {
 
-			if (this.state !== "harvesting") {
-
-				this.state = "harvesting";
-			}
-
-			resource = Game.getObjectById(this.memory.resourceId);
+			var resource = Game.getObjectById(this.memory.resourceId);
 
 			if (resource) {
 
-				if (this.creep.harvest(resource) == ERR_NOT_IN_RANGE) {
+				var result = this.creep.harvest(resource);
 
-					this.creep.moveTo(resource);
+				if (result !== OK) {
+
+					debug.danger("dropContainerHarvester harvest failed:", result);
 				}
 
 			} else {
 
-				debug.danger("containerEnergizer resource not found: " + this.memory.resourceId);
+				debug.danger("dropContainerHarvester resource not found:", this.memory.resourceId);
 			}
 		}
 
-		if (this.state === "alternateTransferring") {
-
-			var container = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-				filter: container => container.structureType === STRUCTURE_CONTAINER &&
-					container.store[RESOURCE_ENERGY] / container.storeCapacity < .80
-			});
-
-			if (this.creep.transfer(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-
-				this.creep.moveTo(container);
-			}
-
-		} else if (this.state === "transferring" || this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
-
-			if (this.state !== "transferring") {
-
-				this.state = "transferring";
-			}
+		if (this.state === "moving") {
 
 			var container = Game.getObjectById(this.memory.containerId);
 
-			if (container) {
+			this.creep.moveTo(container);
 
-				var transferResult = this.creep.transfer(container, RESOURCE_ENERGY);
+			if (creep.pos.x === container.pos.x && creep.pos.y === container.pos.y) {
 
-				if (transferResult == ERR_NOT_IN_RANGE) {
-
-					this.creep.moveTo(container);
-
-				} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
-
-
-					this.state = "harvesting";
-
-				} else if (transferResult == ERR_FULL) {
-
-					this.state = "alternateTransferring";
-				}
-			} else {
-
-				debug.danger("containerEnergizer container not found: " + this.memory.containerId);
+				this.state === "harvesting"
 			}
 		}
-
 	}
 }
 
-ContainerEnergizer.spawn = function(creepsCurrentCount) {
+DropContainerHarvester.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 
 	var creepMemory
 	var container;
@@ -92,15 +55,14 @@ ContainerEnergizer.spawn = function(creepsCurrentCount) {
 	// Evenly distribute creeps to each container up to the max creeps per container
 	for (var energizersPerContainer = 1; energizersPerContainer <= maxEnergizersPerContainer; energizersPerContainer++) {
 
-		var containers = global.room.find(FIND_STRUCTURES, {
-			filter: {
-				structureType: STRUCTURE_CONTAINER
-			}
+		var containers = room.find(FIND_STRUCTURES, {
+			filter: structure => structure.structureType == STRUCTURE_CONTAINER &&
+				roomTools.isDropContainer(structure)
 		});
 
 		containers = containers.filter(container => {
 
-			var countEnergizers = countContainerEnergizersAtContainerPosition(container.pos.x, container.pos.y);
+			var countEnergizers = countDropContainerHarvestersAtContainerPosition(container.pos.x, container.pos.y);
 
 			return countEnergizers < energizersPerContainer;
 		});
@@ -120,7 +82,8 @@ ContainerEnergizer.spawn = function(creepsCurrentCount) {
 		if (resource) {
 
 			creepMemory = {
-				type: "containerEnergizer",
+				type: "dropContainerHarvester",
+				state: "moving",
 				resourceId: resource.id,
 				containerId: container.id,
 				containerPos: container.pos
@@ -128,18 +91,18 @@ ContainerEnergizer.spawn = function(creepsCurrentCount) {
 
 		} else {
 
-			debug.warning(`containerEnergizer did not spawn no resources found`);
+			debug.warning(`dropContainerHarvester did not spawn no resources found`);
 		}
 	}
 
 	return creepMemory;
 }
 
-function countContainerEnergizersAtContainerPosition(x, y) {
+function countDropContainerHarvestersAtContainerPosition(x, y) {
 
 	var countCreeps = _.reduce(Memory.creeps, (countCreeps, creepMemory) => {
 
-		if (creepMemory.type === "containerEnergizer") {
+		if (creepMemory.type === "dropContainerHarvester") {
 
 			if (creepMemory.containerPos.x === x && creepMemory.containerPos.y === y) {
 				countCreeps++;
@@ -153,4 +116,4 @@ function countContainerEnergizersAtContainerPosition(x, y) {
 }
 
 
-module.exports = containerEnergizer
+module.exports = DropContainerHarvester
