@@ -1,5 +1,4 @@
 
-var debug = require("../../../debug");
 var EnergyWorker = require("./energyWorker");
 
 function Repairer(creep) {
@@ -15,6 +14,8 @@ Repairer.prototype.act = function() {
 }
 
 Repairer.prototype.work = function() {
+
+	debug.temp("WORK")
 
 	const target = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 		filter: structure => structure.hits < structure.hitsMax &&
@@ -39,7 +40,7 @@ Repairer.prototype.work = function() {
 	}
 }
 
-Repairer.initializeSpawn = function(creepsCurrentCount) {
+Repairer.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 
 	var creepMemory;
 
@@ -52,7 +53,7 @@ Repairer.initializeSpawn = function(creepsCurrentCount) {
 
 		creepMemory = {
 			type: "repairer",
-			bodyType: "energyWorker"
+			bodyPartsType: "energyWorker"
 		}
 	}
 

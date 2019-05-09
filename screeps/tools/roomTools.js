@@ -1,6 +1,5 @@
 
 
-var debug = require("../debug");
 var roomTools = {};
 
 roomTools.createFlag = function(name, colorConstant, positions) {

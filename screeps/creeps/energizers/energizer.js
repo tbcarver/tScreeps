@@ -1,7 +1,6 @@
 
-var debug = require("../../../debug");
-var CustomCreep = require("../../customCreep");
-var findTools = require("../../../tools/findTools");
+var CustomCreep = require("../customCreep");
+var findTools = require("../../tools/findTools");
 
 function Energizer(creep) {
 
@@ -57,4 +56,4 @@ Energizer.prototype.energize = function() {
 }
 
 
-module.exports = Repairer
+module.exports = Energizer

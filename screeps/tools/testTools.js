@@ -1,5 +1,4 @@
 
-var debug = require("../debug");
 var findTools = require("./findTools");
 var spawnTools = require("./spawnTools");
 var testObject = require("../creeps/energizers/extensionEnergizer");

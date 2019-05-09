@@ -1,5 +1,4 @@
 
-var debug = require("../debug");
 var spawnTools = {};
 
 spawnTools.calculateSpawnCapacity = function() {

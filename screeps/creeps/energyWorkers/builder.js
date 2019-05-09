@@ -44,7 +44,7 @@ Builder.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 
 		creepMemory = {
 			type: "builder",
-			bodyType: "energyWorker"
+			bodyPartsType: "energyWorker"
 		}
 	}
 

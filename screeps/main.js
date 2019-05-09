@@ -11,6 +11,7 @@ try {
 	var visualizeTools = require("./tools/visualizeTools");
 	var creepsController = require("./creepsController");
 
+	global.debug = debug;
 	global.spawn = Game.spawns["spawn1"];
 	global.room = spawn.room;
 	global.controller = spawn.room.controller;

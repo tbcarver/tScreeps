@@ -49,7 +49,7 @@ ExtensionEnergizer.prototype.energize = function() {
 	}
 }
 
-ExtensionEnergizer.initializeSpawn = function(creepsCurrentCount) {
+ExtensionEnergizer.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 
 	var creepMemory;
 

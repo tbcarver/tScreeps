@@ -4,7 +4,7 @@ var simple = require("simple-mock");
 
 var Builder = require("../../../../screeps/creeps/energyWorkers/builder");
 
-describe("Builder", function() {
+describe("/screeps/creeps/energyWorkers/builder", function() {
 	before(() => {
 		require("../../../mocks/screepsGlobals");
 	});
@@ -49,7 +49,7 @@ describe("Builder", function() {
 
 			assert.notStrictEqual(memory, undefined);
 			assert.strictEqual(memory.type, "builder");
-			assert.strictEqual(memory.bodyType, "energyWorker");
+			assert.strictEqual(memory.bodyPartsType, "energyWorker");
 		});
 	});
 });

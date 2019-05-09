@@ -1,6 +1,5 @@
 
 
-var debug = require("../debug");
 var constructionTools = {};
 
 constructionTools.createConstructionRoad = function() {

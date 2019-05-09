@@ -1,6 +1,6 @@
 
-var debug = require("./debug");
 var customCreepFactory = require("./creeps/customCreepFactory");
+var customCreepSpawner = require("./creeps/customCreepSpawner");
 
 var creepsController = {};
 
@@ -10,7 +10,7 @@ creepsController.tick = function() {
 
 	var creepsStatistics = {
 		builders: 0,
-		containerEnergizers: 0,
+		containerHarvesters: 0,
 		controllerEnergizers: 0,
 		defenders: 0,
 		extensionEnergizers: 0,
@@ -22,7 +22,7 @@ creepsController.tick = function() {
 	for (var index in Game.creeps) {
 
 		var creep = Game.creeps[index];
-		var customCreep = customCreepFactory(creep, creepsStatistics);
+		var customCreep = customCreepFactory.buildCreep(creep, creepsStatistics);
 
 		// debug.temp(`creep act: type: ${creep.memory.type} ticks: ${creep.ticksToLive}`);
 		customCreep.act();

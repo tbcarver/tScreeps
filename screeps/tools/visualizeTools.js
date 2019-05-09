@@ -1,6 +1,5 @@
 
 
-var debug = require("../debug");
 var visualizeTools = {};
 
 visualizeTools.visualize = function(pathToObject, pathFromObject) {

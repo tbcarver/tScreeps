@@ -1,5 +1,4 @@
 
-var debug = require("../debug");
 var findTools = {};
 
 // NOTE: Order is important.

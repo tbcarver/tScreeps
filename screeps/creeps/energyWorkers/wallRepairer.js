@@ -1,5 +1,4 @@
 
-var debug = require("../../../debug");
 var EnergyWorker = require("./energyWorker");
 
 function WallRepairer(creep) {
@@ -46,7 +45,7 @@ WallRepairer.prototype.work = function() {
 	}
 }
 
-WallRepairer.initializeSpawn = function(creepsCurrentCount) {
+WallRepairer.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 
 	var creepMemory;
 
@@ -58,7 +57,7 @@ WallRepairer.initializeSpawn = function(creepsCurrentCount) {
 
 		creepMemory = {
 			type: "wallRepairer",
-			bodyType: "energyWorker"
+			bodyPartsType: "energyWorker"
 		}
 	}
 

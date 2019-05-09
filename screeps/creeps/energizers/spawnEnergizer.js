@@ -27,11 +27,11 @@ SpawnEnergizer.prototype.energize = function() {
 	}
 }
 
-SpawnEnergizer.initializeSpawn = function(creepsCurrentCount) {
+SpawnEnergizer.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 
 	var creepMemory = {
 		type: "spawnEnergizer",
-		bodyType: "energizer"
+		bodyPartsType: "energizer"
 	}
 
 	return creepMemory;

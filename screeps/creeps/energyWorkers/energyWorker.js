@@ -1,5 +1,4 @@
 
-var debug = require("../../debug");
 var CustomCreep = require("../customCreep");
 var findTools = require("../../tools/findTools");
 
@@ -12,7 +11,12 @@ EnergyWorker.prototype = Object.create(CustomCreep.prototype);
 
 EnergyWorker.prototype.act = function() {
 
+	
+	debug.temp("act")
+
 	if (!CustomCreep.prototype.act.call(this)) {
+		
+	debug.temp("act", this.state)
 
 		if (this.state === "harvesting" || this.creep.carry[RESOURCE_ENERGY] === 0) {
 

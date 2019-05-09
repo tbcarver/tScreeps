@@ -1,5 +1,4 @@
 
-var debug = require("../../debug");
 var CustomCreep = require("../customCreep");
 var findTools = require("../../tools/findTools");
 var { maxEnergizersPerContainer } = require("../../creepsRules");

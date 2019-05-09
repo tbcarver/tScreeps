@@ -1,18 +1,16 @@
 
-var debug = require("../../debug");
 var CustomCreep = require("../customCreep");
-var findTools = require("../../tools/findTools");
 var { maxEnergizersPerContainer } = require("../../creepsRules");
 
 
-function ContainerEnergizer(creep) {
+function ContainerHarvester(creep) {
 
 	CustomCreep.call(this, creep);
 }
 
-ContainerEnergizer.prototype = Object.create(CustomCreep.prototype);
+ContainerHarvester.prototype = Object.create(CustomCreep.prototype);
 
-ContainerEnergizer.prototype.act = function() {
+ContainerHarvester.prototype.act = function() {
 
 	if (!CustomCreep.prototype.act.call(this)) {
 
@@ -34,7 +32,7 @@ ContainerEnergizer.prototype.act = function() {
 
 			} else {
 
-				debug.danger("containerEnergizer resource not found: " + this.memory.resourceId);
+				debug.danger("containerHarvester resource not found: " + this.memory.resourceId);
 			}
 		}
 
@@ -78,14 +76,14 @@ ContainerEnergizer.prototype.act = function() {
 				}
 			} else {
 
-				debug.danger("containerEnergizer container not found: " + this.memory.containerId);
+				debug.danger("containerHarvester container not found: " + this.memory.containerId);
 			}
 		}
 
 	}
 }
 
-ContainerEnergizer.spawn = function(creepsCurrentCount) {
+ContainerHarvester.spawn = function(creepsCurrentCount) {
 
 	var creepMemory
 	var container;
@@ -101,7 +99,7 @@ ContainerEnergizer.spawn = function(creepsCurrentCount) {
 
 		containers = containers.filter(container => {
 
-			var countEnergizers = countContainerEnergizersAtContainerPosition(container.pos.x, container.pos.y);
+			var countEnergizers = countContainerHarvestersAtContainerPosition(container.pos.x, container.pos.y);
 
 			return countEnergizers < energizersPerContainer;
 		});
@@ -121,7 +119,7 @@ ContainerEnergizer.spawn = function(creepsCurrentCount) {
 		if (resource) {
 
 			creepMemory = {
-				type: "containerEnergizer",
+				type: "containerHarvester",
 				resourceId: resource.id,
 				containerId: container.id,
 				containerPos: container.pos
@@ -129,18 +127,18 @@ ContainerEnergizer.spawn = function(creepsCurrentCount) {
 
 		} else {
 
-			debug.warning(`containerEnergizer did not spawn no resources found`);
+			debug.warning(`containerHarvester did not spawn no resources found`);
 		}
 	}
 
 	return creepMemory;
 }
 
-function countContainerEnergizersAtContainerPosition(x, y) {
+function countContainerHarvestersAtContainerPosition(x, y) {
 
 	var countCreeps = _.reduce(Memory.creeps, (countCreeps, creepMemory) => {
 
-		if (creepMemory.type === "containerEnergizer") {
+		if (creepMemory.type === "containerHarvester") {
 
 			if (creepMemory.containerPos.x === x && creepMemory.containerPos.y === y) {
 				countCreeps++;
@@ -154,4 +152,4 @@ function countContainerEnergizersAtContainerPosition(x, y) {
 }
 
 
-module.exports = containerEnergizer
+module.exports = ContainerHarvester
