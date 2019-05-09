@@ -12,13 +12,6 @@ describe("/screeps/creeps/bodies/energyWorkerBodyPartsStrategy", function() {
 	describe("getBodyPartsObject()", function() {
 		it("should return default for 299 or lower", function() {
 
-			var creep = {
-				memory: {
-					type: "builder",
-					state: {}
-				}
-			}
-
 			var capacities = [299, 251, 250, 249, 200, 1, 0];
 			
 			for (capacity of capacities) {

@@ -32,8 +32,8 @@ describe("/screeps/creeps/energyWorkers/builder", function() {
 	describe("initializeSpawnCreepMemory()", function() {
 		it("should return undefined with no construction sites", function() {
 
-			room. = {};
-			simple.mock(room., "find").returnWith([]);
+			global.room = {};
+			simple.mock(global.room, "find").returnWith([]);
 
 			var memory = Builder.initializeSpawnCreepMemory();
 
@@ -42,8 +42,8 @@ describe("/screeps/creeps/energyWorkers/builder", function() {
 
 		it("should return creepMemory with construction sites", function() {
 
-			room. = {};
-			simple.mock(room., "find").returnWith([{}]);
+			global.room = {};
+			simple.mock(global.room, "find").returnWith([{}]);
 
 			var memory = Builder.initializeSpawnCreepMemory();
 

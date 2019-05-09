@@ -1,5 +1,6 @@
 
 var tools = require("../../tools/tools");
+var dropperBodyPartsStrategy = require("./dropperBodyPartsStrategy");
 var energizerBodyPartsStrategy = require("./energizerBodyPartsStrategy");
 var energyWorkerBodyPartsStrategy = require("./energyWorkerBodyPartsStrategy");
 
@@ -11,6 +12,10 @@ bodyPartsFactory.getBodyParts = function(bodyPartsStrategyName) {
 	var bodyParts;
 
 	switch (bodyPartsStrategyName) {
+
+		case "dropper":
+			bodyPartsStrategy = dropperBodyPartsStrategy;
+			break;
 
 		case "energizer":
 			bodyPartsStrategy = energizerBodyPartsStrategy;

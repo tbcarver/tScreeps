@@ -35,7 +35,7 @@ try {
 	//  constructionTools.createConstructionRoad();
 	//  constructionTools.createConstructionContainer();
 	// constructionTools.removeConstructionSite();
-	// constructionTools.destroyStructure();
+	constructionTools.destroyStructure();
 	// roomTools.lookAt();
 	// debug.primary("log", room.getEventLog(true));
 	// roomTools.createFlag("barracks", COLOR_BLUE, [{"x":"26","y":"22","roomName":"W6S0"}]);

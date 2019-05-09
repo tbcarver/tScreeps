@@ -37,11 +37,16 @@ DropContainerHarvester.prototype.act = function() {
 
 			var container = Game.getObjectById(this.memory.containerId);
 
-			this.creep.moveTo(container);
+			var result = this.creep.moveTo(container);
 
-			if (creep.pos.x === container.pos.x && creep.pos.y === container.pos.y) {
+			if (result !== OK) {
 
-				this.state === "harvesting"
+				debug.danger("dropContainerHarvester move failed:", result);
+			}
+
+			if (this.creep.pos.x === container.pos.x && this.creep.pos.y === container.pos.y) {
+
+				this.state = "harvesting";
 			}
 		}
 	}
@@ -83,6 +88,7 @@ DropContainerHarvester.initializeSpawnCreepMemory = function(creepsCurrentCount)
 
 			creepMemory = {
 				type: "dropContainerHarvester",
+				bodyPartsType: "dropper",
 				state: "moving",
 				resourceId: resource.id,
 				containerId: container.id,

@@ -6,8 +6,8 @@ constructionTools.createConstructionRoad = function() {
 
 	var positions =
 
-	[{"x":"31","y":"35","roomName":"W6S0"},{"x":"30","y":"35","roomName":"W6S0"},{"x":"30","y":"36","roomName":"W6S0"},{"x":"30","y":"37","roomName":"W6S0"},{"x":"30","y":"38","roomName":"W6S0"},{"x":"30","y":"39","roomName":"W6S0"},{"x":"31","y":"39","roomName":"W6S0"},{"x":"31","y":"34","roomName":"W6S0"},{"x":"30","y":"33","roomName":"W6S0"},{"x":"30","y":"34","roomName":"W6S0"},{"x":"30","y":"32","roomName":"W6S0"},{"x":"31","y":"33","roomName":"W6S0"}]
-	
+	[{"x":"31","y":"6","roomName":"W6S0"}]
+
 	this.createConstructionSite(positions, STRUCTURE_ROAD);
 }
 
@@ -24,8 +24,7 @@ constructionTools.createConstructionContainer = function() {
 
 	var positions =
 
-
-	[{"x":"33","y":"32","roomName":"W6S0"}]
+	[{"x":"35","y":"6","roomName":"W6S0"}]
 
 	this.createConstructionSite(positions, STRUCTURE_CONTAINER);
 }
@@ -84,7 +83,7 @@ constructionTools.destroyStructure = function() {
 
 	var positions =
 
-	[{"x":"33","y":"32","roomName":"W6S0"}]
+	[{"x":"32","y":"25","roomName":"W6S0"},{"x":"31","y":"9","roomName":"W6S0"}]
 
 	if (positions.length > 0) {
 
