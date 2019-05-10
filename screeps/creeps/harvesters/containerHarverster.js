@@ -41,7 +41,7 @@ ContainerHarvester.prototype.act = function() {
 			var container = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 				filter: container => container.structureType === STRUCTURE_CONTAINER &&
 					container.store[RESOURCE_ENERGY] / container.storeCapacity < .80 &&
-					!roomTools.isDropContainer(structure)
+					!roomTools.isDropContainer(container)
 			});
 
 			if (this.creep.transfer(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {

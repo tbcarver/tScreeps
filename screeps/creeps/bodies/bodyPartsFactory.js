@@ -87,5 +87,59 @@ bodyPartsFactory.toBodyParts = function(bodyPartsObject) {
 	return bodyParts;
 }
 
+bodyPartsFactory.balance50100MoveParts = function(result) {
+
+	if (result) {
+
+		result.numberOf50s = result.numberOf50sLeft;
+
+	} else {
+
+		var spawnCapacity = spawnTools.calculateSpawnCapacity();
+		var total50s = Math.floor(spawnCapacity / 50);
+
+		result = {
+			spawnCapacity: spawnCapacity,
+			total50s: total50s,
+			numberOf100s: 0,
+			numberOf50s: total50s,
+			numberOfMoves: 0,
+			numberOf50sLeft: 0,
+			numberOf50sUnused: 0,
+			foundOneUnused: false,
+			success: false
+		}
+	}
+
+	result.numberOf100s = Math.floor(result.numberOf50s / 4);
+	result.numberOf50s = result.numberOf50s - (result.numberOf100s * 2);
+
+	result.numberOfMoves = Math.ceil((result.numberOf100s + result.numberOf50s) / 2);
+	result.numberOf50sLeft = result.total50s - result.numberOfMoves;
+	result.numberOf50sUnused = result.total50s - (result.numberOf100s * 2) - result.numberOf50s - result.numberOfMoves;
+
+	if (result.numberOf50sUnused === 0) {
+
+		result.success = true;
+
+	} else if (result.numberOf50sUnused === 1 || result.numberOf50sUnused === -1) {
+
+		if (result.foundOneUnused) {
+
+			if (result.numberOf50sUnused === 1) {
+				result.success = true;
+			}
+		} else {
+			result.foundOneUnused = true;
+		}
+	}
+
+	if (!result.success) {
+		result = approximateParts(result);
+	}
+
+	return result;
+}
+
 
 module.exports = bodyPartsFactory;
