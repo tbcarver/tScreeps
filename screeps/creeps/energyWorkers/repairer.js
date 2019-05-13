@@ -51,7 +51,7 @@ Repairer.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 
 		creepMemory = {
 			type: "repairer",
-			bodyPartsType: "energyWorker"
+			bodyPartsType: "moveCarryWork"
 		}
 	}
 

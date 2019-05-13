@@ -49,7 +49,7 @@ describe("/screeps/creeps/energyWorkers/builder", function() {
 
 			assert.notStrictEqual(memory, undefined);
 			assert.strictEqual(memory.type, "builder");
-			assert.strictEqual(memory.bodyPartsType, "energyWorker");
+			assert.strictEqual(memory.bodyPartsType, "moveCarryWork");
 		});
 	});
 });

@@ -13,7 +13,7 @@
 			hostname: 'screeps-server.codecamp.edu',
 			port: 21025,
 		});
-		const myRoom = "W8N0";
+		// const myRoom = "W8N0";
 		// var result = await api.raw.register.submit("mascarenas235720", "mascarenas235720", "1985");
 		// console.log("register: ", result);
 		// await api.auth('mascarenas235720', '1985');
@@ -47,6 +47,13 @@
 		// await api.auth('robinson223537', '0421');
 		// result = await api.raw.game.placeSpawn("W6N1", 27, 28, "spawn1");
 		// console.log("spawn: ", result);
+
+		
+		var result = await api.raw.register.submit("test1", "test1", "1234");
+		console.log("register: ", result);
+		await api.auth('test1', '1234');
+		result = await api.raw.game.placeSpawn("W10S1", 17, 12, "spawn1");
+		console.log("spawn: ", result);
 		
 		// var result = await api.raw.register.submit("carver230620-sandbox", "carver230620-sandbox", "1234");
 		// result = await api.raw.game.placeSpawn("W4N1", 42, 8, "spawn1");
@@ -122,12 +129,12 @@
 		// result = await api.raw.user.code.get();
 		// result = await api.raw.leaderboard.seasons();
 
-		result = await api.raw.user.worldStatus();
-		console.log("worldStatus: ", result);
-		result = await api.raw.game.roomOverview(myRoom);
-		console.log("roomOverview: ", result);
-		result = await api.raw.game.roomStatus(myRoom);
-		console.log("roomStatus: ", result);
+		// result = await api.raw.user.worldStatus();
+		// console.log("worldStatus: ", result);
+		// result = await api.raw.game.roomOverview(myRoom);
+		// console.log("roomOverview: ", result);
+		// result = await api.raw.game.roomStatus(myRoom);
+		// console.log("roomStatus: ", result);
 
 
 	} catch (error) {

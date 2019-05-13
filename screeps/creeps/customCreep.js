@@ -21,8 +21,10 @@ CustomCreep.prototype.act = function() {
 	var acted = false;
 
 	if (this.creep.ticksToLive < 25) {
+		
+		var hasCarry  = this.creep.body.some(bodyPart => bodyPart.type === "carry");
 
-		if (this.creep.carry[RESOURCE_ENERGY] === 0) {
+		if (this.creep.carry[RESOURCE_ENERGY] === 0 || !hasCarry) {
 
 			if (Game.flags["graveyard"]) {
 
@@ -37,7 +39,7 @@ CustomCreep.prototype.act = function() {
 
 			var target = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 				filter: structure => structure.structureType == STRUCTURE_CONTAINER &&
-					structure.store[RESOURCE_ENERGY] > 200
+					structure.store[RESOURCE_ENERGY] < this.creep.carry.energy
 			});
 
 			if (!target) {

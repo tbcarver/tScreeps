@@ -2,7 +2,7 @@
 var dropperBodyPartsStrategy = {};
 
 dropperBodyPartsStrategy.getBodyPartsObject = function(spawnCapacity) {
-
+	
 	var numberOf100s = Math.floor(spawnCapacity / 100);
 	var numberOf50s = spawnCapacity >= (numberOf100s * 100) + 50 ? 1 : 0;
 

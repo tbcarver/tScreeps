@@ -15,7 +15,7 @@ ControllerEnergizer.prototype.act = function() {
 
 ControllerEnergizer.prototype.energize = function() {
 
-	var transferResult = this.creep.transfer(global.controller, RESOURCE_ENERGY);
+	var transferResult = this.creep.upgradeController(global.controller);
 
 	if (transferResult == ERR_NOT_IN_RANGE) {
 
@@ -31,7 +31,7 @@ ControllerEnergizer.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 
 	var creepMemory = {
 		type: "controllerEnergizer",
-		bodyPartsType: "energizer"
+		bodyPartsType: "moveCarryWork"
 	}
 
 	return creepMemory;
