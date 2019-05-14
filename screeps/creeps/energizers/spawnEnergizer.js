@@ -31,7 +31,7 @@ SpawnEnergizer.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 
 	var creepMemory = {
 		type: "spawnEnergizer",
-		bodyPartsType: "moveCarryWork"
+		bodyPartsType: "energizer"
 	}
 
 	return creepMemory;

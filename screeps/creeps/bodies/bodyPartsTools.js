@@ -14,7 +14,7 @@ bodyPartsTools.balance50100MoveParts = function(result, spawnCapacity) {
 
 		var defaultResult = {
 			spawnCapacity: spawnCapacity,
-			total50s: total50s,			
+			total50s: total50s,
 			currentTotal50s: total50s,
 			numberOf50s: total50s,
 			maxNumberOf50s: -1,
@@ -41,15 +41,19 @@ bodyPartsTools.balance50100MoveParts = function(result, spawnCapacity) {
 		result.numberOf100s = result.maxNumberOf100s
 	}
 
-	if (result.maxNumberOf50s === -1) {
+	if (result.maxNumberOf50s !== result.numberOf50s) {
 		result.numberOf50s = result.numberOf50s - (result.numberOf100s * 2);
-	} else {
+	} else if (result.maxNumberOf100s !== result.numberOf100s) {
 		result.numberOf100s = Math.floor((result.currentTotal50s - result.numberOf50s) / 2);
 	}
 
 	result.numberOfMoves = Math.ceil((result.numberOf100s + result.numberOf50s) / 2);
 	result.numberOf50sLeft = result.total50s - result.numberOfMoves;
 	result.numberOf50sUnused = result.total50s - (result.numberOf100s * 2) - result.numberOf50s - result.numberOfMoves;
+
+	if (result.maxNumberOf50s == result.numberOf50s && result.maxNumberOf100s === result.numberOf100s ) {
+		result.success = true;
+	}
 
 	if (result.numberOf50sUnused === 0) {
 

@@ -1,13 +1,13 @@
 
 var bodyPartsTools = require("./bodyPartsTools");
 
-var workDropperStrategy = {};
+var energizerStrategy = {};
 
-workDropperStrategy.getBodyPartsObject = function(spawnCapacity) {
+energizerStrategy.getBodyPartsObject = function(spawnCapacity) {
 	
 	var balanced50100MoveParts = {
-		maxNumberOf50s: 0,
-		maxNumberOf100s: 5,
+		maxNumberOf50s: 10,
+		maxNumberOf100s: 1,
 	}
 
 	balanced50100MoveParts = bodyPartsTools.balance50100MoveParts(balanced50100MoveParts, spawnCapacity);
@@ -15,10 +15,11 @@ workDropperStrategy.getBodyPartsObject = function(spawnCapacity) {
 	var bodyPartsObject = {
 		move: balanced50100MoveParts.numberOfMoves,
 		work: balanced50100MoveParts.numberOf100s,
+		carry: balanced50100MoveParts.numberOf50s,
 	};
 
 	return bodyPartsObject
 }
 
 
-module.exports = workDropperStrategy;
+module.exports = energizerStrategy;

@@ -31,7 +31,7 @@ ControllerEnergizer.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 
 	var creepMemory = {
 		type: "controllerEnergizer",
-		bodyPartsType: "moveCarryWork"
+		bodyPartsType: "energizer"
 	}
 
 	return creepMemory;

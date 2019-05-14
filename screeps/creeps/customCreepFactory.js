@@ -60,6 +60,7 @@ customCreepFactory.buildCreep = function(creep, creepsStatistics) {
 
 		case "repairer":
 
+			// creep.suicide();
 			// debug.temp("creep:", creep)
 			// debug.temp("creep memory:", creep.memory)
 			customCreep = new Repairer(creep);

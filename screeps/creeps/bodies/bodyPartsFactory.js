@@ -12,6 +12,10 @@ bodyPartsFactory.getBodyParts = function(bodyPartsStrategyName) {
 
 	switch (bodyPartsStrategyName) {
 
+		case "energizer":
+			bodyPartsStrategy = moveCarryWorkStrategy;
+			break;
+
 		case "moveCarryWork":
 			bodyPartsStrategy = moveCarryWorkStrategy;
 			break;
