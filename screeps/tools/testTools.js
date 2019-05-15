@@ -6,6 +6,8 @@ var testObject = require("../creeps/energizers/extensionEnergizer");
 
 function tick() {
 
+	
+
 	// function approximateParts(result) {
 
 	// 	if (result) {

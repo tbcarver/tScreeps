@@ -4,6 +4,8 @@ var findTools = require("../../tools/findTools");
 
 function Energizer(creep) {
 
+	this.canHarvest = false;
+
 	CustomCreep.call(this, creep);
 }
 
@@ -19,7 +21,11 @@ Energizer.prototype.act = function() {
 				this.state = "harvesting";
 			}
 
-			var resource = findTools.findClosestEnergy(this.creep.pos);
+			var resource = findTools.findClosestContainer(this.creep.pos);
+
+			if (this.canHarvest) {
+				var resource = findTools.findClosestEnergy(this.creep.pos);
+			}
 
 			if (resource) {
 
@@ -37,7 +43,7 @@ Energizer.prototype.act = function() {
 				}
 			} else {
 
-				debug.warning("Repairer resource not found");
+				debug.warning(`${this.type} energy not found`);
 			}
 		}
 

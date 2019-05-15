@@ -37,7 +37,7 @@ EnergyWorker.prototype.act = function() {
 				}
 			} else {
 
-				debug.warning("Repairer resource not found");
+				debug.warning(`${this.type} energy not found`);
 			}
 		}
 

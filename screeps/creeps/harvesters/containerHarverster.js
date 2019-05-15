@@ -25,9 +25,14 @@ ContainerHarvester.prototype.act = function() {
 
 			if (resource) {
 
-				if (this.creep.harvest(resource) == ERR_NOT_IN_RANGE) {
+				var result = this.creep.harvest(resource);
 
+				if (result === ERR_NOT_IN_RANGE) {
+					
 					this.creep.moveTo(resource);
+
+				} else if (result === ERR_NOT_ENOUGH_RESOURCES) {
+					this.state = "transferring";
 				}
 
 			} else {

@@ -4,6 +4,8 @@ var Energizer = require("./energizer");
 function SpawnEnergizer(creep) {
 
 	Energizer.call(this, creep);
+
+	this.canHarvest = true;
 }
 
 SpawnEnergizer.prototype = Object.create(Energizer.prototype);

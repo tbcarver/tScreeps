@@ -2,13 +2,13 @@
 var creepsSpawnRules = {
 	builders: 4,
 	containerHarvesters: 3,
-	controllerEnergizers: 3,
+	controllerEnergizers: 8,
 	defenders: 0,
 	dropContainerHarvesters: 2,
 	extensionEnergizers: 5,
 	repairers: 2,
 	spawnEnergizers: 2,
-	wallRepairers: 1
+	wallRepairers: 2
 }
 
 var maxExtensionsPerEnergizer = 3;

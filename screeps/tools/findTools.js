@@ -61,6 +61,33 @@ findTools.findClosestEnergy = function(pos) {
 	return energy;
 }
 
+
+findTools.findClosestContainer = function(pos) {
+
+	var energy = pos.findClosestByRange(FIND_STRUCTURES, {
+		filter: structure => structure.structureType == STRUCTURE_CONTAINER &&
+			structure.store[RESOURCE_ENERGY] > 100 && this.isInRange(pos, structure.pos, 10)
+	});
+
+	if (!energy) {
+
+		energy = pos.findClosestByRange(FIND_STRUCTURES, {
+			filter: structure => structure.structureType == STRUCTURE_CONTAINER &&
+			structure.store[RESOURCE_ENERGY] > 100 && this.isInRange(pos, structure.pos, 20)
+		});
+	}
+
+	if (!energy) {
+
+		energy = pos.findClosestByRange(FIND_STRUCTURES, {
+			filter: structure => structure.structureType == STRUCTURE_CONTAINER &&
+				structure.store[RESOURCE_ENERGY] > 200
+		});
+	}
+
+	return energy;
+}
+
 findTools.isInRange = function(sourcePos, targetPos, range) {
 
 	var result = PathFinder.search(sourcePos, { pos: targetPos, range: range });
