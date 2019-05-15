@@ -42,6 +42,8 @@ CustomCreep.prototype.act = function() {
 					structure.store[RESOURCE_ENERGY] < this.creep.carry.energy
 			});
 
+			debug.temp("ARGGG target", target, this.creep.carry.energy);
+
 			if (!target) {
 				target = global.controller;
 			}

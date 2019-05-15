@@ -17,7 +17,7 @@ var customCreepSpawner = {};
 
 customCreepSpawner.spawnCreep = function(creepsStatistics) {
 
-	if (!spawn.spawning && room.energyAvailable >= 250) {
+	if (!spawn.spawning && room.energyAvailable >= 300) {
 
 		debug.primary("spawn chance", room.energyAvailable);
 		// debug.temp("creep stats:", creepsStatistics, creepsSpawnRules)
