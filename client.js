@@ -17,7 +17,9 @@
 		// var result = await api.raw.register.submit("mascarenas235720", "mascarenas235720", "1985");
 		// console.log("register: ", result);
 		// await api.auth('mascarenas235720', '1985');
-		// result = await api.raw.game.placeSpawn("W2S1", 39, 13, "spawn1");
+		// result = await api.raw.user.respawn();
+		// console.log("register: ", result);
+		// result = await api.raw.game.placeSpawn("W2S1", 38, 13, "spawn1");
 		// console.log("spawn: ", result);
 
 		// var result = await api.raw.register.submit("shampton140961", "shampton140961", "6942");
@@ -49,11 +51,13 @@
 		// console.log("spawn: ", result);
 
 		
-		var result = await api.raw.register.submit("test1", "test1", "1234");
-		console.log("register: ", result);
-		await api.auth('test1', '1234');
-		result = await api.raw.game.placeSpawn("W10S1", 17, 12, "spawn1");
-		console.log("spawn: ", result);
+		// var result = await api.raw.register.submit("test1", "test1", "1234");
+		// console.log("register: ", result);
+		// await api.auth('test1', '1234');
+		// result = await api.raw.user.respawn();
+		// console.log("respawn: ", result);
+		// result = await api.raw.game.placeSpawn("W7N12", 25, 2, "spawn1");
+		// console.log("spawn: ", result);
 		
 		// var result = await api.raw.register.submit("carver230620-sandbox", "carver230620-sandbox", "1234");
 		// result = await api.raw.game.placeSpawn("W4N1", 42, 8, "spawn1");

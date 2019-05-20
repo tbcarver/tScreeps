@@ -1,4 +1,5 @@
 
+var { creepTypeNames } = require("./creeps/creepTypes");
 var customCreepFactory = require("./creeps/customCreepFactory");
 var customCreepSpawner = require("./creeps/customCreepSpawner");
 
@@ -8,25 +9,24 @@ creepsController.tick = function() {
 
 	cleanUpTheDead();
 
-	var creepsStatistics = {
-		builders: 0,
-		containerHarvesters: 0,
-		controllerEnergizers: 0,
-		defenders: 0,
-		dropContainerHarvesters: 0,
-		extensionEnergizers: 0,
-		repairers: 0,
-		spawnEnergizers: 0,
-		wallRepairers: 0
-	};
+	var creepsStatistics = {};
+
+	for (creepTypeName of creepTypeNames) {
+		creepsStatistics[creepTypeName] = 0;
+	}
 
 	for (var index in Game.creeps) {
-
+		
 		var creep = Game.creeps[index];
-		var customCreep = customCreepFactory.buildCreep(creep, creepsStatistics);
 
-		// debug.temp(`creep act: type: ${creep.memory.type} ticks: ${creep.ticksToLive}`);
-		customCreep.act();
+		if (!creep.spawning) {
+
+			var customCreep = customCreepFactory.buildCreep(creep);
+	
+			// debug.temp(`creep act: type: ${creep.memory.type} ticks: ${creep.ticksToLive}`);
+			customCreep.act();
+			creepsStatistics[creep.memory.type]++;
+		}
 	}
 
 	debug.muted(`creeps:`, Object.keys(Game.creeps).length, creepsStatistics);

@@ -6,7 +6,8 @@ constructionTools.createConstructionRoad = function() {
 
 	var positions =
 
-	[{"x":"29","y":"29","roomName":"W6S0"},{"x":"29","y":"21","roomName":"W6S0"}]
+	
+[{"x":"32","y":"39","roomName":"W6S0"},{"x":"32","y":"40","roomName":"W6S0"},{"x":"32","y":"41","roomName":"W6S0"},{"x":"32","y":"42","roomName":"W6S0"},{"x":"32","y":"43","roomName":"W6S0"},{"x":"28","y":"48","roomName":"W6S0"},{"x":"27","y":"49","roomName":"W6S0"},{"x":"29","y":"47","roomName":"W6S0"},{"x":"30","y":"46","roomName":"W6S0"},{"x":"31","y":"45","roomName":"W6S0"},{"x":"32","y":"44","roomName":"W6S0"}]
 
 	this.createConstructionSite(positions, STRUCTURE_ROAD);
 }
@@ -15,7 +16,7 @@ constructionTools.createConstructionExtension = function() {
 
 	var positions =
 
-	[{"x":"31","y":"36","roomName":"W6S0"},{"x":"31","y":"37","roomName":"W6S0"},{"x":"31","y":"38","roomName":"W6S0"}]
+		[{ "x": "31", "y": "36", "roomName": "W6S0" }, { "x": "31", "y": "37", "roomName": "W6S0" }, { "x": "31", "y": "38", "roomName": "W6S0" }]
 
 	this.createConstructionSite(positions, STRUCTURE_EXTENSION);
 }
@@ -24,7 +25,7 @@ constructionTools.createConstructionContainer = function() {
 
 	var positions =
 
-	[{"x":"32","y":"25","roomName":"W6S0"},{"x":"31","y":"9","roomName":"W6S0"}]
+		[{ "x": "32", "y": "25", "roomName": "W6S0" }, { "x": "31", "y": "9", "roomName": "W6S0" }]
 
 	this.createConstructionSite(positions, STRUCTURE_CONTAINER);
 }
@@ -33,9 +34,18 @@ constructionTools.createConstructionWalls = function() {
 
 	var positions =
 
-	[{"x":"29","y":"42","roomName":"W6S0"}]
+		[{ "x": "29", "y": "42", "roomName": "W6S0" }]
 
-		this.createConstructionSite(positions, STRUCTURE_WALL);
+	this.createConstructionSite(positions, STRUCTURE_WALL);
+}
+
+constructionTools.createConstructionRamparts = function() {
+
+	var positions =
+
+		[{ "x": "32", "y": "42", "roomName": "W6S0" }]
+
+	this.createConstructionSite(positions, STRUCTURE_RAMPART);
 }
 
 constructionTools.createConstructionSite = function(positions, structureType, name) {
@@ -55,7 +65,7 @@ constructionTools.removeConstructionSite = function() {
 
 	var positions =
 
-	[{"x":"29","y":"29","roomName":"W6S0"},{"x":"29","y":"21","roomName":"W6S0"}]
+		[{ "x": "29", "y": "29", "roomName": "W6S0" }, { "x": "29", "y": "21", "roomName": "W6S0" }]
 
 	if (positions.length > 0) {
 
@@ -82,7 +92,8 @@ constructionTools.destroyStructure = function() {
 
 	var positions =
 
-	[{"x":"29","y":"21","roomName":"W6S0"},{"x":"29","y":"29","roomName":"W6S0"}]
+		
+[{"x":"32","y":"42","roomName":"W6S0"}]
 
 	if (positions.length > 0) {
 
@@ -90,7 +101,7 @@ constructionTools.destroyStructure = function() {
 
 			var structures = room.find(FIND_STRUCTURES, {
 				filter: (structure) => structure.pos.x == positions[index].x &&
-					structure.pos.y == positions[index].y
+					structure.pos.y == positions[index].y && structure.structureType === STRUCTURE_WALL
 			});
 
 			if (structures) {

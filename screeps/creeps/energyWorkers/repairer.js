@@ -17,7 +17,7 @@ Repairer.prototype.work = function() {
 
 	const target = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 		filter: structure => structure.hits < structure.hitsMax &&
-			structure.structureType !== STRUCTURE_WALL
+			!(structure.structureType === STRUCTURE_WALL || structure.structureType === STRUCTURE_RAMPART)
 	});
 
 	if (target) {
@@ -44,7 +44,7 @@ Repairer.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 
 	const targets = room.find(FIND_STRUCTURES, {
 		filter: structure => structure.hits < structure.hitsMax &&
-			structure.structureType !== STRUCTURE_WALL
+			!(structure.structureType === STRUCTURE_WALL || structure.structureType === STRUCTURE_RAMPART)
 	});
 
 	if (targets.length >= 6) {
