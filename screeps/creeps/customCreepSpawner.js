@@ -17,6 +17,7 @@ var creepTypesSpawnOrder = [
 	"containerHarvester",
 	"extensionEnergizer",
 	"builder",
+	"remoteBuilder",
 	"controllerEnergizer",
 	"wallRepairer"
 ];
