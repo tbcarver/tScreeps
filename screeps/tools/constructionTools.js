@@ -6,9 +6,8 @@ constructionTools.createConstructionRoad = function() {
 
 	var positions =
 
-
-		[{ "x": "32", "y": "39", "roomName": "W6S0" }, { "x": "32", "y": "40", "roomName": "W6S0" }, { "x": "32", "y": "41", "roomName": "W6S0" }, { "x": "32", "y": "42", "roomName": "W6S0" }, { "x": "32", "y": "43", "roomName": "W6S0" }, { "x": "28", "y": "48", "roomName": "W6S0" }, { "x": "27", "y": "49", "roomName": "W6S0" }, { "x": "29", "y": "47", "roomName": "W6S0" }, { "x": "30", "y": "46", "roomName": "W6S0" }, { "x": "31", "y": "45", "roomName": "W6S0" }, { "x": "32", "y": "44", "roomName": "W6S0" }]
-
+	[{"x":"39","y":"9","roomName":"W6S1"},{"x":"39","y":"10","roomName":"W6S1"}]
+		
 	this.createConstructionSite(positions, STRUCTURE_ROAD);
 }
 
@@ -52,7 +51,7 @@ constructionTools.createConstructionStorage = function() {
 
 	var positions =
 
-		[{ "x": "38", "y": "19", "roomName": "W1S0" }]
+		[{ "x": "32", "y": "19", "roomName": "W6S0" }]
 
 	this.createConstructionSite(positions, STRUCTURE_STORAGE);
 }
@@ -73,8 +72,17 @@ constructionTools.createConstructionSite = function(positions, structureType, na
 		for (var index in positions) {
 
 			var position = new RoomPosition(positions[index].x, positions[index].y, positions[index].roomName);
-			var result = room.createConstructionSite(position, structureType, name);
-			debug.highlight(`created construction site: type: ${structureType}: ${result}`);
+			var room = Game.rooms[positions[index].roomName];
+
+			if (room) {
+
+				var result = room.createConstructionSite(position, structureType, name);
+				debug.highlight(`created construction site: type: ${structureType}: ${result}`);
+
+			} else {
+
+				debug.error(`Cannot get room from Game.rooms`);
+			}
 		}
 	}
 }

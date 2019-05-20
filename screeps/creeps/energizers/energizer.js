@@ -1,7 +1,7 @@
 
 var CustomCreep = require("../customCreep");
 var findTools = require("../../tools/findTools");
-var { canEnergizersHarvest } = require("../../creepsRules");
+var { canEnergizersHarvest } = require("../creepsRules");
 
 function Energizer(creep) {
 

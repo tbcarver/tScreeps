@@ -12,7 +12,7 @@ try {
 	var roomTools = require("./tools/roomTools");
 	var spawnTools = require("./tools/spawnTools");
 	var visualizeTools = require("./tools/visualizeTools");
-	var creepsController = require("./creepsController");
+	var creepsController = require("./creeps/creepsController");
 	var towersController = require("./structures/towersController");
 
 	global.debug = debug;
@@ -38,7 +38,7 @@ try {
 
 	test();
 	//  constructionTools.createConstructionRoad();
-	//  constructionTools.createConstructionRamparts();
+	//  constructionTools.createConstructionStorage();
 	// constructionTools.removeConstructionSite();
 	// constructionTools.destroyStructure();
 	// roomTools.lookAt();

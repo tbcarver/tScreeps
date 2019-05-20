@@ -1,7 +1,6 @@
 
 var RemoteCreep = require("../remoteCreep");
 var findTools = require("../../tools/findTools");
-var roomTools = require("../../tools/roomTools");
 
 function RemoteEnergyWorker(creep) {
 
@@ -16,58 +15,52 @@ RemoteEnergyWorker.prototype.act = function() {
 }
 
 RemoteEnergyWorker.prototype.arrivedAtRoom = function() {
-	this.state = "harvesting";
 }
 
 RemoteEnergyWorker.prototype.arrivedAtRemoteRoom = function() {
-	this.state = "working";
+	this.state = "harvesting";
 }
 
 RemoteEnergyWorker.prototype.roomAct = function() {
+	this.moveToRemoteRoom();
+}
 
-	if (this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
+RemoteEnergyWorker.prototype.remoteRoomAct = function() {
 
-		this.moveToRemoteRoom();
+	if (this.state === "stepTwoAway") {
+		this.creep.moveTo(spawn);
+		this.state = "stepOneAway";
+	} else if (this.state === "stepOneAway") {
+		this.creep.moveTo(spawn);
+		this.state = "working";
+	}
 
-	} else if (this.state === "harvesting"){
+	if (this.state === "harvesting" || this.creep.carry[RESOURCE_ENERGY] === 0) {
 
-		var resource = findTools.findClosestEnergy(this.creep.pos);
+		if (this.state !== "harvesting") {
+			this.state = "harvesting";
+		}
+
+		var resource = this.creep.pos.findClosestByPath(FIND_SOURCES);
 
 		if (resource) {
 
-			if (resource.structureType) {
-
-				if (this.creep.withdraw(resource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-					this.creep.moveTo(resource);
-				}
-
-			} else {
-
-				if (this.creep.harvest(resource) == ERR_NOT_IN_RANGE) {
-					this.creep.moveTo(resource);
-				}
+			if (this.creep.harvest(resource) == ERR_NOT_IN_RANGE) {
+				this.creep.moveTo(resource);
 			}
 		} else {
 
 			// debug.warning(`${this.type} energy not found`);
 		}
-	} else {
-		debug.warning(`${this.type} roomAct called with unknown state: ${this.state}`);
 	}
-}
 
-RemoteEnergyWorker.prototype.remoteRoomAct = function() {
+	if (this.state === "working" || this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
 
-	if (this.creep.carry[RESOURCE_ENERGY] === 0) {
-
-		this.moveToRoom();
-
-	} else if (this.state === "working"){
+		if (this.state !== "working") {
+			this.state = "working";
+		}
 
 		this.work();
-
-	} else {
-		debug.warning(`${this.type} roomAct called with unknown state: ${this.state}`);
 	}
 }
 

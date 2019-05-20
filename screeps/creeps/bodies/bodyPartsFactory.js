@@ -1,4 +1,5 @@
 
+var claimerStrategy = require("./claimerStrategy");
 var moveCarryStrategy = require("./moveCarryStrategy");
 var moveCarryWorkStrategy = require("./moveCarryWorkStrategy");
 var workDropperStrategy = require("./workDropperStrategy");
@@ -11,6 +12,10 @@ bodyPartsFactory.getBodyParts = function(bodyPartsStrategyName, spawnCapacity) {
 	var bodyParts;
 
 	switch (bodyPartsStrategyName) {
+
+		case "claimer":
+			bodyPartsStrategy = claimerStrategy;
+			break;
 
 		case "energizer":
 			bodyPartsStrategy = moveCarryWorkStrategy;

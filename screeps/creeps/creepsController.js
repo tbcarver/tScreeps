@@ -1,7 +1,7 @@
 
-var { creepTypeNames } = require("./creeps/creepTypes");
-var customCreepFactory = require("./creeps/customCreepFactory");
-var customCreepSpawner = require("./creeps/customCreepSpawner");
+var { creepTypeNames } = require("./creepTypes");
+var customCreepFactory = require("./customCreepFactory");
+var customCreepSpawner = require("./customCreepSpawner");
 
 var creepsController = {};
 

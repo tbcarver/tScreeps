@@ -1,5 +1,5 @@
 
-var { maxWaitingDefenders } = require("../../creepsRules");
+var { maxWaitingDefenders } = require("../creepsRules");
 var spawnTools = require("../../tools/spawnTools");
 var findTools = require("../../tools/findTools");
 

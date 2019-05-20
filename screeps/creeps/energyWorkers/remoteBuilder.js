@@ -1,6 +1,7 @@
 
 
 var RemoteEnergyWorker = require("./remoteEnergyWorker");
+var RemoteCreep = require("../remoteCreep");
 
 function RemoteBuilder(creep) {
 
@@ -25,12 +26,6 @@ RemoteBuilder.prototype.work = function() {
 			this.creep.moveTo(target);
 		}
 
-	} else {
-
-		if (this.creep.transfer(global.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-
-			this.creep.moveTo(global.controller);
-		}
 	}
 }
 
@@ -38,10 +33,13 @@ RemoteBuilder.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 
 	var creepMemory;
 
-	creepMemory = {
-		type: "remoteBuilder",
-		bodyPartsType: "moveCarryWork",
-		maximumSpawnCapacity: 850,
+	if (RemoteCreep.hasRemoteRoom()) {
+
+		creepMemory = {
+			type: "remoteBuilder",
+			bodyPartsType: "moveCarryWork",
+			maximumSpawnCapacity: 850,
+		}
 	}
 
 	return creepMemory;

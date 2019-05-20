@@ -1,6 +1,6 @@
 
 var CustomCreep = require("./customCreep");
-var { remoteRoomName } = require("../creepsRules");
+var { remoteRoomName } = require("./creepsRules");
 
 function RemoteCreep(creep) {
 

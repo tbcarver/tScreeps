@@ -2,7 +2,7 @@
 var findTools = require("../tools/findTools");
 var spawnTools = require("../tools/spawnTools");
 var { creepConstructors } = require("./creepTypes");
-var { creepsSpawnRules } = require("../creepsRules");
+var { creepsSpawnRules } = require("./creepsRules");
 var bodyPartsFactory = require("./bodies/bodyPartsFactory");
 
 var customCreepSpawner = {};
@@ -15,12 +15,14 @@ var creepTypesSpawnOrder = [
 	"dropContainerHarvester",
 	"storageEnergizer",
 	"remoteHarvester",
+	"remoteControllerEnergizer",
 	"containerHarvester",
 	"extensionEnergizer",
 	"builder",
 	"remoteBuilder",
 	"controllerEnergizer",
-	"wallRepairer"
+	"wallRepairer",
+	"remoteClaimer",
 ];
 
 customCreepSpawner.spawnCreep = function(creepsStatistics) {

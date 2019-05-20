@@ -1,6 +1,6 @@
 
 var Energizer = require("./energizer");
-var { maxExtensionsPerEnergizer } = require("../../creepsRules");
+var { maxExtensionsPerEnergizer } = require("../creepsRules");
 var coreArray = require("../../../lib/core/extensions/coreArray");
 
 function ExtensionEnergizer(creep) {
