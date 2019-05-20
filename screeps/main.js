@@ -3,6 +3,8 @@
 //  Defenders are taking so long every one else dies during an attack.
 
 try {
+	
+	// oneTimeInitialize();
 
 	var debug = require("../lib/coreVendor/coreScreeps/debug");
 	var test = require("./tools/testTools");
@@ -11,6 +13,7 @@ try {
 	var spawnTools = require("./tools/spawnTools");
 	var visualizeTools = require("./tools/visualizeTools");
 	var creepsController = require("./creepsController");
+	var towersController = require("./structures/towersController");
 
 	global.debug = debug;
 	global.spawn = Game.spawns["spawn1"];
@@ -50,6 +53,7 @@ try {
 	// roomTools.visualizeCreepByType("wallRepairer", "cyan");
 
 	creepsController.tick();
+	towersController.tick();
 
 	Memory.state.lastRoomEnergyAvailable = room.energyAvailable;
 
@@ -69,8 +73,13 @@ try {
 	}
 }
 
-function initialize() {
+function oneTimeInitialize() {
 
-	// Memory.state = {};
-	// Memory.state.lastSpawnEnergy = 0;
+	if (!Memory.state) {
+
+		Memory.state = {};
+		Memory.state.nextCreepId = 0;
+		Memory.state.lastSpawnEnergy = 0;
+		Memory.state.lastRoomEnergyAvailable = 0;
+	}
 }

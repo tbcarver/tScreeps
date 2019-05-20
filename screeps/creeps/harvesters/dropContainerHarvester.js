@@ -93,6 +93,8 @@ DropContainerHarvester.initializeSpawnCreepMemory = function(creepsCurrentCount)
 			creepMemory = {
 				type: "dropContainerHarvester",
 				bodyPartsType: "workDropper",
+				maximumSpawnCapacity: 500,
+				minimumSpawnCapacity: 500,
 				state: "moving",
 				resourceId: resource.id,
 				containerId: container.id,

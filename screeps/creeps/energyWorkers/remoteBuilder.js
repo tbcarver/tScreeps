@@ -40,7 +40,8 @@ RemoteBuilder.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 
 	creepMemory = {
 		type: "remoteBuilder",
-		bodyPartsType: "moveCarryWork"
+		bodyPartsType: "moveCarryWork",
+		maximumSpawnCapacity: 850,
 	}
 
 	return creepMemory;

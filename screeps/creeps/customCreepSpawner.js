@@ -13,6 +13,7 @@ var creepTypesSpawnOrder = [
 	"spawnEnergizer",
 	// "defender",
 	"dropContainerHarvester",
+	"storageEnergizer",
 	"remoteHarvester",
 	"containerHarvester",
 	"extensionEnergizer",
@@ -71,30 +72,43 @@ function spawnCreep(creepMemory) {
 	};
 
 	if (creepMemory) {
+		
+		var spawnCapacity = spawnTools.calculateSpawnCapacity();
 
-		var id = getNextCreepId();
-		var bodyParts = bodyPartsFactory.getBodyParts(creepMemory.bodyPartsType);
-
-		var result = spawn.spawnCreep(bodyParts, id, {
-			memory: creepMemory,
-			energyStructures: findTools.findAllEnergyStructures()
-		});
-
-		if (result === OK) {
-
-			spawnResult.spawned = true;
-			debug.highlight(`${creepMemory.type} spawning: ${id} cost: ${spawnTools.calculateBodyCost(bodyParts)}
-				memory:`, creepMemory);
-
-		} else if (ERR_NOT_ENOUGH_ENERGY && creepMemory.waitForSpawn) {
-
+		if (creepMemory.minimumSpawnCapacity && spawnCapacity < creepMemory.minimumSpawnCapacity) {
+				
 			spawnResult.waitForSpawn = true;
 
 		} else {
+			
+			if (creepMemory.maximumSpawnCapacity && spawnCapacity > creepMemory.maximumSpawnCapacity) {
 
-			debug.warning(`${creepMemory.type} did not spawn: ${result}`);
+				spawnCapacity = creepMemory.maximumSpawnCapacity;
+			}
+
+			var id = getNextCreepId();
+			var bodyParts = bodyPartsFactory.getBodyParts(creepMemory.bodyPartsType, spawnCapacity);
+
+			var result = spawn.spawnCreep(bodyParts, id, {
+				memory: creepMemory,
+				energyStructures: findTools.findAllEnergyStructures()
+			});
+
+			if (result === OK) {
+
+				spawnResult.spawned = true;
+				debug.highlight(`${creepMemory.type} spawning: ${id} cost: ${spawnTools.calculateBodyCost(bodyParts)}
+					memory:`, creepMemory);
+
+			} else if (ERR_NOT_ENOUGH_ENERGY && creepMemory.waitForSpawn) {
+
+				spawnResult.waitForSpawn = true;
+
+			} else {
+
+				debug.warning(`${creepMemory.type} did not spawn: ${result}`);
+			}
 		}
-
 	}
 
 	return spawnResult;

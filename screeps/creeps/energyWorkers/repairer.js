@@ -47,11 +47,12 @@ Repairer.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 			!(structure.structureType === STRUCTURE_WALL || structure.structureType === STRUCTURE_RAMPART)
 	});
 
-	if (targets.length >= 6) {
+	if (targets.length >= 1) {
 
 		creepMemory = {
 			type: "repairer",
-			bodyPartsType: "moveCarryWork"
+			bodyPartsType: "moveCarryWork",
+			maximumSpawnCapacity: 850,
 		}
 	}
 

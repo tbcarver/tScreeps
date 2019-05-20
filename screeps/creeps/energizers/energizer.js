@@ -1,10 +1,9 @@
 
 var CustomCreep = require("../customCreep");
 var findTools = require("../../tools/findTools");
+var { canEnergizersHarvest } = require("../../creepsRules");
 
 function Energizer(creep) {
-
-	this.canHarvest = false;
 
 	CustomCreep.call(this, creep);
 }
@@ -21,10 +20,10 @@ Energizer.prototype.act = function() {
 				this.state = "harvesting";
 			}
 
-			var resource = findTools.findClosestContainer(this.creep.pos);
-
-			if (this.canHarvest) {
+			if (canEnergizersHarvest) {
 				var resource = findTools.findClosestEnergy(this.creep.pos);
+			} else {
+				var resource = findTools.findClosestStoredEnergy(this.creep.pos);
 			}
 
 			if (resource) {

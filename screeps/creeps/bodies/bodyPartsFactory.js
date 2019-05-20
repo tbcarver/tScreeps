@@ -1,11 +1,11 @@
 
-var tools = require("../../tools/tools");
+var moveCarryStrategy = require("./moveCarryStrategy");
 var moveCarryWorkStrategy = require("./moveCarryWorkStrategy");
 var workDropperStrategy = require("./workDropperStrategy");
 
 var bodyPartsFactory = {};
 
-bodyPartsFactory.getBodyParts = function(bodyPartsStrategyName) {
+bodyPartsFactory.getBodyParts = function(bodyPartsStrategyName, spawnCapacity) {
 
 	var bodyPartsStrategy;
 	var bodyParts;
@@ -14,6 +14,10 @@ bodyPartsFactory.getBodyParts = function(bodyPartsStrategyName) {
 
 		case "energizer":
 			bodyPartsStrategy = moveCarryWorkStrategy;
+			break;
+
+		case "moveCarry":
+			bodyPartsStrategy = moveCarryStrategy;
 			break;
 
 		case "moveCarryWork":
@@ -27,7 +31,6 @@ bodyPartsFactory.getBodyParts = function(bodyPartsStrategyName) {
 
 	if (bodyPartsStrategy) {
 
-		var spawnCapacity = tools.spawnTools.calculateSpawnCapacity();
 		bodyPartsObject = bodyPartsStrategy.getBodyPartsObject(spawnCapacity);
 
 		if (bodyPartsObject) {

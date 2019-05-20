@@ -1,5 +1,6 @@
 
 var CustomCreep = require("../customCreep");
+var roomTools = require("../../tools/findTools");
 var roomTools = require("../../tools/roomTools");
 var { maxEnergizersPerContainer } = require("../../creepsRules");
 
@@ -21,7 +22,7 @@ ContainerHarvester.prototype.act = function() {
 				this.state = "harvesting";
 			}
 
-			resource = Game.getObjectById(this.memory.resourceId);
+			var resource = this.creep.pos.findClosestByPath(FIND_SOURCES);
 
 			if (resource) {
 
@@ -44,7 +45,8 @@ ContainerHarvester.prototype.act = function() {
 		if (this.state === "alternateTransferring") {
 
 			var container = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-				filter: container => container.structureType === STRUCTURE_CONTAINER &&
+				filter: container => (container.structureType === STRUCTURE_CONTAINER ||
+					container.structureType === STRUCTURE_STORAGE) &&
 					container.store[RESOURCE_ENERGY] / container.storeCapacity < .80 &&
 					!roomTools.isDropContainer(container)
 			});
@@ -91,6 +93,8 @@ ContainerHarvester.prototype.act = function() {
 
 ContainerHarvester.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 
+	// TODO: Remove the harvest energy source finding and let it find an available energy source
+
 	var creepMemory
 	var container;
 
@@ -126,6 +130,7 @@ ContainerHarvester.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 			creepMemory = {
 				type: "containerHarvester",
 				bodyPartsType: "moveCarryWork",
+				maximumSpawnCapacity: 550,
 				resourceId: resource.id,
 				containerId: container.id,
 				containerPos: container.pos

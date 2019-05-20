@@ -14,7 +14,6 @@ energizerStrategy.getBodyPartsObject = function(spawnCapacity) {
 	if (spawnCapacity >= 300) {
 
 		var balanced50100MoveParts = {
-			maxNumberOf50s: 10,
 			maxNumberOf100s: 1,
 		}
 

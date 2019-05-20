@@ -13,6 +13,14 @@ EnergyWorker.prototype.act = function() {
 
 	if (!CustomCreep.prototype.act.call(this)) {
 
+		if (this.state === "stepTwoAway") {
+			this.creep.moveTo(spawn);
+			this.state = "stepOneAway";
+		} else if (this.state === "stepOneAway") {
+			this.creep.moveTo(spawn);
+			this.state = "working";
+		}
+
 		if (this.state === "harvesting" || this.creep.carry[RESOURCE_ENERGY] === 0) {
 
 			if (this.state !== "harvesting") {
@@ -28,11 +36,14 @@ EnergyWorker.prototype.act = function() {
 					if (this.creep.withdraw(resource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 						this.creep.moveTo(resource);
 					}
-
 				} else {
 
 					if (this.creep.harvest(resource) == ERR_NOT_IN_RANGE) {
 						this.creep.moveTo(resource);
+
+					} else if (this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
+						// Step away from an energy source to not block it
+						this.state = "stepTwoAway";
 					}
 				}
 			} else {

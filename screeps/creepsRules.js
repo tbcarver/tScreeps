@@ -10,11 +10,14 @@ var creepsSpawnRules = {
 	remoteHarvester: 1,
 	repairer: 2,
 	spawnEnergizer: 2,
+	storageEnergizer: 0,
 	wallRepairer: 1
 }
 
 var maxExtensionsPerEnergizer = 3;
 var maxEnergizersPerContainer = 3;
+var canEnergizersHarvest = false;
+
 var maxWaitingDefenders = 2;
 
 var remoteRoomName = "W6S1";

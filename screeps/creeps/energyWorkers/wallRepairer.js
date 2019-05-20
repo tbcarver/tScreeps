@@ -59,7 +59,8 @@ WallRepairer.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 
 		creepMemory = {
 			type: "wallRepairer",
-			bodyPartsType: "moveCarryWork"
+			bodyPartsType: "moveCarryWork",
+			maximumSpawnCapacity: 850,
 		}
 	}
 

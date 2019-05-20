@@ -17,13 +17,22 @@ SpawnEnergizer.prototype.act = function() {
 
 SpawnEnergizer.prototype.energize = function() {
 
-	var transferResult = this.creep.transfer(global.spawn, RESOURCE_ENERGY);
+	var targetStructure = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+		filter: structure => structure.structureType === STRUCTURE_TOWER &&
+		structure.energy < structure.energyCapacity
+	});
+
+	if (!targetStructure) {
+		targetStructure = spawn;
+	}
+
+	var transferResult = this.creep.transfer(targetStructure, RESOURCE_ENERGY);
 
 	if (transferResult == ERR_NOT_IN_RANGE) {
 
-		this.creep.moveTo(global.spawn);
+		this.creep.moveTo(targetStructure);
 
-	} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+	} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .20) {
 
 		this.state = "harvesting";
 	}
@@ -33,7 +42,8 @@ SpawnEnergizer.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 
 	var creepMemory = {
 		type: "spawnEnergizer",
-		bodyPartsType: "energizer"
+		bodyPartsType: "energizer",
+		maximumSpawnCapacity: 450,
 	}
 
 	return creepMemory;

@@ -64,6 +64,16 @@ visualizeTools.visualizeCreepByType = function(creepType, color) {
 	}
 }
 
+visualizeTools.visualizeDyingCreep = function(creep) {
+
+	const targets = _.filter(Game.creeps, creep => creep.ticksToLive < 25);
+
+	for (var index in targets) {
+
+		room.visual.circle(targets[index].pos, { radius: .25, stroke: "white", fill: "white", opacity: 1 });
+	}
+}
+
 function getColorFromConstant(colorConstant) {
 
 	var color = "white";

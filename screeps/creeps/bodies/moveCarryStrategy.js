@@ -1,23 +1,23 @@
 
 var bodyPartsTools = require("./bodyPartsTools");
 
-var workDropperStrategy = {};
+var moveCarryStrategy = {};
 
-workDropperStrategy.getBodyPartsObject = function(spawnCapacity) {
-	
+moveCarryStrategy.getBodyPartsObject = function(spawnCapacity) {
+
 	var balanced50100MoveParts = {
-		maxNumberOf50s: 0,
+		maxNumberOf100s: 0,
 	}
 
 	balanced50100MoveParts = bodyPartsTools.balance50100MoveParts(balanced50100MoveParts, spawnCapacity);
 
-	var bodyPartsObject = {
+	bodyPartsObject = {
 		move: balanced50100MoveParts.numberOfMoves,
-		work: balanced50100MoveParts.numberOf100s,
+		carry: balanced50100MoveParts.numberOf50s,
 	};
 
 	return bodyPartsObject
 }
 
 
-module.exports = workDropperStrategy;
+module.exports = moveCarryStrategy;

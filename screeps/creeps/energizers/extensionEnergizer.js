@@ -75,6 +75,7 @@ ExtensionEnergizer.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 		creepMemory = {
 			type: "extensionEnergizer",
 			bodyPartsType: "energizer",
+			maximumSpawnCapacity: 450,
 			extensions: [{
 				id: "",
 				pos: {}

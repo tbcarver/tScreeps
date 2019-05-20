@@ -44,7 +44,8 @@ Builder.initializeSpawnCreepMemory = function(creepsCurrentCount) {
 
 		creepMemory = {
 			type: "builder",
-			bodyPartsType: "moveCarryWork"
+			bodyPartsType: "moveCarryWork",
+			maximumSpawnCapacity: 850,
 		}
 	}
 

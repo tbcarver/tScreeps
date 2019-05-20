@@ -3,10 +3,49 @@ var findTools = require("./findTools");
 var roomTools = require("./roomTools");
 var spawnTools = require("./spawnTools");
 var testObject = require("../creeps/energizers/extensionEnergizer");
+var bodyPartsStrategy = require("../creeps/bodies/energizerStrategy");
 
 function tick() {
 
-	
+
+	// for (var count = 1; count <= 15; count++) {
+	// 	var capacity = 300 + (count * 50);
+	// 	debug.temp(capacity, bodyPartsStrategy.getBodyPartsObject(capacity));
+	// }
+
+	// energizerStrategy
+	// 350 {"move":2,"work":1,"carry":3}
+	// 400 {"move":2,"work":1,"carry":3}
+	// 450 {"move":3,"work":1,"carry":4}
+	// 500 {"move":3,"work":1,"carry":5}
+	// 550 {"move":3,"work":1,"carry":5}
+	// 600 {"move":4,"work":1,"carry":6}
+	// 650 {"move":4,"work":1,"carry":7}
+	// 700 {"move":4,"work":1,"carry":7}
+	// 750 {"move":5,"work":1,"carry":8}
+	// 800 {"move":5,"work":1,"carry":9}
+	// 850 {"move":5,"work":1,"carry":9}
+	// 900 {"move":6,"work":1,"carry":10}
+	// 950 {"move":6,"work":1,"carry":11}
+	// 1000 {"move":6,"work":1,"carry":11}
+	// 1050 {"move":7,"work":1,"carry":12}
+
+	// moveCarryWorkStrategy
+	// 350 {"move":2,"work":1,"carry":3}
+	// 400 {"move":2,"work":1,"carry":3}
+	// 450 {"move":3,"work":1,"carry":4}
+	// 500 {"move":3,"work":1,"carry":5}
+	// 550 {"move":3,"work":2,"carry":4}
+	// 600 {"move":3,"work":2,"carry":4}
+	// 650 {"move":4,"work":2,"carry":5}
+	// 700 {"move":4,"work":2,"carry":6}
+	// 750 {"move":4,"work":2,"carry":6}
+	// 800 {"move":5,"work":2,"carry":7}
+	// 850 {"move":5,"work":3,"carry":6}
+	// 900 {"move":5,"work":3,"carry":7}
+	// 950 {"move":5,"work":3,"carry":7}
+	// 1000 {"move":6,"work":3,"carry":8}
+	// 1050 {"move":6,"work":3,"carry":9}
 
 	// function approximateParts(result) {
 

@@ -9,6 +9,7 @@ var RemoteBuilder = require("./energyWorkers/remoteBuilder");
 var RemoteHarvester = require("./harvesters/remoteHarvester");
 var Repairer = require("./energyWorkers/repairer");
 var SpawnEnergizer = require("./energizers/spawnEnergizer");
+var StorageEnergizer = require("./energizers/storageEnergizer");
 var WallRepairer = require("./energyWorkers/wallRepairer");
 
 var creepConstructors = {	
@@ -22,6 +23,7 @@ var creepConstructors = {
 	remoteHarvester: RemoteHarvester,
 	repairer: Repairer,
 	spawnEnergizer: SpawnEnergizer,
+	storageEnergizer: StorageEnergizer,
 	wallRepairer: WallRepairer
 };
 
@@ -36,6 +38,7 @@ var creepTypeNames = [
 	"remoteHarvester",
 	"repairer",
 	"spawnEnergizer",
+	"storageEnergizer",
 	"wallRepairer"
 ];
 
