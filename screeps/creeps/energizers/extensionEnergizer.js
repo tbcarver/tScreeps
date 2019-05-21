@@ -51,7 +51,7 @@ ExtensionEnergizer.prototype.energize = function() {
 	}
 }
 
-ExtensionEnergizer.initializeSpawnCreepMemory = function(creepsCurrentCount) {
+ExtensionEnergizer.initializeSpawnCreepMemory = function(room, creepsCurrentCount) {
 
 	var creepMemory;
 

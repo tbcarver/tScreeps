@@ -6,8 +6,8 @@ constructionTools.createConstructionRoad = function() {
 
 	var positions =
 
-	[{"x":"39","y":"9","roomName":"W6S1"},{"x":"39","y":"10","roomName":"W6S1"}]
-		
+	[{"x":"35","y":"6","roomName":"W6S0"},{"x":"31","y":"9","roomName":"W6S0"},{"x":"35","y":"17","roomName":"W6S0"},{"x":"32","y":"25","roomName":"W6S0"},{"x":"33","y":"32","roomName":"W6S0"}]
+	
 	this.createConstructionSite(positions, STRUCTURE_ROAD);
 }
 
@@ -24,7 +24,7 @@ constructionTools.createConstructionContainer = function() {
 
 	var positions =
 
-		[{ "x": "32", "y": "25", "roomName": "W6S0" }, { "x": "31", "y": "9", "roomName": "W6S0" }]
+		[{ "x": "33", "y": "31", "roomName": "W6S0" }, { "x": "36", "y": "6", "roomName": "W6S0" }]
 
 	this.createConstructionSite(positions, STRUCTURE_CONTAINER);
 }
@@ -42,7 +42,7 @@ constructionTools.createConstructionRamparts = function() {
 
 	var positions =
 
-		[{ "x": "32", "y": "42", "roomName": "W6S0" }]
+		[{ "x": "30", "y": "42", "roomName": "W6S0" }]
 
 	this.createConstructionSite(positions, STRUCTURE_RAMPART);
 }
@@ -60,7 +60,7 @@ constructionTools.createConstructionTower = function() {
 
 	var positions =
 
-		[{ "x": "31", "y": "16", "roomName": "W1S0" }]
+		[{ "x": "34", "y": "8", "roomName": "W6S1" }]
 
 	this.createConstructionSite(positions, STRUCTURE_TOWER);
 }
@@ -91,7 +91,7 @@ constructionTools.removeConstructionSite = function() {
 
 	var positions =
 
-		[{ "x": "29", "y": "29", "roomName": "W6S0" }, { "x": "29", "y": "21", "roomName": "W6S0" }]
+	[{"x":"30","y":"42","roomName":"W6S0"}]
 
 	if (positions.length > 0) {
 
@@ -118,8 +118,7 @@ constructionTools.destroyStructure = function() {
 
 	var positions =
 
-
-		[{ "x": "32", "y": "42", "roomName": "W6S0" }]
+	[{"x":"30","y":"42","roomName":"W6S0"}]
 
 	if (positions.length > 0) {
 
@@ -127,10 +126,12 @@ constructionTools.destroyStructure = function() {
 
 			var structures = room.find(FIND_STRUCTURES, {
 				filter: (structure) => structure.pos.x == positions[index].x &&
-					structure.pos.y == positions[index].y && structure.structureType === STRUCTURE_WALL
+					structure.pos.y == positions[index].y
 			});
 
-			if (structures) {
+			debug.temp("walls",structures);
+
+			if (structures.length > 0) {
 
 				for (structure of structures) {
 

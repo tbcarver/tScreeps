@@ -34,7 +34,7 @@ Builder.prototype.work = function() {
 	}
 }
 
-Builder.initializeSpawnCreepMemory = function(creepsCurrentCount) {
+Builder.initializeSpawnCreepMemory = function(room, creepsCurrentCount) {
 
 	var creepMemory;
 

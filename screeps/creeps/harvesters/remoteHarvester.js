@@ -32,7 +32,8 @@ RemoteHarvester.prototype.roomAct = function() {
 	} else if (this.state === "transferring"){
 
 		var container = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-			filter: container => container.structureType === STRUCTURE_CONTAINER &&
+			filter: container => (container.structureType === STRUCTURE_CONTAINER ||
+				container.structureType === STRUCTURE_STORAGE) &&
 				container.store[RESOURCE_ENERGY] / container.storeCapacity < .80 &&
 				!roomTools.isDropContainer(container)
 		});
@@ -70,7 +71,7 @@ RemoteHarvester.prototype.remoteRoomAct = function() {
 	}
 }
 
-RemoteHarvester.initializeSpawnCreepMemory = function(creepsCurrentCount) {
+RemoteHarvester.initializeSpawnCreepMemory = function(room, creepsCurrentCount) {
 
 	var creepMemory;
 

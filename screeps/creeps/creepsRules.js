@@ -1,19 +1,30 @@
 
 var creepsSpawnRules = {
-	builder: 2,
-	containerHarvester: 3,
-	controllerEnergizer: 4,
+	builder: 4,
+	containerHarvester: 2,
+	controllerEnergizer: 1,
 	defender: 0,
-	dropContainerHarvester: 2,
-	extensionEnergizer: 4,
-	remoteBuilder: 3,
+	dropContainerHarvester: 4,
+	extensionEnergizer: 5,
 	remoteClaimer: 0,
-	remoteControllerEnergizer: 2,
-	remoteHarvester: 3,
+	remoteHarvester: 2,
 	repairer: 2,
-	spawnEnergizer: 2,
-	storageEnergizer: 0,
+	spawnEnergizer: 1,
+	storageEnergizer: 2,
 	wallRepairer: 1
+}
+
+var remoteCreepsSpawnRules = {
+	builder: 4,
+	containerHarvester: 0,
+	controllerEnergizer: 1,
+	defender: 0,
+	dropContainerHarvester: 0,
+	extensionEnergizer: 0,
+	repairer: 1,
+	spawnEnergizer: 0,
+	storageEnergizer: 0,
+	wallRepairer: 0
 }
 
 var maxExtensionsPerEnergizer = 3;
@@ -26,7 +37,9 @@ var remoteRoomName = "W6S1";
 
 
 module.exports.creepsSpawnRules = creepsSpawnRules;
+module.exports.remoteCreepsSpawnRules = remoteCreepsSpawnRules;
 module.exports.maxExtensionsPerEnergizer = maxExtensionsPerEnergizer;
 module.exports.maxEnergizersPerContainer = maxEnergizersPerContainer;
+module.exports.canEnergizersHarvest = canEnergizersHarvest;
 module.exports.maxWaitingDefenders = maxWaitingDefenders;
 module.exports.remoteRoomName = remoteRoomName;

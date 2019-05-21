@@ -25,7 +25,18 @@ RemoteBuilder.prototype.work = function() {
 
 			this.creep.moveTo(target);
 		}
+	} else {
+		
+		var transferResult = this.creep.upgradeController(this.creep.room.controller);
 
+		if (transferResult == ERR_NOT_IN_RANGE) {
+
+			this.creep.moveTo(this.creep.room.controller);
+
+		} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+
+			this.state = "harvesting";
+		}
 	}
 }
 

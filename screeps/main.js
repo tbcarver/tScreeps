@@ -36,9 +36,8 @@ try {
 	// 	debug.muted("sources: ", room.find(FIND_SOURCES));
 	// }
 
-	test();
 	//  constructionTools.createConstructionRoad();
-	//  constructionTools.createConstructionStorage();
+	//  constructionTools.createConstructionTower();
 	// constructionTools.removeConstructionSite();
 	// constructionTools.destroyStructure();
 	// roomTools.lookAt();
@@ -58,6 +57,7 @@ try {
 	Memory.state.lastRoomEnergyAvailable = room.energyAvailable;
 
 	// console.log(JSON.stringify(Game.spawns["spawn1"].room.lookAt(29, 25)))
+	test();
 
 } catch (error) {
 

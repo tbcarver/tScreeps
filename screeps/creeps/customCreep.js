@@ -30,9 +30,9 @@ CustomCreep.prototype.act = function() {
 
 			this.creep.suicide();
 		}
-		
+
 		acted = true;
-		
+
 	} else if (this.creep.ticksToLive < 25) {
 
 		room.visual.circle(this.creep.pos, { radius: .15, stroke: "white", fill: "white", opacity: 1 });
@@ -56,12 +56,37 @@ CustomCreep.prototype.act = function() {
 		}
 
 		acted = true;
+
+	} else if (this.state === "movingToRemoteRoom" && this.memory.remoteRoomName) {
+
+		var exitDirection = room.findExitTo(this.memory.remoteRoomName);
+
+		if (exitDirection && exitDirection >= OK) {
+
+			var exit = this.creep.pos.findClosestByPath(exitDirection);
+
+			if (exit) {
+
+				this.creep.moveTo(exit);
+
+				if (this.creep.room.name === this.memory.remoteRoomName) {
+					
+					this.state = "arrivedAtRemoteRoom";
+				}
+			} else {
+				debug.warning(`${this.type} can't find a path to the exit to ${this.memory.remoteRoomName}`);
+			}
+		} else {
+			debug.warning(`${this.type} can't find an exit direction to ${this.memory.remoteRoomName}`);
+		}
+		
+		acted = true;
 	}
 
 	return acted;
 }
 
-CustomCreep.prototype.transferEnergy = function(){
+CustomCreep.prototype.transferEnergy = function() {
 
 	var target = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 		filter: structure => structure.structureType == STRUCTURE_STORAGE &&

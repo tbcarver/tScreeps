@@ -20,7 +20,7 @@ Energizer.prototype.act = function() {
 				this.state = "harvesting";
 			}
 
-			if (canEnergizersHarvest) {
+			if (canEnergizersHarvest || this.memory.remoteRoomName) {
 				var resource = findTools.findClosestEnergy(this.creep.pos);
 			} else {
 				var resource = findTools.findClosestStoredEnergy(this.creep.pos);

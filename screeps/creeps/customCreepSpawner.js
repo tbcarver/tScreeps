@@ -2,7 +2,7 @@
 var findTools = require("../tools/findTools");
 var spawnTools = require("../tools/spawnTools");
 var { creepConstructors } = require("./creepTypes");
-var { creepsSpawnRules } = require("./creepsRules");
+var { creepsSpawnRules, remoteCreepsSpawnRules, remoteRoomName } = require("./creepsRules");
 var bodyPartsFactory = require("./bodies/bodyPartsFactory");
 
 var customCreepSpawner = {};
@@ -25,7 +25,20 @@ var creepTypesSpawnOrder = [
 	"remoteClaimer",
 ];
 
-customCreepSpawner.spawnCreep = function(creepsStatistics) {
+var remoteCreepTypesSpawnOrder = [
+	"repairer",
+	"spawnEnergizer",
+	// "defender",
+	"dropContainerHarvester",
+	"storageEnergizer",
+	"containerHarvester",
+	"extensionEnergizer",
+	"builder",
+	"controllerEnergizer",
+	"wallRepairer",
+];
+
+customCreepSpawner.spawnCreep = function(creepsStatistics, remoteCreepsStatistics) {
 
 	if (!spawn.spawning && room.energyAvailable >= 300) {
 
@@ -41,16 +54,33 @@ customCreepSpawner.spawnCreep = function(creepsStatistics) {
 			spawnResult = trySpawnCreep(spawnResult, creepConstructors[creepType], creepsStatistics[creepType],
 				creepsSpawnRules[creepType]);
 		}
+
+		for (creepType of remoteCreepTypesSpawnOrder) {
+			spawnResult = trySpawnCreep(spawnResult, creepConstructors[creepType], remoteCreepsStatistics[creepType],
+				remoteCreepsSpawnRules[creepType], true);
+		}
 	}
 }
 
-function trySpawnCreep(previousSpawnResult, customCreep, creepsCurrentCount, creepsSpawnRulesCount) {
+function trySpawnCreep(previousSpawnResult, customCreep, creepsCurrentCount, creepsSpawnRulesCount, isRemoteCreep) {
 
 	if (!previousSpawnResult.waitForSpawn && !previousSpawnResult.spawned) {
 
 		if (creepsCurrentCount < creepsSpawnRulesCount) {
 
-			var creepMemory = customCreep.initializeSpawnCreepMemory(creepsCurrentCount);
+			var room = global.room;
+
+			if (isRemoteCreep) {
+				var room = Game.rooms[remoteRoomName];
+			}
+
+			var creepMemory = customCreep.initializeSpawnCreepMemory(room, creepsCurrentCount);
+
+			if (isRemoteCreep && creepMemory) {
+				creepMemory.state = "movingToRemoteRoom";
+				creepMemory.remoteRoomName = remoteRoomName;
+			}
+
 			var spawnResult = spawnCreep(creepMemory);
 
 			if (spawnResult && spawnResult.waitForSpawn) {

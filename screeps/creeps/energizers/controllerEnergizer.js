@@ -27,7 +27,7 @@ ControllerEnergizer.prototype.energize = function() {
 	}
 }
 
-ControllerEnergizer.initializeSpawnCreepMemory = function(creepsCurrentCount) {
+ControllerEnergizer.initializeSpawnCreepMemory = function(room, creepsCurrentCount) {
 
 	var creepMemory = {
 		type: "controllerEnergizer",

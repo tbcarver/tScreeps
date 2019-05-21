@@ -91,7 +91,7 @@ ContainerHarvester.prototype.act = function() {
 	}
 }
 
-ContainerHarvester.initializeSpawnCreepMemory = function(creepsCurrentCount) {
+ContainerHarvester.initializeSpawnCreepMemory = function(room, creepsCurrentCount) {
 
 	// TODO: Remove the harvest energy source finding and let it find an available energy source
 
