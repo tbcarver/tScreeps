@@ -6,8 +6,9 @@ constructionTools.createConstructionRoad = function() {
 
 	var positions =
 
-	[{"x":"35","y":"6","roomName":"W6S0"},{"x":"31","y":"9","roomName":"W6S0"},{"x":"35","y":"17","roomName":"W6S0"},{"x":"32","y":"25","roomName":"W6S0"},{"x":"33","y":"32","roomName":"W6S0"}]
 	
+[{"x":"26","y":"0","roomName":"W6S1"},{"x":"26","y":"1","roomName":"W6S1"},{"x":"26","y":"2","roomName":"W6S1"},{"x":"27","y":"3","roomName":"W6S1"}]
+
 	this.createConstructionSite(positions, STRUCTURE_ROAD);
 }
 

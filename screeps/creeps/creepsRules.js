@@ -22,7 +22,7 @@ var remoteCreepsSpawnRules = {
 	dropContainerHarvester: 0,
 	extensionEnergizer: 0,
 	repairer: 1,
-	spawnEnergizer: 0,
+	spawnEnergizer: 1,
 	storageEnergizer: 0,
 	wallRepairer: 0
 }

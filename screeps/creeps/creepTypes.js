@@ -5,9 +5,7 @@ var ControllerEnergizer = require("./energizers/controllerEnergizer");
 var Defender = require("./troopers/defender");
 var DropContainerHarvester = require("./harvesters/dropContainerHarvester");
 var ExtensionEnergizer = require("./energizers/extensionEnergizer");
-var RemoteBuilder = require("./energyWorkers/remoteBuilder");
 var RemoteClaimer = require("./troopers/RemoteClaimer");
-var RemoteControllerEnergizer = require("./energizers/remoteControllerEnergizer");
 var RemoteHarvester = require("./harvesters/remoteHarvester");
 var Repairer = require("./energyWorkers/repairer");
 var SpawnEnergizer = require("./energizers/spawnEnergizer");
@@ -21,9 +19,7 @@ var creepConstructors = {
 	defender: Defender,
 	dropContainerHarvester: DropContainerHarvester,
 	extensionEnergizer: ExtensionEnergizer,
-	remoteBuilder: RemoteBuilder,
 	remoteClaimer: RemoteClaimer,
-	remoteControllerEnergizer: RemoteControllerEnergizer,
 	remoteHarvester: RemoteHarvester,
 	repairer: Repairer,
 	spawnEnergizer: SpawnEnergizer,
@@ -38,9 +34,7 @@ var creepTypeNames = [
 	"defender",
 	"dropContainerHarvester",
 	"extensionEnergizer",
-	"remoteBuilder",
 	"remoteClaimer",
-	"remoteControllerEnergizer",
 	"remoteHarvester",
 	"repairer",
 	"spawnEnergizer",
