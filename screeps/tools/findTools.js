@@ -5,9 +5,7 @@ var findTools = {};
 findTools.findAllEnergyStructures = function() {
 
 	var energyStructures = room.find(FIND_MY_STRUCTURES, {
-		filter: {
-			structureType: STRUCTURE_EXTENSION
-		}
+		filter: { structureType: STRUCTURE_EXTENSION }
 	});
 
 	energyStructures.push(global.spawn);
@@ -57,7 +55,7 @@ findTools.findClosestEnergy = function(pos) {
 	if (!energy) {
 
 		energy = pos.findClosestByPath(FIND_SOURCES, {
-			filter: resource => this.isInRange(pos, resource.pos, 10)
+			filter: resource => this.isInRange(pos, resource.pos, 10) && resource.energy / resource.energyCapacity > .10
 		});
 	}
 
@@ -73,7 +71,7 @@ findTools.findClosestEnergy = function(pos) {
 	if (!energy) {
 
 		energy = pos.findClosestByPath(FIND_SOURCES, {
-			filter: resource => this.isInRange(pos, resource.pos, 20)
+			filter: resource => this.isInRange(pos, resource.pos, 20) && resource.energy / resource.energyCapacity > .10
 		});
 	}
 
@@ -88,7 +86,9 @@ findTools.findClosestEnergy = function(pos) {
 
 	if (!energy) {
 
-		energy = pos.findClosestByPath(FIND_SOURCES);
+		energy = pos.findClosestByPath(FIND_SOURCES, {
+			filter: resource => resource.energy / resource.energyCapacity > .10
+		});
 	}
 
 	return energy;

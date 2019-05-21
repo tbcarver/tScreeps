@@ -14,6 +14,8 @@ var creepTypesSpawnOrder = [
 	// "defender",
 	"dropContainerHarvester",
 	"storageEnergizer",
+	"remoteReverseStorageEnergizer",
+	"remoteStorageEnergizer",
 	"remoteHarvester",
 	"containerHarvester",
 	"extensionEnergizer",

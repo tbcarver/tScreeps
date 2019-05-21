@@ -36,8 +36,8 @@ try {
 	// 	debug.muted("sources: ", room.find(FIND_SOURCES));
 	// }
 
-	//  constructionTools.createConstructionRoad();
-	//  constructionTools.createConstructionTower();
+	 constructionTools.createConstructionRoad();
+	//  constructionTools.createConstructionExtension();
 	// constructionTools.removeConstructionSite();
 	// constructionTools.destroyStructure();
 	// roomTools.lookAt();

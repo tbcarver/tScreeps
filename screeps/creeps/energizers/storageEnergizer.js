@@ -81,7 +81,8 @@ StorageEnergizer.initializeSpawnCreepMemory = function(room, creepsCurrentCount)
 		var creepMemory = {
 			type: "storageEnergizer",
 			bodyPartsType: "moveCarry",
-			maximumSpawnCapacity: 650,
+			maximumSpawnCapacity: 600,
+			minimumSpawnCapacity: 450,
 		}
 	}
 

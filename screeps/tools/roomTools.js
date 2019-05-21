@@ -16,7 +16,7 @@ var adjacentDifferentials = [
 roomTools.isDropContainer = function(container) {
 
 	var isDropContainer = false;
-	var sources = room.find(FIND_SOURCES);
+	var sources = container.room.find(FIND_SOURCES);
 
 	for (var source of sources) {
 		for (var adjacentDifferential of adjacentDifferentials) {
@@ -72,19 +72,24 @@ roomTools.lookAt = function() {
 
 roomTools.consoleEnemies = function() {
 
-	const enemies = room.find(FIND_HOSTILE_CREEPS);
+	for (var index in Game.rooms) {
 
-	if (enemies.length > 0) {
+		var room = Game.rooms[index];
 
-		var health = "";
+		const enemies = room.find(FIND_HOSTILE_CREEPS);
 
-		for (enemy of enemies) {
+		if (enemies.length > 0) {
 
-			health += enemy.hits + " " + Math.ceil((enemy.hits / enemy.hitsMax) * 100) + "% " +
-				enemy.ticksToLive + " ";
+			var health = "";
+
+			for (enemy of enemies) {
+
+				health += enemy.hits + " " + Math.ceil((enemy.hits / enemy.hitsMax) * 100) + "% " +
+					enemy.ticksToLive + " ";
+			}
+
+			debug.danger("Enemies!", health);
 		}
-
-		debug.danger("Enemies!", health);
 	}
 }
 

@@ -2,12 +2,14 @@
 var creepsSpawnRules = {
 	builder: 4,
 	containerHarvester: 2,
-	controllerEnergizer: 1,
+	controllerEnergizer: 6,
 	defender: 0,
 	dropContainerHarvester: 4,
 	extensionEnergizer: 5,
 	remoteClaimer: 0,
-	remoteHarvester: 2,
+	remoteHarvester: 0,
+	remoteReverseStorageEnergizer: 0,
+	remoteStorageEnergizer: 4,
 	repairer: 2,
 	spawnEnergizer: 1,
 	storageEnergizer: 2,
@@ -17,13 +19,13 @@ var creepsSpawnRules = {
 var remoteCreepsSpawnRules = {
 	builder: 4,
 	containerHarvester: 0,
-	controllerEnergizer: 1,
+	controllerEnergizer: 4,
 	defender: 0,
-	dropContainerHarvester: 0,
+	dropContainerHarvester: 4,
 	extensionEnergizer: 0,
 	repairer: 1,
 	spawnEnergizer: 1,
-	storageEnergizer: 0,
+	storageEnergizer: 1,
 	wallRepairer: 0
 }
 

@@ -15,11 +15,11 @@ ControllerEnergizer.prototype.act = function() {
 
 ControllerEnergizer.prototype.energize = function() {
 
-	var transferResult = this.creep.upgradeController(global.controller);
+	var transferResult = this.creep.upgradeController(this.creep.room.controller);
 
 	if (transferResult == ERR_NOT_IN_RANGE) {
 
-		this.creep.moveTo(global.controller);
+		this.creep.moveTo(this.creep.room.controller);
 
 	} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
 

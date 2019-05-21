@@ -14,6 +14,10 @@ DropContainerHarvester.prototype.act = function() {
 
 	if (!CustomCreep.prototype.act.call(this)) {
 
+		if (this.state === "arrivedAtRemoteRoom") {
+			this.state = "moving";
+		}
+
 		if (this.state === "harvesting") {
 
 			var resource = Game.getObjectById(this.memory.resourceId);
@@ -25,7 +29,7 @@ DropContainerHarvester.prototype.act = function() {
 
 					var result = this.creep.harvest(resource);
 
-					if (result !== OK) {
+					if (!(result === OK || result === ERR_NOT_ENOUGH_RESOURCES)) {
 	
 						debug.danger("dropContainerHarvester harvest failed:", result);
 					}

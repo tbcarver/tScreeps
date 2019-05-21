@@ -6,9 +6,9 @@ constructionTools.createConstructionRoad = function() {
 
 	var positions =
 
-	
-[{"x":"26","y":"0","roomName":"W6S1"},{"x":"26","y":"1","roomName":"W6S1"},{"x":"26","y":"2","roomName":"W6S1"},{"x":"27","y":"3","roomName":"W6S1"}]
 
+	[{"x":"40","y":"35","roomName":"W6S0"},{"x":"41","y":"35","roomName":"W6S0"},{"x":"42","y":"35","roomName":"W6S0"},{"x":"42","y":"36","roomName":"W6S0"},{"x":"42","y":"37","roomName":"W6S0"},{"x":"42","y":"38","roomName":"W6S0"},{"x":"40","y":"39","roomName":"W6S0"},{"x":"41","y":"39","roomName":"W6S0"},{"x":"42","y":"39","roomName":"W6S0"}]
+	
 	this.createConstructionSite(positions, STRUCTURE_ROAD);
 }
 
@@ -16,7 +16,7 @@ constructionTools.createConstructionExtension = function() {
 
 	var positions =
 
-		[{ "x": "31", "y": "36", "roomName": "W6S0" }, { "x": "31", "y": "37", "roomName": "W6S0" }, { "x": "31", "y": "38", "roomName": "W6S0" }]
+	[{"x":"41","y":"36","roomName":"W6S0"},{"x":"41","y":"37","roomName":"W6S0"},{"x":"41","y":"38","roomName":"W6S0"}]
 
 	this.createConstructionSite(positions, STRUCTURE_EXTENSION);
 }
@@ -25,9 +25,18 @@ constructionTools.createConstructionContainer = function() {
 
 	var positions =
 
-		[{ "x": "33", "y": "31", "roomName": "W6S0" }, { "x": "36", "y": "6", "roomName": "W6S0" }]
+	[{"x":"37","y":"37","roomName":"W6S1"},{"x":"37","y":"10","roomName":"W6S1"}]
 
 	this.createConstructionSite(positions, STRUCTURE_CONTAINER);
+}
+
+constructionTools.createConstructionStorage = function() {
+
+	var positions =
+
+		[{ "x": "32", "y": "19", "roomName": "W6S0" }]
+
+	this.createConstructionSite(positions, STRUCTURE_STORAGE);
 }
 
 constructionTools.createConstructionWalls = function() {
@@ -46,15 +55,6 @@ constructionTools.createConstructionRamparts = function() {
 		[{ "x": "30", "y": "42", "roomName": "W6S0" }]
 
 	this.createConstructionSite(positions, STRUCTURE_RAMPART);
-}
-
-constructionTools.createConstructionStorage = function() {
-
-	var positions =
-
-		[{ "x": "32", "y": "19", "roomName": "W6S0" }]
-
-	this.createConstructionSite(positions, STRUCTURE_STORAGE);
 }
 
 constructionTools.createConstructionTower = function() {
