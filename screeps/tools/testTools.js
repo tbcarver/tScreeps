@@ -325,38 +325,6 @@ function tick() {
 
 
 
-	// const target = room.find(FIND_CONSTRUCTION_SITES);
-
-	// debug.highlight("sites", target);
-
-	// var roadBuilder = require("./builders/roadBuilder.js");
-
-	// roadBuilder.build(global.spawn, global.controller);
-
-	// var foundPath = PathFinder.search(spawn.pos, controller.pos);
-	// var foundPath = room.findPath(spawn.pos, controller.pos, {serialize: true});
-
-	// var serializedPath = room.findPath(source, target, {serialize: true});
-
-	// debug.primary(foundPath);
-	// debug.danger("room: ", Room);
-	// debug.danger(Room.serializePath(foundPath));
-	// console.log(room.find(FIND_SOURCES));
-
-
-
-
-	// console.log("time: " + Game.time);
-
-	// global.spawn = Game.spawns["spawn1"];
-	// room. = spawn.room;
-
-	// if (Math.random() < .2) {
-
-	// 	debug("spawn: ", global.spawn);
-	// }
-
-	// creepsController.tick();
 
 
 

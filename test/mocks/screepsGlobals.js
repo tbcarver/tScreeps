@@ -11,6 +11,3 @@ global.Game = {};
 global.Memory = {};
 
 global.debug = function(){};
-global.spawn = {}
-global.room = {};
-global.controller = {};

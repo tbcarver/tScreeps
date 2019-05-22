@@ -48,7 +48,7 @@ CustomCreep.prototype.act = function() {
 
 			} else {
 
-				this.creep.moveTo(global.spawn);
+				this.creep.moveTo(room.controller);
 			}
 
 		} else {
@@ -102,7 +102,7 @@ CustomCreep.prototype.transferEnergy = function() {
 	}
 
 	if (!target) {
-		target = global.controller;
+		target = this.creep.room.controller;
 	}
 
 	if (this.creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {

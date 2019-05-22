@@ -1,9 +1,9 @@
 
 var creepsConstructors = require("./creepsConstructors");
 
-var customCreepFactory = {};
+var creepsFactory = {};
 
-customCreepFactory.buildCreep = function(creep) {
+creepsFactory.buildCreep = function(creep) {
 
 	var constructor = creepsConstructors[creep.memory.type];
 	var customCreep = new constructor(creep);
@@ -18,4 +18,4 @@ customCreepFactory.buildCreep = function(creep) {
 }
 
 
-module.exports = customCreepFactory;
+module.exports = creepsFactory;

@@ -4,8 +4,6 @@
 
 try {
 
-	// oneTimeInitialize();
-
 	var debug = require("../lib/coreVendor/coreScreeps/debug");
 	var test = require("./tools/testTools");
 	var constructionTools = require("./tools/constructionTools");
@@ -15,13 +13,15 @@ try {
 	var creepsController = require("./creeps/creepsController");
 	var towersController = require("./structures/towersController");
 
+	initialize();
+
 	global.debug = debug;
 
 	for (spawnName in Game.spawns) {
 
 		var spawn = Game.spawns[spawnName];
 		var room = spawn.room;
-	
+
 		var spawnCapacity = spawnTools.calculateSpawnCapacity(spawn);
 		debug.muted(`tick: ${Game.time} ${spawn.name} energy: ${room.energyAvailable} capacity ${spawnCapacity} spawning:`,
 			spawn.spawning ? spawn.spawning.remainingTime : "");
@@ -47,7 +47,11 @@ try {
 	creepsController.tick();
 	towersController.tick();
 
-	Memory.state.lastRoomEnergyAvailable = room.energyAvailable;
+	for (var roomName in Game.rooms) {
+
+		var room = Game.rooms[roomName];
+		Memory.state.rooms[roomName].lastRoomEnergyAvailable = room.energyAvailable;
+	}
 
 	// console.log(JSON.stringify(Game.spawns["spawn1"].room.lookAt(29, 25)))
 	test();
@@ -66,13 +70,21 @@ try {
 	}
 }
 
-function oneTimeInitialize() {
+function initialize() {
 
 	if (!Memory.state) {
-
 		Memory.state = {};
-		Memory.state.nextCreepId = 0;
-		Memory.state.lastSpawnEnergy = 0;
-		Memory.state.lastRoomEnergyAvailable = 0;
+		Memory.state.rooms = {};
+	}
+
+	for (var roomName in Game.rooms) {
+
+		if (!Memory.state.rooms[roomName]) {
+			Memory.state.rooms[roomName] = {};
+		}
+
+		if (!Memory.state.rooms[roomName].lastRoomEnergyAvailable) {
+			Memory.state.rooms[roomName].lastRoomEnergyAvailable = 0;
+		}
 	}
 }

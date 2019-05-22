@@ -2,7 +2,6 @@
 var CustomCreep = require("../customCreep");
 var roomTools = require("../../tools/findTools");
 var roomTools = require("../../tools/roomTools");
-var { maxEnergizersPerContainer } = require("../creepsRules");
 
 function ContainerHarvester(creep) {
 

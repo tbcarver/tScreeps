@@ -2,13 +2,13 @@
 var findTools = {};
 
 // NOTE: Order is important.
-findTools.findAllEnergyStructures = function() {
+findTools.findAllEnergyStructures = function(spawn) {
 
-	var energyStructures = room.find(FIND_MY_STRUCTURES, {
+	var energyStructures = spawn.room.find(FIND_MY_STRUCTURES, {
 		filter: { structureType: STRUCTURE_EXTENSION }
 	});
 
-	energyStructures.push(global.spawn);
+	energyStructures.push(spawn);
 
 	return energyStructures;
 }

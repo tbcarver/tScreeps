@@ -75,6 +75,7 @@ ExtensionEnergizer.initializeSpawnCreepMemory = function(room, creepsSpawnRule) 
 			type: "extensionEnergizer",
 			bodyPartsType: "energizer",
 			maximumSpawnCapacity: 450,
+			canHarvest: creepsSpawnRule.canEnergizersHarvest,
 			extensions: [{
 				id: "",
 				pos: {}

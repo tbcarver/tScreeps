@@ -39,9 +39,9 @@ WallRepairer.prototype.work = function() {
 
 	} else {
 
-		if (this.creep.transfer(global.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+		if (this.creep.transfer(this.creep.room.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 
-			this.creep.moveTo(global.controller);
+			this.creep.moveTo(this.creep.room.controller);
 		}
 	}
 }

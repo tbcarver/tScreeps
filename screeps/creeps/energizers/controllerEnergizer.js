@@ -27,12 +27,13 @@ ControllerEnergizer.prototype.energize = function() {
 	}
 }
 
-ControllerEnergizer.initializeSpawnCreepMemory = function(room, creepsCurrentCount) {
+ControllerEnergizer.initializeSpawnCreepMemory = function(room, creepsSpawnRule) {
 
 	var creepMemory = {
 		type: "controllerEnergizer",
 		bodyPartsType: "energizer",
 		maximumSpawnCapacity: 600,
+		canHarvest: creepsSpawnRule.canEnergizersHarvest,
 	}
 
 	return creepMemory;

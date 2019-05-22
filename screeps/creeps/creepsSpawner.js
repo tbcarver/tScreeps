@@ -5,51 +5,62 @@ var creepConstructors = require("./creepsConstructors");
 var creepsSpawnRules = require("./creepsSpawnRules");
 var bodyPartsFactory = require("./bodies/bodyPartsFactory");
 
-var customCreepSpawner = {};
+var creepsSpawner = {};
 
-customCreepSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
+creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 
 	for (creepsSpawnRule of creepsSpawnRules) {
 
 		var room = Game.rooms[creepsSpawnRule.roomName];
-		var spawn = room.spawn;
-		var currentSpawnedCounts = roomsCurrentSpawnedCounts[room];
 
-		if (!spawn.spawning && room.energyAvailable >= 300) {
+		if (!room) {
+			throw new Error(`Spawn rule room name not found in Game.rooms`);
+		}
 
-			debug.primary(`${spawn.name} spawn chance ${room.energyAvailable}`);
+		var spawns = room.find(FIND_MY_SPAWNS);
 
-			var spawnResult = {
-				waitForSpawn: false,
-				spawned: false
-			};
+		if (spawns.length > 0) {
+			for (var spawn of spawns) {
 
-			for (orderMaxSpawnedCount of creepsSpawnRule.orderMaxSpawnedCounts) {
+				var currentSpawnedCounts = roomsCurrentSpawnedCounts[room];
 
-				var creepType = Object.keys(orderMaxSpawnCount)[0];
-				var creepConstructor = creepConstructors[creepType];
-				var maxSpawnedCount = orderMaxSpawnedCount[creepType];
-				var currentSpawnedCount = currentSpawnedCounts[creepType];
+				if (!spawn.spawning && room.energyAvailable >= 300) {
 
-				if (currentSpawnedCount < maxSpawnedCount) {
-					spawnResult = trySpawnCreep(room, spawn, creepConstructor, creepsSpawnRule, currentSpawnedCount, spawnResult);
-				}
-			}
+					debug.primary(`${spawn.name} spawn chance ${room.energyAvailable}`);
 
-			for (remoteRoom of remoteRooms) {
-				
-				var room = Game.rooms[remoteRoom.roomName];
-				currentSpawnedCounts = currentSpawnedCounts[room];
+					var spawnResult = {
+						waitForSpawn: false,
+						spawned: false
+					};
 
-				for (orderMaxSpawnedCount of remoteRoom.creepsSpawnRule.orderMaxSpawnedCounts) {
-	
-					var creepType = Object.keys(orderMaxSpawnCount)[0];
-					var creepConstructor = creepConstructors[creepType];
-					var maxSpawnedCount = orderMaxSpawnedCount[creepType];
-					var currentSpawnedCount = currentSpawnedCounts[creepType];
-	
-					if (currentSpawnedCount < maxSpawnedCount) {
-						spawnResult = trySpawnCreep(room, spawn, creepConstructor, creepsSpawnRule, currentSpawnedCount, spawnResult);
+					for (spawnOrderMaxSpawnedCount of creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
+
+						var creepType = Object.keys(spawnOrderMaxSpawnedCount)[0];
+						var creepConstructor = creepConstructors[creepType];
+						var maxSpawnedCount = spawnOrderMaxSpawnedCount[creepType];
+						var currentSpawnedCount = (currentSpawnedCounts) ? currentSpawnedCounts[creepType] || 0 : 0;
+
+						if (currentSpawnedCount < maxSpawnedCount) {
+							spawnResult = trySpawnCreep(room, spawn, creepConstructor, creepsSpawnRule, currentSpawnedCount, spawnResult);
+						}
+					}
+
+					for (remoteRoom of remoteRooms) {
+
+						var room = Game.rooms[remoteRoom.roomName];
+						currentSpawnedCounts = currentSpawnedCounts[room];
+
+						for (spawnOrderMaxSpawnedCount of remoteRoom.creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
+
+							var creepType = Object.keys(spawnOrderMaxSpawnedCount)[0];
+							var creepConstructor = creepConstructors[creepType];
+							var maxSpawnedCount = spawnOrderMaxSpawnedCount[creepType];
+							var currentSpawnedCount = (currentSpawnedCounts) ? currentSpawnedCounts[creepType] || 0 : 0;
+
+							if (currentSpawnedCount < maxSpawnedCount) {
+								spawnResult = trySpawnCreep(room, spawn, creepConstructor, creepsSpawnRule, currentSpawnedCount, spawnResult);
+							}
+						}
 					}
 				}
 			}
@@ -72,7 +83,7 @@ function trySpawnCreep(room, spawn, creepConstructor, creepsSpawnRule, currentSp
 				creepMemory.remoteRoomName = room.name;
 			}
 
-			var spawnResult = spawnCreep(creepMemory);
+			var spawnResult = spawnCreep(spawn, creepMemory);
 
 			if (spawnResult && spawnResult.waitForSpawn) {
 				previousSpawnResult.waitForSpawn = spawnResult.waitForSpawn;
@@ -87,14 +98,14 @@ function trySpawnCreep(room, spawn, creepConstructor, creepsSpawnRule, currentSp
 	return previousSpawnResult;
 }
 
-function spawnCreep(creepMemory) {
+function spawnCreep(spawn, creepMemory) {
 
 	var spawnResult = {
 		waitForSpawn: false,
 		spawned: false
 	};
 
-	var spawnCapacity = spawnTools.calculateSpawnCapacity();
+	var spawnCapacity = spawnTools.calculateSpawnCapacity(spawn);
 
 	if (creepMemory.minimumSpawnCapacity && spawnCapacity < creepMemory.minimumSpawnCapacity) {
 
@@ -112,7 +123,7 @@ function spawnCreep(creepMemory) {
 
 		var result = spawn.spawnCreep(bodyParts, id, {
 			memory: creepMemory,
-			energyStructures: findTools.findAllEnergyStructures()
+			energyStructures: findTools.findAllEnergyStructures(spawn)
 		});
 
 		if (result === OK) {
@@ -150,4 +161,4 @@ function getNextCreepId() {
 }
 
 
-module.exports = customCreepSpawner;
+module.exports = creepsSpawner;

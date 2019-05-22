@@ -7,7 +7,7 @@ spawnTools.calculateSpawnCapacity = function(spawn) {
 	var spawnCapacity = room.energyAvailable;
 
 	// Check if energy is still accumulating
-	if (Memory.state.lastRoomEnergyAvailable != room.energyAvailable) {
+	if (Memory.state.rooms[room.name].lastRoomEnergyAvailable != room.energyAvailable) {
 
 		var extensions = room.find(FIND_MY_STRUCTURES, {
 			filter: { structureType: STRUCTURE_EXTENSION }

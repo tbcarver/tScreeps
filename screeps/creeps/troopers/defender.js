@@ -1,70 +1,70 @@
 
-var { maxWaitingDefenders } = require("../creepsRules");
-var spawnTools = require("../../tools/spawnTools");
-var findTools = require("../../tools/findTools");
+// var { maxWaitingDefenders } = require("../creepsRules");
+// var spawnTools = require("../../tools/spawnTools");
+// var findTools = require("../../tools/findTools");
 
-var defender = {};
+// var defender = {};
 
-defender.spawn = function(id, creepsCurrentCount, spawnResult) {
+// defender.spawn = function(id, creepsCurrentCount, spawnResult) {
 
-	const targets = room.find(FIND_HOSTILE_CREEPS);
+// 	const targets = room.find(FIND_HOSTILE_CREEPS);
 
-	if (targets.length > 0 || creepsCurrentCount < maxWaitingDefenders) {
+// 	if (targets.length > 0 || creepsCurrentCount < maxWaitingDefenders) {
 
-		var bodyParts = [RANGED_ATTACK, MOVE, MOVE, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH];
-		var defenderMemory = {
-			type: "defender"
-		}
+// 		var bodyParts = [RANGED_ATTACK, MOVE, MOVE, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH];
+// 		var defenderMemory = {
+// 			type: "defender"
+// 		}
 
-		var spawnCapacity = spawnTools.calculateSpawnCapacity();
+// 		var spawnCapacity = spawnTools.calculateSpawnCapacity();
 
-		if (spawnCapacity >= 400) {
-			bodyParts.push(...[TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH]);
-		}
+// 		if (spawnCapacity >= 400) {
+// 			bodyParts.push(...[TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH]);
+// 		}
 
-		if (spawnCapacity >= 600) {
-			bodyParts.push(...[RANGED_ATTACK, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH,]);
-		}
+// 		if (spawnCapacity >= 600) {
+// 			bodyParts.push(...[RANGED_ATTACK, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH,]);
+// 		}
 
-		var result = spawn.spawnCreep(bodyParts, id, {
-			memory: defenderMemory,
-			energyStructures: findTools.findAllEnergyStructures()
-		});
+// 		var result = spawn.spawnCreep(bodyParts, id, {
+// 			memory: defenderMemory,
+// 			energyStructures: findTools.findAllEnergyStructures()
+// 		});
 
-		if (result === OK) {
+// 		if (result === OK) {
 
-			spawnResult.spawned = true;
-			debug.highlight(`defender spawning: ${id} memory: `, defenderMemory);
+// 			spawnResult.spawned = true;
+// 			debug.highlight(`defender spawning: ${id} memory: `, defenderMemory);
 
-		} else if (ERR_NOT_ENOUGH_ENERGY) {
+// 		} else if (ERR_NOT_ENOUGH_ENERGY) {
 
-			spawnResult.waitForSpawn = true;
-			debug.highlight(`defender did not spawn waiting for energy`,
-				spawnTools.calculateBodyCost(bodyParts));
+// 			spawnResult.waitForSpawn = true;
+// 			debug.highlight(`defender did not spawn waiting for energy`,
+// 				spawnTools.calculateBodyCost(bodyParts));
 
-		} else {
+// 		} else {
 
-			debug.warning(`defender did not spawn: ${result}`);
-		}
-	}
+// 			debug.warning(`defender did not spawn: ${result}`);
+// 		}
+// 	}
 
-	return spawnResult;
-}
+// 	return spawnResult;
+// }
 
-defender.act = function(creep) {
+// defender.act = function(creep) {
 
-	target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+// 	target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
 
-	if (target) {
+// 	if (target) {
 
-		if (creep.rangedAttack(target) == ERR_NOT_IN_RANGE) {
-			creep.moveTo(target);
-		}
-	} else {
+// 		if (creep.rangedAttack(target) == ERR_NOT_IN_RANGE) {
+// 			creep.moveTo(target);
+// 		}
+// 	} else {
 
-		creep.moveTo(Game.flags["barracks"].pos);
-	}
-}
+// 		creep.moveTo(Game.flags["barracks"].pos);
+// 	}
+// }
 
 
-module.exports = defender
+// module.exports = defender

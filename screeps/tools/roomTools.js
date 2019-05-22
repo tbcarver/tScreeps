@@ -48,27 +48,27 @@ roomTools.createFlag = function(name, colorConstant, positions) {
 	}
 }
 
-roomTools.lookAt = function() {
+// roomTools.lookAt = function() {
 
-	var positions =
+// 	var positions =
 
-		[{ "x": "24", "y": "7", "roomName": "W6S0" }]
+// 		[{ "x": "24", "y": "7", "roomName": "W6S0" }]
 
-	if (positions.length > 0) {
+// 	if (positions.length > 0) {
 
-		for (var index in positions) {
+// 		for (var index in positions) {
 
-			var position = new RoomPosition(positions[index].x, positions[index].y, positions[index].roomName);
+// 			var position = new RoomPosition(positions[index].x, positions[index].y, positions[index].roomName);
 
-			var looked = room.lookAt(position);
-			// var looked = room.lookAt(positions[index]);
-			// var looked = room.lookAt(global.spawn);
-			// var looked = room.lookAt(15, 15);
-			// debug.danger(positions[index]);
-			debug.primary(looked);
-		}
-	}
-}
+// 			var looked = room.lookAt(position);
+// 			// var looked = room.lookAt(positions[index]);
+// 			// var looked = room.lookAt(spawn);
+// 			// var looked = room.lookAt(15, 15);
+// 			// debug.danger(positions[index]);
+// 			debug.primary(looked);
+// 		}
+// 	}
+// }
 
 roomTools.consoleEnemies = function() {
 
