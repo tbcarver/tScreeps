@@ -1,6 +1,5 @@
 
 var Energizer = require("./energizer");
-var { maxExtensionsPerEnergizer } = require("../creepsRules");
 var coreArray = require("../../../lib/core/extensions/coreArray");
 
 function ExtensionEnergizer(creep) {
@@ -51,7 +50,7 @@ ExtensionEnergizer.prototype.energize = function() {
 	}
 }
 
-ExtensionEnergizer.initializeSpawnCreepMemory = function(room, creepsCurrentCount) {
+ExtensionEnergizer.initializeSpawnCreepMemory = function(room, creepsSpawnRule) {
 
 	var creepMemory;
 
@@ -92,7 +91,7 @@ ExtensionEnergizer.initializeSpawnCreepMemory = function(room, creepsCurrentCoun
 		creepMemory.extensions[0].pos = nextExtension.pos;
 		// debug.temp("next", nextExtension.pos, 0);
 
-		for (var index = 1; index < maxExtensionsPerEnergizer; index++) {
+		for (var index = 1; index < creepsSpawnRule.maxExtensionsPerEnergizer; index++) {
 			// NOTE: The structures must be adjacent
 			nextExtension = nextExtension.pos.findClosestByRange(FIND_STRUCTURES, {
 				filter: nextStructure => nextStructure.structureType == STRUCTURE_EXTENSION &&

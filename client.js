@@ -13,6 +13,7 @@
 			hostname: 'screeps-server.codecamp.edu',
 			port: 21025,
 		});
+		var result;
 		// const myRoom = "W8N0";
 		// var result = await api.raw.register.submit("mascarenas235720", "mascarenas235720", "1985");
 		// console.log("register: ", result);
@@ -60,7 +61,11 @@
 		// console.log("spawn: ", result);
 		
 		// var result = await api.raw.register.submit("carver230620-sandbox", "carver230620-sandbox", "1234");
-		// result = await api.raw.game.placeSpawn("W4N1", 42, 8, "spawn1");
+		// console.log("result: ", result);
+		// result = await api.auth('carver230620-sandbox', '1234');
+		// console.log("result: ", result);
+		// result = await api.raw.game.placeSpawn("W1N12", 39, 25, "spawn1");
+		// console.log("result: ", result);
 
 
 		// await api.auth('carver230620-sandbox', '1234');

@@ -1,11 +1,11 @@
 
-var { creepConstructors } = require("./creepTypes");
+var creepsConstructors = require("./creepsConstructors");
 
 var customCreepFactory = {};
 
 customCreepFactory.buildCreep = function(creep) {
 
-	var constructor = creepConstructors[creep.memory.type];
+	var constructor = creepsConstructors[creep.memory.type];
 	var customCreep = new constructor(creep);
 
 	// if (creep.memory.type === "remoteHarvester") {

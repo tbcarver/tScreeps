@@ -68,7 +68,7 @@ StorageEnergizer.prototype.energize = function() {
 	}
 }
 
-StorageEnergizer.initializeSpawnCreepMemory = function(room, creepsCurrentCount) {
+StorageEnergizer.initializeSpawnCreepMemory = function(room) {
 
 	var creepMemory;
 	

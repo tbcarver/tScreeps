@@ -31,23 +31,5 @@ var creepConstructors = {
 	wallRepairer: WallRepairer
 };
 
-var creepTypeNames = [
-	"builder",
-	"containerHarvester",
-	"controllerEnergizer",
-	"defender",
-	"dropContainerHarvester",
-	"extensionEnergizer",
-	"remoteClaimer",
-	"remoteHarvester",
-	"remoteReverseStorageEnergizer",
-	"remoteStorageEnergizer",
-	"repairer",
-	"spawnEnergizer",
-	"storageEnergizer",
-	"wallRepairer"
-];
 
-
-module.exports.creepConstructors = creepConstructors;
-module.exports.creepTypeNames = creepTypeNames;
+module.exports = creepConstructors;

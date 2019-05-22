@@ -1,8 +1,9 @@
 
 var spawnTools = {};
 
-spawnTools.calculateSpawnCapacity = function() {
+spawnTools.calculateSpawnCapacity = function(spawn) {
 
+	var room = spawn.room;
 	var spawnCapacity = room.energyAvailable;
 
 	// Check if energy is still accumulating

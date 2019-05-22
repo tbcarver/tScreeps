@@ -5,6 +5,7 @@ function CustomCreep(creep) {
 	this.creep = creep;
 	this.memory = creep.memory;
 	this.type = creep.memory.type;
+	this.remoteRoomName = creep.memory.remoteRoomName;
 
 	Object.defineProperty(this, 'state', {
 		get: function() {
@@ -57,9 +58,9 @@ CustomCreep.prototype.act = function() {
 
 		acted = true;
 
-	} else if (this.state === "movingToRemoteRoom" && this.memory.remoteRoomName) {
+	} else if (this.state === "movingToRemoteRoom" && this.remoteRoomName) {
 
-		var exitDirection = room.findExitTo(this.memory.remoteRoomName);
+		var exitDirection = room.findExitTo(this.remoteRoomName);
 
 		if (exitDirection && exitDirection >= OK) {
 
@@ -69,15 +70,15 @@ CustomCreep.prototype.act = function() {
 
 				this.creep.moveTo(exit);
 
-				if (this.creep.room.name === this.memory.remoteRoomName) {
+				if (this.creep.room.name === this.remoteRoomName) {
 					
 					this.state = "arrivedAtRemoteRoom";
 				}
 			} else {
-				debug.warning(`${this.type} can't find a path to the exit to ${this.memory.remoteRoomName}`);
+				debug.warning(`${this.type} can't find a path to the exit to ${this.remoteRoomName}`);
 			}
 		} else {
-			debug.warning(`${this.type} can't find an exit direction to ${this.memory.remoteRoomName}`);
+			debug.warning(`${this.type} can't find an exit direction to ${this.remoteRoomName}`);
 		}
 		
 		acted = true;

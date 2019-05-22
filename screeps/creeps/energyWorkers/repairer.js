@@ -41,7 +41,7 @@ Repairer.prototype.work = function() {
 	}
 }
 
-Repairer.initializeSpawnCreepMemory = function(room, creepsCurrentCount) {
+Repairer.initializeSpawnCreepMemory = function(room) {
 
 	var creepMemory;
 

@@ -71,7 +71,7 @@ RemoteHarvester.prototype.remoteRoomAct = function() {
 	}
 }
 
-RemoteHarvester.initializeSpawnCreepMemory = function(room, creepsCurrentCount) {
+RemoteHarvester.initializeSpawnCreepMemory = function() {
 
 	var creepMemory;
 

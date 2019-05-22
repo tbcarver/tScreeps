@@ -91,7 +91,7 @@ ContainerHarvester.prototype.act = function() {
 	}
 }
 
-ContainerHarvester.initializeSpawnCreepMemory = function(room, creepsCurrentCount) {
+ContainerHarvester.initializeSpawnCreepMemory = function(room, creepsSpawnRule) {
 
 	// TODO: Remove the harvest energy source finding and let it find an available energy source
 
@@ -99,7 +99,7 @@ ContainerHarvester.initializeSpawnCreepMemory = function(room, creepsCurrentCoun
 	var container;
 
 	// Evenly distribute creeps to each container up to the max creeps per container
-	for (var energizersPerContainer = 1; energizersPerContainer <= maxEnergizersPerContainer; energizersPerContainer++) {
+	for (var energizersPerContainer = 1; energizersPerContainer <= creepsSpawnRule.maxEnergizersPerContainer; energizersPerContainer++) {
 
 		var containers = room.find(FIND_STRUCTURES, {
 			filter: structure => structure.structureType == STRUCTURE_CONTAINER &&

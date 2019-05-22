@@ -1,7 +1,6 @@
 
 var RemoteCreep = require("../remoteCreep");
 var roomTools = require("../../tools/roomTools");
-var { remoteRoomName } = require("../creepsRules");
 
 function RemoteReverseStorageEnergizer(creep) {
 
@@ -80,27 +79,17 @@ RemoteReverseStorageEnergizer.initializeSpawnCreepMemory = function(room, creeps
 
 	var creepMemory;
 
-	if (RemoteCreep.hasRemoteRoom()) {
+	var targets = room.find(FIND_STRUCTURES, {
+		filter: { structureType: STRUCTURE_CONTAINER }
+	});
 
-		var room = Game.rooms[remoteRoomName];
+	if (targets.length > 0) {
 
-		if (room) {
-
-			var targets = room.find(FIND_STRUCTURES, {
-				filter: { structureType: STRUCTURE_CONTAINER }
-			});
-
-			if (targets.length > 0) {
-
-				creepMemory = {
-					type: "remoteReverseStorageEnergizer",
-					bodyPartsType: "moveCarry",
-					maximumSpawnCapacity: 750,
-					minimumSpawnCapacity: 600,
-				}
-			}
-		} else {
-			debug.warning("Remote room not found:", remoteRoomName);
+		creepMemory = {
+			type: "remoteReverseStorageEnergizer",
+			bodyPartsType: "moveCarry",
+			maximumSpawnCapacity: 750,
+			minimumSpawnCapacity: 600,
 		}
 	}
 

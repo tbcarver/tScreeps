@@ -1,7 +1,6 @@
 
-var { creepTypeNames } = require("./creepTypes");
-var customCreepFactory = require("./customCreepFactory");
-var customCreepSpawner = require("./customCreepSpawner");
+var creepsFactory = require("./creepsFactory");
+var creepsSpawner = require("./creepsSpawner");
 
 var creepsController = {};
 
@@ -10,35 +9,43 @@ creepsController.tick = function() {
 	cleanUpTheDead();
 
 	var creepsStatistics = {};
-	var remoteCreepsStatistics = {};
-
-	for (creepTypeName of creepTypeNames) {
-		creepsStatistics[creepTypeName] = 0;
-		remoteCreepsStatistics[creepTypeName] = 0;
-	}
 
 	for (var index in Game.creeps) {
-		
+
 		var creep = Game.creeps[index];
 
 		if (!creep.spawning) {
 
-			var customCreep = customCreepFactory.buildCreep(creep);
-	
+			var customCreep = creepsFactory.buildCreep(creep);
+
 			// debug.temp(`creep act: type: ${creep.memory.type} ticks: ${creep.ticksToLive}`);
 			customCreep.act();
 
-			if (creep.memory.remoteRoomName) {
-				remoteCreepsStatistics[creep.memory.type]++;
-			} else {
-				creepsStatistics[creep.memory.type]++;
+			if (!creepsStatistics[creep.memoryRoomName]) {
+				creepsStatistics[creep.memoryRoomName] = {};
 			}
+
+			var creepsStatistic = creepsStatistics[creep.memoryRoomName];
+
+			if (creep.memory.remoteRoomName && !creepsStatistics[creep.memoryRoomName][creep.memory.remoteRoomName]) {
+				creepsStatistics[creep.memoryRoomName][creep.memory.remoteRoomName] = {};
+				creepsStatistic = creepsStatistics[creep.memoryRoomName][creep.memory.remoteRoomName];
+			}
+
+			if (!creepsStatistic[creep.memory.type]) {
+				creepsStatistic[creep.memory.type] = 0;
+			}
+
+			creepsStatistic[creep.memory.type]++;
 		}
 	}
 
-	debug.muted(`creeps:`, Object.keys(Game.creeps).length, creepsStatistics);
-	debug.muted(`remote creeps:`, remoteCreepsStatistics);
-	customCreepSpawner.spawnCreep(creepsStatistics, remoteCreepsStatistics);
+	_.forEach(creepsStatistics, creepsStatistic => {
+		var totalCreeps = _.reduce(creepsStatistic, (result, value) => result += value, 0);
+		debug.muted(`creeps:`, totalCreeps, creepsStatistic);
+	});
+
+	creepsSpawner.spawnCreep(creepsStatistics);
 }
 
 function cleanUpTheDead() {

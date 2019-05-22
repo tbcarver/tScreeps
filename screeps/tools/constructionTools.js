@@ -7,8 +7,7 @@ constructionTools.createConstructionRoad = function() {
 	var positions =
 
 
-	[{"x":"40","y":"35","roomName":"W6S0"},{"x":"41","y":"35","roomName":"W6S0"},{"x":"42","y":"35","roomName":"W6S0"},{"x":"42","y":"36","roomName":"W6S0"},{"x":"42","y":"37","roomName":"W6S0"},{"x":"42","y":"38","roomName":"W6S0"},{"x":"40","y":"39","roomName":"W6S0"},{"x":"41","y":"39","roomName":"W6S0"},{"x":"42","y":"39","roomName":"W6S0"}]
-	
+	[{"x":"31","y":"6","roomName":"W6S0"},{"x":"32","y":"7","roomName":"W6S0"},{"x":"33","y":"8","roomName":"W6S0"}]
 	this.createConstructionSite(positions, STRUCTURE_ROAD);
 }
 
@@ -34,7 +33,8 @@ constructionTools.createConstructionStorage = function() {
 
 	var positions =
 
-		[{ "x": "32", "y": "19", "roomName": "W6S0" }]
+		
+[{"x":"36","y":"11","roomName":"W6S1"}]
 
 	this.createConstructionSite(positions, STRUCTURE_STORAGE);
 }
@@ -52,7 +52,7 @@ constructionTools.createConstructionRamparts = function() {
 
 	var positions =
 
-		[{ "x": "30", "y": "42", "roomName": "W6S0" }]
+	[{"x":"31","y":"42","roomName":"W6S0"}]
 
 	this.createConstructionSite(positions, STRUCTURE_RAMPART);
 }
@@ -98,6 +98,7 @@ constructionTools.removeConstructionSite = function() {
 
 		for (var index in positions) {
 
+			var room = Game.rooms[positions[index].roomName];
 			var sites = room.find(FIND_CONSTRUCTION_SITES, {
 				filter: (site) => site.pos.x == positions[index].x &&
 					site.pos.y == positions[index].y
@@ -119,12 +120,14 @@ constructionTools.destroyStructure = function() {
 
 	var positions =
 
-	[{"x":"30","y":"42","roomName":"W6S0"}]
+
+	[{"x":"27","y":"1","roomName":"W6S1"},{"x":"27","y":"2","roomName":"W6S1"},{"x":"28","y":"3","roomName":"W6S1"},{"x":"31","y":"6","roomName":"W6S1"},{"x":"32","y":"7","roomName":"W6S1"},{"x":"33","y":"8","roomName":"W6S1"}]
 
 	if (positions.length > 0) {
 
 		for (var index in positions) {
-
+			
+			var room = Game.rooms[positions[index].roomName];
 			var structures = room.find(FIND_STRUCTURES, {
 				filter: (structure) => structure.pos.x == positions[index].x &&
 					structure.pos.y == positions[index].y

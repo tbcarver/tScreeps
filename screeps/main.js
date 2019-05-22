@@ -3,7 +3,7 @@
 //  Defenders are taking so long every one else dies during an attack.
 
 try {
-	
+
 	// oneTimeInitialize();
 
 	var debug = require("../lib/coreVendor/coreScreeps/debug");
@@ -16,28 +16,21 @@ try {
 	var towersController = require("./structures/towersController");
 
 	global.debug = debug;
-	global.spawn = Game.spawns["spawn1"];
-	global.room = spawn.room;
-	global.controller = spawn.room.controller;
+
+	for (spawnName in Game.spawns) {
+
+		var spawn = Game.spawns[spawnName];
+		var room = spawn.room;
+	
+		var spawnCapacity = spawnTools.calculateSpawnCapacity(spawn);
+		debug.muted(`tick: ${Game.time} ${spawn.name} energy: ${room.energyAvailable} capacity ${spawnCapacity} spawning:`,
+			spawn.spawning ? spawn.spawning.remainingTime : "");
+	}
+
 	// console.log(controller.activateSafeMode())
-	var spawnCapacity = spawnTools.calculateSpawnCapacity();
-	debug.muted(`tick: ${Game.time} energy: ${room.energyAvailable} capacity ${spawnCapacity} spawning:`,
-		spawn.spawning ? spawn.spawning.remainingTime : "" );
 
-	// if (Math.random() < .2) {
-	// 	debug.muted("spawn: ", global.spawn);
-	// }
-
-	// if (Math.random() < .2) {
-	// 	debug.muted("controller: ", global.controller);
-	// }
-
-	// if (Math.random() < .2) {
-	// 	debug.muted("sources: ", room.find(FIND_SOURCES));
-	// }
-
-	 constructionTools.createConstructionRoad();
-	//  constructionTools.createConstructionExtension();
+	//  constructionTools.createConstructionRoad();
+	//  constructionTools.createConstructionStorage();
 	// constructionTools.removeConstructionSite();
 	// constructionTools.destroyStructure();
 	// roomTools.lookAt();
@@ -47,7 +40,7 @@ try {
 
 	roomTools.consoleEnemies();
 	visualizeTools.visualizeStructureHealth();
-	visualizeTools.visualizeFlags();
+	// visualizeTools.visualizeFlags();
 	// roomTools.visualizeCreepByType("defender", "blue");
 	// roomTools.visualizeCreepByType("wallRepairer", "cyan");
 

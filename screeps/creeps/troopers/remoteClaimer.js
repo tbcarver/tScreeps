@@ -45,7 +45,7 @@ RemoteClaimer.prototype.remoteRoomAct = function() {
 	}
 }
 
-RemoteClaimer.initializeSpawnCreepMemory = function(room, creepsCurrentCount) {
+RemoteClaimer.initializeSpawnCreepMemory = function() {
 
 	var creepMemory;
 

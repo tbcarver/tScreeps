@@ -32,14 +32,19 @@ visualizeTools.visualize = function(pathToObject, pathFromObject) {
 
 visualizeTools.visualizeStructureHealth = function() {
 
-	const targets = room.find(FIND_STRUCTURES, {
-		filter: structure => structure.hits < structure.hitsMax &&
-			structure.structureType !== STRUCTURE_WALL
-	});
+	for (var roomName in Game.rooms) {
 
-	for (var index in targets) {
+		var room = Game.rooms[roomName];
 
-		room.visual.circle(targets[index].pos, { radius: .25, stroke: "red", fill: "transparent" });
+		const targets = room.find(FIND_STRUCTURES, {
+			filter: structure => structure.hits < structure.hitsMax &&
+				structure.structureType !== STRUCTURE_WALL
+		});
+
+		for (var index in targets) {
+
+			room.visual.circle(targets[index].pos, { radius: .25, stroke: "red", fill: "transparent" });
+		}
 	}
 }
 

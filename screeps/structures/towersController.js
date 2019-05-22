@@ -3,9 +3,9 @@ var towersController = {};
 
 towersController.tick = function() {
 
-	for (var index in Game.rooms) {
+	for (var roomName in Game.rooms) {
 
-		var room = Game.rooms[index];
+		var room = Game.rooms[roomName];
 
 		var towers = room.find(FIND_STRUCTURES, {
 			filter: structure => structure.structureType === STRUCTURE_TOWER

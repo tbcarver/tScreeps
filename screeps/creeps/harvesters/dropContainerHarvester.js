@@ -1,7 +1,6 @@
 
 var CustomCreep = require("../customCreep");
 var roomTools = require("../../tools/roomTools");
-var { maxEnergizersPerContainer } = require("../creepsRules");
 
 function DropContainerHarvester(creep) {
 
@@ -60,13 +59,13 @@ DropContainerHarvester.prototype.act = function() {
 	}
 }
 
-DropContainerHarvester.initializeSpawnCreepMemory = function(room, creepsCurrentCount) {
+DropContainerHarvester.initializeSpawnCreepMemory = function(room, creepsSpawnRule) {
 
 	var creepMemory
 	var container;
 
 	// Evenly distribute creeps to each container up to the max creeps per container
-	for (var energizersPerContainer = 1; energizersPerContainer <= maxEnergizersPerContainer; energizersPerContainer++) {
+	for (var energizersPerContainer = 1; energizersPerContainer <= creepsSpawnRule.maxEnergizersPerContainer; energizersPerContainer++) {
 
 		var containers = room.find(FIND_STRUCTURES, {
 			filter: structure => structure.structureType == STRUCTURE_CONTAINER &&

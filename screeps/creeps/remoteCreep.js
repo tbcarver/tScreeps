@@ -1,6 +1,5 @@
 
 var CustomCreep = require("./customCreep");
-var { remoteRoomName } = require("./creepsRules");
 
 function RemoteCreep(creep) {
 
@@ -26,7 +25,7 @@ RemoteCreep.prototype.act = function() {
 			}
 		} else if (this.state === "movingToRemoteRoom") {
 
-			var exitDirection = room.findExitTo(remoteRoomName);
+			var exitDirection = room.findExitTo(this.remoteRoomName);
 
 			if (exitDirection && exitDirection >= OK) {
 
@@ -36,21 +35,21 @@ RemoteCreep.prototype.act = function() {
 
 					this.creep.moveTo(exit);
 
-					if (this.creep.room.name === remoteRoomName) {
+					if (this.creep.room.name === this.remoteRoomName) {
 						this.arrivedAtRemoteRoom();
 					}
 				} else {
-					debug.warning(`${this.type} can't find a path to the exit to ${remoteRoomName}`);
+					debug.warning(`${this.type} can't find a path to the exit to ${this.remoteRoomName}`);
 				}
 			} else {
-				debug.warning(`${this.type} can't find an exit direction to ${remoteRoomName}`);
+				debug.warning(`${this.type} can't find an exit direction to ${this.remoteRoomName}`);
 			}
 
 		} else if (this.creep.room.name === room.name) {
 
 			this.roomAct();
 
-		} else if (this.creep.room.name === remoteRoomName) {
+		} else if (this.creep.room.name === this.remoteRoomName) {
 
 			this.remoteRoomAct();
 
@@ -80,15 +79,5 @@ RemoteCreep.prototype.arrivedAtRoom = function() {
 RemoteCreep.prototype.arrivedAtRemoteRoom = function() {
 }
 
-RemoteCreep.hasRemoteRoom = function() {
-
-	var hasRemoteRoom = false;
-
-	if (remoteRoomName) {
-		hasRemoteRoom = true;
-	}
-
-	return hasRemoteRoom;
-}
 
 module.exports = RemoteCreep
