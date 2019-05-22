@@ -5,6 +5,7 @@ function CustomCreep(creep) {
 	this.creep = creep;
 	this.memory = creep.memory;
 	this.type = creep.memory.type;
+	this.spawnedRoomName = creep.memory.spawnedRoomName;
 	this.remoteRoomName = creep.memory.remoteRoomName;
 
 	Object.defineProperty(this, 'state', {
@@ -58,7 +59,7 @@ CustomCreep.prototype.act = function() {
 
 		acted = true;
 
-	} else if (this.state === "movingToRemoteRoom" && this.remoteRoomName) {
+	} else if (!this.isRemoteCreep && this.state === "movingToRemoteRoom" && this.remoteRoomName) {
 
 		var exitDirection = this.creep.room.findExitTo(this.remoteRoomName);
 

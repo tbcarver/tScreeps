@@ -4,6 +4,8 @@ var CustomCreep = require("./customCreep");
 function RemoteCreep(creep) {
 
 	CustomCreep.call(this, creep);
+
+	this.isRemoteCreep = true;
 }
 
 RemoteCreep.prototype = Object.create(CustomCreep.prototype);
@@ -18,34 +20,27 @@ RemoteCreep.prototype.act = function() {
 
 		if (this.state === "movingToRoom") {
 
-			this.creep.moveTo(spawn);
+			if (this.creep.room.name === this.spawnedRoomName) {
 
-			if (this.creep.room.name === room.name) {
 				this.arrivedAtRoom();
+				this.roomAct();
+
+			} else {
+
+				this.moveToExit(this.spawnedRoomName);
 			}
 		} else if (this.state === "movingToRemoteRoom") {
 
-			var exitDirection = room.findExitTo(this.remoteRoomName);
+			if (this.creep.room.name === this.remoteRoomName) {
 
-			if (exitDirection && exitDirection >= OK) {
+				this.arrivedAtRemoteRoom();
+				this.remoteRoomAct();
 
-				var exit = this.creep.pos.findClosestByPath(exitDirection);
-
-				if (exit) {
-
-					this.creep.moveTo(exit);
-
-					if (this.creep.room.name === this.remoteRoomName) {
-						this.arrivedAtRemoteRoom();
-					}
-				} else {
-					debug.warning(`${this.type} can't find a path to the exit to ${this.remoteRoomName}`);
-				}
 			} else {
-				debug.warning(`${this.type} can't find an exit direction to ${this.remoteRoomName}`);
-			}
 
-		} else if (this.creep.room.name === room.name) {
+				this.moveToExit(this.remoteRoomName);
+			}
+		} else if (this.creep.room.name === this.spawnedRoomName) {
 
 			this.roomAct();
 
@@ -77,6 +72,26 @@ RemoteCreep.prototype.arrivedAtRoom = function() {
 }
 
 RemoteCreep.prototype.arrivedAtRemoteRoom = function() {
+}
+
+RemoteCreep.prototype.moveToExit = function(exitRoomName) {
+
+	var exitDirection = this.creep.room.findExitTo(exitRoomName);
+
+	if (exitDirection && exitDirection >= OK) {
+
+		var exit = this.creep.pos.findClosestByPath(exitDirection);
+
+		if (exit) {
+
+			this.creep.moveTo(exit);
+
+		} else {
+			debug.warning(`${this.type} can't find a path to the exit to ${exitRoomName}`);
+		}
+	} else {
+		debug.warning(`${this.type} can't find an exit direction to ${exitRoomName}`);
+	}
 }
 
 

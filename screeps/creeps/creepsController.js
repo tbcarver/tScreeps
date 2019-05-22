@@ -8,7 +8,7 @@ creepsController.tick = function() {
 
 	cleanUpTheDead();
 
-	var creepsStatistics = {};
+	var roomsCurrentSpawnedCounts = {};
 
 	for (var index in Game.creeps) {
 
@@ -21,31 +21,52 @@ creepsController.tick = function() {
 			// debug.temp(`creep act: type: ${creep.memory.type} ticks: ${creep.ticksToLive}`);
 			customCreep.act();
 
-			if (!creepsStatistics[creep.memory.spawnedRoomName]) {
-				creepsStatistics[creep.memory.spawnedRoomName] = {};
+			if (!roomsCurrentSpawnedCounts[creep.memory.spawnedRoomName]) {
+				roomsCurrentSpawnedCounts[creep.memory.spawnedRoomName] = {};
+				roomsCurrentSpawnedCounts[creep.memory.spawnedRoomName].remoteRooms = {};
 			}
 
-			var creepsStatistic = creepsStatistics[creep.memory.spawnedRoomName];
+			var currentSpawnedCounts = roomsCurrentSpawnedCounts[creep.memory.spawnedRoomName];
 
-			if (creep.memory.remoteRoomName && !creepsStatistics[creep.memory.spawnedRoomName][creep.memory.remoteRoomName]) {
-				creepsStatistics[creep.memory.spawnedRoomName][creep.memory.remoteRoomName] = {};
-				creepsStatistic = creepsStatistics[creep.memory.spawnedRoomName][creep.memory.remoteRoomName];
+			if (creep.memory.remoteRoomName && !currentSpawnedCounts.remoteRooms[creep.memory.remoteRoomName]) {
+				currentSpawnedCounts.remoteRooms[creep.memory.remoteRoomName] = {};
 			}
 
-			if (!creepsStatistic[creep.memory.type]) {
-				creepsStatistic[creep.memory.type] = 0;
+			if (creep.memory.remoteRoomName) {
+				currentSpawnedCounts = currentSpawnedCounts.remoteRooms[creep.memory.remoteRoomName];
 			}
 
-			creepsStatistic[creep.memory.type]++;
+			if (!currentSpawnedCounts[creep.memory.type]) {
+				currentSpawnedCounts[creep.memory.type] = 0;
+			}
+
+			currentSpawnedCounts[creep.memory.type]++;
 		}
 	}
 
-	_.forEach(creepsStatistics, creepsStatistic => {
-		var totalCreeps = _.reduce(creepsStatistic, (result, value) => result += value, 0);
-		debug.muted(`creeps:`, totalCreeps, creepsStatistic);
+	_.forEach(roomsCurrentSpawnedCounts, currentSpawnedCounts => {
+
+		var totalCreeps = _.reduce(currentSpawnedCounts, (result, value, key) => {
+
+			if (key === "remoteRooms") {
+				var remoteSpawnedCounts = Object.values(value);
+
+				result += remoteSpawnedCounts.reduce((result, value) => {
+
+					result += _.reduce(value, (result, value) => result += value, 0);
+					return result;
+				}, 0);
+			} else {
+				result += value;
+			}
+
+			return result;
+		}, 0);
+
+		debug.muted(`creeps: ${totalCreeps}`, currentSpawnedCounts);
 	});
 
-	creepsSpawner.spawnCreep(creepsStatistics);
+	creepsSpawner.spawnCreep(roomsCurrentSpawnedCounts);
 }
 
 function cleanUpTheDead() {

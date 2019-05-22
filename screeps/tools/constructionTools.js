@@ -7,8 +7,8 @@ constructionTools.createConstructionRoad = function() {
 	var positions =
 
 
-	[{"x":"28","y":"30","roomName":"W1N12"},{"x":"29","y":"29","roomName":"W1N12"},{"x":"30","y":"28","roomName":"W1N12"},{"x":"31","y":"27","roomName":"W1N12"},{"x":"32","y":"26","roomName":"W1N12"},{"x":"33","y":"25","roomName":"W1N12"},{"x":"34","y":"25","roomName":"W1N12"},{"x":"35","y":"25","roomName":"W1N12"},{"x":"36","y":"25","roomName":"W1N12"},{"x":"25","y":"25","roomName":"W1N12"},{"x":"25","y":"24","roomName":"W1N12"},{"x":"25","y":"23","roomName":"W1N12"},{"x":"26","y":"23","roomName":"W1N12"},{"x":"27","y":"23","roomName":"W1N12"},{"x":"28","y":"23","roomName":"W1N12"},{"x":"29","y":"23","roomName":"W1N12"},{"x":"30","y":"23","roomName":"W1N12"},{"x":"31","y":"23","roomName":"W1N12"},{"x":"32","y":"23","roomName":"W1N12"},{"x":"33","y":"23","roomName":"W1N12"},{"x":"34","y":"23","roomName":"W1N12"},{"x":"35","y":"23","roomName":"W1N12"},{"x":"36","y":"23","roomName":"W1N12"},{"x":"37","y":"23","roomName":"W1N12"},{"x":"37","y":"25","roomName":"W1N12"},{"x":"32","y":"24","roomName":"W1N12"},{"x":"33","y":"24","roomName":"W1N12"},{"x":"34","y":"24","roomName":"W1N12"},{"x":"35","y":"24","roomName":"W1N12"},{"x":"36","y":"24","roomName":"W1N12"},{"x":"37","y":"24","roomName":"W1N12"},{"x":"38","y":"24","roomName":"W1N12"},{"x":"38","y":"25","roomName":"W1N12"},{"x":"33","y":"26","roomName":"W1N12"},{"x":"34","y":"26","roomName":"W1N12"},{"x":"35","y":"26","roomName":"W1N12"},{"x":"36","y":"26","roomName":"W1N12"},{"x":"37","y":"26","roomName":"W1N12"},{"x":"38","y":"26","roomName":"W1N12"}]
-	
+	[{"x":"38","y":"23","roomName":"W1N12"},{"x":"38","y":"22","roomName":"W1N12"},{"x":"38","y":"21","roomName":"W1N12"},{"x":"38","y":"20","roomName":"W1N12"},{"x":"38","y":"19","roomName":"W1N12"},{"x":"38","y":"18","roomName":"W1N12"},{"x":"38","y":"17","roomName":"W1N12"},{"x":"38","y":"16","roomName":"W1N12"},{"x":"38","y":"15","roomName":"W1N12"},{"x":"38","y":"14","roomName":"W1N12"},{"x":"38","y":"13","roomName":"W1N12"},{"x":"38","y":"12","roomName":"W1N12"},{"x":"38","y":"11","roomName":"W1N12"},{"x":"38","y":"10","roomName":"W1N12"},{"x":"39","y":"10","roomName":"W1N12"},{"x":"40","y":"10","roomName":"W1N12"}]
+
 	this.createConstructionSite(positions, STRUCTURE_ROAD);
 }
 
@@ -25,7 +25,7 @@ constructionTools.createConstructionContainer = function() {
 
 	var positions =
 
-	[{"x":"37","y":"37","roomName":"W6S1"},{"x":"37","y":"10","roomName":"W6S1"}]
+[{"x":"37","y":"22","roomName":"W1N12"}]
 
 	this.createConstructionSite(positions, STRUCTURE_CONTAINER);
 }

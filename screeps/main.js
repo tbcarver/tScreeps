@@ -30,7 +30,7 @@ try {
 	// console.log(controller.activateSafeMode())
 
 	//  constructionTools.createConstructionRoad();
-	//  constructionTools.createConstructionStorage();
+	//  constructionTools.createConstructionContainer();
 	// constructionTools.removeConstructionSite();
 	// constructionTools.destroyStructure();
 	// roomTools.lookAt();

@@ -27,7 +27,7 @@ RemoteClaimer.prototype.remoteRoomAct = function() {
 
 	var controller = this.creep.room.controller;
 
-	if (controller){
+	if (controller) {
 
 		var result = this.creep.claimController(controller);
 
@@ -36,26 +36,21 @@ RemoteClaimer.prototype.remoteRoomAct = function() {
 			this.creep.moveTo(controller);
 
 		} else {
-			
+
 			debug.warning(`${this.type} can't can't claim ${result}`);
 		}
 	} else {
-		
+
 		debug.warning(`${this.type} can't find remote controller`);
 	}
 }
 
 RemoteClaimer.initializeSpawnCreepMemory = function() {
 
-	var creepMemory;
-
-	if (RemoteCreep.hasRemoteRoom()) {
-
-		creepMemory = {
-			type: "remoteClaimer",
-			bodyPartsType: "claimer",
-			minimumSpawnCapacity: 700,
-		}
+	var creepMemory = {
+		type: "remoteClaimer",
+		bodyPartsType: "claimer",
+		minimumSpawnCapacity: 700,
 	}
 
 	return creepMemory;

@@ -11,7 +11,15 @@ var creepSpawnRules = [
 		maxExtensionsPerEnergizer: 2,
 		maxEnergizersPerContainer: 2,
 		canEnergizersHarvest: true,
-		remoteRooms: []
+		remoteRooms: [{
+			roomName: "W0N12",
+			spawnOrderMaxSpawnedCounts: [
+				{ remoteHarvester: 3 },
+			],
+			maxExtensionsPerEnergizer: 2,
+			maxEnergizersPerContainer: 2,
+			canEnergizersHarvest: true,
+		}]
 	},
 ];
 

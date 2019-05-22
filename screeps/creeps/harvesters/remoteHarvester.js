@@ -29,7 +29,7 @@ RemoteHarvester.prototype.roomAct = function() {
 
 		this.moveToRemoteRoom();
 
-	} else if (this.state === "transferring"){
+	} else if (this.state === "transferring") {
 
 		var container = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 			filter: container => (container.structureType === STRUCTURE_CONTAINER ||
@@ -37,9 +37,9 @@ RemoteHarvester.prototype.roomAct = function() {
 				container.store[RESOURCE_ENERGY] / container.storeCapacity < .80 &&
 				!roomTools.isDropContainer(container)
 		});
-	
+
 		if (this.creep.transfer(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-	
+
 			this.creep.moveTo(container);
 		}
 	} else {
@@ -53,7 +53,7 @@ RemoteHarvester.prototype.remoteRoomAct = function() {
 
 		this.moveToRoom();
 
-	} else if (this.state === "harvesting"){
+	} else if (this.state === "harvesting") {
 
 		var resource = findTools.findClosestEnergy(this.creep.pos);
 
@@ -64,7 +64,7 @@ RemoteHarvester.prototype.remoteRoomAct = function() {
 			}
 		} else {
 
-			debug.warning(`${this.type} energy not found`);
+			// debug.warning(`${this.type} energy not found`);
 		}
 	} else {
 		debug.warning(`${this.type} roomAct called with unknown state: ${this.state}`);
@@ -73,14 +73,9 @@ RemoteHarvester.prototype.remoteRoomAct = function() {
 
 RemoteHarvester.initializeSpawnCreepMemory = function() {
 
-	var creepMemory;
-
-	if (RemoteCreep.hasRemoteRoom()) {
-
-		creepMemory = {
-			type: "remoteHarvester",
-			bodyPartsType: "moveCarryWork"
-		}
+	var creepMemory = {
+		type: "remoteHarvester",
+		bodyPartsType: "moveCarryWork"
 	}
 
 	return creepMemory;

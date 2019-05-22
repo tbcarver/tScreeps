@@ -45,12 +45,19 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 						}
 					}
 
-					for (remoteRoom of creepsSpawnRule.remoteRooms) {
+					for (remoteRoomCreepsSpawnRule of creepsSpawnRule.remoteRooms) {
 
-						var room = Game.rooms[remoteRoom.roomName];
-						currentSpawnedCounts = currentSpawnedCounts[room];
+						var room = Game.rooms[remoteRoomCreepsSpawnRule.roomName];
 
-						for (spawnOrderMaxSpawnedCount of remoteRoom.creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
+						if (!room) {
+							room = {
+								name: remoteRoomCreepsSpawnRule.roomName
+							};
+						}
+
+						currentSpawnedCounts = currentSpawnedCounts.remoteRooms[room.name];
+
+						for (spawnOrderMaxSpawnedCount of remoteRoomCreepsSpawnRule.spawnOrderMaxSpawnedCounts) {
 
 							var creepType = Object.keys(spawnOrderMaxSpawnedCount)[0];
 							var creepConstructor = creepConstructors[creepType];
