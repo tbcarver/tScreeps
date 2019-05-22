@@ -3,8 +3,10 @@ var creepSpawnRules = [
 	{
 		roomName: "W1N12",
 		spawnOrderMaxSpawnedCounts: [
-			{ builder: 0 },
+			{ repairer: 1 },
+			{ builder: 4 },
 			{ spawnEnergizer: 1 },
+			{ controllerEnergizer: 1 },
 		],
 		maxExtensionsPerEnergizer: 2,
 		maxEnergizersPerContainer: 2,

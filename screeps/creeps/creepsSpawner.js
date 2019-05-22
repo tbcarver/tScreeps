@@ -22,7 +22,7 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 		if (spawns.length > 0) {
 			for (var spawn of spawns) {
 
-				var currentSpawnedCounts = roomsCurrentSpawnedCounts[room];
+				var currentSpawnedCounts = roomsCurrentSpawnedCounts[room.name];
 
 				if (!spawn.spawning && room.energyAvailable >= 300) {
 
@@ -45,7 +45,7 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 						}
 					}
 
-					for (remoteRoom of remoteRooms) {
+					for (remoteRoom of creepsSpawnRule.remoteRooms) {
 
 						var room = Game.rooms[remoteRoom.roomName];
 						currentSpawnedCounts = currentSpawnedCounts[room];

@@ -36,7 +36,7 @@ CustomCreep.prototype.act = function() {
 
 	} else if (this.creep.ticksToLive < 25) {
 
-		room.visual.circle(this.creep.pos, { radius: .15, stroke: "white", fill: "white", opacity: 1 });
+		this.creep.room.visual.circle(this.creep.pos, { radius: .15, stroke: "white", fill: "white", opacity: 1 });
 
 		var hasCarry = this.creep.body.some(bodyPart => bodyPart.type === "carry");
 
@@ -48,7 +48,7 @@ CustomCreep.prototype.act = function() {
 
 			} else {
 
-				this.creep.moveTo(room.controller);
+				this.creep.moveTo(this.creep.room.controller);
 			}
 
 		} else {
@@ -60,7 +60,7 @@ CustomCreep.prototype.act = function() {
 
 	} else if (this.state === "movingToRemoteRoom" && this.remoteRoomName) {
 
-		var exitDirection = room.findExitTo(this.remoteRoomName);
+		var exitDirection = this.creep.room.findExitTo(this.remoteRoomName);
 
 		if (exitDirection && exitDirection >= OK) {
 

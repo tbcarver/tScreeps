@@ -21,15 +21,15 @@ creepsController.tick = function() {
 			// debug.temp(`creep act: type: ${creep.memory.type} ticks: ${creep.ticksToLive}`);
 			customCreep.act();
 
-			if (!creepsStatistics[creep.memoryRoomName]) {
-				creepsStatistics[creep.memoryRoomName] = {};
+			if (!creepsStatistics[creep.memory.spawnedRoomName]) {
+				creepsStatistics[creep.memory.spawnedRoomName] = {};
 			}
 
-			var creepsStatistic = creepsStatistics[creep.memoryRoomName];
+			var creepsStatistic = creepsStatistics[creep.memory.spawnedRoomName];
 
-			if (creep.memory.remoteRoomName && !creepsStatistics[creep.memoryRoomName][creep.memory.remoteRoomName]) {
-				creepsStatistics[creep.memoryRoomName][creep.memory.remoteRoomName] = {};
-				creepsStatistic = creepsStatistics[creep.memoryRoomName][creep.memory.remoteRoomName];
+			if (creep.memory.remoteRoomName && !creepsStatistics[creep.memory.spawnedRoomName][creep.memory.remoteRoomName]) {
+				creepsStatistics[creep.memory.spawnedRoomName][creep.memory.remoteRoomName] = {};
+				creepsStatistic = creepsStatistics[creep.memory.spawnedRoomName][creep.memory.remoteRoomName];
 			}
 
 			if (!creepsStatistic[creep.memory.type]) {
