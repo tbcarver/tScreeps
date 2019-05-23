@@ -5,8 +5,12 @@ var findTools = require("../../tools/findTools");
 function Energizer(creep) {
 
 	CustomCreep.call(this, creep);
-	
-	this.canHarvest = creep.memory.canHarvest || true;
+
+	this.canHarvest = true;
+
+	if (typeof creep.memory.canHarvest !== "undefined") {
+		this.canHarvest = creep.memory.canHarvest;
+	}
 }
 
 Energizer.prototype = Object.create(CustomCreep.prototype);
