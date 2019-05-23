@@ -26,7 +26,7 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 
 				if (!spawn.spawning && room.energyAvailable >= 300) {
 
-					debug.primary(`${spawn.name} spawn chance ${room.energyAvailable}`);
+					debug.primary(`${spawn.room.name} ${spawn.name} spawn chance ${room.energyAvailable}`);
 
 					var spawnResult = {
 						waitForSpawn: false,
@@ -47,18 +47,18 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 
 					for (remoteRoomCreepsSpawnRule of creepsSpawnRule.remoteRooms) {
 
-						var room = Game.rooms[remoteRoomCreepsSpawnRule.roomName];
+						var remoteRoom = Game.rooms[remoteRoomCreepsSpawnRule.roomName];
 
-						if (!room) {
-							room = {
+						if (!remoteRoom) {
+							remoteRoom = {
 								name: remoteRoomCreepsSpawnRule.roomName
 							};
 						}
 
+						var remoteCurrentSpawnedCounts = undefined;
+
 						if (currentSpawnedCounts && currentSpawnedCounts.remoteRooms) {
-							currentSpawnedCounts = currentSpawnedCounts.remoteRooms[room.name];
-						} else {
-							currentSpawnedCounts = undefined;
+							remoteCurrentSpawnedCounts = currentSpawnedCounts.remoteRooms[remoteRoom.name];
 						}
 
 						for (spawnOrderMaxSpawnedCount of remoteRoomCreepsSpawnRule.spawnOrderMaxSpawnedCounts) {
@@ -66,10 +66,10 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 							var creepType = Object.keys(spawnOrderMaxSpawnedCount)[0];
 							var creepConstructor = creepConstructors[creepType];
 							var maxSpawnedCount = spawnOrderMaxSpawnedCount[creepType];
-							var currentSpawnedCount = (currentSpawnedCounts) ? currentSpawnedCounts[creepType] || 0 : 0;
+							var currentSpawnedCount = (remoteCurrentSpawnedCounts) ? remoteCurrentSpawnedCounts[creepType] || 0 : 0;
 
 							if (currentSpawnedCount < maxSpawnedCount) {
-								spawnResult = trySpawnCreep(room, spawn, creepConstructor, creepsSpawnRule, currentSpawnedCount, spawnResult);
+								spawnResult = trySpawnCreep(remoteRoom, spawn, creepConstructor, creepsSpawnRule, currentSpawnedCount, spawnResult);
 							}
 						}
 					}

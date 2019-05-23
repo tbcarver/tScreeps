@@ -8,7 +8,11 @@ findTools.findAllEnergyStructures = function(spawn) {
 		filter: { structureType: STRUCTURE_EXTENSION }
 	});
 
-	energyStructures.push(spawn);
+	var spawns = spawn.room.find(FIND_MY_SPAWNS);
+
+	for (var spawn of spawns) {
+		energyStructures.push(spawn);
+	}
 
 	return energyStructures;
 }

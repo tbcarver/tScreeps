@@ -20,17 +20,16 @@ try {
 	for (spawnName in Game.spawns) {
 
 		var spawn = Game.spawns[spawnName];
-		var room = spawn.room;
 
 		var spawnCapacity = spawnTools.calculateSpawnCapacity(spawn);
-		debug.muted(`tick: ${Game.time} ${spawn.name} energy: ${room.energyAvailable} capacity ${spawnCapacity} spawning:`,
+		debug.muted(`tick: ${Game.time} ${spawn.room.name} ${spawn.name} energy: ${spawn.room.energyAvailable} capacity ${spawnCapacity} spawning:`,
 			spawn.spawning ? spawn.spawning.remainingTime : "");
 	}
 
 	// console.log(controller.activateSafeMode())
 
 	//  constructionTools.createConstructionRoad();
-	//  constructionTools.createConstructionContainer();
+	//  constructionTools.createConstructionSpawn();
 	// constructionTools.removeConstructionSite();
 	// constructionTools.destroyStructure();
 	// roomTools.lookAt();
