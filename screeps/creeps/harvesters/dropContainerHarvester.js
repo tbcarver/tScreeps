@@ -59,7 +59,7 @@ DropContainerHarvester.prototype.act = function() {
 	}
 }
 
-DropContainerHarvester.initializeSpawnCreepMemory = function(room, creepsSpawnRule) {
+DropContainerHarvester.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule) {
 
 	var creepMemory
 	var container;

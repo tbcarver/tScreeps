@@ -9,6 +9,7 @@ creepsController.tick = function() {
 	cleanUpTheDead();
 
 	var roomsCurrentSpawnedCounts = {};
+	var roomsTotals = {};
 
 	for (var index in Game.creeps) {
 
@@ -23,16 +24,21 @@ creepsController.tick = function() {
 
 			if (!roomsCurrentSpawnedCounts[creep.memory.spawnedRoomName]) {
 				roomsCurrentSpawnedCounts[creep.memory.spawnedRoomName] = {};
-				roomsCurrentSpawnedCounts[creep.memory.spawnedRoomName].remoteRooms = {};
+				roomsTotals[creep.memory.spawnedRoomName] = 0;
 			}
 
 			var currentSpawnedCounts = roomsCurrentSpawnedCounts[creep.memory.spawnedRoomName];
 
-			if (creep.memory.remoteRoomName && !currentSpawnedCounts.remoteRooms[creep.memory.remoteRoomName]) {
-				currentSpawnedCounts.remoteRooms[creep.memory.remoteRoomName] = {};
-			}
+			if (creep.memory.remoteRoomName){
 
-			if (creep.memory.remoteRoomName) {
+				if (!roomsCurrentSpawnedCounts[creep.memory.spawnedRoomName].remoteRooms) {
+					roomsCurrentSpawnedCounts[creep.memory.spawnedRoomName].remoteRooms = {};
+				}
+
+				if (!currentSpawnedCounts.remoteRooms[creep.memory.remoteRoomName]) {
+					currentSpawnedCounts.remoteRooms[creep.memory.remoteRoomName] = {};
+				}	
+
 				currentSpawnedCounts = currentSpawnedCounts.remoteRooms[creep.memory.remoteRoomName];
 			}
 
@@ -41,29 +47,13 @@ creepsController.tick = function() {
 			}
 
 			currentSpawnedCounts[creep.memory.type]++;
+			roomsTotals[creep.memory.spawnedRoomName]++;
 		}
 	}
 
-	_.forEach(roomsCurrentSpawnedCounts, currentSpawnedCounts => {
+	_.forEach(roomsCurrentSpawnedCounts, (currentSpawnedCounts, roomName) => {
 
-		var totalCreeps = _.reduce(currentSpawnedCounts, (result, value, key) => {
-
-			if (key === "remoteRooms") {
-				var remoteSpawnedCounts = Object.values(value);
-
-				result += remoteSpawnedCounts.reduce((result, value) => {
-
-					result += _.reduce(value, (result, value) => result += value, 0);
-					return result;
-				}, 0);
-			} else {
-				result += value;
-			}
-
-			return result;
-		}, 0);
-
-		debug.muted(`creeps: ${totalCreeps}`, currentSpawnedCounts);
+		debug.muted(`${roomName} creeps: ${roomsTotals[roomName]}`, currentSpawnedCounts);
 	});
 
 	creepsSpawner.spawnCreep(roomsCurrentSpawnedCounts);

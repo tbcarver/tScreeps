@@ -75,7 +75,7 @@ RemoteReverseStorageEnergizer.prototype.remoteRoomAct = function() {
 	}
 }
 
-RemoteReverseStorageEnergizer.initializeSpawnCreepMemory = function(room, creepsCurrentCount) {
+RemoteReverseStorageEnergizer.initializeSpawnCreepMemory = function(room, spawn, creepsCurrentCount) {
 
 	var creepMemory;
 

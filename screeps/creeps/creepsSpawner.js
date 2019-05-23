@@ -55,7 +55,11 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 							};
 						}
 
-						currentSpawnedCounts = currentSpawnedCounts.remoteRooms[room.name];
+						if (currentSpawnedCounts && currentSpawnedCounts.remoteRooms) {
+							currentSpawnedCounts = currentSpawnedCounts.remoteRooms[room.name];
+						} else {
+							currentSpawnedCounts = undefined;
+						}
 
 						for (spawnOrderMaxSpawnedCount of remoteRoomCreepsSpawnRule.spawnOrderMaxSpawnedCounts) {
 
@@ -79,7 +83,7 @@ function trySpawnCreep(room, spawn, creepConstructor, creepsSpawnRule, currentSp
 
 	if (!previousSpawnResult.waitForSpawn && !previousSpawnResult.spawned) {
 
-		var creepMemory = creepConstructor.initializeSpawnCreepMemory(room, creepsSpawnRule, currentSpawnedCount);
+		var creepMemory = creepConstructor.initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, currentSpawnedCount);
 
 		if (creepMemory) {
 

@@ -17,11 +17,12 @@
 		// const myRoom = "W8N0";
 		// var result = await api.raw.register.submit("mascarenas235720", "mascarenas235720", "1985");
 		// console.log("register: ", result);
-		// await api.auth('mascarenas235720', '1985');
-		// result = await api.raw.user.respawn();
-		// console.log("register: ", result);
-		// result = await api.raw.game.placeSpawn("W2S1", 38, 13, "spawn1");
-		// console.log("spawn: ", result);
+		result =await api.auth('mascarenas235720', '1985');
+		console.log("register: ", result);
+		result = await api.raw.user.respawn();
+		console.log("register: ", result);
+		result = await api.raw.game.placeSpawn("W2S1", 38, 14, "spawn1");
+		console.log("spawn: ", result);
 
 		// var result = await api.raw.register.submit("shampton140961", "shampton140961", "6942");
 		// console.log("register: ", result);

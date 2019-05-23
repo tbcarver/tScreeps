@@ -46,7 +46,7 @@ SpawnEnergizer.prototype.energize = function() {
 	}
 }
 
-SpawnEnergizer.initializeSpawnCreepMemory = function(room, creepsSpawnRule) {
+SpawnEnergizer.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule) {
 
 	var creepMemory = {
 		type: "spawnEnergizer",

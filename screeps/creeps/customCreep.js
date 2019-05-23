@@ -61,7 +61,27 @@ CustomCreep.prototype.act = function() {
 
 	} else if (!this.isRemoteCreep && this.state === "movingToRemoteRoom" && this.remoteRoomName) {
 
-		var exitDirection = this.creep.room.findExitTo(this.remoteRoomName);
+		if (this.creep.room.name === this.remoteRoomName) {
+
+			this.state = "arrivedAtRemoteRoom";
+
+		} else {
+
+			this.moveToExit(this.remoteRoomName);
+			acted = true;
+		}
+	}
+
+	return acted;
+}
+
+CustomCreep.prototype.moveToExit = function(exitRoomName) {
+
+	if (Game.rooms[exitRoomName]) {
+		this.creep.moveTo(Game.rooms[exitRoomName].controller);
+	} else {
+
+		var exitDirection = this.creep.room.findExitTo(exitRoomName);
 
 		if (exitDirection && exitDirection >= OK) {
 
@@ -71,21 +91,13 @@ CustomCreep.prototype.act = function() {
 
 				this.creep.moveTo(exit);
 
-				if (this.creep.room.name === this.remoteRoomName) {
-					
-					this.state = "arrivedAtRemoteRoom";
-				}
 			} else {
-				debug.warning(`${this.type} can't find a path to the exit to ${this.remoteRoomName}`);
+				debug.warning(`${this.type} can't find a path to the exit to ${exitRoomName}`);
 			}
 		} else {
-			debug.warning(`${this.type} can't find an exit direction to ${this.remoteRoomName}`);
+			debug.warning(`${this.type} can't find an exit direction to ${exitRoomName}`);
 		}
-		
-		acted = true;
 	}
-
-	return acted;
 }
 
 CustomCreep.prototype.transferEnergy = function() {

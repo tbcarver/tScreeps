@@ -74,25 +74,5 @@ RemoteCreep.prototype.arrivedAtRoom = function() {
 RemoteCreep.prototype.arrivedAtRemoteRoom = function() {
 }
 
-RemoteCreep.prototype.moveToExit = function(exitRoomName) {
-
-	var exitDirection = this.creep.room.findExitTo(exitRoomName);
-
-	if (exitDirection && exitDirection >= OK) {
-
-		var exit = this.creep.pos.findClosestByPath(exitDirection);
-
-		if (exit) {
-
-			this.creep.moveTo(exit);
-
-		} else {
-			debug.warning(`${this.type} can't find a path to the exit to ${exitRoomName}`);
-		}
-	} else {
-		debug.warning(`${this.type} can't find an exit direction to ${exitRoomName}`);
-	}
-}
-
 
 module.exports = RemoteCreep
