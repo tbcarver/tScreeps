@@ -30,4 +30,53 @@ spawnTools.calculateBodyCost = function(bodyParts) {
 	return cost;
 }
 
+/* Example data for rooms spawned counts
+	{
+		"W6S0": {
+			"remoteRooms": {
+				"W6N0": {
+					"remoteHarvester": 5
+					},
+				"W6S1": {
+					"dropContainerHarvester": 3,
+					"storageEnergizer": 1
+					}
+				},
+			"dropContainerHarvester": 5,
+			"storageEnergizer": 3,
+		},
+		"W6S1": {
+			"controllerEnergizer": 2,
+			"builder": 8
+		}
+	}
+ */
+spawnTools.incrementSpawnedCount = function(roomsSpawnedCounts, creepType, spawnedRoomName, remoteRoomName) {
+
+	if (!roomsSpawnedCounts[spawnedRoomName]) {
+		roomsSpawnedCounts[spawnedRoomName] = {};
+	}
+
+	var spawnedCounts = roomsSpawnedCounts[spawnedRoomName];
+
+	if (remoteRoomName){
+
+		if (!roomsSpawnedCounts[spawnedRoomName].remoteRooms) {
+			roomsSpawnedCounts[spawnedRoomName].remoteRooms = {};
+		}
+
+		if (!spawnedCounts.remoteRooms[remoteRoomName]) {
+			spawnedCounts.remoteRooms[remoteRoomName] = {};
+		}	
+
+		spawnedCounts = spawnedCounts.remoteRooms[remoteRoomName];
+	}
+
+	if (!spawnedCounts[creepType]) {
+		spawnedCounts[creepType] = 0;
+	}
+
+	spawnedCounts[creepType]++;
+}
+
 module.exports = spawnTools;

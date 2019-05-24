@@ -1,4 +1,5 @@
 
+var spawnTools = require("../tools/spawnTools");
 var creepsFactory = require("./creepsFactory");
 var creepsSpawner = require("./creepsSpawner");
 
@@ -22,32 +23,14 @@ creepsController.tick = function() {
 			// debug.temp(`creep act: type: ${creep.memory.type} ticks: ${creep.ticksToLive}`);
 			customCreep.act();
 
-			if (!roomsCurrentSpawnedCounts[creep.memory.spawnedRoomName]) {
-				roomsCurrentSpawnedCounts[creep.memory.spawnedRoomName] = {};
+			if (!roomsTotals[creep.memory.spawnedRoomName]) {
 				roomsTotals[creep.memory.spawnedRoomName] = 0;
 			}
 
-			var currentSpawnedCounts = roomsCurrentSpawnedCounts[creep.memory.spawnedRoomName];
-
-			if (creep.memory.remoteRoomName){
-
-				if (!roomsCurrentSpawnedCounts[creep.memory.spawnedRoomName].remoteRooms) {
-					roomsCurrentSpawnedCounts[creep.memory.spawnedRoomName].remoteRooms = {};
-				}
-
-				if (!currentSpawnedCounts.remoteRooms[creep.memory.remoteRoomName]) {
-					currentSpawnedCounts.remoteRooms[creep.memory.remoteRoomName] = {};
-				}	
-
-				currentSpawnedCounts = currentSpawnedCounts.remoteRooms[creep.memory.remoteRoomName];
-			}
-
-			if (!currentSpawnedCounts[creep.memory.type]) {
-				currentSpawnedCounts[creep.memory.type] = 0;
-			}
-
-			currentSpawnedCounts[creep.memory.type]++;
 			roomsTotals[creep.memory.spawnedRoomName]++;
+
+			spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creep.memory.type, creep.memory.spawnedRoomName,
+				 creep.memory.remoteRoomName);
 		}
 	}
 

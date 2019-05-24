@@ -42,6 +42,10 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 
 						if (currentSpawnedCount < maxSpawnedCount) {
 							spawnResult = trySpawnCreep(room, spawn, creepConstructor, creepsSpawnRule, currentSpawnedCount, spawnResult);
+
+							if (spawnResult.spawned) {
+								spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creepType, spawn.room.name, room.name);
+							}
 						}
 					}
 
@@ -70,6 +74,10 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 
 							if (currentSpawnedCount < maxSpawnedCount) {
 								spawnResult = trySpawnCreep(remoteRoom, spawn, creepConstructor, creepsSpawnRule, currentSpawnedCount, spawnResult);
+
+								if (spawnResult.spawned) {
+									spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creepType, spawn.room.name, remoteRoom.name);
+								}
 							}
 						}
 					}
@@ -129,11 +137,12 @@ function spawnCreep(spawn, creepMemory) {
 			spawnCapacity = creepMemory.maximumSpawnCapacity;
 		}
 
-		delete creepMemory.maximumSpawnCapacity;
-		delete creepMemory.minimumSpawnCapacity;
-
 		var id = getNextCreepId();
 		var bodyParts = bodyPartsFactory.getBodyParts(creepMemory.bodyPartsType, spawnCapacity);
+
+		delete creepMemory.bodyPartsType;
+		delete creepMemory.maximumSpawnCapacity;
+		delete creepMemory.minimumSpawnCapacity;
 
 		var result = spawn.spawnCreep(bodyParts, id, {
 			memory: creepMemory,

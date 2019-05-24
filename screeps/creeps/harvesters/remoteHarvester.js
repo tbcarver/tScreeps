@@ -15,7 +15,7 @@ RemoteHarvester.prototype.act = function() {
 	RemoteCreep.prototype.act.call(this);
 }
 
-RemoteHarvester.prototype.arrivedAtRoom = function() {
+RemoteHarvester.prototype.arrivedAtSpawnedRoom = function() {
 	this.state = "transferring";
 }
 
@@ -23,7 +23,7 @@ RemoteHarvester.prototype.arrivedAtRemoteRoom = function() {
 	this.state = "harvesting";
 }
 
-RemoteHarvester.prototype.roomAct = function() {
+RemoteHarvester.prototype.spawnedRoomAct = function() {
 
 	if (this.creep.carry[RESOURCE_ENERGY] === 0) {
 
@@ -43,7 +43,7 @@ RemoteHarvester.prototype.roomAct = function() {
 			this.creep.moveTo(container);
 		}
 	} else {
-		debug.warning(`${this.type} roomAct called with unknown state: ${this.state}`);
+		debug.warning(`${this.type} spawnedRoomAct called with unknown state: ${this.state}`);
 	}
 }
 
@@ -51,7 +51,7 @@ RemoteHarvester.prototype.remoteRoomAct = function() {
 
 	if (this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
 
-		this.moveToRoom();
+		this.moveToSpawnedRoom();
 
 	} else if (this.state === "harvesting") {
 
@@ -67,7 +67,7 @@ RemoteHarvester.prototype.remoteRoomAct = function() {
 			// debug.warning(`${this.type} energy not found`);
 		}
 	} else {
-		debug.warning(`${this.type} roomAct called with unknown state: ${this.state}`);
+		debug.warning(`${this.type} spawnedRoomAct called with unknown state: ${this.state}`);
 	}
 }
 

@@ -14,10 +14,10 @@ EnergyWorker.prototype.act = function() {
 	if (!CustomCreep.prototype.act.call(this)) {
 
 		if (this.state === "stepTwoAway") {
-			this.creep.moveTo(spawn);
+			this.creep.moveTo(this.creep.room.controller);
 			this.state = "stepOneAway";
 		} else if (this.state === "stepOneAway") {
-			this.creep.moveTo(spawn);
+			this.creep.moveTo(this.creep.room.controller);
 			this.state = "working";
 		}
 

@@ -18,12 +18,12 @@ RemoteCreep.prototype.act = function() {
 			this.state = "movingToRemoteRoom";
 		}
 
-		if (this.state === "movingToRoom") {
+		if (this.state === "movingToSpawnedRoom") {
 
 			if (this.creep.room.name === this.spawnedRoomName) {
 
-				this.arrivedAtRoom();
-				this.roomAct();
+				this.arrivedAtSpawnedRoom();
+				this.spawnedRoomAct();
 
 			} else {
 
@@ -42,7 +42,7 @@ RemoteCreep.prototype.act = function() {
 			}
 		} else if (this.creep.room.name === this.spawnedRoomName) {
 
-			this.roomAct();
+			this.spawnedRoomAct();
 
 		} else if (this.creep.room.name === this.remoteRoomName) {
 
@@ -54,21 +54,21 @@ RemoteCreep.prototype.act = function() {
 	}
 }
 
-RemoteCreep.prototype.roomAct = function() {
+RemoteCreep.prototype.spawnedRoomAct = function() {
 }
 
 RemoteCreep.prototype.remoteRoomAct = function() {
 }
 
-RemoteCreep.prototype.moveToRoom = function() {
-	this.state = "movingToRoom";
+RemoteCreep.prototype.moveToSpawnedRoom = function() {
+	this.state = "movingToSpawnedRoom";
 }
 
 RemoteCreep.prototype.moveToRemoteRoom = function() {
 	this.state = "movingToRemoteRoom";
 }
 
-RemoteCreep.prototype.arrivedAtRoom = function() {
+RemoteCreep.prototype.arrivedAtSpawnedRoom = function() {
 }
 
 RemoteCreep.prototype.arrivedAtRemoteRoom = function() {

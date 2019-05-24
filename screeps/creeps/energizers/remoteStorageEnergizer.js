@@ -14,7 +14,7 @@ RemoteStorageEnergizer.prototype.act = function() {
 	RemoteCreep.prototype.act.call(this);
 }
 
-RemoteStorageEnergizer.prototype.arrivedAtRoom = function() {
+RemoteStorageEnergizer.prototype.arrivedAtSpawnedRoom = function() {
 	this.state = "energizing";
 }
 
@@ -22,7 +22,7 @@ RemoteStorageEnergizer.prototype.arrivedAtRemoteRoom = function() {
 	this.state = "harvesting";
 }
 
-RemoteStorageEnergizer.prototype.roomAct = function() {
+RemoteStorageEnergizer.prototype.spawnedRoomAct = function() {
 
 	if (this.creep.carry[RESOURCE_ENERGY] === 0) {
 
@@ -53,7 +53,7 @@ RemoteStorageEnergizer.prototype.remoteRoomAct = function() {
 
 	if (this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
 
-		this.moveToRoom();
+		this.moveToSpawnedRoom();
 
 	} else if (this.state === "harvesting") {
 

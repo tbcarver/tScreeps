@@ -14,7 +14,7 @@ RemoteReverseStorageEnergizer.prototype.act = function() {
 	RemoteCreep.prototype.act.call(this);
 }
 
-RemoteReverseStorageEnergizer.prototype.arrivedAtRoom = function() {
+RemoteReverseStorageEnergizer.prototype.arrivedAtSpawnedRoom = function() {
 	this.state = "harvesting";
 }
 
@@ -22,7 +22,7 @@ RemoteReverseStorageEnergizer.prototype.arrivedAtRemoteRoom = function() {
 	this.state = "energizing";
 }
 
-RemoteReverseStorageEnergizer.prototype.roomAct = function() {
+RemoteReverseStorageEnergizer.prototype.spawnedRoomAct = function() {
 
 	if (this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
 
@@ -51,7 +51,7 @@ RemoteReverseStorageEnergizer.prototype.remoteRoomAct = function() {
 
 	if (this.creep.carry[RESOURCE_ENERGY] === 0) {
 
-		this.moveToRoom();
+		this.moveToSpawnedRoom();
 
 	} else if (this.state === "energizing") {
 
@@ -70,7 +70,7 @@ RemoteReverseStorageEnergizer.prototype.remoteRoomAct = function() {
 
 		} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
 
-			this.moveToRoom();
+			this.moveToSpawnedRoom();
 		}
 	}
 }
