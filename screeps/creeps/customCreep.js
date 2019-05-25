@@ -65,6 +65,10 @@ CustomCreep.prototype.act = function() {
 		if (this.creep.room.name === this.remoteRoomName) {
 
 			this.state = "arrivedAtRemoteRoom";
+			// NOTE: Creep must step off the exit edge of the room immediately
+			//  or will be sent back to the other room
+			this.creep.moveTo(this.creep.room.controller);
+			acted = true;
 
 		} else {
 

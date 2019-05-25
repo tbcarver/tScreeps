@@ -88,7 +88,7 @@ roomTools.consoleEnemies = function() {
 					enemy.ticksToLive + " ";
 			}
 
-			debug.danger("Enemies!", health);
+			debug.danger(room.name + " Enemies!", health);
 		}
 	}
 }

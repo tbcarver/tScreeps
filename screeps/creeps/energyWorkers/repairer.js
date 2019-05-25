@@ -34,9 +34,6 @@ Repairer.prototype.work = function() {
 		if (this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
 
 			this.state = "harvesting";
-
-		} else {
-			this.creep.moveTo(this.creep.room.controller);
 		}
 	}
 }

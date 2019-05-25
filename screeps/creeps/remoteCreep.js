@@ -23,7 +23,9 @@ RemoteCreep.prototype.act = function() {
 			if (this.creep.room.name === this.spawnedRoomName) {
 
 				this.arrivedAtSpawnedRoom();
-				this.spawnedRoomAct();
+				// NOTE: Creep must step off the exit edge of the room immediately
+				//  or will be sent back to the other room
+				this.creep.moveTo(this.creep.room.controller);
 
 			} else {
 
@@ -34,7 +36,9 @@ RemoteCreep.prototype.act = function() {
 			if (this.creep.room.name === this.remoteRoomName) {
 
 				this.arrivedAtRemoteRoom();
-				this.remoteRoomAct();
+				// NOTE: Creep must step off the exit edge of the room immediately
+				//  or will be sent back to the other room
+				this.creep.moveTo(this.creep.room.controller);
 
 			} else {
 

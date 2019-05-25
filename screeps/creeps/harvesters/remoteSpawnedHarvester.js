@@ -3,27 +3,27 @@ var RemoteCreep = require("../remoteCreep");
 var findTools = require("../../tools/findTools");
 var roomTools = require("../../tools/roomTools");
 
-function RemoteHarvester(creep) {
+function RemoteSpawnedHarvester(creep) {
 
 	RemoteCreep.call(this, creep);
 }
 
-RemoteHarvester.prototype = Object.create(RemoteCreep.prototype);
+RemoteSpawnedHarvester.prototype = Object.create(RemoteCreep.prototype);
 
-RemoteHarvester.prototype.act = function() {
+RemoteSpawnedHarvester.prototype.act = function() {
 
 	RemoteCreep.prototype.act.call(this);
 }
 
-RemoteHarvester.prototype.arrivedAtSpawnedRoom = function() {
+RemoteSpawnedHarvester.prototype.arrivedAtSpawnedRoom = function() {
 	this.state = "transferring";
 }
 
-RemoteHarvester.prototype.arrivedAtRemoteRoom = function() {
+RemoteSpawnedHarvester.prototype.arrivedAtRemoteRoom = function() {
 	this.state = "harvesting";
 }
 
-RemoteHarvester.prototype.spawnedRoomAct = function() {
+RemoteSpawnedHarvester.prototype.spawnedRoomAct = function() {
 
 	if (this.creep.carry[RESOURCE_ENERGY] === 0) {
 
@@ -47,7 +47,7 @@ RemoteHarvester.prototype.spawnedRoomAct = function() {
 	}
 }
 
-RemoteHarvester.prototype.remoteRoomAct = function() {
+RemoteSpawnedHarvester.prototype.remoteRoomAct = function() {
 
 	if (this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
 
@@ -55,7 +55,7 @@ RemoteHarvester.prototype.remoteRoomAct = function() {
 
 	} else if (this.state === "harvesting") {
 
-		var resource = findTools.findClosestEnergy(this.creep.pos);
+		var resource = this.creep.pos.findClosestByPath(FIND_SOURCES);
 
 		if (resource) {
 
@@ -71,14 +71,14 @@ RemoteHarvester.prototype.remoteRoomAct = function() {
 	}
 }
 
-RemoteHarvester.initializeSpawnCreepMemory = function() {
+RemoteSpawnedHarvester.initializeSpawnCreepMemory = function() {
 
 	var creepMemory = {
-		type: "remoteHarvester",
+		type: "remoteSpawnedHarvester",
 		bodyPartsType: "moveCarryWork"
 	}
 
 	return creepMemory;
 }
 
-module.exports = RemoteHarvester
+module.exports = RemoteSpawnedHarvester

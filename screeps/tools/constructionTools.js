@@ -7,8 +7,9 @@ constructionTools.createConstructionRoad = function() {
 	var positions =
 
 	
-[{"x":"31","y":"42","roomName":"W7S0"},{"x":"42","y":"8","roomName":"W7S0"},{"x":"42","y":"9","roomName":"W7S0"},{"x":"31","y":"43","roomName":"W7S0"},{"x":"39","y":"31","roomName":"W6N0"},{"x":"40","y":"30","roomName":"W6N0"},{"x":"43","y":"27","roomName":"W6N0"},{"x":"44","y":"26","roomName":"W6N0"}]
+[{"x":"8","y":"45","roomName":"W7S0"},{"x":"9","y":"45","roomName":"W7S0"},{"x":"10","y":"45","roomName":"W7S0"},{"x":"11","y":"45","roomName":"W7S0"},{"x":"12","y":"45","roomName":"W7S0"},{"x":"13","y":"45","roomName":"W7S0"},{"x":"14","y":"45","roomName":"W7S0"},{"x":"15","y":"45","roomName":"W7S0"},{"x":"16","y":"45","roomName":"W7S0"},{"x":"17","y":"45","roomName":"W7S0"},{"x":"18","y":"45","roomName":"W7S0"},{"x":"19","y":"45","roomName":"W7S0"},{"x":"20","y":"45","roomName":"W7S0"},{"x":"20","y":"44","roomName":"W7S0"},{"x":"21","y":"44","roomName":"W7S0"},{"x":"22","y":"44","roomName":"W7S0"},{"x":"23","y":"44","roomName":"W7S0"},{"x":"24","y":"44","roomName":"W7S0"},{"x":"25","y":"44","roomName":"W7S0"},{"x":"24","y":"45","roomName":"W7S0"},{"x":"23","y":"45","roomName":"W7S0"},{"x":"22","y":"45","roomName":"W7S0"},{"x":"21","y":"45","roomName":"W7S0"},{"x":"25","y":"45","roomName":"W7S0"},{"x":"26","y":"45","roomName":"W7S0"},{"x":"27","y":"45","roomName":"W7S0"},{"x":"28","y":"45","roomName":"W7S0"},{"x":"29","y":"45","roomName":"W7S0"},{"x":"30","y":"45","roomName":"W7S0"},{"x":"31","y":"45","roomName":"W7S0"},{"x":"32","y":"45","roomName":"W7S0"},{"x":"33","y":"45","roomName":"W7S0"},{"x":"34","y":"45","roomName":"W7S0"},{"x":"35","y":"45","roomName":"W7S0"},{"x":"36","y":"44","roomName":"W7S0"},{"x":"37","y":"43","roomName":"W7S0"},{"x":"38","y":"42","roomName":"W7S0"},{"x":"39","y":"41","roomName":"W7S0"},{"x":"39","y":"40","roomName":"W7S0"},{"x":"40","y":"40","roomName":"W7S0"},{"x":"40","y":"39","roomName":"W7S0"},{"x":"41","y":"39","roomName":"W7S0"},{"x":"41","y":"38","roomName":"W7S0"},{"x":"42","y":"38","roomName":"W7S0"},{"x":"42","y":"37","roomName":"W7S0"},{"x":"43","y":"37","roomName":"W7S0"},{"x":"49","y":"17","roomName":"W7S0"},{"x":"48","y":"16","roomName":"W7S0"},{"x":"47","y":"15","roomName":"W7S0"},{"x":"46","y":"14","roomName":"W7S0"},{"x":"45","y":"13","roomName":"W7S0"},{"x":"44","y":"12","roomName":"W7S0"},{"x":"44","y":"13","roomName":"W7S0"},{"x":"45","y":"14","roomName":"W7S0"},{"x":"46","y":"15","roomName":"W7S0"},{"x":"47","y":"16","roomName":"W7S0"},{"x":"48","y":"17","roomName":"W7S0"},{"x":"49","y":"18","roomName":"W7S0"}]
 
+	
 	this.createConstructionSite(positions, STRUCTURE_ROAD);
 }
 
@@ -26,7 +27,7 @@ constructionTools.createConstructionContainer = function() {
 
 	var positions =
 
-	[{"x":"31","y":"42","roomName":"W7S0"},{"x":"42","y":"8","roomName":"W7S0"},{"x":"42","y":"9","roomName":"W7S0"},{"x":"31","y":"43","roomName":"W7S0"}]
+	[{"x":"43","y":"28","roomName":"W6N0"},{"x":"39","y":"32","roomName":"W6N0"}]
 
 	this.createConstructionSite(positions, STRUCTURE_CONTAINER);
 }
@@ -47,7 +48,7 @@ constructionTools.createConstructionSpawn = function() {
 
 		
 
-[{"x":"29","y":"24","roomName":"W6S0"}]
+	[{"x":"36","y":"45","roomName":"W7S0"}]
 
 	this.createConstructionSite(positions, STRUCTURE_SPAWN);
 }
@@ -74,7 +75,7 @@ constructionTools.createConstructionTower = function() {
 
 	var positions =
 
-	[{"x":"27","y":"24","roomName":"W6S0"}]
+	[{"x":"36","y":"8","roomName":"W6S1"}]
 
 	this.createConstructionSite(positions, STRUCTURE_TOWER);
 }
@@ -133,7 +134,7 @@ constructionTools.destroyStructure = function() {
 
 	var positions =
 
-	[{"x":"23","y":"30","roomName":"W6S0"},{"x":"23","y":"31","roomName":"W6S0"}]
+	[{"x":"35","y":"8","roomName":"W6S1"}]
 
 	if (positions.length > 0) {
 

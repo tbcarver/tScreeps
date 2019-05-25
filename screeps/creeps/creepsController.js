@@ -22,16 +22,16 @@ creepsController.tick = function() {
 
 			// debug.temp(`creep act: type: ${creep.memory.type} ticks: ${creep.ticksToLive}`);
 			customCreep.act();
-
-			if (!roomsTotals[creep.memory.spawnedRoomName]) {
-				roomsTotals[creep.memory.spawnedRoomName] = 0;
-			}
-
-			roomsTotals[creep.memory.spawnedRoomName]++;
-
-			spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creep.memory.type, creep.memory.spawnedRoomName,
-				 creep.memory.remoteRoomName);
 		}
+
+		if (!roomsTotals[creep.memory.spawnedRoomName]) {
+			roomsTotals[creep.memory.spawnedRoomName] = 0;
+		}
+
+		roomsTotals[creep.memory.spawnedRoomName]++;
+
+		spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creep.memory.type, creep.memory.spawnedRoomName,
+			 creep.memory.remoteRoomName);
 	}
 
 	_.forEach(roomsCurrentSpawnedCounts, (currentSpawnedCounts, roomName) => {
