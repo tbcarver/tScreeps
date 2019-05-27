@@ -18,8 +18,6 @@ RemoteClaimer.prototype.arrivedAtSpawnedRoom = function() {
 
 RemoteClaimer.prototype.arrivedAtRemoteRoom = function() {
 	this.state = "claiming";
-	
-	debug.temp(this.creep.name, "claiming")
 }
 
 RemoteClaimer.prototype.spawnedRoomAct = function() {
@@ -33,14 +31,17 @@ RemoteClaimer.prototype.remoteRoomAct = function() {
 
 		var result = this.creep.claimController(controller);
 
-		if (result === ERR_NOT_IN_RANGE) {
+		if (result === OK) {
 
-			debug.temp(this.creep.name, "remoteRoomAct", controller.pos)
+			debug.highlight(`${this.type} claimed controller ${this.creep.room.name}`);
+
+		} else if (result === ERR_NOT_IN_RANGE) {
+
 			this.creep.moveTo(controller);
 
 		} else {
 
-			debug.warning(`${this.type} can't can't claim ${result}`);
+			debug.warning(`${this.type} can't claim ${this.creep.room.name} ${result}`);
 		}
 	} else {
 

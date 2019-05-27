@@ -7,6 +7,8 @@ var DropContainerHarvester = require("./harvesters/dropContainerHarvester");
 var ExtensionEnergizer = require("./energizers/extensionEnergizer");
 var RemoteBuilder = require("./energyWorkers/remoteBuilder");
 var RemoteClaimer = require("./troopers/remoteClaimer");
+var RemoteReserver = require("./troopers/remoteReserver");
+var RemoteSitter = require("./troopers/remoteSitter");
 var RemoteSpawnedHarvester = require("./harvesters/remoteSpawnedHarvester");
 var RemoteSpawnedStorageEnergizer = require("./energizers/remoteSpawnedStorageEnergizer");
 var RemoteStorageEnergizer = require("./energizers/remoteStorageEnergizer");
@@ -24,6 +26,8 @@ var creepConstructors = {
 	extensionEnergizer: ExtensionEnergizer,
 	remoteBuilder: RemoteBuilder,
 	remoteClaimer: RemoteClaimer,
+	remoteReserver: RemoteReserver,
+	remoteSitter: RemoteSitter,
 	remoteSpawnedHarvester: RemoteSpawnedHarvester,
 	remoteSpawnedStorageEnergizer: RemoteSpawnedStorageEnergizer,
 	remoteStorageEnergizer: RemoteStorageEnergizer,

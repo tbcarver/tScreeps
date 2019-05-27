@@ -6,9 +6,7 @@ constructionTools.createConstructionRoad = function() {
 
 	var positions =
 
-	
-[{"x":"8","y":"45","roomName":"W7S0"},{"x":"9","y":"45","roomName":"W7S0"},{"x":"10","y":"45","roomName":"W7S0"},{"x":"11","y":"45","roomName":"W7S0"},{"x":"12","y":"45","roomName":"W7S0"},{"x":"13","y":"45","roomName":"W7S0"},{"x":"14","y":"45","roomName":"W7S0"},{"x":"15","y":"45","roomName":"W7S0"},{"x":"16","y":"45","roomName":"W7S0"},{"x":"17","y":"45","roomName":"W7S0"},{"x":"18","y":"45","roomName":"W7S0"},{"x":"19","y":"45","roomName":"W7S0"},{"x":"20","y":"45","roomName":"W7S0"},{"x":"20","y":"44","roomName":"W7S0"},{"x":"21","y":"44","roomName":"W7S0"},{"x":"22","y":"44","roomName":"W7S0"},{"x":"23","y":"44","roomName":"W7S0"},{"x":"24","y":"44","roomName":"W7S0"},{"x":"25","y":"44","roomName":"W7S0"},{"x":"24","y":"45","roomName":"W7S0"},{"x":"23","y":"45","roomName":"W7S0"},{"x":"22","y":"45","roomName":"W7S0"},{"x":"21","y":"45","roomName":"W7S0"},{"x":"25","y":"45","roomName":"W7S0"},{"x":"26","y":"45","roomName":"W7S0"},{"x":"27","y":"45","roomName":"W7S0"},{"x":"28","y":"45","roomName":"W7S0"},{"x":"29","y":"45","roomName":"W7S0"},{"x":"30","y":"45","roomName":"W7S0"},{"x":"31","y":"45","roomName":"W7S0"},{"x":"32","y":"45","roomName":"W7S0"},{"x":"33","y":"45","roomName":"W7S0"},{"x":"34","y":"45","roomName":"W7S0"},{"x":"35","y":"45","roomName":"W7S0"},{"x":"36","y":"44","roomName":"W7S0"},{"x":"37","y":"43","roomName":"W7S0"},{"x":"38","y":"42","roomName":"W7S0"},{"x":"39","y":"41","roomName":"W7S0"},{"x":"39","y":"40","roomName":"W7S0"},{"x":"40","y":"40","roomName":"W7S0"},{"x":"40","y":"39","roomName":"W7S0"},{"x":"41","y":"39","roomName":"W7S0"},{"x":"41","y":"38","roomName":"W7S0"},{"x":"42","y":"38","roomName":"W7S0"},{"x":"42","y":"37","roomName":"W7S0"},{"x":"43","y":"37","roomName":"W7S0"},{"x":"49","y":"17","roomName":"W7S0"},{"x":"48","y":"16","roomName":"W7S0"},{"x":"47","y":"15","roomName":"W7S0"},{"x":"46","y":"14","roomName":"W7S0"},{"x":"45","y":"13","roomName":"W7S0"},{"x":"44","y":"12","roomName":"W7S0"},{"x":"44","y":"13","roomName":"W7S0"},{"x":"45","y":"14","roomName":"W7S0"},{"x":"46","y":"15","roomName":"W7S0"},{"x":"47","y":"16","roomName":"W7S0"},{"x":"48","y":"17","roomName":"W7S0"},{"x":"49","y":"18","roomName":"W7S0"}]
-
+	[{"x":"16","y":"5","roomName":"W6S2"},{"x":"15","y":"5","roomName":"W6S2"},{"x":"15","y":"6","roomName":"W6S2"},{"x":"14","y":"6","roomName":"W6S2"},{"x":"14","y":"5","roomName":"W6S2"},{"x":"13","y":"5","roomName":"W6S2"},{"x":"12","y":"5","roomName":"W6S2"},{"x":"11","y":"5","roomName":"W6S2"},{"x":"10","y":"6","roomName":"W6S2"},{"x":"9","y":"7","roomName":"W6S2"},{"x":"9","y":"8","roomName":"W6S2"},{"x":"8","y":"8","roomName":"W6S2"},{"x":"7","y":"9","roomName":"W6S2"},{"x":"7","y":"10","roomName":"W6S2"},{"x":"6","y":"10","roomName":"W6S2"},{"x":"5","y":"11","roomName":"W6S2"},{"x":"4","y":"12","roomName":"W6S2"},{"x":"4","y":"13","roomName":"W6S2"},{"x":"4","y":"14","roomName":"W6S2"},{"x":"4","y":"15","roomName":"W6S2"},{"x":"4","y":"16","roomName":"W6S2"},{"x":"4","y":"17","roomName":"W6S2"},{"x":"4","y":"18","roomName":"W6S2"},{"x":"4","y":"19","roomName":"W6S2"},{"x":"4","y":"20","roomName":"W6S2"}]
 	
 	this.createConstructionSite(positions, STRUCTURE_ROAD);
 }
@@ -18,8 +16,8 @@ constructionTools.createConstructionExtension = function() {
 	var positions =
 
 
-	[{"x":"34","y":"22","roomName":"W6S0"},{"x":"35","y":"22","roomName":"W6S0"},{"x":"36","y":"22","roomName":"W6S0"},{"x":"34","y":"24","roomName":"W6S0"},{"x":"35","y":"24","roomName":"W6S0"},{"x":"36","y":"24","roomName":"W6S0"},{"x":"34","y":"26","roomName":"W6S0"},{"x":"35","y":"26","roomName":"W6S0"},{"x":"36","y":"26","roomName":"W6S0"}]
-	
+[{"x":"25","y":"41","roomName":"W7S0"},{"x":"25","y":"40","roomName":"W7S0"},{"x":"27","y":"41","roomName":"W7S0"},{"x":"27","y":"40","roomName":"W7S0"},{"x":"29","y":"41","roomName":"W7S0"},{"x":"29","y":"40","roomName":"W7S0"},{"x":"23","y":"41","roomName":"W7S0"},{"x":"23","y":"40","roomName":"W7S0"}]
+
 	this.createConstructionSite(positions, STRUCTURE_EXTENSION);
 }
 
@@ -27,7 +25,7 @@ constructionTools.createConstructionContainer = function() {
 
 	var positions =
 
-	[{"x":"43","y":"28","roomName":"W6N0"},{"x":"39","y":"32","roomName":"W6N0"}]
+	[{"x":"26","y":"36","roomName":"W7S1"},{"x":"27","y":"35","roomName":"W7S1"}]
 
 	this.createConstructionSite(positions, STRUCTURE_CONTAINER);
 }
@@ -57,7 +55,8 @@ constructionTools.createConstructionWalls = function() {
 
 	var positions =
 
-		[{ "x": "29", "y": "42", "roomName": "W6S0" }]
+
+	[{"x":"35","y":"48","roomName":"W6N0"},{"x":"35","y":"47","roomName":"W6N0"},{"x":"35","y":"46","roomName":"W6N0"},{"x":"35","y":"45","roomName":"W6N0"},{"x":"35","y":"44","roomName":"W6N0"},{"x":"35","y":"43","roomName":"W6N0"},{"x":"35","y":"42","roomName":"W6N0"},{"x":"35","y":"41","roomName":"W6N0"},{"x":"35","y":"40","roomName":"W6N0"},{"x":"35","y":"39","roomName":"W6N0"},{"x":"35","y":"38","roomName":"W6N0"},{"x":"35","y":"37","roomName":"W6N0"},{"x":"35","y":"36","roomName":"W6N0"},{"x":"35","y":"35","roomName":"W6N0"},{"x":"35","y":"34","roomName":"W6N0"},{"x":"35","y":"33","roomName":"W6N0"},{"x":"35","y":"32","roomName":"W6N0"},{"x":"44","y":"23","roomName":"W6N0"},{"x":"45","y":"23","roomName":"W6N0"},{"x":"46","y":"23","roomName":"W6N0"},{"x":"47","y":"28","roomName":"W6N0"},{"x":"47","y":"27","roomName":"W6N0"},{"x":"47","y":"26","roomName":"W6N0"},{"x":"47","y":"25","roomName":"W6N0"},{"x":"47","y":"24","roomName":"W6N0"},{"x":"47","y":"23","roomName":"W6N0"},{"x":"47","y":"38","roomName":"W6N0"},{"x":"47","y":"39","roomName":"W6N0"},{"x":"47","y":"40","roomName":"W6N0"},{"x":"47","y":"41","roomName":"W6N0"},{"x":"47","y":"42","roomName":"W6N0"},{"x":"47","y":"43","roomName":"W6N0"},{"x":"47","y":"44","roomName":"W6N0"}]
 
 	this.createConstructionSite(positions, STRUCTURE_WALL);
 }
@@ -66,7 +65,7 @@ constructionTools.createConstructionRamparts = function() {
 
 	var positions =
 
-	[{"x":"23","y":"30","roomName":"W6S0"},{"x":"23","y":"31","roomName":"W6S0"},{"x":"31","y":"42","roomName":"W6S0"}]
+	[{"x":"35","y":"34","roomName":"W6N0"}]
 
 	this.createConstructionSite(positions, STRUCTURE_RAMPART);
 }
@@ -75,7 +74,8 @@ constructionTools.createConstructionTower = function() {
 
 	var positions =
 
-	[{"x":"36","y":"8","roomName":"W6S1"}]
+	
+[{"x":"33","y":"46","roomName":"W7S0"}]
 
 	this.createConstructionSite(positions, STRUCTURE_TOWER);
 }
@@ -96,7 +96,7 @@ constructionTools.createConstructionSite = function(positions, structureType, na
 
 			} else {
 
-				debug.error(`Cannot get room from Game.rooms`);
+				debug.danger(`Cannot get room from Game.rooms`);
 			}
 		}
 	}
@@ -106,7 +106,7 @@ constructionTools.removeConstructionSite = function() {
 
 	var positions =
 
-	[{"x":"30","y":"42","roomName":"W6S0"}]
+	[{"x":"35","y":"34","roomName":"W6N0"}]
 
 	if (positions.length > 0) {
 
@@ -134,7 +134,7 @@ constructionTools.destroyStructure = function() {
 
 	var positions =
 
-	[{"x":"35","y":"8","roomName":"W6S1"}]
+	[{"x":"21","y":"1","roomName":"W6S2"},{"x":"22","y":"1","roomName":"W6S2"},{"x":"20","y":"2","roomName":"W6S2"},{"x":"21","y":"2","roomName":"W6S2"},{"x":"20","y":"3","roomName":"W6S2"},{"x":"19","y":"3","roomName":"W6S2"}]
 
 	if (positions.length > 0) {
 
@@ -145,8 +145,6 @@ constructionTools.destroyStructure = function() {
 				filter: (structure) => structure.pos.x == positions[index].x &&
 					structure.pos.y == positions[index].y
 			});
-
-			debug.temp("walls",structures);
 
 			if (structures.length > 0) {
 

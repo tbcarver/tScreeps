@@ -42,17 +42,20 @@ Repairer.initializeSpawnCreepMemory = function(room) {
 
 	var creepMemory;
 
-	const targets = room.find(FIND_STRUCTURES, {
-		filter: structure => structure.hits < structure.hitsMax &&
-			!(structure.structureType === STRUCTURE_WALL || structure.structureType === STRUCTURE_RAMPART)
-	});
+	if (room.find) {
 
-	if (targets.length >= 1) {
+		const targets = room.find(FIND_STRUCTURES, {
+			filter: structure => structure.hits < structure.hitsMax &&
+				!(structure.structureType === STRUCTURE_WALL || structure.structureType === STRUCTURE_RAMPART)
+		});
 
-		creepMemory = {
-			type: "repairer",
-			bodyPartsType: "moveCarryWork",
-			maximumSpawnCapacity: 850,
+		if (targets.length >= 1) {
+
+			creepMemory = {
+				type: "repairer",
+				bodyPartsType: "moveCarryWork",
+				maximumSpawnCapacity: 850,
+			}
 		}
 	}
 

@@ -17,6 +17,35 @@ var creepSpawnRules = [
 		canEnergizersHarvest: false,
 		remoteRooms: [
 			{
+				roomName: "W7S1",
+				spawnOrderMaxSpawnedCounts: [
+					{ remoteReserver: 1 },
+					{ builder: 4 },
+				],
+			},
+			{
+				roomName: "W6S2",
+				spawnOrderMaxSpawnedCounts: [
+					{ remoteReserver: 1 },
+					{ builder: 4 },
+				],
+			},
+			{
+				roomName: "W6N0",
+				spawnOrderMaxSpawnedCounts: [
+					{ repairer: 1 },
+					{ builder: 2 },
+					{ dropContainerHarvester: 2 },
+					{ containerHarvester: 2 },
+					{ remoteSpawnedStorageEnergizer: 2 },
+					{ wallRepairer: 2 },
+					{ controllerEnergizer: 1 },
+				],
+				maxExtensionsPerEnergizer: 2,
+				maxEnergizersPerContainer: 3,
+				canEnergizersHarvest: true,
+			},
+			{
 				roomName: "W6S1",
 				spawnOrderMaxSpawnedCounts: [
 					{ remoteSpawnedStorageEnergizer: 2 },
@@ -26,25 +55,10 @@ var creepSpawnRules = [
 				canEnergizersHarvest: true,
 			},
 			{
-				roomName: "W6N0",
-				spawnOrderMaxSpawnedCounts: [
-					{ repairer: 1 },
-					{ remoteBuilder: 8 },
-					{ dropContainerHarvester: 2 },
-					{ remoteSpawnedStorageEnergizer: 2 },
-					{ remoteSpawnedHarvester: 0 },
-				],
-				maxExtensionsPerEnergizer: 2,
-				maxEnergizersPerContainer: 3,
-				canEnergizersHarvest: true,
-			},
-			{
 				roomName: "W7S0",
 				spawnOrderMaxSpawnedCounts: [
 					{ builder: 4 },
-					{ dropContainerHarvester: 4 },
-					{ storageEnergizer: 2 },
-					{ remoteSpawnedStorageEnergizer: 3 },
+					{ remoteStorageEnergizer: 4 },
 				],
 				maxExtensionsPerEnergizer: 2,
 				maxEnergizersPerContainer: 3,
@@ -66,19 +80,62 @@ var creepSpawnRules = [
 		maxExtensionsPerEnergizer: 2,
 		maxEnergizersPerContainer: 3,
 		canEnergizersHarvest: true,
-		remoteRooms: []
+		remoteRooms: [
+			{
+				roomName: "W7S1",
+				spawnOrderMaxSpawnedCounts: [
+					{ builder: 4 },
+				],
+				maxExtensionsPerEnergizer: 2,
+				maxEnergizersPerContainer: 3,
+				canEnergizersHarvest: true,
+			},
+			{
+				roomName: "W6S2",
+				spawnOrderMaxSpawnedCounts: [
+					{ remoteSitter: 1 },
+					{ repairer: 0 },
+					{ builder: 4 },
+					{ remoteBuilder: 4 },
+					{ dropContainerHarvester: 4 },
+					{ remoteSpawnedStorageEnergizer: 0 },
+				],
+				maxExtensionsPerEnergizer: 2,
+				maxEnergizersPerContainer: 3,
+				canEnergizersHarvest: true,
+			},
+		]
 	},
 	{
 		roomName: "W7S0",
 		spawnOrderMaxSpawnedCounts: [
 			{ repairer: 1 },
 			{ builder: 4 },
-			{ controllerEnergizer: 4 },
+			{ spawnEnergizer: 1 },
+			{ extensionEnergizer: 4 },
+			{ dropContainerHarvester: 4 },
+			{ storageEnergizer: 2 },
+			{ controllerEnergizer: 2 },
 		],
 		maxExtensionsPerEnergizer: 2,
 		maxEnergizersPerContainer: 3,
-		canEnergizersHarvest: true,
-		remoteRooms: []
+		canEnergizersHarvest: false,
+		remoteRooms: [
+			{
+				roomName: "W7S1",
+				spawnOrderMaxSpawnedCounts: [
+					{ remoteSitter: 1 },
+					{ repairer: 1 },
+					{ builder: 4 },
+					{ remoteBuilder: 0 },
+					{ dropContainerHarvester: 2 },
+					{ remoteSpawnedStorageEnergizer: 0 },
+				],
+				maxExtensionsPerEnergizer: 2,
+				maxEnergizersPerContainer: 3,
+				canEnergizersHarvest: true,
+			},
+		]
 	},
 ];
 

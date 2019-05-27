@@ -9,6 +9,7 @@ creepsFactory.buildCreep = function(creep) {
 	var customCreep = new constructor(creep);
 
 	// if (creep.memory.type === "remoteClaimer") {
+	// 	// creep.memory.state = "suicide";
 	// 	creep.suicide();
 	// 	// debug.temp("creep:", creep)
 	// 	// debug.temp("creep memory:", creep.memory)

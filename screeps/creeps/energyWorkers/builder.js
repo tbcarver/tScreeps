@@ -38,14 +38,17 @@ Builder.initializeSpawnCreepMemory = function(room) {
 
 	var creepMemory;
 
-	const targets = room.find(FIND_CONSTRUCTION_SITES);
+	if (room.find) {
 
-	if (targets.length > 0) {
+		const targets = room.find(FIND_CONSTRUCTION_SITES);
 
-		creepMemory = {
-			type: "builder",
-			bodyPartsType: "moveCarryWork",
-			maximumSpawnCapacity: 850,
+		if (targets.length > 0) {
+	
+			creepMemory = {
+				type: "builder",
+				bodyPartsType: "moveCarryWork",
+				maximumSpawnCapacity: 850,
+			}
 		}
 	}
 
