@@ -60,24 +60,44 @@ CustomCreep.prototype.act = function() {
 
 		acted = true;
 
-	} else if (!this.isRemoteCreep && this.state === "movingToRemoteRoom" && this.remoteRoomName) {
+	} else if (!this.isRemoteCreep && this.remoteRoomName) {
 
-		if (this.creep.room.name === this.remoteRoomName) {
-
-			this.state = "arrivedAtRemoteRoom";
-			// NOTE: Creep must step off the exit edge of the room immediately
-			//  or will be sent back to the other room
-			this.creep.moveTo(this.creep.room.controller);
+		if (this.state === "stepOneIntoRoom") {
+			this.state = "stepTwoIntoRoom";
+			this.moveIntoRoom();
 			acted = true;
 
-		} else {
+		} else if (this.state === "stepTwoIntoRoom") {
+			this.state = this.getInitialState();
+			this.moveIntoRoom();
+			acted = true;
 
-			this.moveToExit(this.remoteRoomName);
+		} else if (this.state === "movingToRemoteRoom") {
+
+			if (this.creep.room.name === this.remoteRoomName) {
+
+				this.state = "stepOneIntoRoom";
+				// NOTE: Creep must step off the exit edge of the room immediately
+				//  or will be sent back to the other room
+				this.moveIntoRoom();
+				acted = true;
+
+			} else {
+
+				this.moveToExit(this.remoteRoomName);
+				acted = true;
+			}
+		} else if (this.creep.room.name !== this.remoteRoomName) {
+			this.state = "movingToRemoteRoom";
 			acted = true;
 		}
 	}
 
 	return acted;
+}
+
+CustomCreep.prototype.getInitialState = function(){
+	return "initial";
 }
 
 CustomCreep.prototype.moveToExit = function(exitRoomName) {
@@ -97,6 +117,27 @@ CustomCreep.prototype.moveToExit = function(exitRoomName) {
 		}
 	} else {
 		debug.warning(`${this.type} can't find an exit direction to ${exitRoomName}`);
+	}
+}
+
+CustomCreep.prototype.moveIntoRoom = function() {
+	
+	var target = this.creep.pos.findClosestByPath(FIND_STRUCTURES, {
+		filter: { structureType: STRUCTURE_CONTROLLER }
+	});
+
+	if (!target) {
+		var target = this.creep.pos.findClosestByPath(FIND_SOURCES);
+	}
+
+	if (!target) {
+		var target = this.creep.pos.findClosestByPath(FIND_STRUCTURES);
+	}
+
+	if (target) {
+		this.creep.moveTo(target);
+	} else {
+		this.creep.moveTo(25, 25);
 	}
 }
 

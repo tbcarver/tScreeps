@@ -2,9 +2,9 @@
 var Builder = require("./energyWorkers/builder");
 var ContainerHarvester = require("./harvesters/containerHarverster");
 var ControllerEnergizer = require("./energizers/controllerEnergizer");
-var Defender = require("./troopers/defender");
 var DropContainerHarvester = require("./harvesters/dropContainerHarvester");
 var ExtensionEnergizer = require("./energizers/extensionEnergizer");
+var RangedDefender = require("./troopers/rangedDefender");
 var RemoteBuilder = require("./energyWorkers/remoteBuilder");
 var RemoteClaimer = require("./troopers/remoteClaimer");
 var RemoteReserver = require("./troopers/remoteReserver");
@@ -21,9 +21,9 @@ var creepConstructors = {
 	builder: Builder,
 	containerHarvester: ContainerHarvester,
 	controllerEnergizer: ControllerEnergizer,
-	defender: Defender,
 	dropContainerHarvester: DropContainerHarvester,
 	extensionEnergizer: ExtensionEnergizer,
+	rangedDefender: RangedDefender,
 	remoteBuilder: RemoteBuilder,
 	remoteClaimer: RemoteClaimer,
 	remoteReserver: RemoteReserver,

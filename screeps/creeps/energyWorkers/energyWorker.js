@@ -66,5 +66,9 @@ EnergyWorker.prototype.act = function() {
 EnergyWorker.prototype.work = function() {
 }
 
+EnergyWorker.prototype.getInitialState = function() {
+	return "harvesting";
+}
+
 
 module.exports = EnergyWorker

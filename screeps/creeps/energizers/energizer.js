@@ -65,5 +65,9 @@ Energizer.prototype.act = function() {
 Energizer.prototype.energize = function() {
 }
 
+Energizer.prototype.getInitialState = function() {
+	return "harvesting";
+}
+
 
 module.exports = Energizer

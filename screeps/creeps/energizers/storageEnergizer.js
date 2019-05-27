@@ -68,6 +68,10 @@ StorageEnergizer.prototype.energize = function() {
 	}
 }
 
+StorageEnergizer.prototype.getInitialState = function() {
+	return "harvesting";
+}
+
 StorageEnergizer.initializeSpawnCreepMemory = function(room) {
 
 	var creepMemory;

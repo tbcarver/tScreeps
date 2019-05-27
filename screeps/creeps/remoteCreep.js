@@ -25,7 +25,7 @@ RemoteCreep.prototype.act = function() {
 				this.arrivedAtSpawnedRoom();
 				// NOTE: Creep must step off the exit edge of the room immediately
 				//  or will be sent back to the other room
-				this.creep.moveTo(this.creep.room.controller);
+				this.moveIntoRoom();
 
 			} else {
 
@@ -35,15 +35,23 @@ RemoteCreep.prototype.act = function() {
 
 			if (this.creep.room.name === this.remoteRoomName) {
 
-				this.arrivedAtRemoteRoom();
+				this.state = "stepOneIntoRoom";
 				// NOTE: Creep must step off the exit edge of the room immediately
 				//  or will be sent back to the other room
-				this.creep.moveTo(this.creep.room.controller);
+				this.moveIntoRoom();
 
 			} else {
 
 				this.moveToExit(this.remoteRoomName);
 			}
+		} else if (this.state === "stepOneIntoRoom") {
+			this.state = "stepTwoIntoRoom";
+			this.moveIntoRoom();
+		
+		} else if (this.state === "stepTwoIntoRoom") {
+			this.arrivedAtRemoteRoom();
+			this.moveIntoRoom();
+		
 		} else if (this.creep.room.name === this.spawnedRoomName) {
 
 			this.spawnedRoomAct();

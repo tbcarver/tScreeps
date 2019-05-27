@@ -73,7 +73,7 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 							var currentSpawnedCount = (remoteCurrentSpawnedCounts) ? remoteCurrentSpawnedCounts[creepType] || 0 : 0;
 
 							if (currentSpawnedCount < maxSpawnedCount) {
-								spawnResult = trySpawnCreep(remoteRoom, spawn, creepConstructor, creepsSpawnRule, currentSpawnedCount, spawnResult);
+								spawnResult = trySpawnCreep(remoteRoom, spawn, creepConstructor, remoteRoomCreepsSpawnRule, currentSpawnedCount, spawnResult);
 
 								if (spawnResult.spawned) {
 									spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creepType, spawn.room.name, remoteRoom.name);

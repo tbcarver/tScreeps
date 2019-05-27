@@ -14,6 +14,10 @@ ContainerHarvester.prototype.act = function() {
 
 	if (!CustomCreep.prototype.act.call(this)) {
 
+		if (this.state === "arrivedAtRemoteRoom") {
+			this.state = "harvesting";
+		}
+
 		if (this.state === "harvesting" || this.creep.carry[RESOURCE_ENERGY] === 0) {
 
 			if (this.state !== "harvesting") {
@@ -28,7 +32,7 @@ ContainerHarvester.prototype.act = function() {
 				var result = this.creep.harvest(resource);
 
 				if (result === ERR_NOT_IN_RANGE) {
-					
+
 					this.creep.moveTo(resource);
 
 				} else if (result === ERR_NOT_ENOUGH_RESOURCES) {
@@ -88,6 +92,10 @@ ContainerHarvester.prototype.act = function() {
 		}
 
 	}
+}
+
+ContainerHarvester.prototype.getInitialState = function() {
+	return "harvesting";
 }
 
 ContainerHarvester.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule) {
