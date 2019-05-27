@@ -8,8 +8,8 @@ creepsFactory.buildCreep = function(creep) {
 	var constructor = creepsConstructors[creep.memory.type];
 	var customCreep = new constructor(creep);
 
-	// if (creep.memory.type === "wallRepairer") {
-	// 	if (creep.room.name === "W6N0") {
+	// if (creep.memory.type === "extensionEnergizer") {
+	// 	if (creep.room.name === "W6S0") {
 	// 		creep.memory.state = "suicide";
 	// 		// creep.suicide();
 	// // 		// debug.temp("creep:", creep)

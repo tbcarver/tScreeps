@@ -20,8 +20,12 @@ RangedDefender.prototype.act = function() {
 				this.creep.moveTo(target);
 			}
 		} else {
-
-			this.creep.moveTo(this.creep.room.controller);
+			
+			if (Game.flags["post_" + this.creep.room.name]) {
+				this.creep.moveTo(Game.flags["post_" + this.creep.room.name].pos);
+			} else {
+				this.creep.moveTo(this.creep.room.controller);
+			}
 		}
 	}
 }

@@ -36,6 +36,7 @@ try {
 	// roomTools.lookAt();
 	// debug.primary("log", room.getEventLog(true));
 	// roomTools.createFlag("barracks", COLOR_BLUE, [{"x":"26","y":"22","roomName":"W6S0"}]);
+	// roomTools.createFlag("post_W7S1", COLOR_ORANGE, [{"x":"22","y":"13","roomName":"W7S1"}]);
 	// roomTools.consoleWall();
 
 	roomTools.consoleEnemies();

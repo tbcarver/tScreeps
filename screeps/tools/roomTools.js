@@ -42,7 +42,7 @@ roomTools.createFlag = function(name, colorConstant, positions) {
 		for (var index in positions) {
 
 			var position = new RoomPosition(positions[index].x, positions[index].y, positions[index].roomName);
-			var result = room.createFlag(position, name, colorConstant);
+			var result = Game.rooms[positions[index].roomName].createFlag(position, name, colorConstant);
 			debug.highlight(`flag created: ${result} ${name} ${colorConstant}`);
 		}
 	}

@@ -134,8 +134,7 @@ constructionTools.destroyStructure = function() {
 
 	var positions =
 
-	
-[{"x":"29","y":"41","roomName":"W7S0"}]
+	[{"x":"33","y":"39","roomName":"W6S0"},{"x":"35","y":"39","roomName":"W6S0"},{"x":"37","y":"39","roomName":"W6S0"},{"x":"39","y":"39","roomName":"W6S0"},{"x":"41","y":"39","roomName":"W6S0"},{"x":"37","y":"22","roomName":"W6S0"},{"x":"37","y":"24","roomName":"W6S0"},{"x":"37","y":"26","roomName":"W6S0"}]
 
 	if (positions.length > 0) {
 

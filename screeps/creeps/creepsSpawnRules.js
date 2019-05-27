@@ -12,7 +12,7 @@ var creepSpawnRules = [
 			{ controllerEnergizer: 10 },
 			{ wallRepairer: 1 },
 		],
-		maxExtensionsPerEnergizer: 3,
+		maxExtensionsPerEnergizer: 4,
 		maxEnergizersPerContainer: 3,
 		canEnergizersHarvest: false,
 		remoteRooms: [
@@ -90,7 +90,7 @@ var creepSpawnRules = [
 			{
 				roomName: "W6S2",
 				spawnOrderMaxSpawnedCounts: [
-					{ remoteSitter: 1 },
+					{ remoteClaimer: 1 },
 					{ rangedDefender: 4 },
 					{ repairer: 2 },
 					{ remoteReserver: 1 },
@@ -123,7 +123,7 @@ var creepSpawnRules = [
 			{
 				roomName: "W6N0",
 				spawnOrderMaxSpawnedCounts: [
-					{ remoteReserver: 0 },
+					{ remoteReserver: 1 },
 				],
 			},
 			{
