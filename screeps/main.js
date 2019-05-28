@@ -29,7 +29,7 @@ try {
 	// console.log(controller.activateSafeMode())
 
 	//  constructionTools.createConstructionRoad();
-	//  constructionTools.createConstructionRamparts();
+	//  constructionTools.createConstructionWalls();
 	//  constructionTools.createConstructionSpawn();
 	// constructionTools.removeConstructionSite();
 	// constructionTools.destroyStructure();

@@ -18,10 +18,24 @@ creepsController.tick = function() {
 
 		if (!creep.spawning) {
 
-			var customCreep = creepsFactory.buildCreep(creep);
+			try {
 
-			// debug.temp(`creep act: type: ${creep.memory.type} ticks: ${creep.ticksToLive}`);
-			customCreep.act();
+				var customCreep = creepsFactory.buildCreep(creep);
+
+				// debug.temp(`creep act: type: ${creep.memory.type} ticks: ${creep.ticksToLive}`);
+				customCreep.act();
+
+			} catch (error) {
+
+				if (error instanceof Error) {
+
+					let sourceMap = require("../sourceMap");
+					sourceMap.logStackTrace(error);
+
+				} else {
+					throw error;
+				}
+			}
 		}
 
 		if (!roomsTotals[creep.memory.spawnedRoomName]) {
@@ -31,7 +45,7 @@ creepsController.tick = function() {
 		roomsTotals[creep.memory.spawnedRoomName]++;
 
 		spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creep.memory.type, creep.memory.spawnedRoomName,
-			 creep.memory.remoteRoomName);
+			creep.memory.remoteRoomName);
 	}
 
 	_.forEach(roomsCurrentSpawnedCounts, (currentSpawnedCounts, roomName) => {

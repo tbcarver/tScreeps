@@ -102,7 +102,21 @@ function trySpawnCreep(room, spawn, creepConstructor, creepsSpawnRule, currentSp
 				creepMemory.remoteRoomName = room.name;
 			}
 
-			var spawnResult = spawnCreep(spawn, creepMemory);
+			try {
+
+				var spawnResult = spawnCreep(spawn, creepMemory);
+
+			} catch (error) {
+
+				if (error instanceof Error) {
+
+					let sourceMap = require("../sourceMap");
+					sourceMap.logStackTrace(error);
+
+				} else {
+					throw error;
+				}
+			}
 
 			if (spawnResult && spawnResult.waitForSpawn) {
 				previousSpawnResult.waitForSpawn = spawnResult.waitForSpawn;

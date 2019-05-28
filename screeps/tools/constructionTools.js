@@ -56,8 +56,8 @@ constructionTools.createConstructionWalls = function() {
 	var positions =
 
 
-	[{"x":"35","y":"48","roomName":"W6N0"},{"x":"35","y":"47","roomName":"W6N0"},{"x":"35","y":"46","roomName":"W6N0"},{"x":"35","y":"45","roomName":"W6N0"},{"x":"35","y":"44","roomName":"W6N0"},{"x":"35","y":"43","roomName":"W6N0"},{"x":"35","y":"42","roomName":"W6N0"},{"x":"35","y":"41","roomName":"W6N0"},{"x":"35","y":"40","roomName":"W6N0"},{"x":"35","y":"39","roomName":"W6N0"},{"x":"35","y":"38","roomName":"W6N0"},{"x":"35","y":"37","roomName":"W6N0"},{"x":"35","y":"36","roomName":"W6N0"},{"x":"35","y":"35","roomName":"W6N0"},{"x":"35","y":"34","roomName":"W6N0"},{"x":"35","y":"33","roomName":"W6N0"},{"x":"35","y":"32","roomName":"W6N0"},{"x":"44","y":"23","roomName":"W6N0"},{"x":"45","y":"23","roomName":"W6N0"},{"x":"46","y":"23","roomName":"W6N0"},{"x":"47","y":"28","roomName":"W6N0"},{"x":"47","y":"27","roomName":"W6N0"},{"x":"47","y":"26","roomName":"W6N0"},{"x":"47","y":"25","roomName":"W6N0"},{"x":"47","y":"24","roomName":"W6N0"},{"x":"47","y":"23","roomName":"W6N0"},{"x":"47","y":"38","roomName":"W6N0"},{"x":"47","y":"39","roomName":"W6N0"},{"x":"47","y":"40","roomName":"W6N0"},{"x":"47","y":"41","roomName":"W6N0"},{"x":"47","y":"42","roomName":"W6N0"},{"x":"47","y":"43","roomName":"W6N0"},{"x":"47","y":"44","roomName":"W6N0"}]
-
+	[{"x":"47","y":"38","roomName":"W6S2"},{"x":"47","y":"39","roomName":"W6S2"},{"x":"47","y":"40","roomName":"W6S2"},{"x":"47","y":"41","roomName":"W6S2"},{"x":"47","y":"42","roomName":"W6S2"},{"x":"47","y":"43","roomName":"W6S2"},{"x":"47","y":"44","roomName":"W6S2"}]
+	
 	this.createConstructionSite(positions, STRUCTURE_WALL);
 }
 
@@ -134,7 +134,7 @@ constructionTools.destroyStructure = function() {
 
 	var positions =
 
-	[{"x":"33","y":"39","roomName":"W6S0"},{"x":"35","y":"39","roomName":"W6S0"},{"x":"37","y":"39","roomName":"W6S0"},{"x":"39","y":"39","roomName":"W6S0"},{"x":"41","y":"39","roomName":"W6S0"},{"x":"37","y":"22","roomName":"W6S0"},{"x":"37","y":"24","roomName":"W6S0"},{"x":"37","y":"26","roomName":"W6S0"}]
+	[{"x":"21","y":"1","roomName":"W6S2"},{"x":"22","y":"1","roomName":"W6S2"},{"x":"20","y":"2","roomName":"W6S2"},{"x":"21","y":"2","roomName":"W6S2"},{"x":"19","y":"3","roomName":"W6S2"},{"x":"20","y":"3","roomName":"W6S2"}]
 
 	if (positions.length > 0) {
 
