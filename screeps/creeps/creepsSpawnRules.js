@@ -1,5 +1,5 @@
 
-var creepSpawnRules = [
+var creepsSpawnRules = [
 	{
 		roomName: "W6S0",
 		spawnOrderMaxSpawnedCounts: [
@@ -9,12 +9,13 @@ var creepSpawnRules = [
 			{ extensionEnergizer: 8 },
 			{ dropContainerHarvester: 4 },
 			{ storageEnergizer: 2 },
-			{ controllerEnergizer: 10 },
+			{ controllerEnergizer: 2 },
 			{ wallRepairer: 1 },
 		],
 		maxExtensionsPerEnergizer: 4,
 		maxEnergizersPerContainer: 3,
 		canEnergizersHarvest: false,
+		temp:false,
 		remoteRooms: [
 			{
 				roomName: "W6S2",
@@ -30,9 +31,16 @@ var creepSpawnRules = [
 				],
 			},
 			{
+				roomName: "W7S2",
+				spawnOrderMaxSpawnedCounts: [
+					{ builder: 4 },
+					{ rangedDefender: 2 },
+				],
+			},
+			{
 				roomName: "W6N0",
 				spawnOrderMaxSpawnedCounts: [
-					{ repairer: 1 },
+					{ repairer: 2 },
 					{ builder: 2 },
 					{ dropContainerHarvester: 2 },
 					{ containerHarvester: 2 },
@@ -46,6 +54,8 @@ var creepSpawnRules = [
 				roomName: "W6S1",
 				spawnOrderMaxSpawnedCounts: [
 					{ remoteStorageEnergizer: 2 },
+					{ remoteSpawnedStorageEnergizer: 0 },
+					{ controllerEnergizer: 0 },
 				],
 				maxExtensionsPerEnergizer: 2,
 				maxEnergizersPerContainer: 3,
@@ -57,7 +67,8 @@ var creepSpawnRules = [
 					{ builder: 4 },
 					{ storageEnergizer: 6 },
 					{ controllerEnergizer: 6 },
-					{ remoteStorageEnergizer: 2 },
+					{ remoteStorageEnergizer: 0 },
+					{ remoteSpawnedStorageEnergizer: 2 },
 				],
 				maxExtensionsPerEnergizer: 2,
 				maxEnergizersPerContainer: 3,
@@ -73,8 +84,8 @@ var creepSpawnRules = [
 			{ spawnEnergizer: 1 },
 			{ extensionEnergizer: 4 },
 			{ dropContainerHarvester: 4 },
-			{ storageEnergizer: 2 },
-			{ controllerEnergizer: 6 },
+			{ storageEnergizer: 4 },
+			{ controllerEnergizer: 2 },
 		],
 		maxExtensionsPerEnergizer: 4,
 		maxEnergizersPerContainer: 3,
@@ -84,8 +95,10 @@ var creepSpawnRules = [
 				roomName: "W7S1",
 				spawnOrderMaxSpawnedCounts: [
 					{ repairer: 1 },
+					{ remoteReserver: 1 },
 					{ builder: 4 },
 					{ rangedDefender: 4 },
+					{ remoteSpawnedStorageEnergizer: 3 },
 				],
 				maxExtensionsPerEnergizer: 2,
 				maxEnergizersPerContainer: 3,
@@ -95,18 +108,28 @@ var creepSpawnRules = [
 			{
 				roomName: "W6S2",
 				spawnOrderMaxSpawnedCounts: [
-					{ rangedDefender: 4 },
-					{ repairer: 2 },
-					{ wallRepairer: 1 },
+					{ repairer: 0 },
 					{ remoteBuilder: 5 },
+					{ builder: 2 },
 					{ dropContainerHarvester: 4 },
-					{ remoteSpawnedStorageEnergizer: 3 },
+					{ storageEnergizer: 2 },
+					{ remoteSpawnedStorageEnergizer: 0 },
+					{ remoteStorageEnergizer: 0 },
 					{ controllerEnergizer: 2 },
 				],
 				maxExtensionsPerEnergizer: 2,
 				maxEnergizersPerContainer: 3,
 				canEnergizersHarvest: true,
-				minDefendersWaiting: 3,
+				minDefendersWaiting: 1,
+			},
+			{
+				roomName: "W7S2",
+				spawnOrderMaxSpawnedCounts: [
+					{ builder: 4 },
+					{ remoteClaimer: 1},
+					{ rangedDefender: 4 },
+				],
+				minDefendersWaiting: 2,
 			},
 		]
 	},
@@ -118,6 +141,7 @@ var creepSpawnRules = [
 			{ spawnEnergizer: 1 },
 			{ extensionEnergizer: 4 },
 			{ dropContainerHarvester: 4 },
+			{ controllerEnergizer: 6 },
 		],
 		maxExtensionsPerEnergizer: 4,
 		maxEnergizersPerContainer: 3,
@@ -126,7 +150,7 @@ var creepSpawnRules = [
 			{
 				roomName: "W6N0",
 				spawnOrderMaxSpawnedCounts: [
-					{ remoteReserver: 1 },
+					{ remoteReserver: 2 },
 				],
 			},
 			{
@@ -144,11 +168,46 @@ var creepSpawnRules = [
 				maxExtensionsPerEnergizer: 2,
 				maxEnergizersPerContainer: 3,
 				canEnergizersHarvest: true,
-				minDefendersWaiting: 2,
+				minDefendersWaiting: 1,
 			},
 		]
+	},
+	{
+		roomName: "W6S2",
+		spawnOrderMaxSpawnedCounts: [
+			{ repairer: 2 },
+			{ builder: 4 },
+			{ spawnEnergizer: 1 },
+			{ extensionEnergizer: 3 },
+			{ storageEnergizer: 0 },
+			{ controllerEnergizer: 0 },
+		],
+		maxExtensionsPerEnergizer: 2,
+		maxEnergizersPerContainer: 3,
+		canEnergizersHarvest: true,
+		minDefendersWaiting: 1,
+		remoteRooms: [
+			{
+				roomName: "W7S2",
+				spawnOrderMaxSpawnedCounts: [
+					{ remoteSitter: 1 },
+					{ remoteReserver: 0 },
+					{ repairer: 2 },
+					{ builder: 0 },
+					{ remoteBuilder: 4 },
+					{ spawnEnergizer: 0 },
+					{ extensionEnergizer: 0 },
+					{ storageEnergizer: 0 },
+					{ controllerEnergizer: 0 },
+				],
+				maxExtensionsPerEnergizer: 2,
+				maxEnergizersPerContainer: 3,
+				canEnergizersHarvest: true,
+				minDefendersWaiting: 1,
+			},
+		],
 	},
 ];
 
 
-module.exports = creepSpawnRules;
+module.exports = creepsSpawnRules;

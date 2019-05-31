@@ -17,14 +17,8 @@ try {
 
 	global.debug = debug;
 
-	for (spawnName in Game.spawns) {
-
-		var spawn = Game.spawns[spawnName];
-
-		var spawnCapacity = spawnTools.calculateSpawnCapacity(spawn);
-		debug.muted(`tick: ${Game.time} ${spawn.room.name} ${spawn.name} energy: ${spawn.room.energyAvailable} capacity ${spawnCapacity} spawning:`,
-			spawn.spawning ? spawn.spawning.remainingTime : "");
-	}
+	var spawnsStats = buildSpawnStats();
+	debug.primary(`tick: ${Game.time}`, spawnsStats);
 
 	// console.log(controller.activateSafeMode())
 
@@ -36,12 +30,11 @@ try {
 	// roomTools.lookAt();
 	// debug.primary("log", room.getEventLog(true));
 	// roomTools.createFlag("barracks", COLOR_BLUE, [{"x":"26","y":"22","roomName":"W6S0"}]);
-	// roomTools.createFlag("post_W7S1", COLOR_ORANGE, [{"x":"22","y":"13","roomName":"W7S1"}]);
+	// roomTools.createFlag("post_W7S2", COLOR_ORANGE, [{"x":"18","y":"18","roomName":"W7S2"}]);
 	// roomTools.consoleWall();
 
 	roomTools.consoleEnemies();
 	visualizeTools.visualizeStructureHealth();
-	// visualizeTools.visualizeFlags();
 	// roomTools.visualizeCreepByType("defender", "blue");
 	// roomTools.visualizeCreepByType("wallRepairer", "cyan");
 
@@ -88,4 +81,27 @@ function initialize() {
 			Memory.state.rooms[roomName].lastRoomEnergyAvailable = 0;
 		}
 	}
+}
+
+function buildSpawnStats() {
+
+	var spawnsStats = {};
+
+	for (spawnName in Game.spawns) {
+
+		var spawn = Game.spawns[spawnName];
+
+		if (!spawnsStats[spawn.room.name]) {
+			spawnsStats[spawn.room.name] = {};
+		}
+
+		if (!spawnsStats[spawn.room.name][spawn.name]) {
+			spawnsStats[spawn.room.name][spawn.name] = {};
+		}
+
+		spawnsStats[spawn.room.name][spawn.name].capacity = spawnTools.calculateSpawnCapacity(spawn);
+		spawnsStats[spawn.room.name][spawn.name].spawning = spawn.spawning ? spawn.spawning.remainingTime : "";
+	}
+
+	return spawnsStats;
 }

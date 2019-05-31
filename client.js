@@ -14,7 +14,6 @@
 			port: 21025,
 		});
 		var result;
-		// const myRoom = "W8N0";
 		// var result = await api.raw.register.submit("mascarenas235720", "mascarenas235720", "1985");
 		// console.log("register: ", result);
 		// result =await api.auth('mascarenas235720', '1985');
@@ -119,13 +118,17 @@
 		// console.log("done")
 
 		// var result = await api.raw.register.submit("carver2", "carver2", "1234");
-		var result = await api.raw.auth.signin("carver230620", "5560");
+		// var result = await api.raw.auth.signin("carver230620", "5560");
 
-		api.token = result.token;
-		result = await api.raw.auth.me();
-		console.log("me: ", result);
-		result = await api.raw.user.rooms(result._id);
-		console.log(result);
+		// api.token = result.token;
+		// result = await api.raw.auth.me();
+		// console.log("me: ", result);
+		// result = await api.raw.user.rooms(result._id);
+		// console.log(result);
+		// // result = await api.raw.user.code.get();
+		// // console.log(result);
+		// result = await api.raw.user.branches();
+		// console.log(result);
 		// result = await api.raw.user.respawn();
 		// console.log(result);
 		// result = await api.raw.auth.me();
@@ -150,6 +153,7 @@
 		// result = await api.raw.user.code.get();
 		// result = await api.raw.leaderboard.seasons();
 
+		const myRoom = "W6S2";
 		// result = await api.raw.user.worldStatus();
 		// console.log("worldStatus: ", result);
 		// result = await api.raw.game.roomOverview(myRoom);
@@ -157,6 +161,9 @@
 		// result = await api.raw.game.roomStatus(myRoom);
 		// console.log("roomStatus: ", result);
 
+		await api.auth('carver230620', '5560');
+		result = await api.raw.game.mapStats(myRoom);
+		console.log("worldStatus: ", result);
 
 	} catch (error) {
 		console.log(error)

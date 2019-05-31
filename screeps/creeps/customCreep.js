@@ -38,7 +38,7 @@ CustomCreep.prototype.act = function() {
 
 	} else if (this.creep.ticksToLive < 25) {
 
-		this.creep.room.visual.circle(this.creep.pos, { radius: .15, stroke: "white", fill: "white", opacity: 1 });
+		this.creep.room.visual.circle(this.creep.pos, { radius: .15, stroke: "red", fill: "red", opacity: 1 });
 
 		var hasCarry = this.creep.body.some(bodyPart => bodyPart.type === "carry");
 
@@ -60,7 +60,7 @@ CustomCreep.prototype.act = function() {
 
 		acted = true;
 
-	} else if (!this.isRemoteCreep && this.remoteRoomName) {
+	} else if (!this.isRemoteCreep) {
 
 		if (this.state === "stepOneIntoRoom") {
 			this.state = "stepTwoIntoRoom";
@@ -83,12 +83,29 @@ CustomCreep.prototype.act = function() {
 				acted = true;
 
 			} else {
-
 				this.moveToExit(this.remoteRoomName);
 				acted = true;
 			}
-		} else if (this.creep.room.name !== this.remoteRoomName) {
+		} else if (this.state === "movingToRoom") {
+
+			if (this.creep.room.name === this.spawnedRoomName) {
+
+				this.state = "stepOneIntoRoom";
+				// NOTE: Creep must step off the exit edge of the room immediately
+				//  or will be sent back to the other room
+				this.moveIntoRoom();
+				acted = true;
+
+			} else {
+				this.moveToExit(this.spawnedRoomName);
+				acted = true;
+			}
+		} else if (this.remoteRoomName && this.creep.room.name !== this.remoteRoomName) {
 			this.state = "movingToRemoteRoom";
+			acted = true;
+			
+		} else if (!this.remoteRoomName && this.creep.room.name !== this.spawnedRoomName) {
+			this.state = "movingToRoom";
 			acted = true;
 		}
 	}
@@ -96,7 +113,7 @@ CustomCreep.prototype.act = function() {
 	return acted;
 }
 
-CustomCreep.prototype.getInitialState = function(){
+CustomCreep.prototype.getInitialState = function() {
 	return "initial";
 }
 
@@ -121,7 +138,7 @@ CustomCreep.prototype.moveToExit = function(exitRoomName) {
 }
 
 CustomCreep.prototype.moveIntoRoom = function() {
-	
+
 	var target = this.creep.pos.findClosestByPath(FIND_STRUCTURES, {
 		filter: { structureType: STRUCTURE_CONTROLLER }
 	});

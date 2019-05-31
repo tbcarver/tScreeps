@@ -38,7 +38,8 @@ visualizeTools.visualizeStructureHealth = function() {
 
 		const targets = room.find(FIND_STRUCTURES, {
 			filter: structure => structure.hits < structure.hitsMax &&
-				structure.structureType !== STRUCTURE_WALL
+				!(structure.structureType === STRUCTURE_WALL ||
+					structure.structureType === STRUCTURE_RAMPART)
 		});
 
 		for (var index in targets) {
@@ -75,7 +76,7 @@ visualizeTools.visualizeDyingCreep = function(creep) {
 
 	for (var index in targets) {
 
-		room.visual.circle(targets[index].pos, { radius: .25, stroke: "white", fill: "white", opacity: 1 });
+		room.visual.circle(targets[index].pos, { radius: .25, stroke: "red", fill: "red", opacity: 1 });
 	}
 }
 
