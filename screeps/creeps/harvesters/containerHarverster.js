@@ -105,6 +105,11 @@ ContainerHarvester.initializeSpawnCreepMemory = function(room, spawn, creepsSpaw
 	var creepMemory
 	var container;
 
+	if (!creepsSpawnRule.maxEnergizersPerContainer) {
+		debug.warning(`maxEnergizersPerContainer not defined using 10`);
+		creepsSpawnRule.maxEnergizersPerContainer = 10;
+	}	
+
 	// Evenly distribute creeps to each container up to the max creeps per container
 	for (var energizersPerContainer = 1; energizersPerContainer <= creepsSpawnRule.maxEnergizersPerContainer; energizersPerContainer++) {
 

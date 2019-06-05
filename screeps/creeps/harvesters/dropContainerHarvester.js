@@ -29,7 +29,7 @@ DropContainerHarvester.prototype.act = function() {
 					var result = this.creep.harvest(resource);
 
 					if (!(result === OK || result === ERR_NOT_ENOUGH_RESOURCES)) {
-	
+
 						debug.danger("dropContainerHarvester harvest failed:", result);
 					}
 				}
@@ -68,27 +68,21 @@ DropContainerHarvester.initializeSpawnCreepMemory = function(room, spawn, creeps
 	var creepMemory
 	var container;
 
-	// Evenly distribute creeps to each container up to the max creeps per container
-	for (var energizersPerContainer = 1; energizersPerContainer <= creepsSpawnRule.maxEnergizersPerContainer; energizersPerContainer++) {
+	var containers = room.find(FIND_STRUCTURES, {
+		filter: structure => structure.structureType == STRUCTURE_CONTAINER &&
+			roomTools.isDropContainer(structure)
+	});
 
-		var containers = room.find(FIND_STRUCTURES, {
-			filter: structure => structure.structureType == STRUCTURE_CONTAINER &&
-				roomTools.isDropContainer(structure)
-		});
+	containers = containers.filter(container => {
 
-		containers = containers.filter(container => {
+		var countEnergizers = countDropContainerHarvestersAtContainerPosition(container.pos.x, container.pos.y);
 
-			var countEnergizers = countDropContainerHarvestersAtContainerPosition(container.pos.x, container.pos.y);
+		return countEnergizers < 1;
+	});
 
-			return countEnergizers < energizersPerContainer;
-		});
+	if (containers.length > 0) {
 
-		if (containers.length > 0) {
-
-			container = containers[0];
-
-			break;
-		}
+		container = containers[0];
 	}
 
 	if (container) {
