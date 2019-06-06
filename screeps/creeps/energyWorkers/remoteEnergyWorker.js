@@ -46,19 +46,14 @@ RemoteEnergyWorker.prototype.spawnedRoomAct = function() {
 
 				} else if (this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
 					// Step away from an energy source to not block it
-					this.state = "stepTwoAway";
+					this.moveToRemoteRoom();
+					this.memory.takeStepsIntoRoom = 2;
 				}
 			}
 		} else {
 
 			// debug.warning(`${this.type} energy not found`);
 		}
-	} else if (this.state === "stepTwoAway") {
-		this.creep.moveTo(this.creep.room.controller);
-		this.state = "stepOneAway";
-	} else if (this.state === "stepOneAway") {
-		this.creep.moveTo(this.creep.room.controller);
-		this.moveToRemoteRoom();
 	}
 }
 

@@ -1,10 +1,15 @@
 
 var creepsSpawnRules = [
 	{
-		roomName: "W2N1",
+		roomName: "W0S2",
 		spawnOrderMaxSpawnedCounts: [
-			{ controllerEnergizer: 6 },
+			{ repairer: 1 },
+			{ builder: 6 },
+			{ spawnEnergizer: 3 },
+			{ dropContainerHarvester: 4 },
+			{ controllerEnergizer: 2 },
 		],
+		waitForMinimumSpawnCapacity: false,
 		maxExtensionsPerEnergizer: 4,
 		maxEnergizersPerContainer: 3,
 		canEnergizersHarvest: true,

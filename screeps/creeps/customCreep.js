@@ -60,23 +60,21 @@ CustomCreep.prototype.act = function() {
 
 		acted = true;
 
+	} else if (this.memory.takeStepsIntoRoom && this.memory.takeStepsIntoRoom > 0) {
+
+		this.moveIntoRoom();
+		this.memory.takeStepsIntoRoom--;
+		acted = true;
+
 	} else if (!this.isRemoteCreep) {
 
-		if (this.state === "stepOneIntoRoom") {
-			this.state = "stepTwoIntoRoom";
-			this.moveIntoRoom();
-			acted = true;
-
-		} else if (this.state === "stepTwoIntoRoom") {
-			this.state = this.getInitialState();
-			this.moveIntoRoom();
-			acted = true;
-
-		} else if (this.state === "movingToRemoteRoom") {
+		if (this.state === "movingToRemoteRoom") {
 
 			if (this.creep.room.name === this.remoteRoomName) {
 
-				this.state = "stepOneIntoRoom";
+				this.state = this.getInitialState();
+				this.memory.takeStepsIntoRoom = 2;
+
 				// NOTE: Creep must step off the exit edge of the room immediately
 				//  or will be sent back to the other room
 				this.moveIntoRoom();
@@ -90,7 +88,9 @@ CustomCreep.prototype.act = function() {
 
 			if (this.creep.room.name === this.spawnedRoomName) {
 
-				this.state = "stepOneIntoRoom";
+				this.state = this.getInitialState();
+				this.memory.takeStepsIntoRoom = 2;
+
 				// NOTE: Creep must step off the exit edge of the room immediately
 				//  or will be sent back to the other room
 				this.moveIntoRoom();
@@ -103,7 +103,7 @@ CustomCreep.prototype.act = function() {
 		} else if (this.remoteRoomName && this.creep.room.name !== this.remoteRoomName) {
 			this.state = "movingToRemoteRoom";
 			acted = true;
-			
+
 		} else if (!this.remoteRoomName && this.creep.room.name !== this.spawnedRoomName) {
 			this.state = "movingToRoom";
 			acted = true;

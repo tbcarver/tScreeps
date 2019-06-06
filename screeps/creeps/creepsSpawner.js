@@ -111,7 +111,7 @@ function trySpawnCreep(room, spawn, creepConstructor, creepsSpawnRule, currentSp
 
 			try {
 
-				var spawnResult = spawnCreep(spawn, creepMemory);
+				var spawnResult = spawnCreep(spawn, creepMemory, creepsSpawnRule);
 
 			} catch (error) {
 
@@ -138,7 +138,7 @@ function trySpawnCreep(room, spawn, creepConstructor, creepsSpawnRule, currentSp
 	return previousSpawnResult;
 }
 
-function spawnCreep(spawn, creepMemory) {
+function spawnCreep(spawn, creepMemory, creepsSpawnRule) {
 
 	var spawnResult = {
 		waitForSpawn: false,
@@ -147,7 +147,8 @@ function spawnCreep(spawn, creepMemory) {
 
 	var spawnCapacity = spawnTools.calculateSpawnCapacity(spawn);
 
-	if (creepMemory.minimumSpawnCapacity && spawnCapacity < creepMemory.minimumSpawnCapacity) {
+	if ((creepsSpawnRule.waitForMinimumSpawnCapacity === "undefined" || creepsSpawnRule.waitForMinimumSpawnCapacity) &&
+		creepMemory.minimumSpawnCapacity && spawnCapacity < creepMemory.minimumSpawnCapacity) {
 
 		spawnResult.waitForSpawn = true;
 
