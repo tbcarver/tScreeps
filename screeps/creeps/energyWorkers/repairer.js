@@ -1,19 +1,19 @@
 
-var EnergyWorker = require("./energyWorker");
+var EnergyCreep = require("../baseCreeps/energyCreep");
 
 function Repairer(creep) {
 
-	EnergyWorker.call(this, creep);
+	EnergyCreep.call(this, creep);
 }
 
-Repairer.prototype = Object.create(EnergyWorker.prototype);
+Repairer.prototype = Object.create(EnergyCreep.prototype);
 
 Repairer.prototype.act = function() {
 
-	EnergyWorker.prototype.act.call(this);
+	EnergyCreep.prototype.act.call(this);
 }
 
-Repairer.prototype.work = function() {
+Repairer.prototype.energyAct = function() {
 
 	const target = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 		filter: structure => structure.hits < structure.hitsMax &&

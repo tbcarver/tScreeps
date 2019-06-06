@@ -1,21 +1,21 @@
 
-var Energizer = require("./energizer");
+var EnergyCreep = require("../baseCreeps/energyCreep");
 
 function SpawnEnergizer(creep) {
 
-	Energizer.call(this, creep);
+	EnergyCreep.call(this, creep);
 
 	this.canHarvest = true;
 }
 
-SpawnEnergizer.prototype = Object.create(Energizer.prototype);
+SpawnEnergizer.prototype = Object.create(EnergyCreep.prototype);
 
 SpawnEnergizer.prototype.act = function() {
 
-	Energizer.prototype.act.call(this);
+	EnergyCreep.prototype.act.call(this);
 }
 
-SpawnEnergizer.prototype.energize = function() {
+SpawnEnergizer.prototype.energyAct = function() {
 
 	var targetStructure = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 		filter: structure => structure.structureType === STRUCTURE_TOWER &&

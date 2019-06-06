@@ -1,19 +1,19 @@
 
-var EnergyWorker = require("./energyWorker");
+var EnergyCreep = require("../baseCreeps/energyCreep");
 
 function WallRepairer(creep) {
 
-	EnergyWorker.call(this, creep);
+	EnergyCreep.call(this, creep);
 }
 
-WallRepairer.prototype = Object.create(EnergyWorker.prototype);
+WallRepairer.prototype = Object.create(EnergyCreep.prototype);
 
 WallRepairer.prototype.act = function() {
 
-	EnergyWorker.prototype.act.call(this);
+	EnergyCreep.prototype.act.call(this);
 }
 
-WallRepairer.prototype.work = function() {
+WallRepairer.prototype.energyAct = function() {
 
 	var target;
 

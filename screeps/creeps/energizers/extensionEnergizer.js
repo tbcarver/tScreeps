@@ -1,20 +1,20 @@
 
-var Energizer = require("./energizer");
+var EnergyCreep = require("../baseCreeps/energyCreep");
 var coreArray = require("../../../lib/core/extensions/coreArray");
 
 function ExtensionEnergizer(creep) {
 
-	Energizer.call(this, creep);
+	EnergyCreep.call(this, creep);
 }
 
-ExtensionEnergizer.prototype = Object.create(Energizer.prototype);
+ExtensionEnergizer.prototype = Object.create(EnergyCreep.prototype);
 
 ExtensionEnergizer.prototype.act = function() {
 
-	Energizer.prototype.act.call(this);
+	EnergyCreep.prototype.act.call(this);
 }
 
-ExtensionEnergizer.prototype.energize = function() {
+ExtensionEnergizer.prototype.energyAct = function() {
 
 	var extension = Game.getObjectById(this.memory.extensions[this.memory.activeExtensionIndex].id);
 

@@ -1,19 +1,19 @@
 
-var Energizer = require("./energizer");
+var EnergyCreep = require("../baseCreeps/energyCreep");
 
 function ControllerEnergizer(creep) {
 
-	Energizer.call(this, creep);
+	EnergyCreep.call(this, creep);
 }
 
-ControllerEnergizer.prototype = Object.create(Energizer.prototype);
+ControllerEnergizer.prototype = Object.create(EnergyCreep.prototype);
 
 ControllerEnergizer.prototype.act = function() {
 
-	Energizer.prototype.act.call(this);
+	EnergyCreep.prototype.act.call(this);
 }
 
-ControllerEnergizer.prototype.energize = function() {
+ControllerEnergizer.prototype.energyAct = function() {
 
 	var transferResult = this.creep.upgradeController(this.creep.room.controller);
 

@@ -1,20 +1,20 @@
 
 
-var EnergyWorker = require("./energyWorker");
+var EnergyCreep = require("../baseCreeps/energyCreep");
 
 function Builder(creep) {
 
-	EnergyWorker.call(this, creep);
+	EnergyCreep.call(this, creep);
 }
 
-Builder.prototype = Object.create(EnergyWorker.prototype);
+Builder.prototype = Object.create(EnergyCreep.prototype);
 
 Builder.prototype.act = function() {
 
-	EnergyWorker.prototype.act.call(this);
+	EnergyCreep.prototype.act.call(this);
 }
 
-Builder.prototype.work = function() {
+Builder.prototype.energyAct = function() {
 
 	const target = this.creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
 

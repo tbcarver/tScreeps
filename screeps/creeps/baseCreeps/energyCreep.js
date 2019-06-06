@@ -1,8 +1,8 @@
 
-var BaseCreep = require("../baseCreeps/baseCreep");
+var BaseCreep = require("./baseCreep");
 var findTools = require("../../tools/findTools");
 
-function Energizer(creep) {
+function energyCreep(creep) {
 
 	BaseCreep.call(this, creep);
 
@@ -13,9 +13,9 @@ function Energizer(creep) {
 	}
 }
 
-Energizer.prototype = Object.create(BaseCreep.prototype);
+energyCreep.prototype = Object.create(BaseCreep.prototype);
 
-Energizer.prototype.act = function() {
+energyCreep.prototype.act = function() {
 
 	if (!BaseCreep.prototype.act.call(this)) {
 
@@ -51,23 +51,25 @@ Energizer.prototype.act = function() {
 			}
 		}
 
-		if (this.state === "energizing" || this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
+		if (this.state === "energyActing" || this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
 
-			if (this.state !== "energizing") {
-				this.state = "energizing";
+			if (this.state !== "energyActing") {				
+				this.state = "energyActing";
+				this.memory.takeStepsIntoRoom = 2;
+
+			} else {
+				this.energyAct();
 			}
-
-			this.energize();
 		}
 	}
 }
 
-Energizer.prototype.energize = function() {
+energyCreep.prototype.energyAct = function() {
 }
 
-Energizer.prototype.getInitialState = function() {
+energyCreep.prototype.getInitialState = function() {
 	return "harvesting";
 }
 
 
-module.exports = Energizer
+module.exports = energyCreep
