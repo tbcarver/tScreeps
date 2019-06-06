@@ -1,5 +1,5 @@
 
-var RemoteCreep = require("../remoteCreep");
+var RemoteCreep = require("../baseCreeps/remoteCreep");
 var findTools = require("../../tools/findTools");
 
 function RemoteEnergyWorker(creep) {

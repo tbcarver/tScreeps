@@ -1,5 +1,5 @@
 
-var RemoteCreep = require("../remoteCreep");
+var RemoteCreep = require("../baseCreeps/remoteCreep");
 var roomTools = require("../../tools/roomTools");
 
 function RemoteSpawnedStorageEnergizer(creep) {

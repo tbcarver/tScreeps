@@ -1,5 +1,5 @@
 
-var CustomCreep = require("../customCreep");
+var CustomCreep = require("../baseCreeps/customCreep");
 var findTools = require("../../tools/findTools");
 
 function Energizer(creep) {

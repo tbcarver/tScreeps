@@ -1,5 +1,5 @@
 
-var CustomCreep = require("../customCreep");
+var CustomCreep = require("../baseCreeps/customCreep");
 var roomTools = require("../../tools/findTools");
 var roomTools = require("../../tools/roomTools");
 

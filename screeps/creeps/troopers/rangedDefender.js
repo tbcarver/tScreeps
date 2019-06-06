@@ -1,5 +1,5 @@
 
-var CustomCreep = require("../customCreep");
+var CustomCreep = require("../baseCreeps/customCreep");
 
 function RangedDefender(creep) {
 
