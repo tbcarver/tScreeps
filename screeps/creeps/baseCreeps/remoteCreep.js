@@ -1,18 +1,18 @@
 
-var CustomCreep = require("./baseCreep");
+var BaseCreep = require("./baseCreep");
 
 function RemoteCreep(creep) {
 
-	CustomCreep.call(this, creep);
+	BaseCreep.call(this, creep);
 
 	this.isRemoteCreep = true;
 }
 
-RemoteCreep.prototype = Object.create(CustomCreep.prototype);
+RemoteCreep.prototype = Object.create(BaseCreep.prototype);
 
 RemoteCreep.prototype.act = function() {
 
-	if (!CustomCreep.prototype.act.call(this)) {
+	if (!BaseCreep.prototype.act.call(this)) {
 
 		if (!this.state) {
 			this.state = "movingToRemoteRoom";

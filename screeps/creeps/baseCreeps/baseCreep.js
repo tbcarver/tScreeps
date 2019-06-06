@@ -1,6 +1,6 @@
 
 
-function CustomCreep(creep) {
+function BaseCreep(creep) {
 
 	this.creep = creep;
 	this.memory = creep.memory;
@@ -19,7 +19,7 @@ function CustomCreep(creep) {
 	});
 }
 
-CustomCreep.prototype.act = function() {
+BaseCreep.prototype.act = function() {
 
 	var acted = false;
 
@@ -113,11 +113,11 @@ CustomCreep.prototype.act = function() {
 	return acted;
 }
 
-CustomCreep.prototype.getInitialState = function() {
+BaseCreep.prototype.getInitialState = function() {
 	return "initial";
 }
 
-CustomCreep.prototype.moveToExit = function(exitRoomName) {
+BaseCreep.prototype.moveToExit = function(exitRoomName) {
 
 	var exitDirection = this.creep.room.findExitTo(exitRoomName);
 
@@ -137,7 +137,7 @@ CustomCreep.prototype.moveToExit = function(exitRoomName) {
 	}
 }
 
-CustomCreep.prototype.moveIntoRoom = function() {
+BaseCreep.prototype.moveIntoRoom = function() {
 
 	var target = this.creep.pos.findClosestByPath(FIND_STRUCTURES, {
 		filter: { structureType: STRUCTURE_CONTROLLER }
@@ -158,7 +158,7 @@ CustomCreep.prototype.moveIntoRoom = function() {
 	}
 }
 
-CustomCreep.prototype.transferEnergy = function() {
+BaseCreep.prototype.transferEnergy = function() {
 
 	var target = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 		filter: structure => structure.structureType == STRUCTURE_STORAGE &&
@@ -183,4 +183,4 @@ CustomCreep.prototype.transferEnergy = function() {
 }
 
 
-module.exports = CustomCreep
+module.exports = BaseCreep

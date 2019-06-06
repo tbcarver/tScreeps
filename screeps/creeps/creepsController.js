@@ -20,10 +20,10 @@ creepsController.tick = function() {
 
 			try {
 
-				var customCreep = creepsFactory.buildCreep(creep);
+				var baseCreep = creepsFactory.buildCreep(creep);
 
 				// debug.temp(`creep act: type: ${creep.memory.type} ticks: ${creep.ticksToLive}`);
-				customCreep.act();
+				baseCreep.act();
 
 			} catch (error) {
 

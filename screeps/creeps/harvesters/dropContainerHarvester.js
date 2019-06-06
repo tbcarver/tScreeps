@@ -1,17 +1,17 @@
 
-var CustomCreep = require("../baseCreeps/baseCreep");
+var BaseCreep = require("../baseCreeps/baseCreep");
 var roomTools = require("../../tools/roomTools");
 
 function DropContainerHarvester(creep) {
 
-	CustomCreep.call(this, creep);
+	BaseCreep.call(this, creep);
 }
 
-DropContainerHarvester.prototype = Object.create(CustomCreep.prototype);
+DropContainerHarvester.prototype = Object.create(BaseCreep.prototype);
 
 DropContainerHarvester.prototype.act = function() {
 
-	if (!CustomCreep.prototype.act.call(this)) {
+	if (!BaseCreep.prototype.act.call(this)) {
 
 		if (this.state === "arrivedAtRemoteRoom") {
 			this.state = "moving";

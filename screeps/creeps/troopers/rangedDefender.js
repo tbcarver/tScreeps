@@ -1,16 +1,16 @@
 
-var CustomCreep = require("../baseCreeps/baseCreep");
+var BaseCreep = require("../baseCreeps/baseCreep");
 
 function RangedDefender(creep) {
 
-	CustomCreep.call(this, creep);
+	BaseCreep.call(this, creep);
 }
 
-RangedDefender.prototype = Object.create(CustomCreep.prototype);
+RangedDefender.prototype = Object.create(BaseCreep.prototype);
 
 RangedDefender.prototype.act = function() {
 
-	if (!CustomCreep.prototype.act.call(this)) {
+	if (!BaseCreep.prototype.act.call(this)) {
 
 		target = this.creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
 

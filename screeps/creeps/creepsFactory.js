@@ -8,7 +8,7 @@ creepsFactory.buildCreep = function(creep) {
 	if (creep.memory.type && creepsConstructors[creep.memory.type]) {
 
 		var constructor = creepsConstructors[creep.memory.type];
-		var customCreep = new constructor(creep);
+		var baseCreep = new constructor(creep);
 	
 		// if (creep.memory.type === "builder") {
 		// 	if (creep.room.name === "W7S2") {
@@ -23,7 +23,7 @@ creepsFactory.buildCreep = function(creep) {
 		debug.error("Creep constructor not found for creep type: " + creep.memory.type);
 	}
 
-	return customCreep;
+	return baseCreep;
 }
 
 

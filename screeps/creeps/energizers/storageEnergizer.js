@@ -1,17 +1,17 @@
 
-var CustomCreep = require("../baseCreeps/baseCreep");
+var BaseCreep = require("../baseCreeps/baseCreep");
 var roomTools = require("../../tools/roomTools");
 
 function StorageEnergizer(creep) {
 
-	CustomCreep.call(this, creep);
+	BaseCreep.call(this, creep);
 }
 
-StorageEnergizer.prototype = Object.create(CustomCreep.prototype);
+StorageEnergizer.prototype = Object.create(BaseCreep.prototype);
 
 StorageEnergizer.prototype.act = function() {
 
-	if (!CustomCreep.prototype.act.call(this)) {
+	if (!BaseCreep.prototype.act.call(this)) {
 
 		if (this.state === "harvesting" || this.creep.carry[RESOURCE_ENERGY] === 0) {
 

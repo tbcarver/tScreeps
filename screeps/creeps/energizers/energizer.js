@@ -1,10 +1,10 @@
 
-var CustomCreep = require("../baseCreeps/baseCreep");
+var BaseCreep = require("../baseCreeps/baseCreep");
 var findTools = require("../../tools/findTools");
 
 function Energizer(creep) {
 
-	CustomCreep.call(this, creep);
+	BaseCreep.call(this, creep);
 
 	this.canHarvest = true;
 
@@ -13,11 +13,11 @@ function Energizer(creep) {
 	}
 }
 
-Energizer.prototype = Object.create(CustomCreep.prototype);
+Energizer.prototype = Object.create(BaseCreep.prototype);
 
 Energizer.prototype.act = function() {
 
-	if (!CustomCreep.prototype.act.call(this)) {
+	if (!BaseCreep.prototype.act.call(this)) {
 
 		if (this.state === "harvesting" || this.creep.carry[RESOURCE_ENERGY] === 0) {
 

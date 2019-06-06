@@ -1,17 +1,17 @@
 
-var CustomCreep = require("../baseCreeps/customCreep");
+var BaseCreep = require("../baseCreeps/baseCreep");
 var findTools = require("../../tools/findTools");
 
 function EnergyWorker(creep) {
 
-	CustomCreep.call(this, creep);
+	BaseCreep.call(this, creep);
 }
 
-EnergyWorker.prototype = Object.create(CustomCreep.prototype);
+EnergyWorker.prototype = Object.create(BaseCreep.prototype);
 
 EnergyWorker.prototype.act = function() {
 
-	if (!CustomCreep.prototype.act.call(this)) {
+	if (!BaseCreep.prototype.act.call(this)) {
 
 		if (this.state === "harvesting" || this.creep.carry[RESOURCE_ENERGY] === 0) {
 
