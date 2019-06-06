@@ -1,5 +1,5 @@
 
-var CustomCreep = require("../baseCreeps/customCreep");
+var CustomCreep = require("../baseCreeps/baseCreep");
 var roomTools = require("../../tools/roomTools");
 
 function DropContainerHarvester(creep) {
