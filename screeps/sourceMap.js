@@ -3,6 +3,9 @@
 var rawSourceMap = require('main.js.map');
 var { SourceMapConsumer } = require('source-map');
 
+// NOTE: Keep in global scope because of high CPU usage.
+const consumer = new SourceMapConsumer(rawSourceMap);	
+
 var sourceMap = {};
 
 sourceMap.logStackTrace = function(error) {
@@ -19,8 +22,6 @@ sourceMap.logStackTrace = function(error) {
 }
 
 function getSourceMapStackTrace(error) {
-
-	const consumer = new SourceMapConsumer(rawSourceMap); // High CPU usage!	
 	const originalStackTrace = error instanceof Error ? error.stack : error;
 
 	const re = /^\s+at\s+(.+?\s+)?\(?([0-z._\-\\\/]+):(\d+):(\d+)\)?$/gm;
