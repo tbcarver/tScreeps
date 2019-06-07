@@ -34,8 +34,7 @@ RemoteSpawnedHarvester.prototype.spawnedRoomAct = function() {
 		var container = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 			filter: container => (container.structureType === STRUCTURE_CONTAINER ||
 				container.structureType === STRUCTURE_STORAGE) &&
-				container.store[RESOURCE_ENERGY] / container.storeCapacity < .80 &&
-				!roomTools.isDropContainer(container)
+				container.store[RESOURCE_ENERGY] / container.storeCapacity < .80
 		});
 
 		if (this.creep.transfer(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {

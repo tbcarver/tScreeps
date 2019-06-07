@@ -14,16 +14,36 @@ ControllerEnergizer.prototype.act = function() {
 }
 
 ControllerEnergizer.prototype.energyAct = function() {
+	
+	var acted = false;
 
-	var transferResult = this.creep.upgradeController(this.creep.room.controller);
+	if (this.creep.memory.canBuild) {
 
-	if (transferResult == ERR_NOT_IN_RANGE) {
+		const target = this.creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
 
-		this.creep.moveTo(this.creep.room.controller);
+		if (target) {
 
-	} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+			if (this.creep.build(target) == ERR_NOT_IN_RANGE) {
 
-		this.state = "harvesting";
+				this.creep.moveTo(target);
+			}
+
+			acted = true;
+		}
+	}
+
+	if (!acted) {
+
+		var transferResult = this.creep.upgradeController(this.creep.room.controller);
+
+		if (transferResult == ERR_NOT_IN_RANGE) {
+
+			this.creep.moveTo(this.creep.room.controller);
+
+		} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+
+			this.state = "harvesting";
+		}
 	}
 }
 
@@ -33,7 +53,8 @@ ControllerEnergizer.initializeSpawnCreepMemory = function(room, spawn, creepsSpa
 		type: "controllerEnergizer",
 		bodyPartsType: "energizer",
 		maximumSpawnCapacity: 600,
-		canHarvest: creepsSpawnRule.canEnergizersHarvest,
+		canHarvest: creepsSpawnRule.canEnergyCreepsHarvest,
+		canBuild: creepsSpawnRule.canControllerEnergizersBuild,
 	}
 
 	return creepMemory;

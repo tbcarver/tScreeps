@@ -1,5 +1,6 @@
 
 var debug = require("../lib/coreVendor/coreScreeps/debug");
+var debugPairsTable = require("../lib/coreVendor/coreScreeps/debugPairsTable");
 var test = require("./tools/testTools");
 var constructionTools = require("./tools/constructionTools");
 var roomTools = require("./tools/roomTools");
@@ -7,6 +8,10 @@ var spawnTools = require("./tools/spawnTools");
 var visualizeTools = require("./tools/visualizeTools");
 var creepsController = require("./creeps/creepsController");
 var towersController = require("./structures/towersController");
+
+global.debug = debug;
+global.debugPairsTable = debugPairsTable;
+
 // TODO: Test and fix spawn chance.
 //  Defenders are taking so long every one else dies during an attack.
 function loop() {
@@ -15,10 +20,8 @@ function loop() {
 
 		initialize();
 
-		global.debug = debug;
-
 		var spawnsStats = buildSpawnStats();
-		debug.primary(`tick: ${Game.time}`, spawnsStats);
+		debugPairsTable.primary(spawnsStats);
 
 		// console.log(controller.activateSafeMode())
 
@@ -88,20 +91,24 @@ function buildSpawnStats() {
 
 	var spawnsStats = {};
 
+	spawnsStats[Game.time] = "";
+
 	for (spawnName in Game.spawns) {
 
 		var spawn = Game.spawns[spawnName];
+		var spawnName = spawn.room.name + ":" + spawnName;
 
-		if (!spawnsStats[spawn.room.name]) {
-			spawnsStats[spawn.room.name] = {};
+		if (!spawnsStats[spawnName]) {
+			spawnsStats[spawnName] = {};
 		}
 
-		if (!spawnsStats[spawn.room.name][spawn.name]) {
-			spawnsStats[spawn.room.name][spawn.name] = {};
-		}
+		var spawnCapacity = spawnTools.calculateSpawnCapacity(spawn);
+		var remainingTime = spawn.spawning ? spawn.spawning.remainingTime : "";
 
-		spawnsStats[spawn.room.name][spawn.name].capacity = spawnTools.calculateSpawnCapacity(spawn);
-		spawnsStats[spawn.room.name][spawn.name].spawning = spawn.spawning ? spawn.spawning.remainingTime : "";
+		spawnsStats[spawnName] = spawn.room.energyAvailable + "/" + spawnCapacity + ":" + remainingTime;
+
+		// debug.muted(`tick: ${Game.time} ${spawn.room.name} ${spawn.name} energy: ${spawn.room.energyAvailable} capacity ${spawnCapacity} spawning:`,
+		// 	spawn.spawning ? spawn.spawning.remainingTime : "");
 	}
 
 	return spawnsStats;

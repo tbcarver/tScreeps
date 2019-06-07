@@ -28,7 +28,7 @@ energyCreep.prototype.act = function() {
 			if (this.canHarvest) {
 				var resource = findTools.findClosestEnergy(this.creep.pos);
 			} else {
-				var resource = findTools.findClosestStoredEnergy(this.creep.pos);
+				var resource = findTools.findClosestDroppedOrStoredEnergy(this.creep.pos);
 			}
 
 			if (resource) {
@@ -39,6 +39,11 @@ energyCreep.prototype.act = function() {
 						this.creep.moveTo(resource);
 					}
 
+				} else if (resource.resourceType) {
+
+					if (this.creep.pickup(resource) == ERR_NOT_IN_RANGE) {
+						this.creep.moveTo(resource);
+					}
 				} else {
 
 					if (this.creep.harvest(resource) == ERR_NOT_IN_RANGE) {

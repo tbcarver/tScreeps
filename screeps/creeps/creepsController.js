@@ -48,12 +48,22 @@ creepsController.tick = function() {
 			creep.memory.remoteRoomName);
 	}
 
-	_.forEach(roomsCurrentSpawnedCounts, (currentSpawnedCounts, roomName) => {
-
-		debug.muted(`${roomName} creeps: ${roomsTotals[roomName]}`, currentSpawnedCounts);
-	});
-
 	creepsSpawner.spawnCreep(roomsCurrentSpawnedCounts);
+
+	// _.forEach(roomsCurrentSpawnedCounts, (currentSpawnedCounts, roomName) => {
+
+	// 	if (currentSpawnedCounts.remoteRooms) {
+
+	// 		for (var remoteRoom of currentSpawnedCounts.remoteRooms) {
+
+	// 			_.mergeWith(currentSpawnedCounts, remoteRoom, () =>{
+					
+	// 			})
+	// 		}
+	// 	}
+
+	// 	debug.muted(`${roomName} creeps: ${roomsTotals[roomName]}`, currentSpawnedCounts);
+	// });
 }
 
 function cleanUpTheDead() {

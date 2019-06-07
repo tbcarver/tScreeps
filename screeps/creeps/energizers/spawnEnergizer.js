@@ -4,8 +4,6 @@ var EnergyCreep = require("../baseCreeps/energyCreep");
 function SpawnEnergizer(creep) {
 
 	EnergyCreep.call(this, creep);
-
-	this.canHarvest = true;
 }
 
 SpawnEnergizer.prototype = Object.create(EnergyCreep.prototype);
@@ -52,7 +50,7 @@ SpawnEnergizer.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRul
 		type: "spawnEnergizer",
 		bodyPartsType: "energizer",
 		maximumSpawnCapacity: 450,
-		canHarvest: creepsSpawnRule.canEnergizersHarvest,
+		canHarvest: creepsSpawnRule.canEnergyCreepsHarvest,
 	}
 
 	return creepMemory;
