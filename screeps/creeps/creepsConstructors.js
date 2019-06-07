@@ -11,6 +11,7 @@ var RemoteClaimer = require("./troopers/remoteClaimer");
 var RemoteReserver = require("./troopers/remoteReserver");
 var RemoteSitter = require("./troopers/remoteSitter");
 var RemoteSpawnedHarvester = require("./harvesters/remoteSpawnedHarvester");
+var RemoteSpawnedPickupEnergizer = require("./energizers/remoteSpawnedPickupEnergizer");
 var RemoteSpawnedStorageEnergizer = require("./energizers/remoteSpawnedStorageEnergizer");
 var RemoteStorageEnergizer = require("./energizers/remoteStorageEnergizer");
 var Repairer = require("./energyWorkers/repairer");
@@ -31,6 +32,7 @@ var creepConstructors = {
 	remoteReserver: RemoteReserver,
 	remoteSitter: RemoteSitter,
 	remoteSpawnedHarvester: RemoteSpawnedHarvester,
+	remoteSpawnedPickupEnergizer: RemoteSpawnedPickupEnergizer,
 	remoteSpawnedStorageEnergizer: RemoteSpawnedStorageEnergizer,
 	remoteStorageEnergizer: RemoteStorageEnergizer,
 	repairer: Repairer,

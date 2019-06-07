@@ -2,6 +2,7 @@
 var spawnTools = require("../tools/spawnTools");
 var creepsFactory = require("./creepsFactory");
 var creepsSpawner = require("./creepsSpawner");
+var mergeWith = require("lodash/mergeWith");
 
 var creepsController = {};
 
@@ -10,6 +11,7 @@ creepsController.tick = function() {
 	cleanUpTheDead();
 
 	var roomsCurrentSpawnedCounts = {};
+	var displayRoomsCurrentSpawnedCounts = {};
 	var roomsTotals = {};
 
 	for (var index in Game.creeps) {
@@ -46,24 +48,17 @@ creepsController.tick = function() {
 
 		spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creep.memory.type, creep.memory.spawnedRoomName,
 			creep.memory.remoteRoomName);
+
+		if (creep.memory.remoteRoomName) {
+			spawnTools.incrementSpawnedCount(displayRoomsCurrentSpawnedCounts, creep.memory.type, creep.memory.remoteRoomName);
+		} else {
+			spawnTools.incrementSpawnedCount(displayRoomsCurrentSpawnedCounts, creep.memory.type, creep.memory.spawnedRoomName);
+		}
 	}
 
 	creepsSpawner.spawnCreep(roomsCurrentSpawnedCounts);
-
-	// _.forEach(roomsCurrentSpawnedCounts, (currentSpawnedCounts, roomName) => {
-
-	// 	if (currentSpawnedCounts.remoteRooms) {
-
-	// 		for (var remoteRoom of currentSpawnedCounts.remoteRooms) {
-
-	// 			_.mergeWith(currentSpawnedCounts, remoteRoom, () =>{
-					
-	// 			})
-	// 		}
-	// 	}
-
-	// 	debug.muted(`${roomName} creeps: ${roomsTotals[roomName]}`, currentSpawnedCounts);
-	// });
+	// debug.muted(`${roomName} creeps: ${roomsTotals[roomName]}`, displayRoomsCurrentSpawnedCounts);
+	debugObjectTable.muted(displayRoomsCurrentSpawnedCounts);
 }
 
 function cleanUpTheDead() {

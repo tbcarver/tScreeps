@@ -69,6 +69,36 @@ findTools.findClosestDroppedOrStoredEnergy = function(pos) {
 }
 
 // NOTE: Order is important.
+findTools.findClosestStoredEnergy = function(pos) {
+
+	var energy = pos.findClosestByRange(FIND_STRUCTURES, {
+		filter: structure => (structure.structureType === STRUCTURE_CONTAINER ||
+			structure.structureType === STRUCTURE_STORAGE) &&
+			structure.store[RESOURCE_ENERGY] > 100 && this.isInRange(pos, structure.pos, 10)
+	});
+
+	if (!energy) {
+
+		energy = pos.findClosestByRange(FIND_STRUCTURES, {
+			filter: structure => (structure.structureType === STRUCTURE_CONTAINER ||
+				structure.structureType === STRUCTURE_STORAGE) &&
+				structure.store[RESOURCE_ENERGY] > 100 && this.isInRange(pos, structure.pos, 20)
+		});
+	}
+
+	if (!energy) {
+
+		energy = pos.findClosestByRange(FIND_STRUCTURES, {
+			filter: structure => (structure.structureType === STRUCTURE_CONTAINER ||
+				structure.structureType === STRUCTURE_STORAGE) &&
+				structure.store[RESOURCE_ENERGY] > 200
+		});
+	}
+
+	return energy;
+}
+
+// NOTE: Order is important.
 findTools.findClosestEnergy = function(pos) {
 
 	var energy = pos.findClosestByPath(FIND_DROPPED_RESOURCES, {

@@ -53,9 +53,10 @@ ControllerEnergizer.initializeSpawnCreepMemory = function(room, spawn, creepsSpa
 		type: "controllerEnergizer",
 		bodyPartsType: "energizer",
 		maximumSpawnCapacity: 600,
-		canHarvest: creepsSpawnRule.canEnergyCreepsHarvest,
 		canBuild: creepsSpawnRule.canControllerEnergizersBuild,
 	}
+
+	creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, room, spawn, creepsSpawnRule);
 
 	return creepMemory;
 }

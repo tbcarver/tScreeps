@@ -75,13 +75,14 @@ ExtensionEnergizer.initializeSpawnCreepMemory = function(room, spawn, creepsSpaw
 			type: "extensionEnergizer",
 			bodyPartsType: "energizer",
 			maximumSpawnCapacity: 450,
-			canHarvest: creepsSpawnRule.canEnergyCreepsHarvest,
 			extensions: [{
 				id: "",
 				pos: {}
 			}],
 			activeExtensionIndex: 0
 		};
+
+		creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, room, spawn, creepsSpawnRule);
 
 		var nextExtension = spawn.pos.findClosestByRange(FIND_STRUCTURES, {
 			filter: nextStructure => nextStructure.structureType == STRUCTURE_EXTENSION &&

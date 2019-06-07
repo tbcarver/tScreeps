@@ -39,7 +39,7 @@ WallRepairer.prototype.energyAct = function() {
 	}
 }
 
-WallRepairer.initializeSpawnCreepMemory = function(room) {
+WallRepairer.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule) {
 
 	var creepMemory;
 
@@ -57,6 +57,8 @@ WallRepairer.initializeSpawnCreepMemory = function(room) {
 				bodyPartsType: "moveCarryWork",
 				maximumSpawnCapacity: 850,
 			}
+
+			creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, creepMemory, room, spawn, creepsSpawnRule);
 		}
 	}
 

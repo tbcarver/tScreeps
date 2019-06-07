@@ -17,6 +17,16 @@ function BaseCreep(creep) {
 			this.memory.state = state
 		}
 	});
+
+	this.canHarvest = false;
+	if (typeof creep.memory.canHarvest !== "undefined") {
+		this.canHarvest = creep.memory.canHarvest;
+	}
+
+	this.canPickup = false;
+	if (typeof creep.memory.canPickup !== "undefined") {
+		this.canPickup = creep.memory.canPickup;
+	}
 }
 
 BaseCreep.prototype.act = function() {
@@ -25,12 +35,15 @@ BaseCreep.prototype.act = function() {
 
 	if (this.state === "suicide") {
 
+		this.creep.say("😡 .|.");
+
 		if (this.creep.carry && this.creep.carry.energy > 0) {
 
 			this.transferEnergy();
 
 		} else {
 
+			this.creep.say("I hate you .|.");
 			this.creep.suicide();
 		}
 
@@ -43,6 +56,8 @@ BaseCreep.prototype.act = function() {
 		var hasCarry = this.creep.body.some(bodyPart => bodyPart.type === "carry");
 
 		if (this.creep.carry[RESOURCE_ENERGY] === 0 || !hasCarry) {
+			
+			this.creep.say("😡");
 
 			if (Game.flags["graveyard"]) {
 
@@ -55,6 +70,7 @@ BaseCreep.prototype.act = function() {
 
 		} else {
 
+			this.creep.say("😰");
 			this.transferEnergy();
 		}
 

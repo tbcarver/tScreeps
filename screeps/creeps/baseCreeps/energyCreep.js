@@ -2,20 +2,14 @@
 var BaseCreep = require("./baseCreep");
 var findTools = require("../../tools/findTools");
 
-function energyCreep(creep) {
+function EnergyCreep(creep) {
 
 	BaseCreep.call(this, creep);
-
-	this.canHarvest = true;
-
-	if (typeof creep.memory.canHarvest !== "undefined") {
-		this.canHarvest = creep.memory.canHarvest;
-	}
 }
 
-energyCreep.prototype = Object.create(BaseCreep.prototype);
+EnergyCreep.prototype = Object.create(BaseCreep.prototype);
 
-energyCreep.prototype.act = function() {
+EnergyCreep.prototype.act = function() {
 
 	if (!BaseCreep.prototype.act.call(this)) {
 
@@ -27,8 +21,10 @@ energyCreep.prototype.act = function() {
 
 			if (this.canHarvest) {
 				var resource = findTools.findClosestEnergy(this.creep.pos);
-			} else {
+			} else if (this.canPickup) {
 				var resource = findTools.findClosestDroppedOrStoredEnergy(this.creep.pos);
+			} else {
+				var resource = findTools.findClosestStoredEnergy(this.creep.pos);
 			}
 
 			if (resource) {
@@ -69,12 +65,20 @@ energyCreep.prototype.act = function() {
 	}
 }
 
-energyCreep.prototype.energyAct = function() {
+EnergyCreep.prototype.energyAct = function() {
 }
 
-energyCreep.prototype.getInitialState = function() {
+EnergyCreep.prototype.getInitialState = function() {
 	return "harvesting";
 }
 
+EnergyCreep.initializeSpawnCreepMemory = function(creepMemory, room, spawn, creepsSpawnRule) {
 
-module.exports = energyCreep
+	creepMemory.canHarvest = creepsSpawnRule.canEnergyCreepsHarvest;
+	creepMemory.canPickup = creepsSpawnRule.canEnergyCreepsPickup;
+
+	return creepMemory;
+}
+
+
+module.exports = EnergyCreep

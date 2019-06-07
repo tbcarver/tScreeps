@@ -1,5 +1,6 @@
 
 var debug = require("../lib/coreVendor/coreScreeps/debug");
+var debugObjectTable = require("../lib/coreVendor/coreScreeps/debugObjectTable");
 var debugPairsTable = require("../lib/coreVendor/coreScreeps/debugPairsTable");
 var test = require("./tools/testTools");
 var constructionTools = require("./tools/constructionTools");
@@ -10,6 +11,7 @@ var creepsController = require("./creeps/creepsController");
 var towersController = require("./structures/towersController");
 
 global.debug = debug;
+global.debugObjectTable = debugObjectTable;
 global.debugPairsTable = debugPairsTable;
 
 // TODO: Test and fix spawn chance.

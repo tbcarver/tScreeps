@@ -34,7 +34,7 @@ Builder.prototype.energyAct = function() {
 	}
 }
 
-Builder.initializeSpawnCreepMemory = function(room) {
+Builder.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule) {
 
 	var creepMemory;
 
@@ -49,6 +49,8 @@ Builder.initializeSpawnCreepMemory = function(room) {
 				bodyPartsType: "moveCarryWork",
 				maximumSpawnCapacity: 850,
 			}
+
+			creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, creepMemory, room, spawn, creepsSpawnRule);
 		}
 	}
 
