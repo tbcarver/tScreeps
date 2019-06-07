@@ -5,6 +5,9 @@ var findTools = require("../../tools/findTools");
 function EnergyCreep(creep) {
 
 	BaseCreep.call(this, creep);
+
+	this.canHarvest = this.creepsSpawnRule.canEnergyCreepsHarvest;
+	this.canPickup = this.creepsSpawnRule.canEnergyCreepsPickup;
 }
 
 EnergyCreep.prototype = Object.create(BaseCreep.prototype);

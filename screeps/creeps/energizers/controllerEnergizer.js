@@ -17,7 +17,7 @@ ControllerEnergizer.prototype.energyAct = function() {
 	
 	var acted = false;
 
-	if (this.creep.memory.canBuild) {
+	if (this.creepsSpawnRule.canControllerEnergizersBuild) {
 
 		const target = this.creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
 
@@ -53,7 +53,6 @@ ControllerEnergizer.initializeSpawnCreepMemory = function(room, spawn, creepsSpa
 		type: "controllerEnergizer",
 		bodyPartsType: "energizer",
 		maximumSpawnCapacity: 600,
-		canBuild: creepsSpawnRule.canControllerEnergizersBuild,
 	}
 
 	creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, room, spawn, creepsSpawnRule);

@@ -11,7 +11,7 @@ creepsFactory.buildCreep = function(creep) {
 		var baseCreep = new constructor(creep);
 	
 		// if (creep.memory.type === "builder") {
-		// 	if (creep.room.name === "W7N8") {
+		// 	if (creep.room.name === "W7N9") {
 		// 		creep.memory.state = "suicide";
 		// 		// creep.suicide();
 		// // 		// debug.temp("creep:", creep)

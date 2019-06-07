@@ -1,4 +1,5 @@
 
+var { roomNamesCreepsSpawnRules } = require("../creepsSpawnRules");
 
 function BaseCreep(creep) {
 
@@ -18,15 +19,19 @@ function BaseCreep(creep) {
 		}
 	});
 
-	this.canHarvest = false;
-	if (typeof creep.memory.canHarvest !== "undefined") {
-		this.canHarvest = creep.memory.canHarvest;
-	}
+	Object.defineProperty(this, 'creepsSpawnRule', {
+		get: function() {
+			var creepsSpawnRule;
 
-	this.canPickup = false;
-	if (typeof creep.memory.canPickup !== "undefined") {
-		this.canPickup = creep.memory.canPickup;
-	}
+			if (this.remoteRoomName) {
+				creepsSpawnRule = roomNamesCreepsSpawnRules[this.spawnedRoomName].remoteRooms[this.remoteRoomName];
+			} else {
+				creepsSpawnRule = roomNamesCreepsSpawnRules[this.spawnedRoomName];
+			}
+
+			return creepsSpawnRule;
+		}
+	});
 }
 
 BaseCreep.prototype.act = function() {
@@ -56,7 +61,7 @@ BaseCreep.prototype.act = function() {
 		var hasCarry = this.creep.body.some(bodyPart => bodyPart.type === "carry");
 
 		if (this.creep.carry[RESOURCE_ENERGY] === 0 || !hasCarry) {
-			
+
 			this.creep.say("😡");
 
 			if (Game.flags["graveyard"]) {

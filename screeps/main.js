@@ -36,8 +36,9 @@ function loop() {
 		// debug.primary("log", room.getEventLog(true));
 		// roomTools.createFlag("barracks", COLOR_BLUE, [{"x":"26","y":"22","roomName":"W6S0"}]);
 		// roomTools.createFlag("post_W7S2", COLOR_ORANGE, [{"x":"18","y":"18","roomName":"W7S2"}]);
+		// Game.rooms["W8N8"].createFlag(22,38, "post_W8N8", 9, 7);
 		// roomTools.consoleWall();
-
+		COLOR_ORANGE
 		roomTools.consoleEnemies();
 		visualizeTools.visualizeStructureHealth();
 		// roomTools.visualizeCreepByType("defender", "blue");
