@@ -47,7 +47,7 @@ RemoteBuilder.initializeSpawnCreepMemory = function(room) {
 			creepMemory = {
 				type: "remoteBuilder",
 				bodyPartsType: "moveCarryWork",
-				maximumSpawnCapacity: 850,
+				maximumSpawnCapacity: 800,
 			}
 		}
 	}

@@ -47,7 +47,7 @@ Builder.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule) {
 			creepMemory = {
 				type: "builder",
 				bodyPartsType: "moveCarryWork",
-				maximumSpawnCapacity: 850,
+				maximumSpawnCapacity: 700,
 			}
 
 			creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, creepMemory, room, spawn, creepsSpawnRule);

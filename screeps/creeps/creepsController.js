@@ -12,7 +12,7 @@ creepsController.tick = function() {
 
 	var roomsCurrentSpawnedCounts = {};
 	var displayRoomsCurrentSpawnedCounts = {};
-	var roomsTotals = {};
+	var creepsTotal = 0;
 
 	for (var index in Game.creeps) {
 
@@ -40,11 +40,7 @@ creepsController.tick = function() {
 			}
 		}
 
-		if (!roomsTotals[creep.memory.spawnedRoomName]) {
-			roomsTotals[creep.memory.spawnedRoomName] = 0;
-		}
-
-		roomsTotals[creep.memory.spawnedRoomName]++;
+		creepsTotal++;
 
 		spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creep.memory.type, creep.memory.spawnedRoomName,
 			creep.memory.remoteRoomName);
@@ -58,7 +54,7 @@ creepsController.tick = function() {
 
 	creepsSpawner.spawnCreep(roomsCurrentSpawnedCounts);
 	// debug.muted(`${roomName} creeps: ${roomsTotals[roomName]}`, displayRoomsCurrentSpawnedCounts);
-	debugObjectTable.muted(displayRoomsCurrentSpawnedCounts);
+	debugObjectTable.muted(displayRoomsCurrentSpawnedCounts, creepsTotal);
 }
 
 function cleanUpTheDead() {
