@@ -100,18 +100,38 @@ var creepsSpawnRules = [
 		spawnOrderMaxSpawnedCounts: [
 			{ repairer: 2 },
 			{ spawnEnergizer: 2 },
-			{ extensionEnergizer: 2 },
+			{ extensionEnergizer: 3 },
 			{ builder: 12 },
 			{ controllerEnergizer: 12 },
 		],
 		waitForMinimumSpawnCapacity: false,
-		maxExtensionsPerEnergizer: 2,
+		maxExtensionsPerEnergizer: 3,
 		maxEnergizersPerContainer: 3,
 		minDefendersWaiting: 2,
 		canEnergyCreepsHarvest: true,
 		canEnergyCreepsPickup: false,
+		canControllerEnergizersBuild: true,
 	},
 ];
+
+// var creepsSpawnRules = [
+// 	{
+// 		roomName: "E1N12",
+// 		spawnOrderMaxSpawnedCounts: [
+// 			{ dropHarvester: 2 },
+// 			{ controllerEnergizer: 4 },
+// 		],
+// 		waitForMinimumSpawnCapacity: false,
+// 		maxExtensionsPerEnergizer: 4,
+// 		maxEnergizersPerContainer: 3,
+// 		canEnergizersTransferToDropContainers: false,
+// 		canEnergyCreepsHarvest: false,
+// 		canEnergyCreepsPickup: true,
+// 		canControllerEnergizersBuild: true,
+// 		remoteRooms: [
+// 		]
+// 	},
+// ];
 
 var roomNamesCreepsSpawnRules = _.cloneDeep(creepsSpawnRules);
 
