@@ -54,13 +54,18 @@ DropHarvester.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule
 		}
 
 		// Evenly distribute creeps
-		for (var count = 1; count <= 5; count++) {
+		var found = false;
+		for (var count = 1; count <= 10; count++) {
 			for (var resource of resources) {
 				if (countDropHarvesters[resource.id] < count) {
 
 					creepMemory.resourceId = resource.id;
+					found = true;
 					break;
 				};
+			}
+			if (found) {
+				break;
 			}
 		}
 	}

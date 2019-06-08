@@ -17,12 +17,14 @@ creepsController.tick = function() {
 	for (var index in Game.creeps) {
 
 		var creep = Game.creeps[index];
+		var isDying = false;
 
 		if (!creep.spawning) {
 
 			try {
 
 				var baseCreep = creepsFactory.buildCreep(creep);
+				isDying = baseCreep.isDying;
 
 				// debug.temp(`creep act: type: ${creep.memory.type} ticks: ${creep.ticksToLive}`);
 				baseCreep.act();
@@ -42,8 +44,10 @@ creepsController.tick = function() {
 
 		creepsTotal++;
 
-		spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creep.memory.type, creep.memory.spawnedRoomName,
-			creep.memory.remoteRoomName);
+		if (!isDying) {
+			spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creep.memory.type, creep.memory.spawnedRoomName,
+				creep.memory.remoteRoomName);
+		}
 
 		if (creep.memory.remoteRoomName) {
 			spawnTools.incrementSpawnedCount(displayRoomsCurrentSpawnedCounts, creep.memory.type, creep.memory.remoteRoomName);

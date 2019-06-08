@@ -2,6 +2,7 @@
 var debug = require("../lib/coreVendor/coreScreeps/debug");
 var debugObjectTable = require("../lib/coreVendor/coreScreeps/debugObjectTable");
 var debugPairsTable = require("../lib/coreVendor/coreScreeps/debugPairsTable");
+var rules = require("./rules");
 var test = require("./tools/testTools");
 var constructionTools = require("./tools/constructionTools");
 var roomTools = require("./tools/roomTools");
@@ -13,6 +14,7 @@ var towersController = require("./structures/towersController");
 global.debug = debug;
 global.debugObjectTable = debugObjectTable;
 global.debugPairsTable = debugPairsTable;
+global.rules = rules.rules;
 
 // TODO: Test and fix spawn chance.
 //  Defenders are taking so long every one else dies during an attack.

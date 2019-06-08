@@ -1,11 +1,12 @@
 
-var { roomNamesCreepsSpawnRules } = require("../creepsSpawnRules");
+var { roomNamesCreepsSpawnRules } = require("../../rules");
 
 function BaseCreep(creep) {
 
 	this.creep = creep;
 	this.memory = creep.memory;
 	this.type = creep.memory.type;
+	this.isDying = this.creep.ticksToLive < 25;
 	this.spawnedRoomName = creep.memory.spawnedRoomName;
 	this.remoteRoomName = creep.memory.remoteRoomName;
 	this.isRemoteCreep = false;
@@ -32,6 +33,12 @@ function BaseCreep(creep) {
 			return creepsSpawnRule;
 		}
 	});
+
+	Object.defineProperty(this, 'spawnedRoomCreepsSpawnRule', {
+		get: function() {
+			return roomNamesCreepsSpawnRules[this.spawnedRoomName];
+		}
+	});
 }
 
 BaseCreep.prototype.act = function() {
@@ -54,7 +61,7 @@ BaseCreep.prototype.act = function() {
 
 		acted = true;
 
-	} else if (this.creep.ticksToLive < 25) {
+	} else if (this.isDying) {
 
 		this.creep.room.visual.circle(this.creep.pos, { radius: .15, stroke: "red", fill: "red", opacity: 1 });
 

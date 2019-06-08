@@ -34,18 +34,16 @@ RangedDefender.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRul
 
 	var creepMemory;
 
-	debug.temp(creepsSpawnRule)
+	if (!rules.maximumTroopersSpawnCapacity) {
+		rules.maximumRangedDefenderSpawnCapacity = 800;
+	}
 
 	if (creepsSpawnRule.minDefendersWaiting && currentSpawnedCount < creepsSpawnRule.minDefendersWaiting) {
-
-		if (!creepsSpawnRule.maximumTroopersSpawnCapacity) {
-			creepsSpawnRule.maximumTroopersSpawnCapacity = 1600;
-		}
 
 		creepMemory = {
 			type: "rangedDefender",
 			bodyPartsType: "rangedAttack",
-			maximumSpawnCapacity: creepsSpawnRule.maximumTroopersSpawnCapacity,
+			maximumSpawnCapacity: rules.maximumRangedDefenderSpawnCapacity,
 			minimumSpawnCapacity: 800,
 		}
 	}

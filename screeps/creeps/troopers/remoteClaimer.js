@@ -28,20 +28,22 @@ RemoteClaimer.prototype.remoteRoomAct = function() {
 	var controller = this.creep.room.controller;
 
 	if (controller) {
+		if (!controller.my) {
 
-		var result = this.creep.claimController(controller);
+			var result = this.creep.claimController(controller);
 
-		if (result === OK) {
+			if (result === OK) {
 
-			debug.highlight(`${this.type} claimed controller ${this.creep.room.name}`);
+				debug.highlight(`${this.type} claimed controller ${this.creep.room.name}`);
 
-		} else if (result === ERR_NOT_IN_RANGE) {
+			} else if (result === ERR_NOT_IN_RANGE) {
 
-			this.creep.moveTo(controller);
+				this.creep.moveTo(controller);
 
-		} else {
+			} else {
 
-			debug.warning(`${this.type} can't claim ${this.creep.room.name} ${result}`);
+				debug.warning(`${this.type} can't claim ${this.creep.room.name} ${result}`);
+			}
 		}
 	} else {
 
