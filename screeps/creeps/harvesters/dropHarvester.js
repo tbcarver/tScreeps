@@ -40,22 +40,27 @@ DropHarvester.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule
 	var creepMemory = {
 		type: "dropHarvester",
 		bodyPartsType: "workDropper",
-		state: "harvesting"
+		state: "harvesting",
+		maximumSpawnCapacity: 500,
 	}
 
 	if (room.find) {
 
+		var resources = room.find(FIND_SOURCES);
+		var countDropHarvesters = {};
+
+		for (var resource of resources) {
+			countDropHarvesters[resource.id] = countDropHarvestersAtResource(resource.id);
+		}
+
 		// Evenly distribute creeps
 		for (var count = 1; count <= 5; count++) {
+			for (var resource of resources) {
+				if (countDropHarvesters[resource.id] < count) {
 
-			var resource = room.find(FIND_SOURCES, {
-				filter: resource => countDropHarvestersAtResource(resource.resourceId) < count
-			});
-
-			if (resource) {
-
-				creepMemory.resourceId = resource.resourceId;
-				break;
+					creepMemory.resourceId = resource.id;
+					break;
+				};
 			}
 		}
 	}

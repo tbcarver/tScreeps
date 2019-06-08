@@ -62,7 +62,7 @@ BaseCreep.prototype.act = function() {
 
 		if (this.creep.carry[RESOURCE_ENERGY] === 0 || !hasCarry) {
 
-			this.creep.say("😡");
+			this.creep.say("😡 " + this.creep.ticksToLive);
 
 			if (Game.flags["graveyard"]) {
 
@@ -75,7 +75,7 @@ BaseCreep.prototype.act = function() {
 
 		} else {
 
-			this.creep.say("😰");
+			this.creep.say("😰 " + this.creep.ticksToLive);
 			this.transferEnergy();
 		}
 

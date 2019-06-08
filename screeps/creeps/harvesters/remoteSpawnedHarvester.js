@@ -74,7 +74,8 @@ RemoteSpawnedHarvester.initializeSpawnCreepMemory = function() {
 
 	var creepMemory = {
 		type: "remoteSpawnedHarvester",
-		bodyPartsType: "moveCarryWork"
+		bodyPartsType: "moveCarryWork",
+		maximumSpawnCapacity: 850,
 	}
 
 	return creepMemory;
