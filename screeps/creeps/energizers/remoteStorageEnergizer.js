@@ -30,15 +30,28 @@ RemoteStorageEnergizer.prototype.spawnedRoomAct = function() {
 
 	} else if (this.state === "harvesting") {
 
-		var container = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-			filter: container => (container.structureType === STRUCTURE_STORAGE && container.store[RESOURCE_ENERGY] / container.storeCapacity > .01) ||
-				(container.structureType === STRUCTURE_CONTAINER && container.store[RESOURCE_ENERGY] / container.storeCapacity > .65)
+		var resource = this.creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
+			filter: resource => resource.energy && resource.energy >= 100
 		});
 
-		if (container) {
+		if (!resource) {
+			resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+				filter: container => (container.structureType === STRUCTURE_STORAGE && container.store[RESOURCE_ENERGY] / container.storeCapacity > .01) ||
+					(container.structureType === STRUCTURE_CONTAINER && container.store[RESOURCE_ENERGY] / container.storeCapacity > .65)
+			});
+		}
 
-			if (this.creep.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-				this.creep.moveTo(container);
+		if (resource) {
+			if (resource.structureType) {
+
+				if (this.creep.withdraw(resource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+					this.creep.moveTo(resource);
+				}
+			} else if (resource.resourceType) {
+
+				if (this.creep.pickup(resource) == ERR_NOT_IN_RANGE) {
+					this.creep.moveTo(resource);
+				}
 			}
 		} else {
 
@@ -79,17 +92,27 @@ RemoteStorageEnergizer.initializeSpawnCreepMemory = function(room, spawn, creeps
 
 	var creepMemory;
 
-	var targets = room.find(FIND_STRUCTURES, {
-		filter: { structureType: STRUCTURE_CONTAINER }
-	});
+	if (room.find) {
 
-	if (targets.length > 0) {
+		var targets = room.find(FIND_DROPPED_RESOURCES, {
+			filter: resource => resource.energy && resource.energy >= 100
+		});
 
-		creepMemory = {
-			type: "remoteStorageEnergizer",
-			bodyPartsType: "moveCarry",
-			maximumSpawnCapacity: 750,
-			minimumSpawnCapacity: 600,
+		if (targets.length === 0) {
+
+			var targets = room.find(FIND_STRUCTURES, {
+				filter: { structureType: STRUCTURE_CONTAINER }
+			});
+		}
+
+		if (targets.length > 0) {
+
+			creepMemory = {
+				type: "remoteStorageEnergizer",
+				bodyPartsType: "moveCarry",
+				maximumSpawnCapacity: 750,
+				minimumSpawnCapacity: 600,
+			}
 		}
 	}
 

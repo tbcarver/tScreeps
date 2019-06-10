@@ -45,10 +45,22 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 						var currentSpawnedCount = (currentSpawnedCounts) ? currentSpawnedCounts[creepType] || 0 : 0;
 
 						if (currentSpawnedCount < maxSpawnedCount) {
-							spawnResult = trySpawnCreep(room, spawn, creepConstructor, creepsSpawnRule, currentSpawnedCount, spawnResult);
 
-							if (spawnResult.spawned) {
-								spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creepType, spawn.room.name, room.name);
+							try {
+								spawnResult = trySpawnCreep(room, spawn, creepConstructor, creepsSpawnRule, currentSpawnedCount, spawnResult);
+
+								if (spawnResult.spawned) {
+									spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creepType, spawn.room.name, room.name);
+								}
+							} catch (error) {
+								if (error instanceof Error) {
+
+									let sourceMap = require("../sourceMap");
+									sourceMap.logStackTrace(error);
+
+								} else {
+									throw error;
+								}
 							}
 						}
 					}
@@ -79,10 +91,22 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 								var currentSpawnedCount = (remoteCurrentSpawnedCounts) ? remoteCurrentSpawnedCounts[creepType] || 0 : 0;
 
 								if (currentSpawnedCount < maxSpawnedCount) {
-									spawnResult = trySpawnCreep(remoteRoom, spawn, creepConstructor, remoteRoomCreepsSpawnRule, currentSpawnedCount, spawnResult);
 
-									if (spawnResult.spawned) {
-										spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creepType, spawn.room.name, remoteRoom.name);
+									try {
+										spawnResult = trySpawnCreep(remoteRoom, spawn, creepConstructor, remoteRoomCreepsSpawnRule, currentSpawnedCount, spawnResult);
+
+										if (spawnResult.spawned) {
+											spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creepType, spawn.room.name, remoteRoom.name);
+										}
+									} catch (error) {
+										if (error instanceof Error) {
+
+											let sourceMap = require("../sourceMap");
+											sourceMap.logStackTrace(error);
+
+										} else {
+											throw error;
+										}
 									}
 								}
 							}
@@ -109,21 +133,7 @@ function trySpawnCreep(room, spawn, creepConstructor, creepsSpawnRule, currentSp
 				creepMemory.remoteRoomName = room.name;
 			}
 
-			try {
-
-				var spawnResult = spawnCreep(spawn, creepMemory, creepsSpawnRule);
-
-			} catch (error) {
-
-				if (error instanceof Error) {
-
-					let sourceMap = require("../sourceMap");
-					sourceMap.logStackTrace(error);
-
-				} else {
-					throw error;
-				}
-			}
+			var spawnResult = spawnCreep(spawn, creepMemory, creepsSpawnRule);
 
 			if (spawnResult && spawnResult.waitForSpawn) {
 				previousSpawnResult.waitForSpawn = spawnResult.waitForSpawn;
@@ -159,8 +169,13 @@ function spawnCreep(spawn, creepMemory, creepsSpawnRule) {
 			spawnCapacity = creepMemory.maximumSpawnCapacity;
 		}
 
+		var partsPerMove = 2;
+		if (creepsSpawnRule.partsPerMove) {
+			partsPerMove = creepsSpawnRule.partsPerMove;
+		}
+
 		var id = getNextCreepId();
-		var bodyParts = bodyPartsFactory.getBodyParts(creepMemory.bodyPartsType, spawnCapacity);
+		var bodyParts = bodyPartsFactory.getBodyParts(creepMemory.bodyPartsType, spawnCapacity, partsPerMove);
 
 		delete creepMemory.bodyPartsType;
 		delete creepMemory.maximumSpawnCapacity;

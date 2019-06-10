@@ -17,7 +17,6 @@ creepsController.tick = function() {
 	for (var index in Game.creeps) {
 
 		var creep = Game.creeps[index];
-		var isDying = false;
 
 		if (!creep.spawning) {
 
@@ -44,10 +43,8 @@ creepsController.tick = function() {
 
 		creepsTotal++;
 
-		if (!isDying) {
-			spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creep.memory.type, creep.memory.spawnedRoomName,
-				creep.memory.remoteRoomName);
-		}
+		spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creep.memory.type, creep.memory.spawnedRoomName,
+			creep.memory.remoteRoomName);
 
 		if (creep.memory.remoteRoomName) {
 			spawnTools.incrementSpawnedCount(displayRoomsCurrentSpawnedCounts, creep.memory.type, creep.memory.remoteRoomName);
@@ -58,7 +55,7 @@ creepsController.tick = function() {
 
 	creepsSpawner.spawnCreep(roomsCurrentSpawnedCounts);
 	// debug.muted(`${roomName} creeps: ${roomsTotals[roomName]}`, displayRoomsCurrentSpawnedCounts);
-	debugObjectTable.muted(displayRoomsCurrentSpawnedCounts, creepsTotal);
+	debugObjectTable.muted(displayRoomsCurrentSpawnedCounts, creepsTotal, `total creeps: ${creepsTotal} stats... `);
 }
 
 function cleanUpTheDead() {

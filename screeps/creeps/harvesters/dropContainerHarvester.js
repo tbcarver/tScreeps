@@ -68,43 +68,46 @@ DropContainerHarvester.initializeSpawnCreepMemory = function(room, spawn, creeps
 	var creepMemory
 	var container;
 
-	var containers = room.find(FIND_STRUCTURES, {
-		filter: structure => structure.structureType == STRUCTURE_CONTAINER &&
-			roomTools.isDropContainer(structure)
-	});
+	if (room.find) {
 
-	containers = containers.filter(container => {
+		var containers = room.find(FIND_STRUCTURES, {
+			filter: structure => structure.structureType == STRUCTURE_CONTAINER &&
+				roomTools.isDropContainer(structure)
+		});
 
-		var countEnergizers = countDropContainerHarvestersAtContainerPosition(container.pos.x, container.pos.y);
+		containers = containers.filter(container => {
 
-		return countEnergizers < 1;
-	});
+			var countEnergizers = countDropContainerHarvestersAtContainerPosition(container.pos.x, container.pos.y);
 
-	if (containers.length > 0) {
+			return countEnergizers < 1;
+		});
 
-		container = containers[0];
-	}
+		if (containers.length > 0) {
 
-	if (container) {
+			container = containers[0];
+		}
 
-		var resource = container.pos.findClosestByRange(FIND_SOURCES);
+		if (container) {
 
-		if (resource) {
+			var resource = container.pos.findClosestByRange(FIND_SOURCES);
 
-			creepMemory = {
-				type: "dropContainerHarvester",
-				bodyPartsType: "workDropper",
-				state: "moving",
-				maximumSpawnCapacity: 500,
-				minimumSpawnCapacity: 500,
-				resourceId: resource.id,
-				containerId: container.id,
-				containerPos: container.pos
-			};
+			if (resource) {
 
-		} else {
+				creepMemory = {
+					type: "dropContainerHarvester",
+					bodyPartsType: "workDropper",
+					state: "moving",
+					maximumSpawnCapacity: 500,
+					minimumSpawnCapacity: 500,
+					resourceId: resource.id,
+					containerId: container.id,
+					containerPos: container.pos
+				};
 
-			debug.warning(`dropContainerHarvester did not spawn no resources found`);
+			} else {
+
+				debug.warning(`dropContainerHarvester did not spawn no resources found`);
+			}
 		}
 	}
 

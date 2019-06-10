@@ -19,20 +19,32 @@ StorageEnergizer.prototype.act = function() {
 				this.state = "harvesting";
 			}
 
-			var container = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-				filter: container => container.structureType === STRUCTURE_CONTAINER &&
-					roomTools.isDropContainer(container) &&
-					container.store[RESOURCE_ENERGY] / container.storeCapacity > .65
+			var resource = this.creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
+				filter: resource => resource.energy && resource.energy >= 100
 			});
 
-			if (container) {
+			if (!resource) {
+				var resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+					filter: container => container.structureType === STRUCTURE_CONTAINER &&
+						roomTools.isDropContainer(container) &&
+						container.store[RESOURCE_ENERGY] / container.storeCapacity > .65
+				});
+			}
 
-				if (this.creep.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-					this.creep.moveTo(container);
+			if (resource) {
+				if (resource.structureType) {
+	
+					if (this.creep.withdraw(resource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+						this.creep.moveTo(resource);
+					}
+				} else if (resource.resourceType) {
+	
+					if (this.creep.pickup(resource) == ERR_NOT_IN_RANGE) {
+						this.creep.moveTo(resource);
+					}
 				}
-
 			} else {
-
+	
 				// debug.warning("Repairer container not found");
 			}
 		}
@@ -75,18 +87,28 @@ StorageEnergizer.prototype.getInitialState = function() {
 StorageEnergizer.initializeSpawnCreepMemory = function(room) {
 
 	var creepMemory;
-	
-	var targets = room.find(FIND_STRUCTURES, {
-		filter: { structureType: STRUCTURE_CONTAINER }
-	});
 
-	if (targets.length > 0) {
+	if (room.find) {
 
-		var creepMemory = {
-			type: "storageEnergizer",
-			bodyPartsType: "moveCarry",
-			maximumSpawnCapacity: 600,
-			minimumSpawnCapacity: 450,
+		var targets = room.find(FIND_DROPPED_RESOURCES, {
+			filter: resource => resource.energy && resource.energy >= 100
+		});
+
+		if (targets.length === 0) {
+
+			var targets = room.find(FIND_STRUCTURES, {
+				filter: { structureType: STRUCTURE_CONTAINER }
+			});
+		}
+
+		if (targets.length > 0) {
+
+			var creepMemory = {
+				type: "storageEnergizer",
+				bodyPartsType: "moveCarry",
+				maximumSpawnCapacity: 600,
+				minimumSpawnCapacity: 450,
+			}
 		}
 	}
 

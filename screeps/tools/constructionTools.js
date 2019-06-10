@@ -134,7 +134,7 @@ constructionTools.destroyStructure = function() {
 
 	var positions =
 
-	[{"x":"21","y":"1","roomName":"W6S2"},{"x":"22","y":"1","roomName":"W6S2"},{"x":"20","y":"2","roomName":"W6S2"},{"x":"21","y":"2","roomName":"W6S2"},{"x":"19","y":"3","roomName":"W6S2"},{"x":"20","y":"3","roomName":"W6S2"}]
+	[{"x":"22","y":"28","roomName":"W7N9"}]
 
 	if (positions.length > 0) {
 
@@ -143,7 +143,7 @@ constructionTools.destroyStructure = function() {
 			var room = Game.rooms[positions[index].roomName];
 			var structures = room.find(FIND_STRUCTURES, {
 				filter: (structure) => structure.pos.x == positions[index].x &&
-					structure.pos.y == positions[index].y
+					structure.pos.y == positions[index].y && structure.structureType == STRUCTURE_ROAD
 			});
 
 			if (structures.length > 0) {

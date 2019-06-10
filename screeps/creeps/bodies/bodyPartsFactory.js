@@ -8,7 +8,7 @@ var workDropperStrategy = require("./workDropperStrategy");
 
 var bodyPartsFactory = {};
 
-bodyPartsFactory.getBodyParts = function(bodyPartsStrategyName, spawnCapacity) {
+bodyPartsFactory.getBodyParts = function(bodyPartsStrategyName, spawnCapacity, partsPerMove) {
 
 	var bodyPartsStrategy;
 	var bodyParts;
@@ -46,7 +46,7 @@ bodyPartsFactory.getBodyParts = function(bodyPartsStrategyName, spawnCapacity) {
 
 	if (bodyPartsStrategy) {
 
-		bodyPartsObject = bodyPartsStrategy.getBodyPartsObject(spawnCapacity);
+		bodyPartsObject = bodyPartsStrategy.getBodyPartsObject(spawnCapacity, partsPerMove);
 
 		if (bodyPartsObject) {
 

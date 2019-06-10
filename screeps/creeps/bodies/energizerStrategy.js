@@ -3,7 +3,7 @@ var bodyPartsTools = require("./bodyPartsTools");
 
 var energizerStrategy = {};
 
-energizerStrategy.getBodyPartsObject = function(spawnCapacity) {
+energizerStrategy.getBodyPartsObject = function(spawnCapacity, partsPerMove) {
 
 	var bodyPartsObject = {
 		move: 1,
@@ -17,7 +17,7 @@ energizerStrategy.getBodyPartsObject = function(spawnCapacity) {
 			maxNumberOf100s: 1,
 		}
 
-		balanced50100MoveParts = bodyPartsTools.balance50100MoveParts(balanced50100MoveParts, spawnCapacity);
+		balanced50100MoveParts = bodyPartsTools.balance50100MoveParts(balanced50100MoveParts, spawnCapacity, partsPerMove);
 
 		var bodyPartsObject = {
 			move: balanced50100MoveParts.numberOfMoves,

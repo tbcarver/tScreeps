@@ -3,7 +3,7 @@ var bodyPartsTools = require("./bodyPartsTools");
 
 var moveCarryWorkStrategy = {};
 
-moveCarryWorkStrategy.getBodyPartsObject = function(spawnCapacity) {
+moveCarryWorkStrategy.getBodyPartsObject = function(spawnCapacity, partsPerMove) {
 	
 	var bodyPartsObject = {
 		move: 1,
@@ -13,7 +13,7 @@ moveCarryWorkStrategy.getBodyPartsObject = function(spawnCapacity) {
 
 	if (spawnCapacity >= 300) {
 
-		balanced50100MoveParts = bodyPartsTools.balance50100MoveParts(null, spawnCapacity);
+		balanced50100MoveParts = bodyPartsTools.balance50100MoveParts(null, spawnCapacity, partsPerMove);
 
 		bodyPartsObject = {
 			move: balanced50100MoveParts.numberOfMoves,
