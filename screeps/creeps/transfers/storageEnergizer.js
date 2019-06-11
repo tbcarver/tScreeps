@@ -22,8 +22,10 @@ StorageEnergizer.prototype.act = function() {
 			}
 
 			if (this.canPickup) {
+				var dropFlag = Game.flags[`drop-${this.creep.room.name}`];
+
 				var resource = this.creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-					filter: resource => resource.energy && resource.energy >= 100
+					filter: resource => resource.energy && resource.energy >= 100 && (!dropFlag || !dropFlag.pos.inRangeTo(resource, 3))
 				});
 			}
 
@@ -66,21 +68,33 @@ StorageEnergizer.prototype.act = function() {
 
 StorageEnergizer.prototype.energize = function() {
 
-	var storage = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-		filter: storage => (storage.structureType === STRUCTURE_CONTAINER ||
-			storage.structureType === STRUCTURE_STORAGE) && !roomTools.isDropContainer(storage) &&
-			storage.store[RESOURCE_ENERGY] / storage.storeCapacity < .95
-	});
+	var dropFlag = Game.flags[`drop-${this.creep.room.name}`];
+	if (dropFlag) {
+		this.creep.moveTo(dropFlag);
 
-	var transferResult = this.creep.transfer(storage, RESOURCE_ENERGY);
+		if (this.creep.pos.inRangeTo(dropFlag, 1)) {
+			this.creep.drop(RESOURCE_ENERGY);
+			this.state = "harvesting";
+		}
+		
+	} else {
 
-	if (transferResult == ERR_NOT_IN_RANGE) {
-
-		this.creep.moveTo(storage);
-
-	} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
-
-		this.state = "harvesting";
+		var storage = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+			filter: storage => (storage.structureType === STRUCTURE_CONTAINER ||
+				storage.structureType === STRUCTURE_STORAGE) && !roomTools.isDropContainer(storage) &&
+				storage.store[RESOURCE_ENERGY] / storage.storeCapacity < .95
+		});
+	
+		var transferResult = this.creep.transfer(storage, RESOURCE_ENERGY);
+	
+		if (transferResult == ERR_NOT_IN_RANGE) {
+	
+			this.creep.moveTo(storage);
+	
+		} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+	
+			this.state = "harvesting";
+		}
 	}
 }
 

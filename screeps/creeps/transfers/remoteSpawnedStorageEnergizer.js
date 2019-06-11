@@ -59,11 +59,25 @@ RemoteSpawnedStorageEnergizer.prototype.remoteRoomAct = function() {
 		this.moveToSpawnedRoom();
 
 	} else if (this.state === "harvesting") {
+		
+		var resource;
 
 		if (this.canPickup) {
-			var resource = this.creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-				filter: resource => resource.energy && resource.energy >= 100
-			});
+
+			var dropFlag = Game.flags[`drop-${this.creep.room.name}`];			
+			if (dropFlag) {
+
+				var resources = dropFlag.pos.findInRange(FIND_DROPPED_RESOURCES, 3);
+				if (resources.length > 0) {
+					resource = resources[0];
+				}
+
+			} else {
+
+				resource = this.creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
+					filter: resource => resource.energy && resource.energy >= 100
+				});
+			}
 		}
 
 		if (!resource) {

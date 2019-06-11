@@ -32,7 +32,15 @@ RemoteStorageEnergizer.prototype.spawnedRoomAct = function() {
 
 	} else if (this.state === "harvesting") {
 
-		if (this.canPickup) {
+		var dropFlag = Game.flags[`drop-${this.creep.room.name}`];
+		if (dropFlag) {
+
+			var resource = dropFlag.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
+				filter: resource => resource.energy && resource.energy >= 100
+			});
+
+		} else {
+
 			var resource = this.creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
 				filter: resource => resource.energy && resource.energy >= 100
 			});

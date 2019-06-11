@@ -53,6 +53,13 @@ DropHarvester.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule
 			countDropHarvesters[resource.id] = countDropHarvestersAtResource(resource.id);
 		}
 
+		if (room.name !== spawn.room.name) {
+			var exitFlag = Game.flags[`exit-from-${room.name}-to-${spawn.room.name}`];
+			if (exitFlag) {
+				resources.sort((resourceA, resourceB) => resourceA.pos.getRangeTo(exitFlag) > resourceB.pos.getRangeTo(exitFlag));
+			}
+		}
+
 		// Evenly distribute creeps
 		var found = false;
 		for (var count = 1; count <= 10; count++) {
