@@ -11,11 +11,11 @@ var RemoteClaimer = require("./troopers/remoteClaimer");
 var RemoteReserver = require("./troopers/remoteReserver");
 var RemoteSitter = require("./troopers/remoteSitter");
 var RemoteSpawnedHarvester = require("./harvesters/remoteSpawnedHarvester");
-var RemoteSpawnedStorageEnergizer = require("./energizers/remoteSpawnedStorageEnergizer");
-var RemoteStorageEnergizer = require("./energizers/remoteStorageEnergizer");
+var RemoteSpawnedStorageEnergizer = require("./transfers/remoteSpawnedStorageEnergizer");
+var RemoteStorageEnergizer = require("./transfers/remoteStorageEnergizer");
 var Repairer = require("./energyWorkers/repairer");
 var SpawnEnergizer = require("./energizers/spawnEnergizer");
-var StorageEnergizer = require("./energizers/storageEnergizer");
+var StorageEnergizer = require("./transfers/storageEnergizer");
 var WallRepairer = require("./energyWorkers/wallRepairer");
 
 var creepConstructors = {	

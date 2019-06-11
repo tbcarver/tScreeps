@@ -28,7 +28,7 @@ var creepsSpawnRules = [
 			{
 				roomName: "W7N9",
 				spawnOrderMaxSpawnedCounts: [
-					{ remoteStorageEnergizer: 4 },
+					{ remoteStorageEnergizer: 0 },
 				],
 				maxExtensionsPerEnergizer: 2,
 				maxEnergizersPerContainer: 3,
@@ -42,12 +42,14 @@ var creepsSpawnRules = [
 					{ repairer: 1 },
 					{ remoteReserver: 1 },
 					{ dropHarvester: 2 },
-					{ remoteSpawnedStorageEnergizer: 1 },
 					{ storageEnergizer: 1 },
+					{ remoteSpawnedStorageEnergizer: 1 },
 					{ builder: 4 },
 				],
 				canEnergyCreepsHarvest: true,
 				canEnergyCreepsPickup: true,
+				canRemoteStorageEnergizersPickup: false,
+				canStorageEnergizersPickup: true,
 				partsPerMove: 1,
 			},
 			{

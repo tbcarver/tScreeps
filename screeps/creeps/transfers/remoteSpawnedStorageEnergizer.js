@@ -5,6 +5,8 @@ var roomTools = require("../../tools/roomTools");
 function RemoteSpawnedStorageEnergizer(creep) {
 
 	RemoteCreep.call(this, creep);
+
+	this.canPickup = this.creepsSpawnRule.canRemoteStorageEnergizersPickup;
 }
 
 RemoteSpawnedStorageEnergizer.prototype = Object.create(RemoteCreep.prototype);
@@ -58,9 +60,11 @@ RemoteSpawnedStorageEnergizer.prototype.remoteRoomAct = function() {
 
 	} else if (this.state === "harvesting") {
 
-		var resource = this.creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-			filter: resource => resource.energy && resource.energy >= 100
-		});
+		if (this.canPickup) {
+			var resource = this.creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
+				filter: resource => resource.energy && resource.energy >= 100
+			});
+		}
 
 		if (!resource) {
 			resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {

@@ -5,6 +5,8 @@ var roomTools = require("../../tools/roomTools");
 function StorageEnergizer(creep) {
 
 	BaseCreep.call(this, creep);
+
+	this.canPickup = this.creepsSpawnRule.canStorageEnergizersPickup;
 }
 
 StorageEnergizer.prototype = Object.create(BaseCreep.prototype);
@@ -19,9 +21,11 @@ StorageEnergizer.prototype.act = function() {
 				this.state = "harvesting";
 			}
 
-			var resource = this.creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-				filter: resource => resource.energy && resource.energy >= 100
-			});
+			if (this.canPickup) {
+				var resource = this.creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
+					filter: resource => resource.energy && resource.energy >= 100
+				});
+			}
 
 			if (!resource) {
 				var resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
@@ -33,18 +37,18 @@ StorageEnergizer.prototype.act = function() {
 
 			if (resource) {
 				if (resource.structureType) {
-	
+
 					if (this.creep.withdraw(resource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 						this.creep.moveTo(resource);
 					}
 				} else if (resource.resourceType) {
-	
+
 					if (this.creep.pickup(resource) == ERR_NOT_IN_RANGE) {
 						this.creep.moveTo(resource);
 					}
 				}
 			} else {
-	
+
 				// debug.warning("Repairer container not found");
 			}
 		}
