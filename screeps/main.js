@@ -38,7 +38,10 @@ function loop() {
 		// debug.primary("log", room.getEventLog(true));
 		// roomTools.createFlag("barracks", COLOR_BLUE, [{"x":"26","y":"22","roomName":"W6S0"}]);
 		// roomTools.createFlag("post_W7S2", COLOR_ORANGE, [{"x":"18","y":"18","roomName":"W7S2"}]);
-		// Game.rooms["W8N8"].createFlag(22,38, "post_W8N8", 9, 7);
+		// roomTools.createFlag("exit_from-W7S2_to-W7S2", COLOR_GREEN, [{"x":"18","y":"18","roomName":"W7S2"}]);
+		// Game.rooms["W8N8"].createFlag(22,38, "post_W8N8", COLOR_GREY, COLOR_ORANGE)
+		// Game.rooms["W7N9"].createFlag(1,29, "exit-from-W7N9-to-W8N9", COLOR_GREEN, COLOR_WHITE)
+		// Game.flags["exit-from-W6N8-to-W7N8"].setPosition(1,7)
 		// roomTools.consoleWall();
 		COLOR_ORANGE
 		roomTools.consoleEnemies();

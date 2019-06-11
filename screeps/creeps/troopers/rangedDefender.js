@@ -44,7 +44,6 @@ RangedDefender.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRul
 			type: "rangedDefender",
 			bodyPartsType: "rangedAttack",
 			maximumSpawnCapacity: rules.maximumRangedDefenderSpawnCapacity,
-			minimumSpawnCapacity: 800,
 		}
 	}
 

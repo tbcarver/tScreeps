@@ -147,21 +147,37 @@ BaseCreep.prototype.getInitialState = function() {
 
 BaseCreep.prototype.moveToExit = function(exitRoomName) {
 
-	var exitDirection = this.creep.room.findExitTo(exitRoomName);
+	var exitFlag = Game.flags[`exit-from-${this.creep.room.name}-to-${exitRoomName}`];
+	var isAtFlag = false;
 
-	if (exitDirection && exitDirection >= OK) {
+	if (exitFlag) {
 
-		var exit = this.creep.pos.findClosestByPath(exitDirection);
-
-		if (exit) {
-
-			this.creep.moveTo(exit);
-
+		if (this.creep.pos.inRangeTo(exitFlag.pos, 3)) {
+			isAtFlag = true;
 		} else {
-			debug.warning(`${this.type} can't find a path to the exit to ${exitRoomName}`);
+			this.creep.moveTo(exitFlag.pos);
 		}
-	} else {
-		debug.warning(`${this.type} can't find an exit direction to ${exitRoomName}`);
+	}
+
+	if (isAtFlag || !exitFlag) {
+
+		var exitDirection = this.creep.room.findExitTo(exitRoomName);
+
+		if (exitDirection && exitDirection >= OK) {
+
+			var exit = this.creep.pos.findClosestByPath(exitDirection);
+
+			if (exit) {
+
+				this.creep.moveTo(exit);
+
+			} else {
+				debug.warning(`${this.type} can't find a path to the exit to ${exitRoomName}`);
+			}
+		} else {
+			debug.warning(`${this.type} can't find an exit direction to ${exitRoomName}`);
+		}
+
 	}
 }
 

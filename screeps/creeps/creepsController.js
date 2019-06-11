@@ -2,7 +2,7 @@
 var spawnTools = require("../tools/spawnTools");
 var creepsFactory = require("./creepsFactory");
 var creepsSpawner = require("./creepsSpawner");
-var mergeWith = require("lodash/mergeWith");
+var { creepsToSpawnTotal } = require("../rules");
 
 var creepsController = {};
 
@@ -54,8 +54,7 @@ creepsController.tick = function() {
 	}
 
 	creepsSpawner.spawnCreep(roomsCurrentSpawnedCounts);
-	// debug.muted(`${roomName} creeps: ${roomsTotals[roomName]}`, displayRoomsCurrentSpawnedCounts);
-	debugObjectTable.muted(displayRoomsCurrentSpawnedCounts, creepsTotal, `total creeps: ${creepsTotal} stats... `);
+	debugObjectTable.muted(displayRoomsCurrentSpawnedCounts, creepsTotal, `total creeps: ${creepsTotal}/${creepsToSpawnTotal} stats... `);
 }
 
 function cleanUpTheDead() {
