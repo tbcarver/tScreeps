@@ -5,8 +5,6 @@ var roomTools = require("../../tools/roomTools");
 function RemoteStorageEnergizer(creep) {
 
 	RemoteCreep.call(this, creep);
-
-	this.canPickup = this.creepsSpawnRule.canRemoteStorageEnergizersPickup;
 }
 
 RemoteStorageEnergizer.prototype = Object.create(RemoteCreep.prototype);

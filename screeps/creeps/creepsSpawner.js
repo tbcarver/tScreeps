@@ -164,45 +164,60 @@ function spawnCreep(spawn, creepMemory, creepsSpawnRule) {
 
 	} else {
 
+		var plannedSpawnCapacity = spawnCapacity;
 		if (creepMemory.maximumSpawnCapacity && spawnCapacity > creepMemory.maximumSpawnCapacity) {
 
-			spawnCapacity = creepMemory.maximumSpawnCapacity;
+			plannedSpawnCapacity = creepMemory.maximumSpawnCapacity;
 		}
 
-		var partsPerMove = 2;
-		if (creepsSpawnRule.partsPerMove) {
-			partsPerMove = creepsSpawnRule.partsPerMove;
-		}
+		if (plannedSpawnCapacity <= spawnCapacity) {
 
-		var id = getNextCreepId();
-		var bodyParts = bodyPartsFactory.getBodyParts(creepMemory.bodyPartsType, spawnCapacity, partsPerMove);
+			var partsPerMove = 2;
+			if (creepsSpawnRule.partsPerMove) {
+				partsPerMove = creepsSpawnRule.partsPerMove;
+			}
 
-		delete creepMemory.bodyPartsType;
-		delete creepMemory.maximumSpawnCapacity;
-		delete creepMemory.minimumSpawnCapacity;
+			var id = getNextCreepId();
+			var bodyParts = bodyPartsFactory.getBodyParts(creepMemory.bodyPartsType, plannedSpawnCapacity, partsPerMove);
+			var bodyCost = spawnTools.calculateBodyCost(bodyParts);
 
-		var result = spawn.spawnCreep(bodyParts, id, {
-			memory: creepMemory,
-			energyStructures: findTools.findAllEnergyStructures(spawn)
-		});
+			if (bodyCost <= spawnCapacity) {
 
-		if (result === OK) {
+				delete creepMemory.bodyPartsType;
+				delete creepMemory.maximumSpawnCapacity;
+				delete creepMemory.minimumSpawnCapacity;
 
-			spawnResult.spawned = true;
-			var remoteRoomName = creepMemory.remoteRoomName ? "for remote " + creepMemory.remoteRoomName : "";
+				var result = spawn.spawnCreep(bodyParts, id, {
+					memory: creepMemory,
+					energyStructures: findTools.findAllEnergyStructures(spawn)
+				});
 
-			debug.highlight(` ${creepMemory.type} ${id} spawning at ${creepMemory.spawnedRoomName} ${remoteRoomName}
+				if (result === OK) {
+
+					spawnResult.spawned = true;
+					var remoteRoomName = creepMemory.remoteRoomName ? "for remote " + creepMemory.remoteRoomName : "";
+
+					debug.highlight(` ${creepMemory.type} ${id} spawning at ${creepMemory.spawnedRoomName} ${remoteRoomName}
 				cost: ${spawnTools.calculateBodyCost(bodyParts)}<br>memory:`, creepMemory);
 
-		} else if (ERR_NOT_ENOUGH_ENERGY && creepMemory.waitForSpawn) {
+				} else if (ERR_NOT_ENOUGH_ENERGY && creepMemory.waitForSpawn) {
 
-			spawnResult.waitForSpawn = true;
+					spawnResult.waitForSpawn = true;
 
+				} else {
+
+					debug.warning(`${creepMemory.type} did not spawn: ${result}`);
+				}
+			} else {
+
+				debug.warning(`${creepMemory.type} body cost: ${bodyCost} was more than the spawned capacity: ${spawnCapacity}`);
+			}
 		} else {
 
-			debug.warning(`${creepMemory.type} did not spawn: ${result}`);
+			debug.warning(`${creepMemory.type} planned spawn capacity: ${plannedSpawnCapacity} was more than the spawned capacity: ${spawnCapacity}`);
 		}
 	}
+
 
 	return spawnResult;
 }
@@ -219,7 +234,7 @@ function getNextCreepId() {
 
 	Memory.state.nextCreepId = nextCreepId;
 
-	return nextCreepId;
+	return "a" + nextCreepId;
 }
 
 

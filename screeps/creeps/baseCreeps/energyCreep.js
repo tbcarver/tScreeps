@@ -77,9 +77,6 @@ EnergyCreep.prototype.getInitialState = function() {
 
 EnergyCreep.initializeSpawnCreepMemory = function(creepMemory, room, spawn, creepsSpawnRule) {
 
-	creepMemory.canHarvest = creepsSpawnRule.canEnergyCreepsHarvest;
-	creepMemory.canPickup = creepsSpawnRule.canEnergyCreepsPickup;
-
 	return creepMemory;
 }
 

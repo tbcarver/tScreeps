@@ -16,7 +16,14 @@ ExtensionEnergizer.prototype.act = function() {
 
 ExtensionEnergizer.prototype.energyAct = function() {
 
-	var extension = Game.getObjectById(this.memory.extensions[this.memory.activeExtensionIndex].id);
+	var extension = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+		filter: structure => structure.structureType === STRUCTURE_TOWER &&
+			structure.energy < structure.energyCapacity
+	});
+
+	if (!extension) {
+		extension = Game.getObjectById(this.memory.extensions[this.memory.activeExtensionIndex].id);
+	}
 
 	if (extension) {
 
@@ -61,10 +68,11 @@ ExtensionEnergizer.initializeSpawnCreepMemory = function(room, spawn, creepsSpaw
 	});
 
 	var occupiedPositions = getCreepExtensionPositions();
+	
 	availableExtensions = extensions.filter(extension => {
 
 		var isExtensionOccupied = occupiedPositions.some(occupiedPos => occupiedPos.x === extension.pos.x &&
-			occupiedPos.y === extension.pos.y)
+			occupiedPos.y === extension.pos.y && occupiedPos.roomName === extension.pos.roomName)
 
 		return !isExtensionOccupied;
 	});

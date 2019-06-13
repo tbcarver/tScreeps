@@ -6,7 +6,11 @@ function RemoteSpawnedStorageEnergizer(creep) {
 
 	RemoteCreep.call(this, creep);
 
-	this.canPickup = this.creepsSpawnRule.canRemoteStorageEnergizersPickup;
+	this.canPickup = false;
+
+	if (this.creepsSpawnRule) {
+		this.canPickup = this.creepsSpawnRule.canRemoteStorageEnergizersPickup;
+	}
 }
 
 RemoteSpawnedStorageEnergizer.prototype = Object.create(RemoteCreep.prototype);

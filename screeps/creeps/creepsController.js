@@ -2,7 +2,7 @@
 var spawnTools = require("../tools/spawnTools");
 var creepsFactory = require("./creepsFactory");
 var creepsSpawner = require("./creepsSpawner");
-var { creepsToSpawnTotal } = require("../rules");
+var { creepsToSpawnTotal, spawnedRoomsCreepsToSpawnTotal } = require("../rules");
 
 var creepsController = {};
 
@@ -13,35 +13,38 @@ creepsController.tick = function() {
 	var roomsCurrentSpawnedCounts = {};
 	var displayRoomsCurrentSpawnedCounts = {};
 	var creepsTotal = 0;
+	var spawnedRoomNamesCreepsTotal = {};
 
 	for (var index in Game.creeps) {
 
 		var creep = Game.creeps[index];
 
-		if (!creep.spawning) {
+		try {
 
-			try {
+			var baseCreep = creepsFactory.buildCreep(creep);
 
-				var baseCreep = creepsFactory.buildCreep(creep);
-				isDying = baseCreep.isDying;
-
-				// debug.temp(`creep act: type: ${creep.memory.type} ticks: ${creep.ticksToLive}`);
+			// debug.temp(`creep act: type: ${creep.memory.type} ticks: ${creep.ticksToLive}`);+
+			if (!creep.spawning) {
 				baseCreep.act();
+			}
 
-			} catch (error) {
+		} catch (error) {
 
-				if (error instanceof Error) {
+			if (error instanceof Error) {
 
-					let sourceMap = require("../sourceMap");
-					sourceMap.logStackTrace(error);
+				let sourceMap = require("../sourceMap");
+				sourceMap.logStackTrace(error);
 
-				} else {
-					throw error;
-				}
+			} else {
+				throw error;
 			}
 		}
 
 		creepsTotal++;
+		if (!spawnedRoomNamesCreepsTotal[baseCreep.spawnedRoomName]) {
+			spawnedRoomNamesCreepsTotal[baseCreep.spawnedRoomName] = 0;
+		}
+		spawnedRoomNamesCreepsTotal[baseCreep.spawnedRoomName]++;
 
 		spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creep.memory.type, creep.memory.spawnedRoomName,
 			creep.memory.remoteRoomName);
@@ -54,7 +57,13 @@ creepsController.tick = function() {
 	}
 
 	creepsSpawner.spawnCreep(roomsCurrentSpawnedCounts);
-	debugObjectTable.muted(displayRoomsCurrentSpawnedCounts, creepsTotal, `total creeps: ${creepsTotal}/${creepsToSpawnTotal} stats... `);
+
+	var displayCreepsTotal = `total creeps: ${creepsTotal}/${creepsToSpawnTotal} `;
+	for (var spawnedRoomName in spawnedRoomsCreepsToSpawnTotal) {
+		displayCreepsTotal += `, ${spawnedRoomName}: ${spawnedRoomNamesCreepsTotal[spawnedRoomName]}/${spawnedRoomsCreepsToSpawnTotal[spawnedRoomName]} `;
+	}
+
+	debugObjectTable.muted(displayRoomsCurrentSpawnedCounts, creepsTotal, displayCreepsTotal + " stats...");
 }
 
 function cleanUpTheDead() {
