@@ -1,14 +1,14 @@
 
 var BaseCreep = require("../baseCreeps/baseCreep");
 
-function RangedDefender(creep) {
+function RangedAttacker(creep) {
 
 	BaseCreep.call(this, creep);
 }
 
-RangedDefender.prototype = Object.create(BaseCreep.prototype);
+RangedAttacker.prototype = Object.create(BaseCreep.prototype);
 
-RangedDefender.prototype.act = function() {
+RangedAttacker.prototype.act = function() {
 
 	if (!BaseCreep.prototype.act.call(this)) {
 
@@ -30,20 +30,20 @@ RangedDefender.prototype.act = function() {
 	}
 }
 
-RangedDefender.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule, currentSpawnedCount) {
+RangedAttacker.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule, currentSpawnedCount) {
 
 	var creepMemory;
 
 	if (!rules.maximumTroopersSpawnCapacity) {
-		rules.maximumRangedDefenderSpawnCapacity = 800;
+		rules.maximumRangedAttackerSpawnCapacity = 800;
 	}
 
 	if (creepsSpawnRule.minDefendersWaiting && currentSpawnedCount < creepsSpawnRule.minDefendersWaiting) {
 
 		creepMemory = {
-			type: "rangedDefender",
+			type: "rangedAttacker",
 			bodyPartsType: "rangedAttack",
-			maximumSpawnCapacity: rules.maximumRangedDefenderSpawnCapacity,
+			maximumSpawnCapacity: rules.maximumRangedAttackerSpawnCapacity,
 		}
 	}
 
@@ -54,9 +54,9 @@ RangedDefender.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRul
 		if (targets.length > 0) {
 
 			creepMemory = {
-				type: "rangedDefender",
+				type: "rangedAttacker",
 				bodyPartsType: "rangedAttack",
-				maximumSpawnCapacity: rules.maximumRangedDefenderSpawnCapacity,
+				maximumSpawnCapacity: rules.maximumRangedAttackerSpawnCapacity,
 			}
 		}
 	}
@@ -65,4 +65,4 @@ RangedDefender.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRul
 }
 
 
-module.exports = RangedDefender
+module.exports = RangedAttacker

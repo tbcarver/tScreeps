@@ -19,11 +19,19 @@ rangedAttackStrategy.getBodyPartsObject = function(spawnCapacity) {
 		};
 	}
 
-	if (spawnCapacity >= 600) {
+	if (spawnCapacity >= 500) {
+		bodyPartsObject = {
+			move: 3,
+			rangedAttack: 2,
+			tough: 5,
+		};
+	}
+
+	if (spawnCapacity >= 700) {
 		bodyPartsObject = {
 			move: 4,
-			rangedAttack: 2,
-			tough: 10,
+			rangedAttack: 3,
+			tough: 5,
 		};
 	}
 
