@@ -3,7 +3,7 @@ var findTools = require("../tools/findTools");
 var roomTools = require("../tools/roomTools");
 var spawnTools = require("../tools/spawnTools");
 var creepConstructors = require("./creepsConstructors");
-var { rules, creepsSpawnRules } = require("../rules");
+var { rules, creepsSpawnRules } = require("../rules/rules");
 var bodyPartsFactory = require("./bodies/bodyPartsFactory");
 
 var creepsSpawner = {};

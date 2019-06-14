@@ -1,6 +1,4 @@
 
-var bodyPartsTools = require("./bodyPartsTools");
-
 var rangedAttackStrategy = {};
 
 rangedAttackStrategy.getBodyPartsObject = function(spawnCapacity) {

@@ -1,4 +1,6 @@
 
+var roomTools = require("../../tools/roomTools");
+
 var BaseCreep = require("./baseCreep");
 
 function RemoteCreep(creep) {
@@ -20,16 +22,18 @@ RemoteCreep.prototype.act = function() {
 
 		if (this.state === "movingToSpawnedRoom") {
 
-			if (this.creep.room.name === this.spawnedRoomName) {
+			if (!(rules.evacuateRemoteRooms && !this.isTrooper && roomTools.isRoomUnderAttack(this.remoteRoomName))) {
+				if (this.creep.room.name === this.spawnedRoomName) {
 
-				this.arrivedAtSpawnedRoom();
-				// NOTE: Creep must step off the exit edge of the room immediately
-				//  or will be sent back to the other room
-				this.moveIntoRoom();
+					this.arrivedAtSpawnedRoom();
+					// NOTE: Creep must step off the exit edge of the room immediately
+					//  or will be sent back to the other room
+					this.moveIntoRoom();
 
-			} else {
+				} else {
 
-				this.moveToExit(this.spawnedRoomName);
+					this.moveToExit(this.spawnedRoomName);
+				}
 			}
 		} else if (this.state === "movingToRemoteRoom") {
 
@@ -42,8 +46,7 @@ RemoteCreep.prototype.act = function() {
 				this.memory.takeStepsIntoRoom = 2;
 
 			} else {
-
-				if (this.isTrooper || !Game.rooms[this.remoteRoomName] || Game.rooms[this.remoteRoomName].find(FIND_HOSTILE_CREEPS).length === 0) {
+				if (!(rules.evacuateRemoteRooms && !this.isTrooper && roomTools.isRoomUnderAttack(this.remoteRoomName))) {
 
 					this.moveToExit(this.remoteRoomName);
 				}

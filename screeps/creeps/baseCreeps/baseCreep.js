@@ -1,6 +1,6 @@
 
 var roomTools = require("../../tools/roomTools");
-var { rules, roomNamesCreepsSpawnRules } = require("../../rules");
+var { rules, roomNamesCreepsSpawnRules } = require("../../rules/rules");
 
 function BaseCreep(creep) {
 

@@ -40,7 +40,7 @@ RangedAttacker.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRul
 		rules.maximumRangedAttackerSpawnCapacity = 800;
 	}
 
-	if (creepsSpawnRule.minDefendersWaiting && currentSpawnedCount < creepsSpawnRule.minDefendersWaiting) {
+	if (creepsSpawnRule.minTroopsWaiting && currentSpawnedCount < creepsSpawnRule.minTroopsWaiting) {
 
 		creepMemory = {
 			type: "rangedAttacker",

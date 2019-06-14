@@ -2,7 +2,7 @@
 var spawnTools = require("../tools/spawnTools");
 var creepsFactory = require("./creepsFactory");
 var creepsSpawner = require("./creepsSpawner");
-var { creepsToSpawnTotal, spawnedRoomsCreepsToSpawnTotal } = require("../rules");
+var { creepsToSpawnTotal, spawnedRoomsCreepsToSpawnTotal } = require("../rules/rules");
 
 var creepsController = {};
 
