@@ -1,8 +1,9 @@
 
 var findTools = require("../tools/findTools");
+var roomTools = require("../tools/roomTools");
 var spawnTools = require("../tools/spawnTools");
 var creepConstructors = require("./creepsConstructors");
-var { creepsSpawnRules } = require("../rules");
+var { rules, creepsSpawnRules } = require("../rules");
 var bodyPartsFactory = require("./bodies/bodyPartsFactory");
 
 var creepsSpawner = {};
@@ -155,66 +156,69 @@ function spawnCreep(spawn, creepMemory, creepsSpawnRule) {
 		spawned: false
 	};
 
-	var spawnCapacity = spawnTools.calculateSpawnCapacity(spawn);
+	if (!(rules.evacuateRemoteRooms && !creepMemory.isTrooper && roomTools.isRoomUnderAttack(creepMemory.remoteRoomName))) {
 
-	if ((creepsSpawnRule.waitForMinimumSpawnCapacity === "undefined" || creepsSpawnRule.waitForMinimumSpawnCapacity) &&
-		creepMemory.minimumSpawnCapacity && spawnCapacity < creepMemory.minimumSpawnCapacity) {
+		var spawnCapacity = spawnTools.calculateSpawnCapacity(spawn);
 
-		spawnResult.waitForSpawn = true;
+		if ((creepsSpawnRule.waitForMinimumSpawnCapacity === "undefined" || creepsSpawnRule.waitForMinimumSpawnCapacity) &&
+			creepMemory.minimumSpawnCapacity && spawnCapacity < creepMemory.minimumSpawnCapacity) {
 
-	} else {
+			spawnResult.waitForSpawn = true;
 
-		var plannedSpawnCapacity = spawnCapacity;
-		if (creepMemory.maximumSpawnCapacity && spawnCapacity > creepMemory.maximumSpawnCapacity) {
+		} else {
 
-			plannedSpawnCapacity = creepMemory.maximumSpawnCapacity;
-		}
+			var plannedSpawnCapacity = spawnCapacity;
+			if (creepMemory.maximumSpawnCapacity && spawnCapacity > creepMemory.maximumSpawnCapacity) {
 
-		if (plannedSpawnCapacity <= spawnCapacity) {
-
-			var partsPerMove = 2;
-			if (creepsSpawnRule.partsPerMove) {
-				partsPerMove = creepsSpawnRule.partsPerMove;
+				plannedSpawnCapacity = creepMemory.maximumSpawnCapacity;
 			}
 
-			var id = getNextCreepId();
-			var bodyParts = bodyPartsFactory.getBodyParts(creepMemory.bodyPartsType, plannedSpawnCapacity, partsPerMove);
-			var bodyCost = spawnTools.calculateBodyCost(bodyParts);
+			if (plannedSpawnCapacity <= spawnCapacity) {
 
-			if (bodyCost <= spawnCapacity) {
+				var partsPerMove = 2;
+				if (creepsSpawnRule.partsPerMove) {
+					partsPerMove = creepsSpawnRule.partsPerMove;
+				}
 
-				delete creepMemory.bodyPartsType;
-				delete creepMemory.maximumSpawnCapacity;
-				delete creepMemory.minimumSpawnCapacity;
+				var id = getNextCreepId();
+				var bodyParts = bodyPartsFactory.getBodyParts(creepMemory.bodyPartsType, plannedSpawnCapacity, partsPerMove);
+				var bodyCost = spawnTools.calculateBodyCost(bodyParts);
 
-				var result = spawn.spawnCreep(bodyParts, id, {
-					memory: creepMemory,
-					energyStructures: findTools.findAllEnergyStructures(spawn)
-				});
+				if (bodyCost <= spawnCapacity) {
 
-				if (result === OK) {
+					delete creepMemory.bodyPartsType;
+					delete creepMemory.maximumSpawnCapacity;
+					delete creepMemory.minimumSpawnCapacity;
 
-					spawnResult.spawned = true;
-					var remoteRoomName = creepMemory.remoteRoomName ? "for remote " + creepMemory.remoteRoomName : "";
+					var result = spawn.spawnCreep(bodyParts, id, {
+						memory: creepMemory,
+						energyStructures: findTools.findAllEnergyStructures(spawn)
+					});
 
-					debug.highlight(` ${creepMemory.type} ${id} spawning at ${creepMemory.spawnedRoomName} ${remoteRoomName}
-				cost: ${spawnTools.calculateBodyCost(bodyParts)}<br>memory:`, creepMemory);
+					if (result === OK) {
 
-				} else if (ERR_NOT_ENOUGH_ENERGY && creepMemory.waitForSpawn) {
+						spawnResult.spawned = true;
+						var remoteRoomName = creepMemory.remoteRoomName ? "for remote " + creepMemory.remoteRoomName : "";
 
-					spawnResult.waitForSpawn = true;
+						debug.highlight(` ${creepMemory.type} ${id} spawning at ${creepMemory.spawnedRoomName} ${remoteRoomName}
+							cost: ${spawnTools.calculateBodyCost(bodyParts)}<br>memory:`, creepMemory);
 
+					} else if (ERR_NOT_ENOUGH_ENERGY && creepMemory.waitForSpawn) {
+
+						spawnResult.waitForSpawn = true;
+
+					} else {
+
+						debug.warning(`${creepMemory.type} did not spawn: ${result}`);
+					}
 				} else {
 
-					debug.warning(`${creepMemory.type} did not spawn: ${result}`);
+					debug.warning(`${creepMemory.type} body cost: ${bodyCost} was more than the spawned capacity: ${spawnCapacity}`);
 				}
 			} else {
 
-				debug.warning(`${creepMemory.type} body cost: ${bodyCost} was more than the spawned capacity: ${spawnCapacity}`);
+				debug.warning(`${creepMemory.type} planned spawn capacity: ${plannedSpawnCapacity} was more than the spawned capacity: ${spawnCapacity}`);
 			}
-		} else {
-
-			debug.warning(`${creepMemory.type} planned spawn capacity: ${plannedSpawnCapacity} was more than the spawned capacity: ${spawnCapacity}`);
 		}
 	}
 

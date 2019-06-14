@@ -1,5 +1,6 @@
 
-var { roomNamesCreepsSpawnRules } = require("../../rules");
+var roomTools = require("../../tools/roomTools");
+var { rules, roomNamesCreepsSpawnRules } = require("../../rules");
 
 function BaseCreep(creep) {
 
@@ -10,6 +11,7 @@ function BaseCreep(creep) {
 	this.spawnedRoomName = creep.memory.spawnedRoomName;
 	this.remoteRoomName = creep.memory.remoteRoomName;
 	this.isRemoteCreep = false;
+	this.isTrooper = false;
 
 	Object.defineProperty(this, 'state', {
 		get: function() {
@@ -88,6 +90,10 @@ BaseCreep.prototype.act = function() {
 
 		acted = true;
 
+	} else if (rules.evacuateRemoteRooms && !this.isTrooper && this.state !== "movingToSpawnedRoom" && this.creep.room.name === this.remoteRoomName && roomTools.isRoomUnderAttack(this.creep.room.name)){
+		this.state = "movingToSpawnedRoom";
+		acted = true;
+
 	} else if (this.memory.takeStepsIntoRoom && this.memory.takeStepsIntoRoom > 0) {
 
 		this.moveIntoRoom();
@@ -97,6 +103,7 @@ BaseCreep.prototype.act = function() {
 	} else if (!this.isRemoteCreep) {
 
 		if (this.state === "movingToRemoteRoom") {
+
 
 			if (this.creep.room.name === this.remoteRoomName) {
 
@@ -109,10 +116,14 @@ BaseCreep.prototype.act = function() {
 				acted = true;
 
 			} else {
-				this.moveToExit(this.remoteRoomName);
+
+				if (!(rules.evacuateRemoteRooms && !this.isTrooper && roomTools.isRoomUnderAttack(this.remoteRoomName))) {
+					this.moveToExit(this.remoteRoomName);
+				}
+
 				acted = true;
 			}
-		} else if (this.state === "movingToRoom") {
+		} else if (this.state === "movingToSpawnedRoom") {
 
 			if (this.creep.room.name === this.spawnedRoomName) {
 
@@ -133,7 +144,7 @@ BaseCreep.prototype.act = function() {
 			acted = true;
 
 		} else if (!this.remoteRoomName && this.creep.room.name !== this.spawnedRoomName) {
-			this.state = "movingToRoom";
+			this.state = "movingToSpawnedRoom";
 			acted = true;
 		}
 	}

@@ -4,6 +4,8 @@ var BaseCreep = require("../baseCreeps/baseCreep");
 function RangedAttacker(creep) {
 
 	BaseCreep.call(this, creep);
+
+	this.isTrooper = true;
 }
 
 RangedAttacker.prototype = Object.create(BaseCreep.prototype);
@@ -44,6 +46,7 @@ RangedAttacker.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRul
 			type: "rangedAttacker",
 			bodyPartsType: "rangedAttack",
 			maximumSpawnCapacity: rules.maximumRangedAttackerSpawnCapacity,
+			isTrooper: true,
 		}
 	}
 
@@ -57,6 +60,7 @@ RangedAttacker.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRul
 				type: "rangedAttacker",
 				bodyPartsType: "rangedAttack",
 				maximumSpawnCapacity: rules.maximumRangedAttackerSpawnCapacity,
+				isTrooper: true,
 			}
 		}
 	}

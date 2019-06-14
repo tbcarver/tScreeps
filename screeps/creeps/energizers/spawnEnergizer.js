@@ -23,7 +23,8 @@ SpawnEnergizer.prototype.energyAct = function() {
 	if (!targetStructure) {
 
 		var targetStructure = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-			filter: { structureType: STRUCTURE_SPAWN }
+			filter: structure => structure.structureType === STRUCTURE_SPAWN &&
+				structure.energy < structure.energyCapacity
 		});
 	}
 
@@ -32,11 +33,11 @@ SpawnEnergizer.prototype.energyAct = function() {
 		var transferResult = this.creep.transfer(targetStructure, RESOURCE_ENERGY);
 
 		if (transferResult == ERR_NOT_IN_RANGE) {
-	
+
 			this.creep.moveTo(targetStructure);
-	
+
 		} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .20) {
-	
+
 			this.state = "harvesting";
 		}
 	} else {

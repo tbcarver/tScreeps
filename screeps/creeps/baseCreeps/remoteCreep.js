@@ -43,7 +43,10 @@ RemoteCreep.prototype.act = function() {
 
 			} else {
 
-				this.moveToExit(this.remoteRoomName);
+				if (this.isTrooper || !Game.rooms[this.remoteRoomName] || Game.rooms[this.remoteRoomName].find(FIND_HOSTILE_CREEPS).length === 0) {
+
+					this.moveToExit(this.remoteRoomName);
+				}
 			}
 		} else if (this.creep.room.name === this.spawnedRoomName) {
 

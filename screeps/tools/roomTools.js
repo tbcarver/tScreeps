@@ -13,6 +13,15 @@ var adjacentDifferentials = [
 	{ x: 1, y: 1 },
 ];
 
+roomTools.isRoomUnderAttack = function(roomName) {
+
+	if (Game.rooms[roomName] && Game.rooms[roomName].find(FIND_HOSTILE_CREEPS).length > 0) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 roomTools.isDropContainer = function(container) {
 
 	var isDropContainer = false;

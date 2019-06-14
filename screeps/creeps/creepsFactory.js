@@ -9,6 +9,11 @@ creepsFactory.buildCreep = function(creep) {
 
 		var constructor = creepsConstructors[creep.memory.type];
 		var baseCreep = new constructor(creep);
+
+		// TEMP
+		if (baseCreep.state === "movingToRoom") {
+			baseCreep.state = "movingToSpawnedRoom";
+		}
 	
 		// if (creep.memory.type === "builder") {
 		// 	if (baseCreep.remoteRoomName === "W7N10") {
