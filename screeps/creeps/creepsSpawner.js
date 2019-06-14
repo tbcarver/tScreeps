@@ -1,6 +1,6 @@
 
 var findTools = require("../tools/findTools");
-var roomTools = require("../tools/roomTools");
+var enemyTools = require("../tools/enemyTools");
 var spawnTools = require("../tools/spawnTools");
 var creepConstructors = require("./creepsConstructors");
 var { rules, creepsSpawnRules } = require("../rules/rules");
@@ -156,7 +156,7 @@ function spawnCreep(spawn, creepMemory, creepsSpawnRule) {
 		spawned: false
 	};
 
-	if (!(rules.evacuateRemoteRooms && !creepMemory.isTrooper && roomTools.isRoomUnderAttack(creepMemory.remoteRoomName))) {
+	if (!(rules.evacuateRemoteRooms && !creepMemory.isTrooper && enemyTools.hasRoomEnemies(creepMemory.remoteRoomName))) {
 
 		var spawnCapacity = spawnTools.calculateSpawnCapacity(spawn);
 

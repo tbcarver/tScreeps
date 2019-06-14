@@ -110,8 +110,11 @@ module.exports = {
 		{
 			roomName: "W7N9",
 			spawnOrderMaxSpawnedCounts: [
+				{ healer: 2 },
+				{ rangedAttacker: 5 },
 				{ controllerEnergizer: 12 },
 			],
+			isMobTroopers: true,
 		},
 	]
 }

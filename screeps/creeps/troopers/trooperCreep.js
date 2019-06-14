@@ -1,0 +1,112 @@
+
+var enemyTools = require("../../tools/enemyTools");
+var BaseCreep = require("../baseCreeps/baseCreep");
+
+function TrooperCreep(creep) {
+
+	BaseCreep.call(this, creep);
+
+	this.isTrooper = true;
+	this.isMobTrooper = this.memory.isMobTrooper;
+	this.mobRoomName = Memory.state.currentMobAttackRoomName;
+
+	if (this.isMobTrooper) {
+		this.suppressReturnToRooms = true;
+	}
+}
+
+TrooperCreep.prototype = Object.create(BaseCreep.prototype);
+
+TrooperCreep.prototype.act = function() {
+
+	if (!BaseCreep.prototype.act.call(this)) {
+
+		var acted = false;
+
+		if (this.isMobTrooper) {
+			if (this.mobRoomName === null && this.creep.room.name !== this.spawnedRoomName) {
+
+				this.state = "movingToSpawnedRoom";
+				acted = true;
+
+			} else if (this.mobRoomName === null && this.creep.room.name === this.spawnedRoomName) {
+
+				this.state = "trooping";
+
+			} else if (this.state === "movingToMobRoom") {
+
+				if (this.creep.room.name === this.mobRoomName) {
+					// NOTE: Creep must step off the exit edge of the room immediately
+					//  or will be sent back to the other room
+					this.moveIntoRoom();
+					this.memory.takeStepsIntoRoom = 2;
+					this.state = "trooping";
+
+				} else {
+					this.moveToExit(this.mobRoomName);
+				}
+
+				acted = true;
+			} else if (this.creep.room.name != this.mobRoomName) {
+
+				this.state = "movingToMobRoom"
+				acted = true;
+			}
+		}
+
+		if (!acted) {
+
+			if (enemyTools.hasRoomEnemies(this.creep.room.name)) {
+
+				this.attack();
+
+			} else {
+
+				if (Game.flags["post_" + this.creep.room.name]) {
+					this.creep.moveTo(Game.flags["post_" + this.creep.room.name].pos);
+				} else {
+					this.creep.moveTo(this.creep.room.controller);
+				}
+			}
+		}
+	}
+}
+
+TrooperCreep.prototype.attack = function() {
+}
+
+TrooperCreep.prototype.getInitialState = function() {
+	return "trooping";
+}
+
+TrooperCreep.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule, maximumSpawnCapacity) {
+
+	var creepMemory;
+	var initializeCreepMemory = false;
+	var isMobTrooper = (creepsSpawnRule && creepsSpawnRule.isMobTroopers) ? true : false;
+
+	if (!maximumSpawnCapacity) {
+		maximumSpawnCapacity = 800;
+	}
+
+	if (isMobTrooper) {
+		initializeCreepMemory = true;
+	} else if (creepsSpawnRule.minTroopersWaiting && currentSpawnedCount < creepsSpawnRule.minTroopersWaiting) {
+		initializeCreepMemory = true;
+	} else if (enemyTools.hasRoomEnemies(room.name)) {
+		initializeCreepMemory = true;
+	}
+
+	if (initializeCreepMemory) {
+		creepMemory = {
+			maximumSpawnCapacity: maximumSpawnCapacity,
+			isTrooper: true,
+			isMobTrooper: isMobTrooper,
+		}
+	}
+
+	return creepMemory;
+}
+
+
+module.exports = TrooperCreep

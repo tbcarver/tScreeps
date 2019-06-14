@@ -1,6 +1,5 @@
 
 var BaseCreep = require("../baseCreeps/baseCreep");
-var roomTools = require("../../tools/findTools");
 var roomTools = require("../../tools/roomTools");
 
 function ContainerHarvester(creep) {

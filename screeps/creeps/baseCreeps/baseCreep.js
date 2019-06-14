@@ -1,5 +1,5 @@
 
-var roomTools = require("../../tools/roomTools");
+var enemyTools = require("../../tools/enemyTools");
 var { rules, roomNamesCreepsSpawnRules } = require("../../rules/rules");
 
 function BaseCreep(creep) {
@@ -96,7 +96,7 @@ BaseCreep.prototype.act = function() {
 		this.memory.takeStepsIntoRoom--;
 		acted = true;
 
-	} else if (rules.evacuateRemoteRooms && !this.isTrooper && this.state !== "movingToSpawnedRoom" && this.creep.room.name === this.remoteRoomName && roomTools.isRoomUnderAttack(this.creep.room.name)){
+	} else if (rules.evacuateRemoteRooms && !this.isTrooper && this.state !== "movingToSpawnedRoom" && this.creep.room.name === this.remoteRoomName && enemyTools.hasRoomEnemies(this.creep.room.name)){
 		this.state = "movingToSpawnedRoom";
 		acted = true;
 
@@ -117,7 +117,7 @@ BaseCreep.prototype.act = function() {
 
 			} else {
 
-				if (!(rules.evacuateRemoteRooms && !this.isTrooper && roomTools.isRoomUnderAttack(this.remoteRoomName))) {
+				if (!(rules.evacuateRemoteRooms && !this.isTrooper && enemyTools.hasRoomEnemies(this.remoteRoomName))) {
 					this.moveToExit(this.remoteRoomName);
 				}
 
@@ -139,11 +139,11 @@ BaseCreep.prototype.act = function() {
 				this.moveToExit(this.spawnedRoomName);
 				acted = true;
 			}
-		} else if (this.remoteRoomName && this.creep.room.name !== this.remoteRoomName) {
+		} else if (!this.suppressReturnToRooms && this.remoteRoomName && this.creep.room.name !== this.remoteRoomName) {
 			this.state = "movingToRemoteRoom";
 			acted = true;
 
-		} else if (!this.remoteRoomName && this.creep.room.name !== this.spawnedRoomName) {
+		} else if (!this.suppressReturnToRooms && !this.remoteRoomName && this.creep.room.name !== this.spawnedRoomName) {
 			this.state = "movingToSpawnedRoom";
 			acted = true;
 		}
@@ -160,6 +160,15 @@ BaseCreep.prototype.moveToExit = function(exitRoomName) {
 
 	var exitFlag = Game.flags[`exit-from-${this.creep.room.name}-to-${exitRoomName}`];
 	var isAtFlag = false;
+
+	if (!exitFlag) {
+
+		var routes = Game.map.findRoute(this.creep.room.name, exitRoomName);
+
+		if (routes.length > 0) {
+			exitFlag = Game.flags[`exit-from-${this.creep.room.name}-to-${routes[0].room}`];
+		}
+	}
 
 	if (exitFlag) {
 
@@ -188,7 +197,6 @@ BaseCreep.prototype.moveToExit = function(exitRoomName) {
 		} else {
 			debug.warning(`${this.type} can't find an exit direction to ${exitRoomName}`);
 		}
-
 	}
 }
 

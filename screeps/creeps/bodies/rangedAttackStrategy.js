@@ -6,70 +6,38 @@ rangedAttackStrategy.getBodyPartsObject = function(spawnCapacity) {
 	var bodyPartsObject = {
 		move: 2,
 		rangedAttack: 1,
-		tough: 5,
+		tough: 1,
 	};
 
-	if (spawnCapacity >= 400) {
-		bodyPartsObject = {
-			move: 3,
-			rangedAttack: 1,
-			tough: 10,
-		};
-	}
-
-	if (spawnCapacity >= 500) {
-		bodyPartsObject = {
-			move: 3,
-			rangedAttack: 2,
-			tough: 5,
-		};
-	}
-
-	if (spawnCapacity >= 700) {
+	if (spawnCapacity >= 380) {
 		bodyPartsObject = {
 			move: 4,
-			rangedAttack: 3,
-			tough: 5,
-		};
-	}
-
-	if (spawnCapacity >= 800) {
-		bodyPartsObject = {
-			move: 9,
 			rangedAttack: 1,
-			tough: 17,
+			tough: 3,
 		};
 	}
 
-	if (spawnCapacity >= 1000) {
+	if (spawnCapacity >= 520) {
 		bodyPartsObject = {
-			move: 10,
-			rangedAttack: 3,
-			tough: 15,
+			move: 4,
+			rangedAttack: 2,
+			tough: 2,
 		};
 	}
 
-	if (spawnCapacity >= 1200) {
+	if (spawnCapacity >= 720) {
 		bodyPartsObject = {
-			move: 11,
+			move: 5,
 			rangedAttack: 3,
-			tough: 20,
+			tough: 2,
 		};
 	}
 
-	if (spawnCapacity >= 1400) {
+	if (spawnCapacity >= 920) {
 		bodyPartsObject = {
-			move: 13,
-			rangedAttack: 3,
-			tough: 30,
-		};
-	}
-
-	if (spawnCapacity >= 1600) {
-		bodyPartsObject = {
-			move: 17,
-			rangedAttack: 3,
-			tough: 30,
+			move: 6,
+			rangedAttack: 4,
+			tough: 2,
 		};
 	}
 

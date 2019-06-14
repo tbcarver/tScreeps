@@ -78,9 +78,15 @@ module.exports = {
 			canEnergyCreepsHarvest: false,
 			canEnergyCreepsPickup: false,
 		},
-		// Overflow		
+		// Overflow
 		{
 			roomName: "W7N10",
+			spawnOrderMaxSpawnedCounts: [
+				{ controllerEnergizer: 5 },
+			],
+		},
+		{
+			roomName: "W7N9",
 			spawnOrderMaxSpawnedCounts: [
 				{ controllerEnergizer: 5 },
 			],

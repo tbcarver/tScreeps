@@ -1,5 +1,5 @@
 
-var roomTools = require("../../tools/roomTools");
+var enemyTools = require("../../tools/enemyTools");
 
 var BaseCreep = require("./baseCreep");
 
@@ -40,7 +40,7 @@ RemoteCreep.prototype.act = function() {
 				this.arrivedAtRemoteRoom();
 
 			} else {
-				if (!(rules.evacuateRemoteRooms && !this.isTrooper && roomTools.isRoomUnderAttack(this.remoteRoomName))) {
+				if (!(rules.evacuateRemoteRooms && !this.isTrooper && enemyTools.hasRoomEnemies(this.remoteRoomName))) {
 
 					this.moveToExit(this.remoteRoomName);
 				}

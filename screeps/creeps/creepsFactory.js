@@ -14,15 +14,18 @@ creepsFactory.buildCreep = function(creep) {
 		if (baseCreep.state === "movingToRoom") {
 			baseCreep.state = "movingToSpawnedRoom";
 		}
-	
-		// if (creep.memory.type === "builder") {
-		// 	if (baseCreep.remoteRoomName === "W7N10") {
-		// 		creep.memory.state = "suicide";
-		// 		// creep.suicide();
-		// // 		// debug.temp("creep:", creep)
-		// // 		// debug.temp("creep memory:", creep.memory)
-		// 	}
-		// }
+
+		if (creep.name === "a31078") {
+			// if (creep.memory.type === "builder") {
+			// 	if (baseCreep.remoteRoomName === "W7N10") {
+			// 		creep.memory.state = "suicide";
+			// 		// creep.suicide();
+			// // 		// debug.temp("creep:", creep)
+					debug.temp("creep memory:", creep.memory)
+			// 	}
+			// }
+			
+		}
 
 	} else {
 		debug.error("Creep constructor not found for creep type: " + creep.memory.type);

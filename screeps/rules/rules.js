@@ -1,6 +1,7 @@
 // TODO: error handling for bad creep type
 
 var rules = {
+	maximumHealerSpawnCapacity: 700,
 	maximumRangedAttackerSpawnCapacity: 700,
 	evacuateRemoteRooms: true,
 }
