@@ -23,7 +23,7 @@ Defender.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule, cur
 		rules.maximumDefenderSpawnCapacity = 800;
 	}
 
-	if (creepsSpawnRule.minTroopsWaiting && currentSpawnedCount < creepsSpawnRule.minTroopsWaiting) {
+	if (creepsSpawnRule.minTroopersWaiting && currentSpawnedCount < creepsSpawnRule.minTroopersWaiting) {
 
 		creepMemory = {
 			type: "defender",

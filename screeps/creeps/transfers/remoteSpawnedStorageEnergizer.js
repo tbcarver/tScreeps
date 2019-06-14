@@ -36,22 +36,35 @@ RemoteSpawnedStorageEnergizer.prototype.spawnedRoomAct = function() {
 
 	} else if (this.state === "energizing") {
 
-		var storage = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-			filter: storage => (storage.structureType === STRUCTURE_CONTAINER ||
-				storage.structureType === STRUCTURE_STORAGE) &&
-				(this.spawnedRoomCreepsSpawnRule.canEnergizersTransferToDropContainers || !roomTools.isDropContainer(storage)) &&
-				storage.storeCapacity - storage.store[RESOURCE_ENERGY] > this.creep.carry[RESOURCE_ENERGY]
-		});
+		if (this.creepsSpawnRule.canEnergizersTransferToStorageOnly) {
 
-		var transferResult = this.creep.transfer(storage, RESOURCE_ENERGY);
+			var storage = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+				filter: { structureType: STRUCTURE_STORAGE }
+			});
 
-		if (transferResult == ERR_NOT_IN_RANGE) {
+		} else {
 
-			this.creep.moveTo(storage);
+			var storage = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+				filter: storage => (storage.structureType === STRUCTURE_CONTAINER ||
+					storage.structureType === STRUCTURE_STORAGE) &&
+					(this.spawnedRoomCreepsSpawnRule.canEnergizersTransferToDropContainers || !roomTools.isDropContainer(storage)) &&
+					storage.storeCapacity - storage.store[RESOURCE_ENERGY] > this.creep.carry[RESOURCE_ENERGY]
+			});
+		}
 
-		} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
-
-			this.moveToRemoteRoom();
+		if (storage) {
+			var transferResult = this.creep.transfer(storage, RESOURCE_ENERGY);
+	
+			if (transferResult == ERR_NOT_IN_RANGE) {
+	
+				this.creep.moveTo(storage);
+	
+			} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+	
+				this.moveToRemoteRoom();
+			}
+		} else {			
+			debug.warning(`${this.type} can't find any storage`);
 		}
 	}
 }

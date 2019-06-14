@@ -6,33 +6,39 @@ towersController.tick = function() {
 	for (var roomName in Game.rooms) {
 
 		var room = Game.rooms[roomName];
-
 		var towers = room.find(FIND_STRUCTURES, {
 			filter: structure => structure.structureType === STRUCTURE_TOWER
 		});
 
 		if (towers.length > 0) {
 
-			for (var tower of towers) {
-				this.act(tower);
+			var enemies = room.find(FIND_HOSTILE_CREEPS);
+			if (enemies.length > 0) {
+
+				for (var tower of towers) {
+					tower.attack(enemies[0]);
+				}
+			} else {
+
+				var structures = room.find(FIND_STRUCTURES, {
+					filter: structure => structure.hits < structure.hitsMax &&
+						!(structure.structureType === STRUCTURE_WALL || structure.structureType === STRUCTURE_RAMPART)
+				});
+
+				if (structures.length > 0) {
+					for (var index = 0; index < towers.length; index++) {
+
+						if (structures.length >= index + 1) {
+							towers[index].repair(structures[index]);
+						}
+					}
+				}
 			}
 		}
 	}
 }
 
-towersController.act = function(tower) {
-
-	this.attack(tower);
-}
-
-towersController.attack = function(tower) {
-
-	const enemies = tower.room.find(FIND_HOSTILE_CREEPS);
-
-	if (enemies.length > 0) {
-
-		tower.attack(enemies[0]);
-	}
+towersController.repair = function(towers) {
 }
 
 

@@ -90,14 +90,14 @@ BaseCreep.prototype.act = function() {
 
 		acted = true;
 
-	} else if (rules.evacuateRemoteRooms && !this.isTrooper && this.state !== "movingToSpawnedRoom" && this.creep.room.name === this.remoteRoomName && roomTools.isRoomUnderAttack(this.creep.room.name)){
-		this.state = "movingToSpawnedRoom";
-		acted = true;
-
 	} else if (this.memory.takeStepsIntoRoom && this.memory.takeStepsIntoRoom > 0) {
 
 		this.moveIntoRoom();
 		this.memory.takeStepsIntoRoom--;
+		acted = true;
+
+	} else if (rules.evacuateRemoteRooms && !this.isTrooper && this.state !== "movingToSpawnedRoom" && this.creep.room.name === this.remoteRoomName && roomTools.isRoomUnderAttack(this.creep.room.name)){
+		this.state = "movingToSpawnedRoom";
 		acted = true;
 
 	} else if (!this.isRemoteCreep) {

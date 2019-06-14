@@ -2,13 +2,13 @@
 module.exports = {
 	roomName: "W7N9",
 	spawnOrderMaxSpawnedCounts: [
-		{ repairer: 2 },
+		{ repairer: 0 },
 		{ spawnEnergizer: 2 },
 		{ extensionEnergizer: 8 },
 		{ dropContainerHarvester: 4 },
-		{ storageEnergizer: 6 },
+		{ storageEnergizer: 2 },
 		{ builder: 0 },
-		{ controllerEnergizer: 1 },
+		{ controllerEnergizer: 12 },
 	],
 	canControllerEnergizersBuild: true,
 	canEnergizersTransferToDropContainers: true,
@@ -22,14 +22,14 @@ module.exports = {
 		{
 			roomName: "W8N9",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 1 },
+				{ defender: 2 },
 				{ remoteReserver: 1 },
 				{ dropHarvester: 4 },
 				{ storageEnergizer: 3 },
 				{ remoteSpawnedStorageEnergizer: 3 },
 			],
 			partsPerMove: 1,
-			minTroopersWainting: 1,
+			minTroopersWaiting: 1,
 			canEnergyCreepsHarvest: true,
 			canEnergyCreepsPickup: true,
 			canRemoteStorageEnergizersPickup: true,
@@ -38,13 +38,13 @@ module.exports = {
 		{
 			roomName: "W6N9",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 1 },
+				{ defender: 2 },
 				{ remoteReserver: 1 },
 				{ dropHarvester: 4 },
 				{ remoteSpawnedStorageEnergizer: 5 },
 			],
 			partsPerMove: 1,
-			minTroopersWainting: 1,
+			minTroopersWaiting: 1,
 			canEnergyCreepsHarvest: true,
 			canEnergyCreepsPickup: true,
 			canRemoteStorageEnergizersPickup: true,
@@ -54,59 +54,57 @@ module.exports = {
 		{
 			roomName: "W7N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedStorageEnergizer: 10 },
+				{ remoteSpawnedStorageEnergizer: 6 },
 			],
-			canEnergyCreepsHarvest: false,
-			canEnergyCreepsPickup: false,
+			canEnergizersTransferToStorageOnly: true,
 		},
 		{
 			roomName: "W7N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedStorageEnergizer: 10 },
+				{ remoteSpawnedStorageEnergizer: 6 },
 			],
-			canEnergyCreepsHarvest: false,
-			canEnergyCreepsPickup: false,
+			canEnergizersTransferToStorageOnly: true,
 		},
 		// Remote rooms
 		{
 			roomName: "W8N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 1 },
+				{ defender: 2 },
 			],
 			partsPerMove: 1,
-			minTroopersWainting: 1,
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W6N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 1 },
+				{ defender: 2 },
 			],
 			partsPerMove: 1,
-			minTroopersWainting: 1,
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W8N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 1 },
+				{ defender: 2 },
 			],
 			partsPerMove: 1,
-			minTroopersWainting: 1,
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W6N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 1 },
+				{ defender: 2 },
 			],
 			partsPerMove: 1,
-			minTroopersWainting: 1,
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W7N7",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 1 },
+				{ defender: 2 },
 			],
 			partsPerMove: 1,
-			minTroopersWainting: 1,
+			minTroopersWaiting: 1,
 		},
 	]
 }

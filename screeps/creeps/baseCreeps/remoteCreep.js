@@ -21,29 +21,23 @@ RemoteCreep.prototype.act = function() {
 		}
 
 		if (this.state === "movingToSpawnedRoom") {
-
-			if (!(rules.evacuateRemoteRooms && !this.isTrooper && roomTools.isRoomUnderAttack(this.remoteRoomName))) {
-				if (this.creep.room.name === this.spawnedRoomName) {
-
-					this.arrivedAtSpawnedRoom();
-					// NOTE: Creep must step off the exit edge of the room immediately
-					//  or will be sent back to the other room
-					this.moveIntoRoom();
-
-				} else {
-
-					this.moveToExit(this.spawnedRoomName);
-				}
-			}
-		} else if (this.state === "movingToRemoteRoom") {
-
-			if (this.creep.room.name === this.remoteRoomName) {
-
+			if (this.creep.room.name === this.spawnedRoomName) {
 				// NOTE: Creep must step off the exit edge of the room immediately
 				//  or will be sent back to the other room
 				this.moveIntoRoom();
-				this.arrivedAtRemoteRoom();
 				this.memory.takeStepsIntoRoom = 2;
+				this.arrivedAtSpawnedRoom();
+				
+			} else {
+				this.moveToExit(this.spawnedRoomName);
+			}
+		} else if (this.state === "movingToRemoteRoom") {
+			if (this.creep.room.name === this.remoteRoomName) {
+				// NOTE: Creep must step off the exit edge of the room immediately
+				//  or will be sent back to the other room
+				this.moveIntoRoom();
+				this.memory.takeStepsIntoRoom = 2;
+				this.arrivedAtRemoteRoom();
 
 			} else {
 				if (!(rules.evacuateRemoteRooms && !this.isTrooper && roomTools.isRoomUnderAttack(this.remoteRoomName))) {
