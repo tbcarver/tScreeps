@@ -14,6 +14,8 @@ module.exports = {
 	waitForMinimumSpawnCapacity: false,
 	maxExtensionsPerEnergizer: 4,
 	canEnergizersTransferToDropContainers: true,
+	canEnergyCreepsHarvest: false,
+	canEnergyCreepsPickup: false,
 	canControllerEnergizersBuild: true,
 	remoteRooms: [
 		{
@@ -75,6 +77,13 @@ module.exports = {
 			],
 			canEnergyCreepsHarvest: false,
 			canEnergyCreepsPickup: false,
+		},
+		// Overflow		
+		{
+			roomName: "W7N10",
+			spawnOrderMaxSpawnedCounts: [
+				{ controllerEnergizer: 5 },
+			],
 		},
 	],
 }

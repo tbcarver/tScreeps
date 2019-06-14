@@ -163,7 +163,7 @@ BaseCreep.prototype.moveToExit = function(exitRoomName) {
 
 	if (exitFlag) {
 
-		if (this.creep.pos.inRangeTo(exitFlag, 2)) {
+		if (this.creep.pos.inRangeTo(exitFlag, 3)) {
 			isAtFlag = true;
 		} else {
 			this.creep.moveTo(exitFlag);

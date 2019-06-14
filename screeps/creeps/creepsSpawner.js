@@ -48,7 +48,7 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 						if (currentSpawnedCount < maxSpawnedCount) {
 
 							try {
-								spawnResult = trySpawnCreep(room, spawn, creepConstructor, creepsSpawnRule, currentSpawnedCount, spawnResult);
+								spawnResult = trySpawnCreep(room, false, spawn, creepConstructor, creepsSpawnRule, currentSpawnedCount, spawnResult);
 
 								if (spawnResult.spawned) {
 									spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creepType, spawn.room.name, room.name);
@@ -94,7 +94,7 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 								if (currentSpawnedCount < maxSpawnedCount) {
 
 									try {
-										spawnResult = trySpawnCreep(remoteRoom, spawn, creepConstructor, remoteRoomCreepsSpawnRule, currentSpawnedCount, spawnResult);
+										spawnResult = trySpawnCreep(remoteRoom, true, spawn, creepConstructor, remoteRoomCreepsSpawnRule, currentSpawnedCount, spawnResult);
 
 										if (spawnResult.spawned) {
 											spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creepType, spawn.room.name, remoteRoom.name);
@@ -119,7 +119,7 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 	}
 }
 
-function trySpawnCreep(room, spawn, creepConstructor, creepsSpawnRule, currentSpawnedCount, previousSpawnResult) {
+function trySpawnCreep(room, isRemoteRoom, spawn, creepConstructor, creepsSpawnRule, currentSpawnedCount, previousSpawnResult) {
 
 	if (!previousSpawnResult.waitForSpawn && !previousSpawnResult.spawned) {
 
@@ -129,7 +129,7 @@ function trySpawnCreep(room, spawn, creepConstructor, creepsSpawnRule, currentSp
 
 			creepMemory.spawnedRoomName = spawn.room.name;
 
-			if (room.name != spawn.room.name) {
+			if (isRemoteRoom) {
 				creepMemory.state = "movingToRemoteRoom";
 				creepMemory.remoteRoomName = room.name;
 			}

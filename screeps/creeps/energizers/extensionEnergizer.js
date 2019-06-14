@@ -83,6 +83,10 @@ ExtensionEnergizer.initializeSpawnCreepMemory = function(room, spawn, creepsSpaw
 			activeExtensionIndex: 0
 		};
 
+		if (!creepsSpawnRule.canEnergyCreepsHarvest) {
+			creepMemory.bodyPartsType = "moveCarry";
+		}
+
 		creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, room, spawn, creepsSpawnRule);
 
 		var nextExtension = spawn.pos.findClosestByRange(FIND_STRUCTURES, {

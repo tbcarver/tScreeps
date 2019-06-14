@@ -15,10 +15,17 @@ SpawnEnergizer.prototype.act = function() {
 
 SpawnEnergizer.prototype.energyAct = function() {
 
-	var targetStructure = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+	var targetStructures = this.creep.room.find(FIND_STRUCTURES, {
 		filter: structure => structure.structureType === STRUCTURE_TOWER &&
 			structure.energy < structure.energyCapacity
 	});
+
+	if (targetStructures.length > 0) {
+
+		// Sort for the lowest energy first
+		targetStructures.sort((targetStructureA, targetStructureB)=> targetStructureA.energy > targetStructureB.energy);
+		var targetStructure = targetStructures[0];
+	}
 
 	if (!targetStructure) {
 
@@ -51,6 +58,10 @@ SpawnEnergizer.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRul
 		type: "spawnEnergizer",
 		bodyPartsType: "energizer",
 		maximumSpawnCapacity: 450,
+	}
+
+	if (!creepsSpawnRule.canEnergyCreepsHarvest) {
+		creepMemory.bodyPartsType = "moveCarry";
 	}
 
 	creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, room, spawn, creepsSpawnRule);

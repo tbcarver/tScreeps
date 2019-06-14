@@ -11,8 +11,15 @@ function Defender(creep) {
 Defender.prototype = Object.create(BaseCreep.prototype);
 
 Defender.prototype.act = function() {
+	
+	if (!BaseCreep.prototype.act.call(this)) {
 
-	BaseCreep.prototype.act.call(this);
+		if (Game.flags["post_" + this.creep.room.name]) {
+			this.creep.moveTo(Game.flags["post_" + this.creep.room.name].pos);
+		} else {
+			this.creep.moveTo(this.creep.room.controller);
+		}
+	}
 }
 
 Defender.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule, currentSpawnedCount) {

@@ -54,14 +54,14 @@ module.exports = {
 		{
 			roomName: "W7N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedStorageEnergizer: 6 },
+				{ remoteSpawnedStorageEnergizer: 3 },
 			],
 			canEnergizersTransferToStorageOnly: true,
 		},
 		{
 			roomName: "W7N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedStorageEnergizer: 6 },
+				{ remoteSpawnedStorageEnergizer: 3 },
 			],
 			canEnergizersTransferToStorageOnly: true,
 		},
@@ -105,6 +105,13 @@ module.exports = {
 			],
 			partsPerMove: 1,
 			minTroopersWaiting: 1,
+		},
+		// Overflow		
+		{
+			roomName: "W7N9",
+			spawnOrderMaxSpawnedCounts: [
+				{ controllerEnergizer: 12 },
+			],
 		},
 	]
 }
