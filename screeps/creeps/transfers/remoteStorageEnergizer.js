@@ -76,14 +76,23 @@ RemoteStorageEnergizer.prototype.remoteRoomAct = function() {
 
 		this.moveToSpawnedRoom();
 
-	} else if (this.state === "energizing") {
+	} else if (this.state === "energizing") {		
 
-		var storage = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-			filter: storage => (storage.structureType === STRUCTURE_CONTAINER ||
-				storage.structureType === STRUCTURE_STORAGE) &&
-				((roomTools.isDropContainer(storage) && storage.store[RESOURCE_ENERGY] / storage.storeCapacity < .65) ||
-					(!roomTools.isDropContainer(storage) && storage.store[RESOURCE_ENERGY] / storage.storeCapacity < .95))
-		});
+		if (this.creepsSpawnRule.canEnergizersTransferToStorageOnly) {
+
+			var storage = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+				filter: { structureType: STRUCTURE_STORAGE }
+			});
+
+		} else {
+
+			var storage = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+				filter: storage => (storage.structureType === STRUCTURE_CONTAINER ||
+					storage.structureType === STRUCTURE_STORAGE) &&
+					((roomTools.isDropContainer(storage) && storage.store[RESOURCE_ENERGY] / storage.storeCapacity < .65) ||
+						(!roomTools.isDropContainer(storage) && storage.store[RESOURCE_ENERGY] / storage.storeCapacity < .95))
+			});
+		}
 
 		var transferResult = this.creep.transfer(storage, RESOURCE_ENERGY);
 

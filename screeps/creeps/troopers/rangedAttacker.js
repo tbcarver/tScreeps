@@ -33,7 +33,7 @@ RangedAttacker.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRul
 	if (creepMemory) {
 			
 		creepMemory.type = "rangedAttacker";
-		creepMemory.bodyPartsType = "rangedAttack";
+		creepMemory.bodyPartsType = "rangedAttacker";
 	}
 
 	return creepMemory;

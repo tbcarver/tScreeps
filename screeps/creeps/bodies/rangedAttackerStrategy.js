@@ -1,7 +1,7 @@
 
-var rangedAttackStrategy = {};
+var rangedAttackerStrategy = {};
 
-rangedAttackStrategy.getBodyPartsObject = function(spawnCapacity) {
+rangedAttackerStrategy.getBodyPartsObject = function(spawnCapacity) {
 
 	var bodyPartsObject = {
 		move: 2,
@@ -45,4 +45,4 @@ rangedAttackStrategy.getBodyPartsObject = function(spawnCapacity) {
 }
 
 
-module.exports = rangedAttackStrategy;
+module.exports = rangedAttackerStrategy;

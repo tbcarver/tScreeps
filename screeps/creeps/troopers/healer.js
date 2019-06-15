@@ -15,14 +15,16 @@ Healer.prototype.act = function() {
 Healer.prototype.attack = function() {
 
 	target = this.creep.pos.findClosestByRange(FIND_MY_CREEPS, {
-		filter: creep => creep.hits < creep.hitsMax
+		filter: creep => creep.hits < creep.hitsMax && creep.name !== this.creep.name
 	});
 
 	if (target) {
 
-		if (this.creep.heal(target) == ERR_NOT_IN_RANGE) {
+		if (this.creep.rangedHeal(target) == ERR_NOT_IN_RANGE) {
 			this.creep.moveTo(target);
 		}
+	} else if (this.creep.hits < this.creep.hitsMax) {
+		this.creep.heal(target);
 	}
 }
 
@@ -32,7 +34,7 @@ Healer.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule, curre
 		rules.maximumHealerSpawnCapacity);
 
 	if (creepMemory) {
-			
+
 		creepMemory.type = "healer";
 		creepMemory.bodyPartsType = "healer";
 	}

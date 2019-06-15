@@ -1,4 +1,5 @@
 
+var Attacker = require("./troopers/attacker");
 var Builder = require("./energyWorkers/builder");
 var ContainerHarvester = require("./harvesters/containerHarverster");
 var ControllerEnergizer = require("./energizers/controllerEnergizer");
@@ -20,7 +21,8 @@ var SpawnEnergizer = require("./energizers/spawnEnergizer");
 var StorageEnergizer = require("./transfers/storageEnergizer");
 var WallRepairer = require("./energyWorkers/wallRepairer");
 
-var creepConstructors = {	
+var creepConstructors = {
+	attacker: Attacker,
 	builder: Builder,
 	containerHarvester: ContainerHarvester,
 	controllerEnergizer: ControllerEnergizer,

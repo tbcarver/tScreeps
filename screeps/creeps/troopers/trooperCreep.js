@@ -24,12 +24,12 @@ TrooperCreep.prototype.act = function() {
 		var acted = false;
 
 		if (this.isMobTrooper) {
-			if (this.mobRoomName === null && this.creep.room.name !== this.spawnedRoomName) {
+			if (this.mobRoomName === null && this.creep.room.name !== this.remoteRoomName) {
 
-				this.state = "movingToSpawnedRoom";
+				this.state = "movingToRemoteRoom";
 				acted = true;
 
-			} else if (this.mobRoomName === null && this.creep.room.name === this.spawnedRoomName) {
+			} else if (this.mobRoomName === null && this.creep.room.name === this.remoteRoomName) {
 
 				this.state = "trooping";
 

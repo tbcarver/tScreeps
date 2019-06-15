@@ -111,8 +111,9 @@ module.exports = {
 		{
 			roomName: "W7N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ controllerEnergizer: 5 },
+				{ controllerEnergizer: 2 },
 			],
+			canControllerEnergizersBuild: true,
 		},
 	]
 }

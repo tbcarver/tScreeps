@@ -18,7 +18,7 @@ Attacker.prototype.attack = function() {
 
 	if (target) {
 
-		if (this.creep.heal(target) == ERR_NOT_IN_RANGE) {
+		if (this.creep.attack(target) == ERR_NOT_IN_RANGE) {
 			this.creep.moveTo(target);
 		}
 	}

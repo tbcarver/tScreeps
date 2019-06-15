@@ -1,58 +1,33 @@
 
+var attackerStrategy = require("./attackerStrategy");
 var claimerStrategy = require("./claimerStrategy");
+var energizerStrategy = require("./energizerStrategy");
 var defenderStrategy = require("./defenderStrategy");
 var healerStrategy = require("./healerStrategy");
 var moveCarryStrategy = require("./moveCarryStrategy");
 var moveCarryWorkStrategy = require("./moveCarryWorkStrategy");
 var moveStrategy = require("./moveStrategy");
-var rangedAttackStrategy = require("./rangedAttackStrategy");
+var rangedAttackerStrategy = require("./rangedAttackerStrategy");
 var workDropperStrategy = require("./workDropperStrategy");
 
 var bodyPartsFactory = {};
+var bodyPartsStrategies = {
+	attacker: attackerStrategy,
+	claimer: claimerStrategy,
+	defender: defenderStrategy,
+	energizer: energizerStrategy,
+	healer: healerStrategy,
+	moveCarry: moveCarryStrategy,
+	moveCarryWork: moveCarryWorkStrategy,
+	move: moveStrategy,
+	rangedAttacker: rangedAttackerStrategy,
+	workDropper: workDropperStrategy,
+}
 
 bodyPartsFactory.getBodyParts = function(bodyPartsStrategyName, spawnCapacity, partsPerMove) {
 
-	var bodyPartsStrategy;
+	var bodyPartsStrategy = bodyPartsStrategies[bodyPartsStrategyName];
 	var bodyParts;
-
-	switch (bodyPartsStrategyName) {
-
-		case "claimer":
-			bodyPartsStrategy = claimerStrategy;
-			break;
-
-		case "defender":
-			bodyPartsStrategy = defenderStrategy;
-			break;
-
-		case "energizer":
-			bodyPartsStrategy = moveCarryWorkStrategy;
-			break;
-
-			case "healer":
-				bodyPartsStrategy = healerStrategy;
-				break;
-
-		case "moveCarry":
-			bodyPartsStrategy = moveCarryStrategy;
-			break;
-
-		case "moveCarryWork":
-			bodyPartsStrategy = moveCarryWorkStrategy;
-			break;
-
-		case "move":
-			bodyPartsStrategy = moveStrategy;
-			break;
-
-		case "rangedAttack":
-			bodyPartsStrategy = rangedAttackStrategy;
-			break;
-
-		case "workDropper":
-			bodyPartsStrategy = workDropperStrategy;
-			break;
-	}
 
 	if (bodyPartsStrategy) {
 
@@ -62,6 +37,8 @@ bodyPartsFactory.getBodyParts = function(bodyPartsStrategyName, spawnCapacity, p
 
 			bodyParts = this.toBodyParts(bodyPartsObject);
 		}
+	} else {
+		throw new Error("Body part strategy missing for: " + bodyPartsStrategyName);
 	}
 
 	return bodyParts;

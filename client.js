@@ -162,8 +162,11 @@
 		// console.log("roomStatus: ", result);
 
 		await api.auth('carver230620', '5560');
-		result = await api.raw.game.mapStats(myRoom);
-		console.log("worldStatus: ", result);
+		// result = await api.raw.game.mapStats(myRoom);
+		// console.log("worldStatus: ", result);
+
+		result = await api.raw.game.createInvader("W7N9", 37, 5, "big", "Melee");
+		console.log("result: ", result);
 
 	} catch (error) {
 		console.log(error)

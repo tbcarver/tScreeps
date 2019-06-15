@@ -6,7 +6,7 @@ module.exports = {
 		{ spawnEnergizer: 2 },
 		{ extensionEnergizer: 8 },
 		{ dropContainerHarvester: 4 },
-		{ storageEnergizer: 2 },
+		{ storageEnergizer: 3 },
 		{ builder: 0 },
 		{ controllerEnergizer: 12 },
 	],
@@ -22,7 +22,6 @@ module.exports = {
 		{
 			roomName: "W8N9",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 2 },
 				{ remoteReserver: 1 },
 				{ dropHarvester: 4 },
 				{ storageEnergizer: 3 },
@@ -38,7 +37,6 @@ module.exports = {
 		{
 			roomName: "W6N9",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 2 },
 				{ remoteReserver: 1 },
 				{ dropHarvester: 4 },
 				{ remoteSpawnedStorageEnergizer: 5 },
@@ -54,34 +52,36 @@ module.exports = {
 		{
 			roomName: "W7N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedStorageEnergizer: 3 },
+				{ remoteSpawnedStorageEnergizer: 2 },
 			],
 			canEnergizersTransferToStorageOnly: true,
 		},
 		{
 			roomName: "W7N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedStorageEnergizer: 3 },
+				{ remoteSpawnedStorageEnergizer: 2 },
 			],
 			canEnergizersTransferToStorageOnly: true,
 		},
-		// Remote rooms
 		{
 			roomName: "W8N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 2 },
+				{ controllerEnergizer: 0 },
 			],
-			partsPerMove: 1,
-			minTroopersWaiting: 1,
+			canControllerEnergizersBuild: true,
+			canEnergizersTransferToStorageOnly: true,
 		},
+		// Mob
 		{
-			roomName: "W6N10",
+			roomName: "W7N9",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 2 },
+				{ attacker: 1 },
+				{ healer: 1 },
+				{ rangedAttacker: 3 },
 			],
-			partsPerMove: 1,
-			minTroopersWaiting: 1,
+			isMobTroopers: true,
 		},
+		// Defending rooms
 		{
 			roomName: "W8N8",
 			spawnOrderMaxSpawnedCounts: [
@@ -110,11 +110,9 @@ module.exports = {
 		{
 			roomName: "W7N9",
 			spawnOrderMaxSpawnedCounts: [
-				{ healer: 2 },
-				{ rangedAttacker: 5 },
 				{ controllerEnergizer: 12 },
 			],
-			isMobTroopers: true,
+			canControllerEnergizersBuild: true,
 		},
 	]
 }

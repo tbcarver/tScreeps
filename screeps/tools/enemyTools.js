@@ -6,15 +6,18 @@ enemyTools.manageEnemies = function() {
 	this.enemyStats = buildEnemyStats();
 	this.hasEnemies = this.enemyStats.countRoomsWithEnemies > 0;
 
-	if (!this.enemyStats.roomNameEnemyStats[Memory.state.currentMobAttackRoomName]) {		
+	if (!this.enemyStats.roomNameEnemyStats[Memory.state.currentMobAttackRoomName]) {
 		Memory.state.currentMobAttackRoomName = null;
 	}
 
 	if (Memory.state.currentMobAttackRoomName === null && this.hasEnemies) {
 
-		var sortedEnemyStats = _.sortBy(this.enemyStats.roomNameEnemyStats, ["isRoomOwned", "enemyCount"]);
+		var sortedEnemyStats = _.filter(this.enemyStats.roomNameEnemyStats, { hasTower: false });
 
-		Memory.state.currentMobAttackRoomName = sortedEnemyStats[sortedEnemyStats.length - 1].roomName;
+		if (sortedEnemyStats.length > 0) {
+			sortedEnemyStats = _.sortBy(sortedEnemyStats, ["isRoomOwned", "enemyCount"]);
+			Memory.state.currentMobAttackRoomName = sortedEnemyStats[sortedEnemyStats.length - 1].roomName;
+		}
 	}
 }
 
@@ -48,8 +51,14 @@ function buildEnemyStats() {
 				isRoomOwned: (room.controller && room.controller.my) ? true : false,
 			}
 
+			var towers = room.find(FIND_STRUCTURES, {
+				filter: { structureType: STRUCTURE_TOWER }
+			});
+
+			enemyStats.roomNameEnemyStats[roomName].hasTower = towers.length > 0;
+
 			enemyStats.countRoomsWithEnemies++;
-			
+
 			var health = "";
 			for (enemy of enemies) {
 				health += enemy.hits + " " + Math.ceil((enemy.hits / enemy.hitsMax) * 100) + "% " +

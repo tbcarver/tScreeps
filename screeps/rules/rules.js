@@ -1,6 +1,7 @@
 // TODO: error handling for bad creep type
 
 var rules = {
+	maximumAttackerSpawnCapacity: 700,
 	maximumHealerSpawnCapacity: 700,
 	maximumRangedAttackerSpawnCapacity: 700,
 	evacuateRemoteRooms: true,
@@ -11,6 +12,7 @@ var creepsSpawnRules = [];
 creepsSpawnRules.push(require("./rooms/W7N8"));
 creepsSpawnRules.push(require("./rooms/W7N10"));
 creepsSpawnRules.push(require("./rooms/W7N9"));
+creepsSpawnRules.push(require("./rooms/W8N10"));
 
 var roomNamesCreepsSpawnRules = _.cloneDeep(creepsSpawnRules);
 

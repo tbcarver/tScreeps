@@ -70,13 +70,12 @@ StorageEnergizer.prototype.energize = function() {
 
 	var dropFlag = Game.flags[`drop-${this.creep.room.name}`];
 	if (dropFlag) {
-		this.creep.moveTo(dropFlag);
-
 		if (this.creep.pos.inRangeTo(dropFlag, 1)) {
 			this.creep.drop(RESOURCE_ENERGY);
 			this.state = "harvesting";
+		} else {
+			this.creep.moveTo(dropFlag);
 		}
-		
 	} else {
 
 		var storage = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
@@ -84,15 +83,15 @@ StorageEnergizer.prototype.energize = function() {
 				storage.structureType === STRUCTURE_STORAGE) && !roomTools.isDropContainer(storage) &&
 				storage.store[RESOURCE_ENERGY] / storage.storeCapacity < .95
 		});
-	
+
 		var transferResult = this.creep.transfer(storage, RESOURCE_ENERGY);
-	
+
 		if (transferResult == ERR_NOT_IN_RANGE) {
-	
+
 			this.creep.moveTo(storage);
-	
+
 		} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
-	
+
 			this.state = "harvesting";
 		}
 	}
