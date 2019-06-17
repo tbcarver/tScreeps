@@ -1,4 +1,6 @@
 
+
+var sourceMap = require("./sourceMap");
 var debug = require("../lib/coreVendor/coreScreeps/debug");
 var debugObjectTable = require("../lib/coreVendor/coreScreeps/debugObjectTable");
 var debugPairsTable = require("../lib/coreVendor/coreScreeps/debugPairsTable");
@@ -69,8 +71,6 @@ function loop() {
 
 		if (error instanceof Error) {
 
-			let sourceMap = require("./sourceMap");
-
 			sourceMap.logStackTrace(error);
 
 		} else {
@@ -138,5 +138,6 @@ function buildSpawnStats() {
 
 	return spawnsStats;
 }
+
 
 module.exports.loop = loop;
