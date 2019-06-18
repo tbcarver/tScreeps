@@ -102,7 +102,7 @@ module.exports = {
 			roomName: "W7N9",
 			spawnOrderMaxSpawnedCounts: [
 				{ controllerEnergizer: 0 },
-				{ remoteStorageEnergizer: 8 },
+				{ remoteStorageEnergizer: 0 },
 			],
 			canControllerEnergizersBuild: true,
 			canEnergyCreepsHarvest: false,
@@ -111,9 +111,9 @@ module.exports = {
 		},
 		// Overflow		
 		{
-			roomName: "W7N8",
+			roomName: "W7N9",
 			spawnOrderMaxSpawnedCounts: [
-				{ controllerEnergizer: 0 },
+				{ controllerEnergizer: 6 },
 			],
 			canControllerEnergizersBuild: true,
 		},

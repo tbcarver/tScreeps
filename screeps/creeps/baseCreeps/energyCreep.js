@@ -6,8 +6,16 @@ function EnergyCreep(creep) {
 
 	BaseCreep.call(this, creep);
 
-	this.canHarvest = this.creepsSpawnRule.canEnergyCreepsHarvest;
-	this.canPickup = this.creepsSpawnRule.canEnergyCreepsPickup;
+	this.canHarvest = false;
+	this.canPickup = false;
+
+	if (this.creepsSpawnRule && this.creepsSpawnRule.canEnergyCreepsHarvest) {
+		this.canHarvest = true;
+	}
+
+	if (this.creepsSpawnRule && this.creepsSpawnRule.canEnergyCreepsPickup) {
+		this.canPickup = true;
+	}
 }
 
 EnergyCreep.prototype = Object.create(BaseCreep.prototype);

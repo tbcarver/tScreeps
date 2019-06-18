@@ -32,7 +32,7 @@ StorageEnergizer.prototype.act = function() {
 			if (!resource) {
 				var resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 					filter: container => container.structureType === STRUCTURE_CONTAINER &&
-						roomTools.isDropContainer(container) &&
+						roomTools.isDropContainer(container, 2) &&
 						container.store[RESOURCE_ENERGY] / container.storeCapacity > .65
 				});
 			}
@@ -80,7 +80,7 @@ StorageEnergizer.prototype.energize = function() {
 
 		var storage = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 			filter: storage => (storage.structureType === STRUCTURE_CONTAINER ||
-				storage.structureType === STRUCTURE_STORAGE) && !roomTools.isDropContainer(storage) &&
+				storage.structureType === STRUCTURE_STORAGE) && !roomTools.isDropContainer(storage, 2) &&
 				storage.store[RESOURCE_ENERGY] / storage.storeCapacity < .95
 		});
 

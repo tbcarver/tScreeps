@@ -89,8 +89,8 @@ RemoteStorageEnergizer.prototype.remoteRoomAct = function() {
 			var storage = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 				filter: storage => (storage.structureType === STRUCTURE_CONTAINER ||
 					storage.structureType === STRUCTURE_STORAGE) &&
-					((roomTools.isDropContainer(storage) && storage.store[RESOURCE_ENERGY] / storage.storeCapacity < .65) ||
-						(!roomTools.isDropContainer(storage) && storage.store[RESOURCE_ENERGY] / storage.storeCapacity < .95))
+					((roomTools.isDropContainer(storage, 2) && storage.store[RESOURCE_ENERGY] / storage.storeCapacity < .65) ||
+						(!roomTools.isDropContainer(storage, 2) && storage.store[RESOURCE_ENERGY] / storage.storeCapacity < .95))
 			});
 		}
 

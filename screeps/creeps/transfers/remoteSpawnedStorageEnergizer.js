@@ -47,7 +47,7 @@ RemoteSpawnedStorageEnergizer.prototype.spawnedRoomAct = function() {
 			var storage = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 				filter: storage => (storage.structureType === STRUCTURE_CONTAINER ||
 					storage.structureType === STRUCTURE_STORAGE) &&
-					(this.spawnedRoomCreepsSpawnRule.canEnergizersTransferToDropContainers || !roomTools.isDropContainer(storage)) &&
+					(this.spawnedRoomCreepsSpawnRule.canEnergizersTransferToDropContainers || !roomTools.isDropContainer(storage, 2)) &&
 					storage.storeCapacity - storage.store[RESOURCE_ENERGY] > this.creep.carry[RESOURCE_ENERGY]
 			});
 		}

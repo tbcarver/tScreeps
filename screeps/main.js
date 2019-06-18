@@ -43,7 +43,7 @@ function loop() {
 		// roomTools.createFlag("post_W7S2", COLOR_ORANGE, [{"x":"18","y":"18","roomName":"W7S2"}]);
 		// roomTools.createFlag("exit_from-W7S2_to-W7S2", COLOR_GREEN, [{"x":"18","y":"18","roomName":"W7S2"}]);
 		// Game.rooms["W9N10"].createFlag(20,21, "post_W9N10", COLOR_GREY, COLOR_ORANGE)
-		// Game.rooms["W8N10"].createFlag(1,38, "exit-from-W8N10-to-W9N10", COLOR_GREEN, COLOR_WHITE)
+		// Game.rooms["W8N9"].createFlag(28,1, "exit-from-W8N9-to-W8N10", COLOR_GREEN, COLOR_WHITE)
 		// Game.flags["exit-from-W8N11-to-W8N10"].setPosition(14,48)
 		// Game.rooms["W7N7"].createFlag(48,27, "drop-W7N7", COLOR_YELLOW)
 		// roomTools.consoleWall();

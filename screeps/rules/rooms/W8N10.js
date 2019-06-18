@@ -36,7 +36,7 @@ module.exports = {
 				{ defender: 0 },
 				{ remoteReserver: 1 },
 				{ dropHarvester: 4 },
-				{ remoteSpawnedStorageEnergizer: 5 },
+				{ remoteSpawnedStorageEnergizer: 3 },
 			],
 			partsPerMove: 1,
 			minTroopersWaiting: 3,
@@ -45,6 +45,17 @@ module.exports = {
 			canEnergyCreepsPickup: true,
 			canRemoteStorageEnergizersPickup: true,
 			canStorageEnergizersPickup: true,
+		},
+		// Main rooms
+		{
+			roomName: "W7N10",
+			spawnOrderMaxSpawnedCounts: [
+				{ remoteStorageEnergizer: 4 },
+				{ controllerEnergizer: 0 },
+				{ remoteBuilder: 0 },
+			],
+			canControllerEnergizersBuild: true,
+			canEnergizersTransferToStorageOnly: true,
 		},
 		// Overflow
 		{

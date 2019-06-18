@@ -1,5 +1,6 @@
 
 var enemyTools = require("../../tools/enemyTools");
+var findTools = require("../../tools/findTools");
 var { rules, roomNamesCreepsSpawnRules } = require("../../rules/rules");
 
 function BaseCreep(creep) {
@@ -163,7 +164,7 @@ BaseCreep.prototype.moveToExit = function(exitRoomName) {
 
 	if (!exitFlag) {
 
-		var routes = Game.map.findRoute(this.creep.room.name, exitRoomName);
+		var routes = findTools.findRoute(this.creep.room.name, exitRoomName);
 
 		if (routes.length > 0) {
 			exitFlag = Game.flags[`exit-from-${this.creep.room.name}-to-${routes[0].room}`];

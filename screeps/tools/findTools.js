@@ -1,4 +1,5 @@
 
+var { rules } = require("../rules/rules");
 var findTools = {};
 
 // NOTE: Order is important.
@@ -175,6 +176,23 @@ findTools.isInRange = function(sourcePos, targetPos, range) {
 	var result = PathFinder.search(sourcePos, { pos: targetPos, range: range });
 
 	return result.cost === 0;
+}
+
+findTools.findRoute = function(fromRoom, toRoom) {
+
+	var route = Game.map.findRoute(fromRoom, toRoom, {
+		routeCallback(roomName, fromRoomName) {
+
+			if (rules.routeAvoidRooms.includes(roomName)) {
+				// Avoid this room
+				return Infinity;
+			}
+
+			return 1;
+		}
+	});
+
+	return route;
 }
 
 
