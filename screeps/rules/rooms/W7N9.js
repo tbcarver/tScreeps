@@ -3,12 +3,12 @@ module.exports = {
 	roomName: "W7N9",
 	spawnOrderMaxSpawnedCounts: [
 		{ repairer: 0 },
-		{ spawnEnergizer: 2 },
-		{ extensionEnergizer: 8 },
+		{ spawnEnergizer: 3 },
+		{ extensionEnergizer: 12 },
 		{ dropContainerHarvester: 4 },
 		{ storageEnergizer: 3 },
-		{ builder: 0 },
-		{ controllerEnergizer: 12 },
+		{ builder: 6 },
+		{ controllerEnergizer: 1 },
 	],
 	canControllerEnergizersBuild: true,
 	canEnergizersTransferToDropContainers: true,
@@ -52,14 +52,14 @@ module.exports = {
 		{
 			roomName: "W7N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteStorageEnergizer: 0 },
+				{ remoteSpawnedStorageEnergizer: 12 },
 			],
 			canEnergizersTransferToStorageOnly: true,
 		},
 		{
 			roomName: "W7N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteStorageEnergizer: 6 },
+				{ remoteStorageEnergizer: 0 },
 			],
 			canEnergizersTransferToStorageOnly: true,
 		},
@@ -75,9 +75,9 @@ module.exports = {
 		{
 			roomName: "W7N9",
 			spawnOrderMaxSpawnedCounts: [
-				{ attacker: 1 },
-				{ healer: 1 },
-				{ rangedAttacker: 3 },
+				{ attacker: 3 },
+				{ healer: 4 },
+				{ rangedAttacker: 5 },
 			],
 			isMobTroopers: true,
 		},
@@ -109,6 +109,13 @@ module.exports = {
 		// Overflow		
 		{
 			roomName: "W7N9",
+			spawnOrderMaxSpawnedCounts: [
+				{ controllerEnergizer: 0 },
+			],
+			canControllerEnergizersBuild: true,
+		},
+		{
+			roomName: "W7N8",
 			spawnOrderMaxSpawnedCounts: [
 				{ controllerEnergizer: 18 },
 			],

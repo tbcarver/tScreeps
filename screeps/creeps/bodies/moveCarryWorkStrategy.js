@@ -11,7 +11,15 @@ moveCarryWorkStrategy.getBodyPartsObject = function(spawnCapacity, partsPerMove)
 		carry: 2,
 	};
 
-	if (spawnCapacity >= 300) {
+	if (partsPerMove === 1) {
+		bodyPartsObject = {
+			move: 2,
+			work: 1,
+			carry: 1,
+		};
+	}
+
+	if (spawnCapacity >= 350) {
 
 		balanced50100MoveParts = bodyPartsTools.balance50100MoveParts(null, spawnCapacity, partsPerMove);
 

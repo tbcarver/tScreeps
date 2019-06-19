@@ -8,8 +8,8 @@ function RemoteSpawnedStorageEnergizer(creep) {
 
 	this.canPickup = false;
 
-	if (this.creepsSpawnRule) {
-		this.canPickup = this.creepsSpawnRule.canRemoteStorageEnergizersPickup;
+	if (this.creepsSpawnRule && this.creepsSpawnRule.canRemoteStorageEnergizersPickup) {
+		this.canPickup = true;
 	}
 }
 

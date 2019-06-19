@@ -1,4 +1,5 @@
 
+var BaseCreep = require("../baseCreeps/baseCreep");
 var TrooperCreep = require("./trooperCreep");
 
 function Healer(creep) {
@@ -9,10 +10,21 @@ function Healer(creep) {
 Healer.prototype = Object.create(TrooperCreep.prototype);
 
 Healer.prototype.act = function() {
-	TrooperCreep.prototype.act.call(this);
+
+	if (!BaseCreep.prototype.act.call(this)) {
+		if (!this.heal()) {
+			TrooperCreep.prototype.act.call(this);
+		}
+	}
 }
 
 Healer.prototype.attack = function() {
+	this.heal();
+}
+
+Healer.prototype.heal = function() {
+
+	var healed = false;
 
 	target = this.creep.pos.findClosestByRange(FIND_MY_CREEPS, {
 		filter: creep => creep.hits < creep.hitsMax && creep.name !== this.creep.name
@@ -23,9 +35,14 @@ Healer.prototype.attack = function() {
 		if (this.creep.rangedHeal(target) == ERR_NOT_IN_RANGE) {
 			this.creep.moveTo(target);
 		}
+		healed = true;
+
 	} else if (this.creep.hits < this.creep.hitsMax) {
 		this.creep.heal(target);
+		healed = true;
 	}
+
+	return healed;
 }
 
 Healer.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule, currentSpawnedCount) {

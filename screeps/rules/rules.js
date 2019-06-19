@@ -25,7 +25,10 @@ for (creepsSpawnRule of roomNamesCreepsSpawnRules) {
 		var remoteRooms = {};
 
 		for (remoteCreepsSpawnRule of creepsSpawnRule.remoteRooms) {
-			remoteRooms[remoteCreepsSpawnRule.roomName] = remoteCreepsSpawnRule;
+
+			if (!remoteRooms[remoteCreepsSpawnRule.roomName]) {
+				remoteRooms[remoteCreepsSpawnRule.roomName] = remoteCreepsSpawnRule;
+			}
 		}
 
 		creepsSpawnRule.remoteRooms = remoteRooms;

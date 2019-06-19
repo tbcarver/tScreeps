@@ -3,7 +3,7 @@ var findTools = require("./findTools");
 var roomTools = require("./roomTools");
 var spawnTools = require("./spawnTools");
 var testObject = require("../creeps/energizers/extensionEnergizer");
-var bodyPartsStrategy = require("../creeps/bodies/energizerStrategy");
+// var bodyPartsStrategy = require("../creeps/bodies/energizerStrategy");
 
 function tick() {
 

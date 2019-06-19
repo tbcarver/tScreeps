@@ -1,7 +1,6 @@
 
 var attackerStrategy = require("./attackerStrategy");
 var claimerStrategy = require("./claimerStrategy");
-var energizerStrategy = require("./energizerStrategy");
 var defenderStrategy = require("./defenderStrategy");
 var healerStrategy = require("./healerStrategy");
 var moveCarryStrategy = require("./moveCarryStrategy");
@@ -15,7 +14,6 @@ var bodyPartsStrategies = {
 	attacker: attackerStrategy,
 	claimer: claimerStrategy,
 	defender: defenderStrategy,
-	energizer: energizerStrategy,
 	healer: healerStrategy,
 	moveCarry: moveCarryStrategy,
 	moveCarryWork: moveCarryWorkStrategy,

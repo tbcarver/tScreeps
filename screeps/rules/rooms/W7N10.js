@@ -109,9 +109,9 @@ module.exports = {
 		{
 			roomName: "W7N9",
 			spawnOrderMaxSpawnedCounts: [
-				{ attacker: 1 },
-				{ healer: 1 },
-				{ rangedAttacker: 2 },
+				{ attacker: 0 },
+				{ healer: 0 },
+				{ rangedAttacker: 0 },
 			],
 			isMobTroopers: true,
 		},
@@ -124,9 +124,9 @@ module.exports = {
 			canControllerEnergizersBuild: true,
 		},
 		{
-			roomName: "W7N9",
+			roomName: "W7N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ controllerEnergizer: 4 },
+				{ controllerEnergizer: 0 },
 			],
 			canControllerEnergizersBuild: true,
 		},
