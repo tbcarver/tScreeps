@@ -52,7 +52,7 @@ module.exports = {
 		{
 			roomName: "W7N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedStorageEnergizer: 12 },
+				{ remoteSpawnedStorageEnergizer: 8 },
 			],
 			canEnergizersTransferToStorageOnly: true,
 		},
@@ -61,6 +61,7 @@ module.exports = {
 			spawnOrderMaxSpawnedCounts: [
 				{ remoteStorageEnergizer: 0 },
 			],
+			canControllerEnergizersBuild: true,
 			canEnergizersTransferToStorageOnly: true,
 		},
 		{
@@ -73,23 +74,24 @@ module.exports = {
 		},
 		// Mob
 		{
-			roomName: "W7N9",
+			roomName: "W6N9",
 			spawnOrderMaxSpawnedCounts: [
-				{ attacker: 3 },
-				{ healer: 4 },
-				{ rangedAttacker: 5 },
+				{ attacker: 1 },
+				{ healer: 2 },
+				{ rangedAttacker: 2 },
+			],
+			isMobTroopers: true,
+		},
+		{
+			roomName: "W8N10",
+			spawnOrderMaxSpawnedCounts: [
+				{ attacker: 1 },
+				{ healer: 2 },
+				{ rangedAttacker: 2 },
 			],
 			isMobTroopers: true,
 		},
 		// Defending rooms
-		{
-			roomName: "W8N8",
-			spawnOrderMaxSpawnedCounts: [
-				{ defender: 2 },
-			],
-			partsPerMove: 1,
-			minTroopersWaiting: 1,
-		},
 		{
 			roomName: "W6N8",
 			spawnOrderMaxSpawnedCounts: [
@@ -117,7 +119,7 @@ module.exports = {
 		{
 			roomName: "W7N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ controllerEnergizer: 18 },
+				{ controllerEnergizer: 0 },
 			],
 			canControllerEnergizersBuild: true,
 		},

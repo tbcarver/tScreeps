@@ -14,8 +14,8 @@ Defender.prototype.act = function() {
 	
 	if (!BaseCreep.prototype.act.call(this)) {
 
-		if (Game.flags["post_" + this.creep.room.name]) {
-			this.creep.moveTo(Game.flags["post_" + this.creep.room.name].pos);
+		if (Game.flags["post-" + this.creep.room.name]) {
+			this.creep.moveTo(Game.flags["post-" + this.creep.room.name].pos);
 		} else {
 			this.creep.moveTo(this.creep.room.controller);
 		}

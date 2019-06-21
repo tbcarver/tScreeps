@@ -44,11 +44,18 @@ bodyPartsFactory.getBodyParts = function(bodyPartsStrategyName, spawnCapacity, p
 
 bodyPartsFactory.toBodyParts = function(bodyPartsObject) {
 
+	// NOTE: Order is important. The parts built first are the first to be attacked.
+
 	var bodyParts = [];
 
-	if (bodyPartsObject.move) {
+	if (bodyPartsObject.tough) {
 
-		_.times(bodyPartsObject.move, () => bodyParts.push(MOVE));
+		_.times(bodyPartsObject.tough, () => bodyParts.push(TOUGH));
+	}
+
+	if (bodyPartsObject.claim) {
+
+		_.times(bodyPartsObject.claim, () => bodyParts.push(CLAIM));
 	}
 
 	if (bodyPartsObject.work) {
@@ -71,19 +78,14 @@ bodyPartsFactory.toBodyParts = function(bodyPartsObject) {
 		_.times(bodyPartsObject.rangedAttack, () => bodyParts.push(RANGED_ATTACK));
 	}
 
-	if (bodyPartsObject.tough) {
-
-		_.times(bodyPartsObject.tough, () => bodyParts.push(TOUGH));
-	}
-
 	if (bodyPartsObject.heal) {
 
 		_.times(bodyPartsObject.heal, () => bodyParts.push(HEAL));
 	}
 
-	if (bodyPartsObject.claim) {
+	if (bodyPartsObject.move) {
 
-		_.times(bodyPartsObject.claim, () => bodyParts.push(CLAIM));
+		_.times(bodyPartsObject.move, () => bodyParts.push(MOVE));
 	}
 
 	return bodyParts;

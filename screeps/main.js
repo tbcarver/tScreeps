@@ -40,11 +40,10 @@ function loop() {
 		// roomTools.lookAt();
 		// debug.primary("log", room.getEventLog(true));
 		// roomTools.createFlag("barracks", COLOR_BLUE, [{"x":"26","y":"22","roomName":"W6S0"}]);
-		// roomTools.createFlag("post_W7S2", COLOR_ORANGE, [{"x":"18","y":"18","roomName":"W7S2"}]);
-		// roomTools.createFlag("exit_from-W7S2_to-W7S2", COLOR_GREEN, [{"x":"18","y":"18","roomName":"W7S2"}]);
-		// Game.rooms["W9N10"].createFlag(20,21, "post_W9N10", COLOR_GREY, COLOR_ORANGE)
-		// Game.rooms["W8N9"].createFlag(28,1, "exit-from-W8N9-to-W8N10", COLOR_GREEN, COLOR_WHITE)
-		// Game.flags["exit-from-W8N11-to-W8N10"].setPosition(14,48)
+		// roomTools.createFlag("post-W7S2", COLOR_ORANGE, [{"x":"18","y":"18","roomName":"W7S2"}]);
+		// Game.rooms["W6N9"].createFlag(26, 20, "post-W6N9", COLOR_GREY, COLOR_ORANGE)
+		// Game.rooms["W6N9"].createFlag(27,48, "exit-from-W6N9-to-W6N8", COLOR_GREEN, COLOR_WHITE)
+		// Game.flags["exit-from-W6N9-to-W8N10"].setPosition(14,48)
 		// Game.rooms["W7N7"].createFlag(48,27, "drop-W7N7", COLOR_YELLOW)
 		// roomTools.consoleWall();
 		COLOR_ORANGE

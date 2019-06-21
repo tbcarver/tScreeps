@@ -8,7 +8,7 @@ function TrooperCreep(creep) {
 
 	this.isTrooper = true;
 	this.isMobTrooper = this.memory.isMobTrooper;
-	this.mobRoomName = Memory.state.currentMobAttackRoomName;
+	this.mobAttackRoomName = enemyTools.getMobAttackRoomName(this.remoteRoomName);
 
 	if (this.isMobTrooper) {
 		this.suppressReturnToRooms = true;
@@ -24,18 +24,18 @@ TrooperCreep.prototype.act = function() {
 		var acted = false;
 
 		if (this.isMobTrooper) {
-			if (this.mobRoomName === null && this.creep.room.name !== this.remoteRoomName) {
+			if (!this.mobAttackRoomName && this.creep.room.name !== this.remoteRoomName) {
 
 				this.state = "movingToRemoteRoom";
 				acted = true;
 
-			} else if (this.mobRoomName === null && this.creep.room.name === this.remoteRoomName) {
+			} else if (!this.mobAttackRoomName && this.creep.room.name === this.remoteRoomName) {
 
 				this.state = "trooping";
 
 			} else if (this.state === "movingToMobRoom") {
 
-				if (this.creep.room.name === this.mobRoomName) {
+				if (this.creep.room.name === this.mobAttackRoomName) {
 					// NOTE: Creep must step off the exit edge of the room immediately
 					//  or will be sent back to the other room
 					this.moveIntoRoom();
@@ -43,11 +43,11 @@ TrooperCreep.prototype.act = function() {
 					this.state = "trooping";
 
 				} else {
-					this.moveToExit(this.mobRoomName);
+					this.moveToExit(this.mobAttackRoomName);
 				}
 
 				acted = true;
-			} else if (this.creep.room.name != this.mobRoomName) {
+			} else if (this.creep.room.name != this.mobAttackRoomName) {
 
 				this.state = "movingToMobRoom"
 				acted = true;
@@ -62,8 +62,8 @@ TrooperCreep.prototype.act = function() {
 
 			} else {
 
-				if (Game.flags["post_" + this.creep.room.name]) {
-					this.creep.moveTo(Game.flags["post_" + this.creep.room.name].pos);
+				if (Game.flags["post-" + this.creep.room.name]) {
+					this.creep.moveTo(Game.flags["post-" + this.creep.room.name].pos);
 				} else {
 					this.creep.moveTo(this.creep.room.controller);
 				}

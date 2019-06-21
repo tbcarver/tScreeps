@@ -1,22 +1,32 @@
 
-var enemyTools = {};
+var roomTools = require("./roomTools");
+
+var enemyTools = {
+	mobAttackRoomCoolDownCountStart: 15,
+};
 
 enemyTools.manageEnemies = function() {
 
 	this.enemyStats = buildEnemyStats();
 	this.hasEnemies = this.enemyStats.countRoomsWithEnemies > 0;
+	this.mobPostsMobAttackRooms = {};
 
-	if (!this.enemyStats.roomNameEnemyStats[Memory.state.currentMobAttackRoomName]) {
-		Memory.state.currentMobAttackRoomName = null;
+	if (!Memory.state.mobPostsMobAttackRooms) {
+		Memory.state.mobPostsMobAttackRooms = {};
 	}
 
-	if (Memory.state.currentMobAttackRoomName === null && this.hasEnemies) {
+	for (var mobPostRoomName in Memory.state.mobPostsMobAttackRooms) {
 
-		var sortedEnemyStats = _.filter(this.enemyStats.roomNameEnemyStats, { hasTower: false });
+		var mobAttackRoom = Memory.state.mobPostsMobAttackRooms[mobPostRoomName];
 
-		if (sortedEnemyStats.length > 0) {
-			sortedEnemyStats = _.sortBy(sortedEnemyStats, ["isRoomOwned", "enemyCount"]);
-			Memory.state.currentMobAttackRoomName = sortedEnemyStats[sortedEnemyStats.length - 1].roomName;
+		if (!this.enemyStats.roomNameEnemyStats[mobPostRoomName]) {
+			mobAttackRoom.coolDownCount--;
+		}
+
+		if (mobAttackRoom.coolDownCount <= 0) {
+			delete Memory.state.mobPostsMobAttackRooms[mobPostRoomName];
+		} else {
+			this.mobPostsMobAttackRooms[mobPostRoomName] = Memory.state.mobPostsMobAttackRooms[mobPostRoomName];
 		}
 	}
 }
@@ -28,6 +38,38 @@ enemyTools.hasRoomEnemies = function(roomName) {
 	} else {
 		return false;
 	}
+}
+
+enemyTools.getMobAttackRoomName = function(mobPostRoomName) {
+
+	var mobAttackRoomName;
+
+	if (this.mobPostsMobAttackRooms[mobPostRoomName]) {
+
+		mobAttackRoomName = this.mobPostsMobAttackRooms[mobPostRoomName].mobAttackRoomName;
+
+	} else if (this.hasEnemies) {
+
+		var watchRoomNames = roomTools.getAdjacentRoomNames(mobPostRoomName);
+		watchRoomNames.push(mobPostRoomName);
+
+		var watchedEnemyStats = _.filter(this.enemyStats.roomNameEnemyStats, roomNameEnemyStat => !roomNameEnemyStat.hasTower &&
+			watchRoomNames.includes(roomNameEnemyStat.roomName));
+
+		if (watchedEnemyStats.length > 0) {
+
+			// Boolean sorted false then true, integer sorted lowest then highest
+			watchedEnemyStats = _.sortBy(watchedEnemyStats, ["isRoomOwned", "enemyCount"]);
+			this.mobPostsMobAttackRooms[mobPostRoomName] = {
+				mobAttackRoomName: watchedEnemyStats[watchedEnemyStats.length - 1].roomName,
+				coolDownCount: this.mobAttackRoomCoolDownCountStart
+			}
+
+			Memory.state.mobPostsMobAttackRooms[mobPostRoomName] = this.mobPostsMobAttackRooms[mobPostRoomName]
+		}
+	}
+
+	return mobAttackRoomName;
 }
 
 function buildEnemyStats() {

@@ -165,7 +165,7 @@
 		// result = await api.raw.game.mapStats(myRoom);
 		// console.log("worldStatus: ", result);
 
-		result = await api.raw.game.createInvader("W7N9", 37, 5, "big", "Melee");
+		result = await api.raw.game.createInvader("W8N8", 7, 5, "small", "Melee");
 		console.log("result: ", result);
 
 	} catch (error) {

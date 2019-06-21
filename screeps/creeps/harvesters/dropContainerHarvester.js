@@ -24,14 +24,11 @@ DropContainerHarvester.prototype.act = function() {
 
 			if (resource && container) {
 
-				if (container.store.energy < container.storeCapacity) {
+				var result = this.creep.harvest(resource);
 
-					var result = this.creep.harvest(resource);
+				if (!(result === OK || result === ERR_NOT_ENOUGH_RESOURCES)) {
 
-					if (!(result === OK || result === ERR_NOT_ENOUGH_RESOURCES)) {
-
-						debug.danger("dropContainerHarvester harvest failed:", result);
-					}
+					debug.danger("dropContainerHarvester harvest failed:", result);
 				}
 			} else {
 

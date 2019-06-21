@@ -14,6 +14,7 @@ creepsSpawnRules.push(require("./rooms/W7N8"));
 creepsSpawnRules.push(require("./rooms/W7N10"));
 creepsSpawnRules.push(require("./rooms/W7N9"));
 creepsSpawnRules.push(require("./rooms/W8N10"));
+creepsSpawnRules.push(require("./rooms/W8N8"));
 
 var roomNamesCreepsSpawnRules = _.cloneDeep(creepsSpawnRules);
 

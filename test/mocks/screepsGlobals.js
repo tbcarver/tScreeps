@@ -8,6 +8,8 @@ _.forEach(constants, (value, key) => {
 })
 
 global.Game = {};
-global.Memory = {};
+global.Memory = {
+	state: {}
+};
 
 global.debug = function(){};

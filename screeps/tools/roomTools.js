@@ -1,6 +1,71 @@
 
 var roomTools = {};
 
+var adjacentDifferentials = [
+	{ x: -1, y: -1 },
+	{ x: -1, y: 0 },
+	{ x: -1, y: 1 },
+	{ x: 0, y: -1 },
+	{ x: 0, y: 1 },
+	{ x: 1, y: -1 },
+	{ x: 1, y: 0 },
+	{ x: 1, y: 1 },
+];
+
+// From @Screeps/backend/lib/utils.js
+roomTools.roomNameFromXY = function(x,y) {
+    if(x < 0) {
+        x = 'W'+(-x-1);
+    }
+    else {
+        x = 'E'+(x);
+    }
+    if(y < 0) {
+        y = 'N'+(-y-1);
+    }
+    else {
+        y = 'S'+(y);
+    }
+    return ""+x+y;
+}
+
+// From @Screeps/backend/lib/utils.js
+roomTools.roomNameToXY = function(name) {
+    var [match,hor,x,ver,y] = name.match(/^(\w)(\d+)(\w)(\d+)$/);
+    if(hor == 'W') {
+        x = -x-1;
+    }
+    else {
+        x = +x;
+        //x--;
+    }
+    if(ver == 'N') {
+        y = -y-1;
+    }
+    else {
+        y = +y;
+        //y--;
+    }
+    return [x,y];
+}
+
+roomTools.getAdjacentRoomNames = function(roomName) {
+		
+	var adjacentRoomNames = [];
+	var roomXY = this.roomNameToXY(roomName);
+	
+	for (var adjacentDifferential of adjacentDifferentials) {
+
+		var adjacentX = roomXY[0] + adjacentDifferential.x;
+		var adjacentY = roomXY[1] + adjacentDifferential.y;
+		var adjacentRoomName = this.roomNameFromXY(adjacentX, adjacentY);
+
+		adjacentRoomNames.push(adjacentRoomName);
+	}
+
+	return adjacentRoomNames;
+}
+
 roomTools.isDropContainer = function(container, range) {
 
 	range = range || 1;

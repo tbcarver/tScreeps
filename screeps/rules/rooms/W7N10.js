@@ -39,7 +39,7 @@ module.exports = {
 		{
 			roomName: "W8N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedStorageEnergizer: 2 },
+				{ remoteSpawnedStorageEnergizer: 4 },
 				{ controllerEnergizer: 0 },
 				{ remoteBuilder: 0 },
 			],
@@ -104,16 +104,6 @@ module.exports = {
 			],
 			partsPerMove: 1,
 			minTroopersWaiting: 1,
-		},
-		// Mob
-		{
-			roomName: "W7N9",
-			spawnOrderMaxSpawnedCounts: [
-				{ attacker: 0 },
-				{ healer: 0 },
-				{ rangedAttacker: 0 },
-			],
-			isMobTroopers: true,
 		},
 		// Overflow
 		{
