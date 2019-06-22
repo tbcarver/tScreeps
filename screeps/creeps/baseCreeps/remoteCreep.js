@@ -27,7 +27,6 @@ RemoteCreep.prototype.act = function() {
 				this.moveIntoRoom();
 				this.memory.takeStepsIntoRoom = 2;
 				this.arrivedAtSpawnedRoom();
-				
 			} else {
 				this.moveToExit(this.spawnedRoomName);
 			}
@@ -54,7 +53,10 @@ RemoteCreep.prototype.act = function() {
 			this.remoteRoomAct();
 
 		} else {
-			debug.warning(`${this.type} in unknown room: ${this.creep.room.name}`);
+
+			if (!this.unknownRoomAct()) {
+				debug.warning(`${this.type} ${this.creep.name} in unknown room: ${this.creep.room.name}`);
+			}
 		}
 	}
 }
@@ -63,6 +65,10 @@ RemoteCreep.prototype.spawnedRoomAct = function() {
 }
 
 RemoteCreep.prototype.remoteRoomAct = function() {
+}
+
+RemoteCreep.prototype.unknownRoomAct = function() {
+	return false;
 }
 
 RemoteCreep.prototype.moveToSpawnedRoom = function() {

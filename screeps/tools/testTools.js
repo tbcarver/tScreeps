@@ -1,34 +1,51 @@
 
+var { rules } = require("../rules/rules")
 var findTools = require("./findTools");
 var roomTools = require("./roomTools");
 var spawnTools = require("./spawnTools");
 var testObject = require("../creeps/energizers/extensionEnergizer");
-// var bodyPartsStrategy = require("../creeps/bodies/energizerStrategy");
+var bodyPartsStrategy = require("../creeps/bodies/moveWorkStrategy");
 
 function tick() {
 
+// 	debug.temp(findTools.findRoute("W8N8", "W9N7"));
+// debug.temp(rules.routeAvoidRooms.includes("W9N8"));
+
+	// var route = Game.map.findRoute("W8N8", "W9N8", {
+	// 	routeCallback(roomName, fromRoomName) {
+
+	// 		if (roomName === "W9N8") {
+	// 			// Avoid this room
+	// 			return 2;
+	// 		}
+
+	// 		return 1;
+	// 	}
+	// });
+
+	// debug.temp(route)
 
 	// for (var count = 1; count <= 15; count++) {
 	// 	var capacity = 300 + (count * 50);
-	// 	debug.temp(capacity, bodyPartsStrategy.getBodyPartsObject(capacity));
+	// 	debug.temp(capacity, bodyPartsStrategy.getBodyPartsObject(capacity, 1));
 	// }
 
-	// energizerStrategy
-	// 350 {"move":2,"work":1,"carry":3}
-	// 400 {"move":2,"work":1,"carry":3}
-	// 450 {"move":3,"work":1,"carry":4}
-	// 500 {"move":3,"work":1,"carry":5}
-	// 550 {"move":3,"work":1,"carry":5}
-	// 600 {"move":4,"work":1,"carry":6}
-	// 650 {"move":4,"work":1,"carry":7}
-	// 700 {"move":4,"work":1,"carry":7}
-	// 750 {"move":5,"work":1,"carry":8}
-	// 800 {"move":5,"work":1,"carry":9}
-	// 850 {"move":5,"work":1,"carry":9}
-	// 900 {"move":6,"work":1,"carry":10}
-	// 950 {"move":6,"work":1,"carry":11}
-	// 1000 {"move":6,"work":1,"carry":11}
-	// 1050 {"move":7,"work":1,"carry":12}
+	// moveCarryWorkStrategy partsPerMove: 1
+	// 350 {move: 3, work: 1, carry: 2}
+	// 400 {move: 3, work: 1, carry: 2}
+	// 450 {move: 4, work: 1, carry: 3}
+	// 500 {move: 7, work: 1, carry: 6}
+	// 550 {move: 5, work: 1, carry: 4}
+	// 600 {move: 5, work: 1, carry: 4}
+	// 650 {move: 6, work: 1, carry: 5}
+	// 700 {move: 6, work: 2, carry: 4}
+	// 750 {move: 6, work: 2, carry: 4}
+	// 800 {move: 7, work: 2, carry: 5}
+	// 850 {move: 10, work: 2, carry: 8}
+	// 900 {move: 8, work: 2, carry: 6}
+	// 950 {move: 8, work: 2, carry: 6}
+	// 1000 {move: 9, work: 2, carry: 7}
+	// 1050 {move: 9, work: 3, carry: 6}
 
 	// moveCarryWorkStrategy
 	// 350 {"move":2,"work":1,"carry":3}
@@ -46,6 +63,23 @@ function tick() {
 	// 950 {"move":5,"work":3,"carry":7}
 	// 1000 {"move":6,"work":3,"carry":8}
 	// 1050 {"move":6,"work":3,"carry":9}
+
+	// moveWorkStrategy partsPerMove: 1
+	// 350 {move: 2, work: 2}
+	// 400 {move: 3, work: 2}
+	// 450 {move: 3, work: 3}
+	// 500 {move: 3, work: 3}
+	// 550 {move: 4, work: 3}
+	// 600 {move: 4, work: 4}
+	// 650 {move: 4, work: 4}
+	// 700 {move: 5, work: 4}
+	// 750 {move: 5, work: 5}
+	// 800 {move: 5, work: 5}
+	// 850 {move: 6, work: 5}
+	// 900 {move: 6, work: 6}
+	// 950 {move: 6, work: 6}
+	// 1000 {move: 7, work: 6}
+	// 1050 {move: 7, work: 7}
 
 	// function approximateParts(result) {
 

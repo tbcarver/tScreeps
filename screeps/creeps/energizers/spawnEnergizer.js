@@ -35,6 +35,13 @@ SpawnEnergizer.prototype.energyAct = function() {
 		});
 	}
 
+	if (!targetStructure) {
+
+		var targetStructure = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+			filter: structure => structure.structureType === STRUCTURE_SPAWN
+		});
+	}
+
 	if (targetStructure) {
 
 		var transferResult = this.creep.transfer(targetStructure, RESOURCE_ENERGY);

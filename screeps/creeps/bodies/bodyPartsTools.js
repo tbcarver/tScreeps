@@ -108,8 +108,17 @@ bodyPartsTools.balance50100MoveParts = function(result, spawnCapacity, partsPerM
 
 			} else {
 
-				result.numberOfMoves = Math.ceil((result.total50s - (result.numberOf100s * 2)) / (result.partsPerMove * 2));
-				result.numberOf50s = result.total50s - (result.numberOf100s * 2) - result.numberOfMoves;
+				
+				// result.numberOfMoves = Math.ceil((result.total50s - (result.numberOf100s * 2)) / (result.partsPerMove * 2));
+				// result.numberOf50s = result.total50s - (result.numberOf100s * 2) - result.numberOfMoves;
+
+
+
+				var numberOf50sUnusedToDistribute = Math.ceil(Math.abs(result.numberOf50sUnused / (result.partsPerMove * 2)));
+
+				result.numberOfMoves -= numberOf50sUnusedToDistribute;
+				result.numberOf50s -= numberOf50sUnusedToDistribute;
+
 				result.success = true;
 			}
 		}

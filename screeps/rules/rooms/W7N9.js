@@ -39,7 +39,7 @@ module.exports = {
 			spawnOrderMaxSpawnedCounts: [
 				{ remoteReserver: 1 },
 				{ dropHarvester: 4 },
-				{ remoteSpawnedStorageEnergizer: 5 },
+				{ remoteSpawnedStorageEnergizer: 4 },
 			],
 			partsPerMove: 1,
 			minTroopersWaiting: 1,
@@ -52,14 +52,14 @@ module.exports = {
 		{
 			roomName: "W7N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedStorageEnergizer: 8 },
+				{ remoteSpawnedStorageEnergizer: 2 },
 			],
 			canEnergizersTransferToStorageOnly: true,
 		},
 		{
 			roomName: "W7N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteStorageEnergizer: 0 },
+				{ remoteStorageEnergizer: 4 },
 			],
 			canControllerEnergizersBuild: true,
 			canEnergizersTransferToStorageOnly: true,
@@ -78,7 +78,7 @@ module.exports = {
 			spawnOrderMaxSpawnedCounts: [
 				{ attacker: 1 },
 				{ healer: 2 },
-				{ rangedAttacker: 2 },
+				{ rangedAttacker: 3 },
 			],
 			isMobTroopers: true,
 		},
@@ -87,11 +87,51 @@ module.exports = {
 			spawnOrderMaxSpawnedCounts: [
 				{ attacker: 1 },
 				{ healer: 2 },
-				{ rangedAttacker: 2 },
+				{ rangedAttacker: 3 },
 			],
 			isMobTroopers: true,
 		},
 		// Defending rooms
+		{
+			roomName: "W6N10",
+			spawnOrderMaxSpawnedCounts: [
+				{ defender: 2 },
+			],
+			partsPerMove: 1,
+			minTroopersWaiting: 1,
+		},
+		{
+			roomName: "W6N9",
+			spawnOrderMaxSpawnedCounts: [
+				{ defender: 2 },
+			],
+			partsPerMove: 1,
+			minTroopersWaiting: 1,
+		},
+		{
+			roomName: "W8N9",
+			spawnOrderMaxSpawnedCounts: [
+				{ defender: 2 },
+			],
+			partsPerMove: 1,
+			minTroopersWaiting: 1,
+		},
+		{
+			roomName: "W8N11",
+			spawnOrderMaxSpawnedCounts: [
+				{ defender: 2 },
+			],
+			partsPerMove: 1,
+			minTroopersWaiting: 1,
+		},
+		{
+			roomName: "W9N10",
+			spawnOrderMaxSpawnedCounts: [
+				{ defender: 2 },
+			],
+			partsPerMove: 1,
+			minTroopersWaiting: 1,
+		},
 		{
 			roomName: "W6N8",
 			spawnOrderMaxSpawnedCounts: [
@@ -102,6 +142,14 @@ module.exports = {
 		},
 		{
 			roomName: "W7N7",
+			spawnOrderMaxSpawnedCounts: [
+				{ defender: 2 },
+			],
+			partsPerMove: 1,
+			minTroopersWaiting: 1,
+		},
+		{
+			roomName: "W7N11",
 			spawnOrderMaxSpawnedCounts: [
 				{ defender: 2 },
 			],
@@ -119,7 +167,7 @@ module.exports = {
 		{
 			roomName: "W7N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ controllerEnergizer: 0 },
+				{ controllerEnergizer: 18 },
 			],
 			canControllerEnergizersBuild: true,
 		},

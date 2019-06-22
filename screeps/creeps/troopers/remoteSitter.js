@@ -33,7 +33,7 @@ RemoteSitter.prototype.remoteRoomAct = function() {
 		
 	} else {
 
-		debug.warning(`${this.type} can't find remote controller`);
+		debug.warning(`${this.type} ${this.creep.name} can't find remote controller`);
 	}
 }
 

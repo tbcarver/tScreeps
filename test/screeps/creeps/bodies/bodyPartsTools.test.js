@@ -332,6 +332,30 @@ describe("/screeps/creeps/bodies/bodyPartsTools", function() {
 			}
 		});
 	});
+
+	// describe("balance50100MoveParts()", function() {
+
+	// 	it("should return 3 moves, 5 50s, 1 100s for 550 to 599 and max 100s of 1", function() {
+
+	// 		var capacities = [500];
+
+	// 		for (capacity of capacities) {
+
+	// 			var result = {
+	// 				maxNumberOf100s: 1
+	// 			}
+
+	// 			var result = strategy.balance50100MoveParts(result, capacity, 1);
+	// 			var cost = calculateCost(result);
+
+	// 			assert.notStrictEqual(result, undefined);
+	// 			assert.isAtMost(cost, capacity);
+	// 			assert.strictEqual(result.numberOfMoves, 3);
+	// 			assert.strictEqual(result.numberOf50s, 5);
+	// 			assert.strictEqual(result.numberOf100s, 1);
+	// 		}
+	// 	});
+	// });
 });
 
 function calculateCost(result) {

@@ -1,9 +1,9 @@
 
 var bodyPartsTools = require("./bodyPartsTools");
 
-var workDropperStrategy = {};
+var moveWorkStrategy = {};
 
-workDropperStrategy.getBodyPartsObject = function(spawnCapacity, partsPerMove) {
+moveWorkStrategy.getBodyPartsObject = function(spawnCapacity, partsPerMove) {
 	
 	var balanced50100MoveParts = {
 		maxNumberOf50s: 0,
@@ -20,4 +20,4 @@ workDropperStrategy.getBodyPartsObject = function(spawnCapacity, partsPerMove) {
 }
 
 
-module.exports = workDropperStrategy;
+module.exports = moveWorkStrategy;

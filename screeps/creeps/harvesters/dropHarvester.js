@@ -25,7 +25,7 @@ DropHarvester.prototype.act = function() {
 					this.creep.moveTo(resource);
 				}
 			} else {
-				debug.warning(`${this.type} no resource found, resourceId: ${this.memory.resourceId}`);
+				debug.warning(`${this.type} ${this.creep.name} no resource found, resourceId: ${this.memory.resourceId}`);
 			}
 		}
 	}
@@ -39,7 +39,7 @@ DropHarvester.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule
 
 	var creepMemory = {
 		type: "dropHarvester",
-		bodyPartsType: "workDropper",
+		bodyPartsType: "moveWork",
 		state: "harvesting",
 		maximumSpawnCapacity: 500,
 	}

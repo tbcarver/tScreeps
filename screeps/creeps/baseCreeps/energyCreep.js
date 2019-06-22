@@ -59,7 +59,7 @@ EnergyCreep.prototype.act = function() {
 				}
 			} else {
 
-				// debug.warning(`${this.type} energy not found`);
+				// debug.warning(`${this.type} ${this.creep.name} energy not found`);
 			}
 		}
 

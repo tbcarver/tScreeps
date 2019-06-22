@@ -1,10 +1,10 @@
 
 var moveStrategy = {};
 
-moveStrategy.getBodyPartsObject = function(spawnCapacity) {
+moveStrategy.getBodyPartsObject = function(spawnCapacity, partsPerMove) {
 
 	var bodyPartsObject = {
-		move: 2,
+		move: partsPerMove,
 	};
 
 	return bodyPartsObject

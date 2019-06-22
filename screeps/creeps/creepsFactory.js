@@ -12,10 +12,10 @@ creepsFactory.buildCreep = function(creep) {
 
 		// if (creep.name === "a31078") {
 		// if (creep.memory.type === "controllerEnergizer") {
-		// 	if (baseCreep.spawnedRoomName === "W7N9") {
+			// if (baseCreep.remoteRoomName === "W611") {
 		// 		if (!baseCreep.remoteRoomName) {
-		// 					creep.memory.state = "suicide";
-		// // 			// 		// creep.suicide();
+							// creep.memory.state = "suicide";
+		// 			// 		// creep.suicide();
 		// // 			// // 		// debug.temp("creep:", creep)
 		// // 			debug.temp("creep memory:", creep.memory)
 		// 		}

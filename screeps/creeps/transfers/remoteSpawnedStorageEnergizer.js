@@ -39,7 +39,8 @@ RemoteSpawnedStorageEnergizer.prototype.spawnedRoomAct = function() {
 		if (this.creepsSpawnRule.canEnergizersTransferToStorageOnly) {
 
 			var storage = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-				filter: { structureType: STRUCTURE_STORAGE }
+				filter: storage => storage.structureType === STRUCTURE_STORAGE &&
+					storage.storeCapacity - storage.store[RESOURCE_ENERGY] > this.creep.carry[RESOURCE_ENERGY]
 			});
 
 		} else {
@@ -54,17 +55,23 @@ RemoteSpawnedStorageEnergizer.prototype.spawnedRoomAct = function() {
 
 		if (storage) {
 			var transferResult = this.creep.transfer(storage, RESOURCE_ENERGY);
-	
+
 			if (transferResult == ERR_NOT_IN_RANGE) {
-	
+
 				this.creep.moveTo(storage);
-	
+
 			} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
-	
+
 				this.moveToRemoteRoom();
 			}
-		} else {			
-			debug.warning(`${this.type} can't find any storage`);
+		} else {
+
+			var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
+			if (waitFlag) {
+				this.creep.moveTo(waitFlag);
+			} else {
+				debug.warning(`${this.type} ${this.creep.name} can't find any storage`);
+			}
 		}
 	}
 }
@@ -76,12 +83,12 @@ RemoteSpawnedStorageEnergizer.prototype.remoteRoomAct = function() {
 		this.moveToSpawnedRoom();
 
 	} else if (this.state === "harvesting") {
-		
+
 		var resource;
 
 		if (this.canPickup) {
 
-			var dropFlag = Game.flags[`drop-${this.creep.room.name}`];			
+			var dropFlag = Game.flags[`drop-${this.creep.room.name}`];
 			if (dropFlag) {
 
 				var resources = dropFlag.pos.findInRange(FIND_DROPPED_RESOURCES, 3);

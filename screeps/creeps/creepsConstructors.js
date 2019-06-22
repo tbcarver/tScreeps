@@ -9,6 +9,7 @@ var DropHarvester = require("./harvesters/dropHarvester");
 var ExtensionEnergizer = require("./energizers/extensionEnergizer");
 var Healer = require("./troopers/healer");
 var RangedAttacker = require("./troopers/rangedAttacker");
+var Razer = require("./troopers/razer");
 var RemoteBuilder = require("./energyWorkers/remoteBuilder");
 var RemoteClaimer = require("./troopers/remoteClaimer");
 var RemoteReserver = require("./troopers/remoteReserver");
@@ -32,6 +33,7 @@ var creepConstructors = {
 	extensionEnergizer: ExtensionEnergizer,
 	healer: Healer,
 	rangedAttacker: RangedAttacker,
+	razer: Razer,
 	remoteBuilder: RemoteBuilder,
 	remoteClaimer: RemoteClaimer,
 	remoteReserver: RemoteReserver,

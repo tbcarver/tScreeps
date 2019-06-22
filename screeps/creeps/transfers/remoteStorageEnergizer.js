@@ -76,12 +76,13 @@ RemoteStorageEnergizer.prototype.remoteRoomAct = function() {
 
 		this.moveToSpawnedRoom();
 
-	} else if (this.state === "energizing") {		
+	} else if (this.state === "energizing") {
 
 		if (this.creepsSpawnRule.canEnergizersTransferToStorageOnly) {
 
 			var storage = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-				filter: { structureType: STRUCTURE_STORAGE }
+				filter: storage => storage.structureType === STRUCTURE_STORAGE &&
+					storage.storeCapacity - storage.store[RESOURCE_ENERGY] > this.creep.carry[RESOURCE_ENERGY]
 			});
 
 		} else {
@@ -94,15 +95,25 @@ RemoteStorageEnergizer.prototype.remoteRoomAct = function() {
 			});
 		}
 
-		var transferResult = this.creep.transfer(storage, RESOURCE_ENERGY);
+		if (storage) {
+			var transferResult = this.creep.transfer(storage, RESOURCE_ENERGY);
 
-		if (transferResult == ERR_NOT_IN_RANGE) {
+			if (transferResult == ERR_NOT_IN_RANGE) {
 
-			this.creep.moveTo(storage);
+				this.creep.moveTo(storage);
 
-		} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+			} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
 
-			this.moveToSpawnedRoom();
+				this.moveToSpawnedRoom();
+			}
+		} else {
+
+			var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
+			if (waitFlag) {
+				this.creep.moveTo(waitFlag);
+			} else {
+				debug.warning(`${this.type} ${this.creep.name} can't find any storage`);
+			}
 		}
 	}
 }

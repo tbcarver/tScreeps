@@ -185,7 +185,7 @@ findTools.findRoute = function(fromRoom, toRoom) {
 
 			if (rules.routeAvoidRooms.includes(roomName)) {
 				// Avoid this room
-				return Infinity;
+				return 2;
 			}
 
 			return 1;

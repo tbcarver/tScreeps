@@ -39,12 +39,14 @@ function loop() {
 		// constructionTools.destroyStructure();
 		// roomTools.lookAt();
 		// debug.primary("log", room.getEventLog(true));
-		// roomTools.createFlag("barracks", COLOR_BLUE, [{"x":"26","y":"22","roomName":"W6S0"}]);
-		// roomTools.createFlag("post-W7S2", COLOR_ORANGE, [{"x":"18","y":"18","roomName":"W7S2"}]);
-		// Game.rooms["W6N9"].createFlag(26, 20, "post-W6N9", COLOR_GREY, COLOR_ORANGE)
-		// Game.rooms["W6N9"].createFlag(27,48, "exit-from-W6N9-to-W6N8", COLOR_GREEN, COLOR_WHITE)
-		// Game.flags["exit-from-W6N9-to-W8N10"].setPosition(14,48)
-		// Game.rooms["W7N7"].createFlag(48,27, "drop-W7N7", COLOR_YELLOW)
+
+		// Game.rooms["W7N11"].createFlag(23, 24, "post-W7N11", COLOR_GREY, COLOR_ORANGE)
+		// Game.rooms["W6N11"].createFlag(19,48, "exit-from-W6N11-to-W6N10", COLOR_GREEN, COLOR_WHITE)
+		// Game.rooms["W7N11"].createFlag(17,42, "drop-W7N11", COLOR_YELLOW)
+		// Game.rooms["W7N8"].createFlag(13,24, "wait-W7N8", COLOR_RED, COLOR_YELLOW)
+
+		// Game.flags["drop-W7N8"].setPosition(25,1)
+
 		// roomTools.consoleWall();
 		COLOR_ORANGE
 		// roomTools.consoleEnemies();

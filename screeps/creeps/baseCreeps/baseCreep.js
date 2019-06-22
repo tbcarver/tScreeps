@@ -174,7 +174,7 @@ BaseCreep.prototype.moveToExit = function(exitRoomName) {
 
 	if (exitFlag) {
 
-		if (this.creep.pos.inRangeTo(exitFlag, 3)) {
+		if (this.creep.pos.inRangeTo(exitFlag, 2)) {
 			isAtFlag = true;
 		} else {
 			this.creep.moveTo(exitFlag);
@@ -195,10 +195,10 @@ BaseCreep.prototype.moveToExit = function(exitRoomName) {
 				this.creep.moveTo(exit);
 
 			} else {
-				debug.warning(`${this.type} can't find a path to the exit to ${exitRoomName}`);
+				debug.warning(`${this.type} ${this.creep.name} can't find a path from ${this.creep.room.name} to the exit to ${exitRoomName} with exit ${routes[0].exit}`);
 			}
 		} else {
-			debug.warning(`${this.type} ${this.creep.name} can't find an exit direction to ${exitRoomName}`);
+			debug.warning(`${this.type} ${this.creep.name} can't find an exit direction from ${this.creep.room.name} to ${exitRoomName}`);
 		}
 	}
 }

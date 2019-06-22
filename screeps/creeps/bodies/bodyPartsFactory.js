@@ -6,8 +6,8 @@ var healerStrategy = require("./healerStrategy");
 var moveCarryStrategy = require("./moveCarryStrategy");
 var moveCarryWorkStrategy = require("./moveCarryWorkStrategy");
 var moveStrategy = require("./moveStrategy");
+var moveWorkStrategy = require("./moveWorkStrategy");
 var rangedAttackerStrategy = require("./rangedAttackerStrategy");
-var workDropperStrategy = require("./workDropperStrategy");
 
 var bodyPartsFactory = {};
 var bodyPartsStrategies = {
@@ -18,8 +18,8 @@ var bodyPartsStrategies = {
 	moveCarry: moveCarryStrategy,
 	moveCarryWork: moveCarryWorkStrategy,
 	move: moveStrategy,
+	moveWork: moveWorkStrategy,
 	rangedAttacker: rangedAttackerStrategy,
-	workDropper: workDropperStrategy,
 }
 
 bodyPartsFactory.getBodyParts = function(bodyPartsStrategyName, spawnCapacity, partsPerMove) {

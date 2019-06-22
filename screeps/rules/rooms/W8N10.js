@@ -14,13 +14,14 @@ module.exports = {
 	canEnergizersTransferToStorageOnly: true,
 	maxExtensionsPerEnergizer: 4,
 	remoteRooms: [
+		// Adjacent remote rooms
 		{
 			roomName: "W8N11",
 			spawnOrderMaxSpawnedCounts: [
 				{ defender: 0 },
 				{ remoteReserver: 1 },
 				{ dropHarvester: 4 },
-				{ remoteSpawnedStorageEnergizer: 5 },
+				{ remoteSpawnedStorageEnergizer: 4 },
 			],
 			partsPerMove: 1,
 			minTroopersWaiting: 3,
@@ -36,7 +37,8 @@ module.exports = {
 				{ defender: 0 },
 				{ remoteReserver: 1 },
 				{ dropHarvester: 4 },
-				{ remoteSpawnedStorageEnergizer: 3 },
+				{ storageEnergizer: 2 },
+				{ remoteSpawnedStorageEnergizer: 5 },
 			],
 			partsPerMove: 1,
 			minTroopersWaiting: 3,
@@ -55,6 +57,25 @@ module.exports = {
 				{ remoteBuilder: 0 },
 			],
 			canControllerEnergizersBuild: true,
+			canEnergizersTransferToStorageOnly: true,
+		},
+		// Very remote rooms
+		{
+			roomName: "W10N10",
+			spawnOrderMaxSpawnedCounts: [
+				{ remoteSpawnedHarvester: 4 },
+			],
+			partsPerMove: 1,
+			canEnergyCreepsHarvest: true,
+			canEnergizersTransferToStorageOnly: true,
+		},
+		{
+			roomName: "W9N11",
+			spawnOrderMaxSpawnedCounts: [
+				{ remoteSpawnedHarvester: 4 },
+			],
+			partsPerMove: 1,
+			canEnergyCreepsHarvest: true,
 			canEnergizersTransferToStorageOnly: true,
 		},
 		// Overflow

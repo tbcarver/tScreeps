@@ -24,12 +24,25 @@ module.exports = {
 			spawnOrderMaxSpawnedCounts: [
 				{ defender: 0 },
 				{ remoteReserver: 1 },
-				{ dropHarvester: 2 },
+				{ dropHarvester: 4 },
 				{ remoteSpawnedStorageEnergizer: 4 },
 			],
 			partsPerMove: 1,
-			minTroopersWaiting: 3,
-			minTroopersWaiting: 3,
+			canEnergyCreepsHarvest: true,
+			canEnergyCreepsPickup: true,
+			canRemoteStorageEnergizersPickup: true,
+			canStorageEnergizersPickup: true,
+		},
+		{
+			roomName: "W7N11",
+			spawnOrderMaxSpawnedCounts: [
+				{ defender: 0 },
+				{ remoteReserver: 1 },
+				{ dropHarvester: 4 },
+				{ storageEnergizer: 3 },
+				{ remoteSpawnedStorageEnergizer: 4 },
+			],
+			partsPerMove: 1,
 			canEnergyCreepsHarvest: true,
 			canEnergyCreepsPickup: true,
 			canRemoteStorageEnergizersPickup: true,
@@ -64,46 +77,15 @@ module.exports = {
 			canEnergyCreepsHarvest: false,
 			canEnergyCreepsPickup: false,
 		},
-		// Defending rooms
+		// Very remote rooms
 		{
-			roomName: "W6N10",
+			roomName: "W6N11",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 2 },
+				{ remoteSpawnedHarvester: 4 },
 			],
 			partsPerMove: 1,
-			minTroopersWaiting: 1,
-		},
-		{
-			roomName: "W6N9",
-			spawnOrderMaxSpawnedCounts: [
-				{ defender: 2 },
-			],
-			partsPerMove: 1,
-			minTroopersWaiting: 1,
-		},
-		{
-			roomName: "W8N9",
-			spawnOrderMaxSpawnedCounts: [
-				{ defender: 2 },
-			],
-			partsPerMove: 1,
-			minTroopersWaiting: 1,
-		},
-		{
-			roomName: "W8N11",
-			spawnOrderMaxSpawnedCounts: [
-				{ defender: 2 },
-			],
-			partsPerMove: 1,
-			minTroopersWaiting: 1,
-		},
-		{
-			roomName: "W9N10",
-			spawnOrderMaxSpawnedCounts: [
-				{ defender: 2 },
-			],
-			partsPerMove: 1,
-			minTroopersWaiting: 1,
+			canEnergyCreepsHarvest: true,
+			canEnergizersTransferToStorageOnly: true,
 		},
 		// Overflow
 		{
