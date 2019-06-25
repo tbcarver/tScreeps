@@ -2,6 +2,7 @@
 var BaseCreep = require("./baseCreep");
 var findTools = require("../../tools/findTools");
 
+/** @param {Creep} creep */
 function EnergyCreep(creep) {
 
 	BaseCreep.call(this, creep);

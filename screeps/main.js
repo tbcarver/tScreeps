@@ -19,11 +19,16 @@ global.debugObjectTable = debugObjectTable;
 global.debugPairsTable = debugPairsTable;
 global.rules = rules.rules;
 
+// var profiler = require("../screeps-profiler");
+// profiler.enable();
+
 // TODO: Test and fix spawn chance.
 //  Defenders are taking so long every one else dies during an attack.
 function loop() {
 
 	try {
+
+		// profiler.wrap(function(){
 
 		initialize();
 
@@ -39,9 +44,13 @@ function loop() {
 		// constructionTools.destroyStructure();
 		// roomTools.lookAt();
 		// debug.primary("log", room.getEventLog(true));
+		// debug.temp(Game.rooms.W7N9.find(FIND_STRUCTURES, {filter: { structureType: STRUCTURE_OBSERVER }})[0].observeRoom("W6N5"))
 
 		// Game.rooms["W7N11"].createFlag(23, 24, "post-W7N11", COLOR_GREY, COLOR_ORANGE)
-		// Game.rooms["W6N11"].createFlag(19,48, "exit-from-W6N11-to-W6N10", COLOR_GREEN, COLOR_WHITE)
+		// Game.rooms["W9N6"].createFlag(27,1, "exit-from-W9N6-to-W9N7", COLOR_GREEN, COLOR_WHITE)
+		// Game.rooms["W10N7"].createFlag(48,31, "exit-from-W10N7-to-W9N7", COLOR_GREEN, COLOR_WHITE)
+		// Game.rooms["W9N7"].createFlag(1,31, "exit-from-W9N7-to-W10N7", COLOR_GREEN, COLOR_WHITE)
+		// Game.rooms["W8N6"].createFlag(1,15, "exit-from-W8N6-to-W9N6", COLOR_GREEN, COLOR_WHITE)
 		// Game.rooms["W7N11"].createFlag(17,42, "drop-W7N11", COLOR_YELLOW)
 		// Game.rooms["W7N8"].createFlag(13,24, "wait-W7N8", COLOR_RED, COLOR_YELLOW)
 
@@ -67,6 +76,14 @@ function loop() {
 
 		// console.log(JSON.stringify(Game.spawns["spawn1"].room.lookAt(29, 25)))
 		test();
+
+		// if (!Memory.state.profiler) {
+		// 	Memory.state.profiler = true;
+		// 	Game.profiler.profile(30, "Creep.moveTo");
+		// }
+		// delete Memory.state.profiler
+
+	// });
 
 	} catch (error) {
 

@@ -3,6 +3,7 @@ var enemyTools = require("../../tools/enemyTools");
 
 var BaseCreep = require("./baseCreep");
 
+/** @param {Creep} creep */
 function RemoteCreep(creep) {
 
 	BaseCreep.call(this, creep);

@@ -15,8 +15,7 @@ module.exports = {
 	canEnergyCreepsHarvest: false,
 	canEnergyCreepsPickup: false,
 	maxExtensionsPerEnergizer: 4,
-	maxEnergizersPerContainer: 4,
-	waitForMinimumSpawnCapacity: false,
+	waitForMinimumSpawnCapacity: true,
 	remoteRooms: [
 		// Adjacent remote rooms
 		{
@@ -52,14 +51,14 @@ module.exports = {
 		{
 			roomName: "W7N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedStorageEnergizer: 2 },
+				{ remoteStorageEnergizer: 4 },
 			],
 			canEnergizersTransferToStorageOnly: true,
 		},
 		{
 			roomName: "W7N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteStorageEnergizer: 4 },
+				{ remoteSpawnedStorageEnergizer: 4 },
 			],
 			canControllerEnergizersBuild: true,
 			canEnergizersTransferToStorageOnly: true,
@@ -167,7 +166,7 @@ module.exports = {
 		{
 			roomName: "W7N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ controllerEnergizer: 18 },
+				{ controllerEnergizer: 0 },
 			],
 			canControllerEnergizersBuild: true,
 		},

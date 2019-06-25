@@ -4,19 +4,18 @@ module.exports = {
 	spawnOrderMaxSpawnedCounts: [
 		{ repairer: 0 },
 		{ spawnEnergizer: 1 },
-		{ extensionEnergizer: 8 },
+		{ extensionEnergizer: 12 },
 		{ dropContainerHarvester: 4 },
 		{ builder: 6 },
 		{ storageEnergizer: 1 },
 		{ controllerEnergizer: 1 },
 	],
-	waitForMinimumSpawnCapacity: false,
-	maxExtensionsPerEnergizer: 4,
-	maxEnergizersPerContainer: 3,
+	canControllerEnergizersBuild: true,
 	canEnergizersTransferToDropContainers: true,
 	canEnergyCreepsHarvest: false,
 	canEnergyCreepsPickup: false,
-	canControllerEnergizersBuild: true,
+	maxExtensionsPerEnergizer: 4,
+	waitForMinimumSpawnCapacity: true,
 	remoteRooms: [
 		// Adjacent remote rooms
 		{
@@ -51,7 +50,7 @@ module.exports = {
 				{ remoteReserver: 1 },
 				{ dropHarvester: 2 },
 				{ storageEnergizer: 2 },
-				{ remoteSpawnedStorageEnergizer: 4 },
+				{ remoteSpawnedStorageEnergizer: 5 },
 			],
 			partsPerMove: 1,
 			minTroopersWaiting: 1,
@@ -112,7 +111,7 @@ module.exports = {
 		},
 		// Mob
 		{
-			roomName: "W8N8",
+			roomName: "W7N7",
 			spawnOrderMaxSpawnedCounts: [
 				{ attacker: 1 },
 				{ healer: 2 },
@@ -143,7 +142,7 @@ module.exports = {
 		{
 			roomName: "W7N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ controllerEnergizer: 12 },
+				{ controllerEnergizer: 0 },
 			],
 			canControllerEnergizersBuild: true,
 		},

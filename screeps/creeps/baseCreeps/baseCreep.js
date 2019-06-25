@@ -3,6 +3,7 @@ var enemyTools = require("../../tools/enemyTools");
 var findTools = require("../../tools/findTools");
 var { rules, roomNamesCreepsSpawnRules } = require("../../rules/rules");
 
+/** @param {Creep} creep */
 function BaseCreep(creep) {
 
 	this.creep = creep;
@@ -74,15 +75,12 @@ BaseCreep.prototype.act = function() {
 
 			this.creep.say("😡 " + this.creep.ticksToLive);
 
-			if (Game.flags["graveyard"]) {
-
-				this.creep.moveTo(Game.flags["graveyard"].pos);
-
+			var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
+			if (waitFlag) {
+				this.creep.moveTo(waitFlag);
 			} else {
-
 				this.creep.moveTo(this.creep.room.controller);
 			}
-
 		} else {
 
 			this.creep.say("😰 " + this.creep.ticksToLive);
@@ -97,7 +95,7 @@ BaseCreep.prototype.act = function() {
 		this.memory.takeStepsIntoRoom--;
 		acted = true;
 
-	} else if (rules.evacuateRemoteRooms && !this.isTrooper && this.state !== "movingToSpawnedRoom" && this.creep.room.name === this.remoteRoomName && enemyTools.hasRoomEnemies(this.creep.room.name)){
+	} else if (rules.evacuateRemoteRooms && !this.isTrooper && this.state !== "movingToSpawnedRoom" && this.creep.room.name === this.remoteRoomName && enemyTools.hasRoomEnemies(this.creep.room.name)) {
 		this.state = "movingToSpawnedRoom";
 		acted = true;
 
@@ -227,7 +225,8 @@ BaseCreep.prototype.moveIntoRoom = function() {
 BaseCreep.prototype.transferEnergy = function() {
 
 	var target = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-		filter: structure => structure.structureType == STRUCTURE_STORAGE &&
+		filter: structure => (structure.structureType == STRUCTURE_STORAGE ||
+			structure.structureType == STRUCTURE_TERMINAL) &&
 			structure.storeCapacity - structure.store[RESOURCE_ENERGY] > this.creep.carry.energy
 	});
 
@@ -238,13 +237,19 @@ BaseCreep.prototype.transferEnergy = function() {
 		});
 	}
 
-	if (!target) {
-		target = this.creep.room.controller;
-	}
-
-	if (this.creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-
-		this.creep.moveTo(target);
+	if (target) {
+		if (this.creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+			this.creep.moveTo(target);
+		}
+	} else {
+		var dropFlag = Game.flags[`drop-${this.creep.room.name}`];
+		if (dropFlag) {
+			if (this.creep.pos.inRangeTo(dropFlag, 1)) {
+				this.creep.drop(RESOURCE_ENERGY);
+			} else {
+				this.creep.moveTo(dropFlag);
+			}
+		}
 	}
 }
 

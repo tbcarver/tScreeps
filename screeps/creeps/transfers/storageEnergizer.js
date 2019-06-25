@@ -6,7 +6,10 @@ function StorageEnergizer(creep) {
 
 	BaseCreep.call(this, creep);
 
-	this.canPickup = this.creepsSpawnRule.canStorageEnergizersPickup;
+	this.canPickup = false;
+	if (this.creepsSpawnRule && this.creepsSpawnRule.canStorageEnergizersPickup) {
+		this.canPickup = true;
+	}
 }
 
 StorageEnergizer.prototype = Object.create(BaseCreep.prototype);
@@ -49,9 +52,14 @@ StorageEnergizer.prototype.act = function() {
 						this.creep.moveTo(resource);
 					}
 				}
-			} else {
+			} else {			
 
-				// debug.warning("Repairer container not found");
+				var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
+				if (waitFlag) {
+					this.creep.moveTo(waitFlag);
+				} else {
+					// debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} can't find any resource to harvest`);
+				}
 			}
 		}
 
@@ -78,21 +86,31 @@ StorageEnergizer.prototype.energize = function() {
 		}
 	} else {
 
-		var storage = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-			filter: storage => (storage.structureType === STRUCTURE_CONTAINER ||
-				storage.structureType === STRUCTURE_STORAGE) && !roomTools.isDropContainer(storage, 2) &&
-				storage.store[RESOURCE_ENERGY] / storage.storeCapacity < .95
+		var resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+			filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
+				structure.structureType === STRUCTURE_TERMINAL ||
+				structure.structureType === STRUCTURE_CONTAINER) && !roomTools.isDropContainer(structure, 2) &&
+				structure.store[RESOURCE_ENERGY] / structure.storeCapacity < .95
 		});
 
-		var transferResult = this.creep.transfer(storage, RESOURCE_ENERGY);
+		var transferResult = this.creep.transfer(resource, RESOURCE_ENERGY);
 
 		if (transferResult == ERR_NOT_IN_RANGE) {
 
-			this.creep.moveTo(storage);
+			this.creep.moveTo(resource);
 
 		} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
 
 			this.state = "harvesting";
+
+		} else if (transferResult !== OK) {			
+
+			var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
+			if (waitFlag) {
+				this.creep.moveTo(waitFlag);
+			} else {
+				debug.warning(`${this.type} ${this.creep.name} can't find any resource`);
+			}
 		}
 	}
 }
@@ -107,18 +125,20 @@ StorageEnergizer.initializeSpawnCreepMemory = function(room) {
 
 	if (room.find) {
 
-		var targets = room.find(FIND_DROPPED_RESOURCES, {
+		var resources = room.find(FIND_DROPPED_RESOURCES, {
 			filter: resource => resource.energy && resource.energy >= 100
 		});
 
-		if (targets.length === 0) {
+		if (resources.length === 0) {
 
-			var targets = room.find(FIND_STRUCTURES, {
-				filter: { structureType: STRUCTURE_CONTAINER }
+			var resources = room.find(FIND_STRUCTURES, {
+				filter: structure => structure.structureType === STRUCTURE_STORAGE ||
+					structure.structureType === STRUCTURE_TERMINAL ||
+					structure.structureType === STRUCTURE_CONTAINER
 			});
 		}
 
-		if (targets.length > 0) {
+		if (resources.length > 0) {
 
 			var creepMemory = {
 				type: "storageEnergizer",

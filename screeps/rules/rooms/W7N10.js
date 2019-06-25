@@ -11,12 +11,12 @@ module.exports = {
 		{ builder: 3 },
 		{ controllerEnergizer: 1 },
 	],
-	waitForMinimumSpawnCapacity: false,
-	maxExtensionsPerEnergizer: 4,
-	canEnergizersTransferToStorageOnly: true,
+	canControllerEnergizersBuild: true,
+	canEnergizersTransferToDropContainers: true,
 	canEnergyCreepsHarvest: false,
 	canEnergyCreepsPickup: false,
-	canControllerEnergizersBuild: true,
+	maxExtensionsPerEnergizer: 4,
+	waitForMinimumSpawnCapacity: true,
 	remoteRooms: [
 		// Adjacent remote rooms
 		{
@@ -80,6 +80,15 @@ module.exports = {
 		// Very remote rooms
 		{
 			roomName: "W6N11",
+			spawnOrderMaxSpawnedCounts: [
+				{ remoteSpawnedHarvester: 4 },
+			],
+			partsPerMove: 1,
+			canEnergyCreepsHarvest: true,
+			canEnergizersTransferToStorageOnly: true,
+		},
+		{
+			roomName: "W7N12",
 			spawnOrderMaxSpawnedCounts: [
 				{ remoteSpawnedHarvester: 4 },
 			],
