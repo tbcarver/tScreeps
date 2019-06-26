@@ -1,6 +1,6 @@
 
 var RemoteCreep = require("../baseCreeps/remoteCreep");
-var BaseRemoteStorageTransferer = require("../transfers/baseRemoteStorageTransferer");
+var BaseRemoteStorageTransferer = require("../transferers/baseRemoteStorageTransferer");
 
 function RemoteSpawnedHarvester(creep) {
 

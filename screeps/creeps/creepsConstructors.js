@@ -1,7 +1,7 @@
 
 var Attacker = require("./troopers/attacker");
 var Builder = require("./energyWorkers/builder");
-var ContainerHarvester = require("./harvesters/containerHarverster");
+var ContainerHarvester = require("./harvesters/containerHarvester");
 var ControllerEnergizer = require("./energizers/controllerEnergizer");
 var Decoy = require("./troopers/decoy");
 var Defender = require("./troopers/defender");
@@ -17,11 +17,11 @@ var RemoteControllerAttacker = require("./troopers/remoteControllerAttacker");
 var RemoteReserver = require("./troopers/remoteReserver");
 var RemoteSitter = require("./troopers/remoteSitter");
 var RemoteSpawnedHarvester = require("./harvesters/remoteSpawnedHarvester");
-var RemoteSpawnedStorageTransferer = require("./transfers/remoteSpawnedStorageTransferer");
-var RemoteStorageTransferer = require("./transfers/remoteStorageTransferer");
+var RemoteSpawnedStorageTransferer = require("./transferers/remoteSpawnedStorageTransferer");
+var RemoteStorageTransferer = require("./transferers/remoteStorageTransferer");
 var Repairer = require("./energyWorkers/repairer");
 var SpawnEnergizer = require("./energizers/spawnEnergizer");
-var StorageTransferer = require("./transfers/storageTransferer");
+var StorageTransferer = require("./transferers/storageTransferer");
 var StructureAttacker = require("./troopers/structureAttacker");
 var WallRepairer = require("./energyWorkers/wallRepairer");
 
