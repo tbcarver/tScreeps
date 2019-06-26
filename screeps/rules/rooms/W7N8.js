@@ -19,16 +19,6 @@ module.exports = {
 	remoteRooms: [
 		// Adjacent remote rooms
 		{
-			roomName: "W8N8",
-			spawnOrderMaxSpawnedCounts: [
-				{ dropContainerHarvester: 3 },
-				{ containerHarvester: 1 },
-				{ remoteSpawnedStorageEnergizer: 2 },
-			],
-			canControllerEnergizersBuild: true,
-			canEnergizersTransferToStorageOnly: true,
-		},
-		{
 			roomName: "W6N8",
 			spawnOrderMaxSpawnedCounts: [
 				{ defender: 0 },
@@ -91,6 +81,14 @@ module.exports = {
 		},
 		// Main rooms
 		{
+			roomName: "W8N8",
+			spawnOrderMaxSpawnedCounts: [
+				{ remoteStorageEnergizer: 6 },
+			],
+			canControllerEnergizersBuild: true,
+			canEnergizersTransferToStorageOnly: true,
+		},
+		{
 			roomName: "W7N9",
 			spawnOrderMaxSpawnedCounts: [
 				{ remoteStorageEnergizer: 0 },
@@ -106,16 +104,24 @@ module.exports = {
 				{ builder: 0 },
 			],
 			minTroopersWaiting: 1,
-			minTroopersWaiting: 3,
 			canControllerEnergizersBuild: true,
 		},
 		// Mob
 		{
 			roomName: "W7N7",
 			spawnOrderMaxSpawnedCounts: [
-				{ attacker: 1 },
-				{ healer: 2 },
-				{ rangedAttacker: 2 },
+				{ attacker: 2 },
+				{ healer: 3 },
+				{ rangedAttacker: 3 },
+			],
+			isMobTroopers: true,
+		},
+		{
+			roomName: "W8N8",
+			spawnOrderMaxSpawnedCounts: [
+				{ attacker: 2 },
+				{ healer: 3 },
+				{ rangedAttacker: 3 },
 			],
 			isMobTroopers: true,
 		},
@@ -140,9 +146,9 @@ module.exports = {
 		},
 		// Overflow		
 		{
-			roomName: "W7N8",
+			roomName: "W8N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ controllerEnergizer: 0 },
+				{ controllerEnergizer: 16 },
 			],
 			canControllerEnergizersBuild: true,
 		},

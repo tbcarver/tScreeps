@@ -1,14 +1,14 @@
 
 var BaseCreep = require("../baseCreeps/baseCreep");
 
-function Razer(creep) {
+function StructureRazer(creep) {
 
 	BaseCreep.call(this, creep);
 }
 
-Razer.prototype = Object.create(BaseCreep.prototype);
+StructureRazer.prototype = Object.create(BaseCreep.prototype);
 
-Razer.prototype.act = function() {
+StructureRazer.prototype.act = function() {
 
 	if (!BaseCreep.prototype.act.call(this)) {
 
@@ -29,14 +29,14 @@ Razer.prototype.act = function() {
 	}
 }
 
-Razer.prototype.getInitialState = function() {
+StructureRazer.prototype.getInitialState = function() {
 	return "razing";
 }
 
-Razer.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule) {
+StructureRazer.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule) {
 
 	var creepMemory = {
-		type: "razer",
+		type: "structureRazer",
 		bodyPartsType: "moveWork",
 		maximumSpawnCapacity: 600,
 	}
@@ -45,4 +45,4 @@ Razer.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule) {
 }
 
 
-module.exports = Razer
+module.exports = StructureRazer

@@ -14,7 +14,7 @@ Attacker.prototype.act = function() {
 
 Attacker.prototype.attack = function() {
 
-	target = this.creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+	var target = this.creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
 
 	if (target) {
 

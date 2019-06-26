@@ -32,14 +32,22 @@ towersController.tick = function() {
 							towers[index].repair(structures[index]);
 						}
 					}
+				} else {
+
+					var creeps = room.find(FIND_MY_CREEPS, {
+						filter: creep => creep.hits < creep.hitsMax
+					});
+				
+					if (creeps.length > 0) {
+				
+						for (var tower of towers) {
+							tower.heal(creeps[0]);
+						}			
+					}
 				}
 			}
 		}
 	}
 }
-
-towersController.repair = function(towers) {
-}
-
 
 module.exports = towersController;

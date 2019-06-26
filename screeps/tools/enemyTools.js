@@ -93,7 +93,7 @@ function buildEnemyStats() {
 				isRoomOwned: (room.controller && room.controller.my) ? true : false,
 			}
 
-			var towers = room.find(FIND_STRUCTURES, {
+			var towers = room.find(FIND_MY_STRUCTURES, {
 				filter: { structureType: STRUCTURE_TOWER }
 			});
 

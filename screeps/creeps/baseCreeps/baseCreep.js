@@ -253,5 +253,9 @@ BaseCreep.prototype.transferEnergy = function() {
 	}
 }
 
+BaseCreep.prototype.debug = function(creepName, ...logs) {
+	debug.creep(this.creep, creepName, ...logs);
+}
+
 
 module.exports = BaseCreep

@@ -11,18 +11,19 @@ creepsFactory.buildCreep = function(creep) {
 		var constructor = creepsConstructors[creep.memory.type];
 		var baseCreep = new constructor(creep);
 
-		// // if (creep.name === "a31078") {
-		// if (creep.memory.type === "builder") {
-		// 	if (baseCreep.spawnedRoomName === "W7N8") {
-		// // 		if (!baseCreep.remoteRoomName) {
-		// 					creep.memory.state = "suicide";
-		// // 			// 		// creep.suicide();
-		// // // 			// // 		// debug.temp("creep:", creep)
-		// // // 			debug.temp("creep memory:", creep.memory)
-		// // 		}
-		// // 	}
+		// if (creep.name === "a31078") {
+		// if (creep.memory.type === "remoteSpawnedStorageEnergizer" || creep.memory.type === "remoteStorageEnergizer") {
+			// if (baseCreep.spawnedRoomName === "W7N8") {
+				// if (creep.memory.state === "energizing") {
+					// creep.memory.state = "transferring"
+							// creep.memory.remoteRoomName = "W9N9";
+							// creep.memory.state = "suicide"
+		// 			// 		// creep.suicide();
+		// // 			// // 		// debug.temp("creep:", creep)
+		// // 			debug.temp("creep memory:", creep.memory)
+				// }
+		// 	}
 		// }
-
 		// }
 
 	} else {

@@ -18,6 +18,10 @@ function TrooperCreep(creep) {
 TrooperCreep.prototype = Object.create(BaseCreep.prototype);
 
 TrooperCreep.prototype.act = function() {
+	
+	if (this.state === "movingToRemoteRoom" && this.mobAttackRoomName) {
+		this.state = "trooping";
+	}
 
 	if (!BaseCreep.prototype.act.call(this)) {
 

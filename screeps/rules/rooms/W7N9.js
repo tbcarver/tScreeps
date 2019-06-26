@@ -28,8 +28,6 @@ module.exports = {
 			],
 			partsPerMove: 1,
 			minTroopersWaiting: 1,
-			canEnergyCreepsHarvest: true,
-			canEnergyCreepsPickup: true,
 			canRemoteStorageEnergizersPickup: true,
 			canStorageEnergizersPickup: true,
 		},
@@ -47,18 +45,39 @@ module.exports = {
 			canRemoteStorageEnergizersPickup: true,
 			canStorageEnergizersPickup: true,
 		},
+		// Very remote rooms
+		{
+			roomName: "W9N9",
+			spawnOrderMaxSpawnedCounts: [
+				{ dropHarvester: 0 },
+				{ remoteSpawnedStorageEnergizer: 0 },
+				{ remoteControllerAttacker: 1 },
+			],
+			partsPerMove: 1,
+			canRemoteStorageEnergizersPickup: true,
+			canStorageEnergizersPickup: true,
+		},
+		{
+			roomName: "W10N9",
+			spawnOrderMaxSpawnedCounts: [
+				{ remoteSpawnedHarvester: 4 },
+			],
+			partsPerMove: 1,
+			canRemoteStorageEnergizersPickup: true,
+			canStorageEnergizersPickup: true,
+		},
 		// Main rooms
 		{
 			roomName: "W7N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteStorageEnergizer: 4 },
+				{ remoteSpawnedStorageEnergizer: 12 },
 			],
 			canEnergizersTransferToStorageOnly: true,
 		},
 		{
 			roomName: "W7N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedStorageEnergizer: 4 },
+				{ remoteStorageEnergizer: 0 },
 			],
 			canControllerEnergizersBuild: true,
 			canEnergizersTransferToStorageOnly: true,
@@ -75,8 +94,8 @@ module.exports = {
 		{
 			roomName: "W6N9",
 			spawnOrderMaxSpawnedCounts: [
-				{ attacker: 1 },
-				{ healer: 2 },
+				{ attacker: 2 },
+				{ healer: 3 },
 				{ rangedAttacker: 3 },
 			],
 			isMobTroopers: true,
@@ -84,8 +103,8 @@ module.exports = {
 		{
 			roomName: "W8N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ attacker: 1 },
-				{ healer: 2 },
+				{ attacker: 2 },
+				{ healer: 3 },
 				{ rangedAttacker: 3 },
 			],
 			isMobTroopers: true,
@@ -94,66 +113,50 @@ module.exports = {
 		{
 			roomName: "W6N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 2 },
+				{ decoy: 1 },
 			],
-			partsPerMove: 1,
-			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W6N9",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 2 },
+				{ decoy: 1 },
 			],
-			partsPerMove: 1,
-			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W8N9",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 2 },
+				{ decoy: 1 },
 			],
-			partsPerMove: 1,
-			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W8N11",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 2 },
+				{ decoy: 1 },
 			],
-			partsPerMove: 1,
-			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W9N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 2 },
+				{ decoy: 1 },
 			],
-			partsPerMove: 1,
-			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W6N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 2 },
+				{ decoy: 1 },
 			],
-			partsPerMove: 1,
-			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W7N7",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 2 },
+				{ decoy: 1 },
 			],
-			partsPerMove: 1,
-			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W7N11",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 2 },
+				{ decoy: 1 },
 			],
-			partsPerMove: 1,
-			minTroopersWaiting: 1,
 		},
 		// Overflow		
 		{
@@ -164,9 +167,9 @@ module.exports = {
 			canControllerEnergizersBuild: true,
 		},
 		{
-			roomName: "W7N8",
+			roomName: "W8N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ controllerEnergizer: 0 },
+				{ controllerEnergizer: 16 },
 			],
 			canControllerEnergizersBuild: true,
 		},

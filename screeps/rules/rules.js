@@ -1,7 +1,8 @@
 // TODO: error handling for bad creep type
 
 var rules = {
-	routeAvoidRooms: ["W9N9", "W9N8"],
+	routeAvoidRooms: ["W9N8"],
+	routeIgnoreRooms: [],
 	maximumAttackerSpawnCapacity: 700,
 	maximumHealerSpawnCapacity: 700,
 	maximumRangedAttackerSpawnCapacity: 700,

@@ -1,20 +1,20 @@
 
-var BaseRemoteStorageEnergizer = require("./baseRemoteStorageEnergizer");
+var BaseRemoteStorageTransferer = require("./baseRemoteStorageTransferer");
 
 function RemoteSpawnedStorageEnergizer(creep) {
 
-	BaseRemoteStorageEnergizer.call(this, creep);
+	BaseRemoteStorageTransferer.call(this, creep);
 }
 
-RemoteSpawnedStorageEnergizer.prototype = Object.create(BaseRemoteStorageEnergizer.prototype);
+RemoteSpawnedStorageEnergizer.prototype = Object.create(BaseRemoteStorageTransferer.prototype);
 
 RemoteSpawnedStorageEnergizer.prototype.act = function() {
 
-	BaseRemoteStorageEnergizer.prototype.act.call(this);
+	BaseRemoteStorageTransferer.prototype.act.call(this);
 }
 
 RemoteSpawnedStorageEnergizer.prototype.arrivedAtSpawnedRoom = function() {
-	this.state = "energizing";
+	this.state = "transferring";
 }
 
 RemoteSpawnedStorageEnergizer.prototype.arrivedAtRemoteRoom = function() {
@@ -23,17 +23,17 @@ RemoteSpawnedStorageEnergizer.prototype.arrivedAtRemoteRoom = function() {
 
 RemoteSpawnedStorageEnergizer.prototype.spawnedRoomAct = function() {
 
-	BaseRemoteStorageEnergizer.prototype.energize.call(this, this.moveToRemoteRoom.bind(this));
+	BaseRemoteStorageTransferer.prototype.energize.call(this, this.moveToRemoteRoom.bind(this));
 }
 
 RemoteSpawnedStorageEnergizer.prototype.remoteRoomAct = function() {
 
-	BaseRemoteStorageEnergizer.prototype.harvest.call(this, this.moveToSpawnedRoom.bind(this));
+	BaseRemoteStorageTransferer.prototype.harvest.call(this, this.moveToSpawnedRoom.bind(this));
 }
 
 RemoteSpawnedStorageEnergizer.initializeSpawnCreepMemory = function(room) {
 
-	return BaseRemoteStorageEnergizer.initializeSpawnCreepMemory("remoteSpawnedStorageEnergizer", room);
+	return BaseRemoteStorageTransferer.initializeSpawnCreepMemory("remoteSpawnedStorageEnergizer", room);
 }
 
 

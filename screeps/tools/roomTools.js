@@ -13,47 +13,47 @@ var adjacentDifferentials = [
 ];
 
 // From @Screeps/backend/lib/utils.js
-roomTools.roomNameFromXY = function(x,y) {
-    if(x < 0) {
-        x = 'W'+(-x-1);
-    }
-    else {
-        x = 'E'+(x);
-    }
-    if(y < 0) {
-        y = 'N'+(-y-1);
-    }
-    else {
-        y = 'S'+(y);
-    }
-    return ""+x+y;
+roomTools.roomNameFromXY = function(x, y) {
+	if (x < 0) {
+		x = 'W' + (-x - 1);
+	}
+	else {
+		x = 'E' + (x);
+	}
+	if (y < 0) {
+		y = 'N' + (-y - 1);
+	}
+	else {
+		y = 'S' + (y);
+	}
+	return "" + x + y;
 }
 
 // From @Screeps/backend/lib/utils.js
 roomTools.roomNameToXY = function(name) {
-    var [match,hor,x,ver,y] = name.match(/^(\w)(\d+)(\w)(\d+)$/);
-    if(hor == 'W') {
-        x = -x-1;
-    }
-    else {
-        x = +x;
-        //x--;
-    }
-    if(ver == 'N') {
-        y = -y-1;
-    }
-    else {
-        y = +y;
-        //y--;
-    }
-    return [x,y];
+	var [match, hor, x, ver, y] = name.match(/^(\w)(\d+)(\w)(\d+)$/);
+	if (hor == 'W') {
+		x = -x - 1;
+	}
+	else {
+		x = +x;
+		//x--;
+	}
+	if (ver == 'N') {
+		y = -y - 1;
+	}
+	else {
+		y = +y;
+		//y--;
+	}
+	return [x, y];
 }
 
 roomTools.getAdjacentRoomNames = function(roomName) {
-		
+
 	var adjacentRoomNames = [];
 	var roomXY = this.roomNameToXY(roomName);
-	
+
 	for (var adjacentDifferential of adjacentDifferentials) {
 
 		var adjacentX = roomXY[0] + adjacentDifferential.x;
@@ -94,6 +94,26 @@ roomTools.createFlag = function(name, colorConstant, positions) {
 			var result = Game.rooms[positions[index].roomName].createFlag(position, name, colorConstant);
 			debug.highlight(`flag created: ${result} ${name} ${colorConstant}`);
 		}
+	}
+}
+
+roomTools.observeRoom = function(roomName, observerRoomName) {
+
+	var observers = Game.rooms[observerRoomName].find(FIND_STRUCTURES, {
+		filter: {
+			structureType: STRUCTURE_OBSERVER
+		}
+	})
+
+	if (observers.length > 0) {
+
+		var result = observers[0].observeRoom(roomName);
+
+		if (result !== OK) {
+			debug.warning(`Observe room ${roomName} from observer ${observerRoomName} failed: ${result}`);
+		}
+	} else {
+		debug.warning(`Observer not found in room ${observerRoomName}`);
 	}
 }
 

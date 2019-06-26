@@ -52,7 +52,7 @@ module.exports = {
 		{
 			roomName: "W8N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedStorageEnergizer: 4 },
+				{ remoteSpawnedStorageEnergizer: 0 },
 				{ controllerEnergizer: 0 },
 				{ remoteBuilder: 0 },
 			],

@@ -2,7 +2,7 @@
 var RemoteCreep = require("../baseCreeps/remoteCreep");
 var roomTools = require("../../tools/roomTools");
 
-function BaseRemoteStorageEnergizer(creep) {
+function BaseRemoteStorageTransferer(creep) {
 
 	RemoteCreep.call(this, creep);
 
@@ -12,14 +12,14 @@ function BaseRemoteStorageEnergizer(creep) {
 	}
 }
 
-BaseRemoteStorageEnergizer.prototype = Object.create(RemoteCreep.prototype);
+BaseRemoteStorageTransferer.prototype = Object.create(RemoteCreep.prototype);
 
-BaseRemoteStorageEnergizer.prototype.act = function() {
+BaseRemoteStorageTransferer.prototype.act = function() {
 
 	RemoteCreep.prototype.act.call(this);
 }
 
-BaseRemoteStorageEnergizer.prototype.harvest = function(moveToOtherRoom) {
+BaseRemoteStorageTransferer.prototype.harvest = function(moveToOtherRoom) {
 
 	if (this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
 
@@ -49,7 +49,7 @@ BaseRemoteStorageEnergizer.prototype.harvest = function(moveToOtherRoom) {
 
 		if (!resource) {
 			resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-				filter: structure => 
+				filter: structure =>
 					(structure.structureType === STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] / structure.storeCapacity > .01) ||
 					(structure.structureType === STRUCTURE_TERMINAL && structure.store[RESOURCE_ENERGY] / structure.storeCapacity > .01) ||
 					(structure.structureType === STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] / structure.storeCapacity > .35)
@@ -75,57 +75,70 @@ BaseRemoteStorageEnergizer.prototype.harvest = function(moveToOtherRoom) {
 	}
 }
 
-BaseRemoteStorageEnergizer.prototype.energize = function(moveToOtherRoom) {
+BaseRemoteStorageTransferer.prototype.energize = function(moveToOtherRoom) {
 
 	if (this.creep.carry[RESOURCE_ENERGY] === 0) {
 
 		moveToOtherRoom();
 
-	} else if (this.state === "energizing") {
+	} else if (this.state === "transferring") {
 
-		if (this.creepsSpawnRule.canEnergizersTransferToStorageOnly) {
+		var dropFlag = Game.flags[`drop-${this.creep.room.name}`];				
+		if (dropFlag) {
+			if (this.creep.pos.inRangeTo(dropFlag, 1)) {
 
-			var resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-				filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
-					structure.structureType === STRUCTURE_TERMINAL) &&
-					structure.storeCapacity - structure.store[RESOURCE_ENERGY] > this.creep.carry[RESOURCE_ENERGY]
-			});
-
-		} else {
-
-			var resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-				filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
-					structure.structureType === STRUCTURE_TERMINAL ||
-					structure.structureType === STRUCTURE_CONTAINER) &&
-					((roomTools.isDropContainer(structure, 2) && structure.store[RESOURCE_ENERGY] / structure.storeCapacity < .65) ||
-						(!roomTools.isDropContainer(structure, 2) && structure.store[RESOURCE_ENERGY] / structure.storeCapacity < .95))
-			});
-		}
-
-		if (resource) {
-			var transferResult = this.creep.transfer(resource, RESOURCE_ENERGY);
-
-			if (transferResult == ERR_NOT_IN_RANGE) {
-
-				this.creep.moveTo(resource);
-
-			} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
-
+				this.creep.drop(RESOURCE_ENERGY);
 				moveToOtherRoom();
+				
+			} else {
+				this.creep.moveTo(dropFlag);
 			}
 		} else {
 
-			var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
-			if (waitFlag) {
-				this.creep.moveTo(waitFlag);
+			if (this.creepsSpawnRule.canEnergizersTransferToStorageOnly) {
+
+				var resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+					filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
+						structure.structureType === STRUCTURE_TERMINAL) &&
+						structure.storeCapacity - structure.store[RESOURCE_ENERGY] > this.creep.carry[RESOURCE_ENERGY]
+				});
+
 			} else {
-				debug.warning(`${this.type} ${this.creep.name} can't find any resource`);
+
+				var resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+					filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
+						structure.structureType === STRUCTURE_TERMINAL ||
+						structure.structureType === STRUCTURE_CONTAINER) &&
+						((roomTools.isDropContainer(structure, 2) && structure.store[RESOURCE_ENERGY] / structure.storeCapacity < .65) ||
+							(!roomTools.isDropContainer(structure, 2) && structure.store[RESOURCE_ENERGY] / structure.storeCapacity < .95))
+				});
+			}
+
+			if (resource) {
+				var transferResult = this.creep.transfer(resource, RESOURCE_ENERGY);
+
+				if (transferResult == ERR_NOT_IN_RANGE) {
+
+					this.creep.moveTo(resource);
+
+				} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+
+					moveToOtherRoom();
+				}
+			} else {
+
+				var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
+				if (waitFlag) {
+					this.creep.moveTo(waitFlag);
+				} else {
+					debug.warning(`${this.type} ${this.creep.name} can't find any resource`);
+				}
 			}
 		}
 	}
 }
 
-BaseRemoteStorageEnergizer.initializeSpawnCreepMemory = function(type, room) {
+BaseRemoteStorageTransferer.initializeSpawnCreepMemory = function(type, room) {
 
 	var creepMemory;
 
@@ -159,4 +172,4 @@ BaseRemoteStorageEnergizer.initializeSpawnCreepMemory = function(type, room) {
 }
 
 
-module.exports = BaseRemoteStorageEnergizer
+module.exports = BaseRemoteStorageTransferer

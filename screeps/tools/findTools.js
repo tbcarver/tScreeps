@@ -192,8 +192,9 @@ findTools.findRoute = function(fromRoom, toRoom) {
 	var route = Game.map.findRoute(fromRoom, toRoom, {
 		routeCallback(roomName, fromRoomName) {
 
-			if (rules.routeAvoidRooms.includes(roomName)) {
-				// Avoid this room
+			if (rules.routeIgnoreRooms.includes(roomName)) {
+				return Infinity;
+			} else if (rules.routeAvoidRooms.includes(roomName)) {
 				return 2;
 			}
 

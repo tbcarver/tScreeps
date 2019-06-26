@@ -26,7 +26,7 @@ Healer.prototype.heal = function() {
 
 	var healed = false;
 
-	target = this.creep.pos.findClosestByRange(FIND_MY_CREEPS, {
+	var target = this.creep.pos.findClosestByRange(FIND_MY_CREEPS, {
 		filter: creep => creep.hits < creep.hitsMax && creep.name !== this.creep.name
 	});
 

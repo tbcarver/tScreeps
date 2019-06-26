@@ -5,6 +5,8 @@ module.exports = {
 		{ builder: 0 },
 		{ spawnEnergizer: 1 },
 		{ extensionEnergizer: 4 },
+		{ dropContainerHarvester: 3 },
+		{ containerHarvester: 1 },
 		{ storageEnergizer: 2 },
 		{ controllerEnergizer: 1 },
 	],
@@ -51,16 +53,6 @@ module.exports = {
 			canEnergyCreepsPickup: false,
 			canControllerEnergizersBuild: true,
 		},
-		// Mob
-		{
-			roomName: "W8N8",
-			spawnOrderMaxSpawnedCounts: [
-				{ attacker: 1 },
-				{ healer: 2 },
-				{ rangedAttacker: 2 },
-			],
-			isMobTroopers: true,
-		},
 		// Very remote rooms
 		{
 			roomName: "W8N6",
@@ -97,6 +89,14 @@ module.exports = {
 			partsPerMove: 1,
 			canEnergyCreepsHarvest: true,
 			canEnergizersTransferToStorageOnly: true,
+		},
+		// Overflow		
+		{
+			roomName: "W8N8",
+			spawnOrderMaxSpawnedCounts: [
+				{ controllerEnergizer: 4 },
+			],
+			canControllerEnergizersBuild: true,
 		},
 	]
 }
