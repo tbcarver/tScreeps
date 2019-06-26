@@ -39,11 +39,11 @@ spawnTools.calculateBodyCost = function(bodyParts) {
 					},
 				"W6S1": {
 					"dropContainerHarvester": 3,
-					"storageEnergizer": 1
+					"storageTransferer": 1
 					}
 				},
 			"dropContainerHarvester": 5,
-			"storageEnergizer": 3,
+			"storageTransferer": 3,
 		},
 		"W6S1": {
 			"controllerEnergizer": 2,

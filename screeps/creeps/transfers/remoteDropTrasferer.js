@@ -30,7 +30,7 @@ RemoteDropTransferer.prototype.arrivedAtRemoteRoom = function() {
 
 RemoteDropTransferer.prototype.spawnedRoomAct = function() {
 
-	BaseRemoteStorageTransferer.prototype.energize.call(this, this.moveToRemoteRoom.bind(this));
+	BaseRemoteStorageTransferer.prototype.transfer.call(this, this.moveToRemoteRoom.bind(this));
 }
 
 RemoteDropTransferer.prototype.remoteRoomAct = function() {
@@ -53,7 +53,7 @@ RemoteDropTransferer.prototype.unknownRoomAct = function() {
 
 RemoteDropTransferer.initializeSpawnCreepMemory = function(room) {
 
-	return BaseRemoteStorageTransferer.initializeSpawnCreepMemory("remoteSpawnedStorageEnergizer", room);
+	return BaseRemoteStorageTransferer.initializeSpawnCreepMemory("remoteSpawnedStorageTransferer", room);
 }
 
 

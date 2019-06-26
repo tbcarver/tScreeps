@@ -7,7 +7,7 @@ function BaseRemoteStorageTransferer(creep) {
 	RemoteCreep.call(this, creep);
 
 	this.canPickup = false;
-	if (this.creepsSpawnRule && this.creepsSpawnRule.canRemoteStorageEnergizersPickup) {
+	if (this.creepsSpawnRule && this.creepsSpawnRule.canRemoteStorageTransferersPickup) {
 		this.canPickup = true;
 	}
 }
@@ -75,7 +75,7 @@ BaseRemoteStorageTransferer.prototype.harvest = function(moveToOtherRoom) {
 	}
 }
 
-BaseRemoteStorageTransferer.prototype.energize = function(moveToOtherRoom) {
+BaseRemoteStorageTransferer.prototype.transfer = function(moveToOtherRoom) {
 
 	if (this.creep.carry[RESOURCE_ENERGY] === 0) {
 

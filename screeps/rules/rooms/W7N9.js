@@ -6,7 +6,7 @@ module.exports = {
 		{ spawnEnergizer: 3 },
 		{ extensionEnergizer: 12 },
 		{ dropContainerHarvester: 4 },
-		{ storageEnergizer: 3 },
+		{ storageTransferer: 3 },
 		{ builder: 6 },
 		{ controllerEnergizer: 1 },
 	],
@@ -23,39 +23,39 @@ module.exports = {
 			spawnOrderMaxSpawnedCounts: [
 				{ remoteReserver: 1 },
 				{ dropHarvester: 4 },
-				{ storageEnergizer: 3 },
-				{ remoteSpawnedStorageEnergizer: 3 },
+				{ storageTransferer: 3 },
+				{ remoteSpawnedStorageTransferer: 3 },
 			],
 			partsPerMove: 1,
 			minTroopersWaiting: 1,
-			canRemoteStorageEnergizersPickup: true,
-			canStorageEnergizersPickup: true,
+			canRemoteStorageTransferersPickup: true,
+			canStorageTransferersPickup: true,
 		},
 		{
 			roomName: "W6N9",
 			spawnOrderMaxSpawnedCounts: [
 				{ remoteReserver: 1 },
 				{ dropHarvester: 4 },
-				{ remoteSpawnedStorageEnergizer: 4 },
+				{ remoteSpawnedStorageTransferer: 4 },
 			],
 			partsPerMove: 1,
 			minTroopersWaiting: 1,
 			canEnergyCreepsHarvest: true,
 			canEnergyCreepsPickup: true,
-			canRemoteStorageEnergizersPickup: true,
-			canStorageEnergizersPickup: true,
+			canRemoteStorageTransferersPickup: true,
+			canStorageTransferersPickup: true,
 		},
 		// Very remote rooms
 		{
 			roomName: "W9N9",
 			spawnOrderMaxSpawnedCounts: [
 				{ dropHarvester: 0 },
-				{ remoteSpawnedStorageEnergizer: 0 },
+				{ remoteSpawnedStorageTransferer: 0 },
 				{ remoteControllerAttacker: 1 },
 			],
 			partsPerMove: 1,
-			canRemoteStorageEnergizersPickup: true,
-			canStorageEnergizersPickup: true,
+			canRemoteStorageTransferersPickup: true,
+			canStorageTransferersPickup: true,
 		},
 		{
 			roomName: "W10N9",
@@ -63,21 +63,21 @@ module.exports = {
 				{ remoteSpawnedHarvester: 4 },
 			],
 			partsPerMove: 1,
-			canRemoteStorageEnergizersPickup: true,
-			canStorageEnergizersPickup: true,
+			canRemoteStorageTransferersPickup: true,
+			canStorageTransferersPickup: true,
 		},
 		// Main rooms
 		{
 			roomName: "W7N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedStorageEnergizer: 12 },
+				{ remoteSpawnedStorageTransferer: 12 },
 			],
 			canEnergizersTransferToStorageOnly: true,
 		},
 		{
 			roomName: "W7N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteStorageEnergizer: 0 },
+				{ remoteStorageTransferer: 0 },
 			],
 			canControllerEnergizersBuild: true,
 			canEnergizersTransferToStorageOnly: true,
@@ -85,7 +85,7 @@ module.exports = {
 		{
 			roomName: "W8N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteStorageEnergizer: 0 },
+				{ remoteStorageTransferer: 0 },
 			],
 			canControllerEnergizersBuild: true,
 			canEnergizersTransferToStorageOnly: true,

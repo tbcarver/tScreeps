@@ -31,7 +31,7 @@ RemoteSpawnedHarvester.prototype.arrivedAtRemoteRoom = function() {
 
 RemoteSpawnedHarvester.prototype.spawnedRoomAct = function() {
 
-	BaseRemoteStorageTransferer.prototype.energize.call(this, this.moveToRemoteRoom.bind(this));
+	BaseRemoteStorageTransferer.prototype.transfer.call(this, this.moveToRemoteRoom.bind(this));
 }
 
 RemoteSpawnedHarvester.prototype.remoteRoomAct = function() {

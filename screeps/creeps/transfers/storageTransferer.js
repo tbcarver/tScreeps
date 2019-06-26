@@ -2,19 +2,19 @@
 var BaseCreep = require("../baseCreeps/baseCreep");
 var roomTools = require("../../tools/roomTools");
 
-function StorageEnergizer(creep) {
+function StorageTransferer(creep) {
 
 	BaseCreep.call(this, creep);
 
 	this.canPickup = false;
-	if (this.creepsSpawnRule && this.creepsSpawnRule.canStorageEnergizersPickup) {
+	if (this.creepsSpawnRule && this.creepsSpawnRule.canStorageTransferersPickup) {
 		this.canPickup = true;
 	}
 }
 
-StorageEnergizer.prototype = Object.create(BaseCreep.prototype);
+StorageTransferer.prototype = Object.create(BaseCreep.prototype);
 
-StorageEnergizer.prototype.act = function() {
+StorageTransferer.prototype.act = function() {
 
 	if (!BaseCreep.prototype.act.call(this)) {
 
@@ -74,7 +74,7 @@ StorageEnergizer.prototype.act = function() {
 	}
 }
 
-StorageEnergizer.prototype.energize = function() {
+StorageTransferer.prototype.energize = function() {
 
 	var dropFlag = Game.flags[`drop-${this.creep.room.name}`];
 	if (dropFlag) {
@@ -115,11 +115,11 @@ StorageEnergizer.prototype.energize = function() {
 	}
 }
 
-StorageEnergizer.prototype.getInitialState = function() {
+StorageTransferer.prototype.getInitialState = function() {
 	return "harvesting";
 }
 
-StorageEnergizer.initializeSpawnCreepMemory = function(room) {
+StorageTransferer.initializeSpawnCreepMemory = function(room) {
 
 	var creepMemory;
 
@@ -141,7 +141,7 @@ StorageEnergizer.initializeSpawnCreepMemory = function(room) {
 		if (resources.length > 0) {
 
 			var creepMemory = {
-				type: "storageEnergizer",
+				type: "storageTransferer",
 				bodyPartsType: "moveCarry",
 				maximumSpawnCapacity: 600,
 				minimumSpawnCapacity: 450,
@@ -152,4 +152,4 @@ StorageEnergizer.initializeSpawnCreepMemory = function(room) {
 	return creepMemory;
 }
 
-module.exports = StorageEnergizer
+module.exports = StorageTransferer

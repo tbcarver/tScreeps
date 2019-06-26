@@ -17,11 +17,11 @@ var RemoteControllerAttacker = require("./troopers/remoteControllerAttacker");
 var RemoteReserver = require("./troopers/remoteReserver");
 var RemoteSitter = require("./troopers/remoteSitter");
 var RemoteSpawnedHarvester = require("./harvesters/remoteSpawnedHarvester");
-var RemoteSpawnedStorageEnergizer = require("./transfers/remoteSpawnedStorageEnergizer");
-var RemoteStorageEnergizer = require("./transfers/remoteStorageEnergizer");
+var RemoteSpawnedStorageTransferer = require("./transfers/remoteSpawnedStorageTransferer");
+var RemoteStorageTransferer = require("./transfers/remoteStorageTransferer");
 var Repairer = require("./energyWorkers/repairer");
 var SpawnEnergizer = require("./energizers/spawnEnergizer");
-var StorageEnergizer = require("./transfers/storageEnergizer");
+var StorageTransferer = require("./transfers/storageTransferer");
 var StructureAttacker = require("./troopers/structureAttacker");
 var WallRepairer = require("./energyWorkers/wallRepairer");
 
@@ -44,11 +44,11 @@ var creepConstructors = {
 	remoteReserver: RemoteReserver,
 	remoteSitter: RemoteSitter,
 	remoteSpawnedHarvester: RemoteSpawnedHarvester,
-	remoteSpawnedStorageEnergizer: RemoteSpawnedStorageEnergizer,
-	remoteStorageEnergizer: RemoteStorageEnergizer,
+	remoteSpawnedStorageTransferer: RemoteSpawnedStorageTransferer,
+	remoteStorageTransferer: RemoteStorageTransferer,
 	repairer: Repairer,
 	spawnEnergizer: SpawnEnergizer,
-	storageEnergizer: StorageEnergizer,
+	storageTransferer: StorageTransferer,
 	structureAttacker: StructureAttacker,
 	wallRepairer: WallRepairer
 };
