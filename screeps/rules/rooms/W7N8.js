@@ -83,7 +83,7 @@ module.exports = {
 		{
 			roomName: "W8N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteStorageTransferer: 6 },
+				{ remoteStorageTransferer: 0 },
 			],
 			canControllerEnergizersBuild: true,
 			canEnergizersTransferToStorageOnly: true,
@@ -91,9 +91,10 @@ module.exports = {
 		{
 			roomName: "W7N9",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteStorageTransferer: 0 },
+				{ remoteSpawnedStorageTransferer: 0 },
 				{ controllerEnergizer: 0 },
 			],
+			canEnergizersTransferToStorageOnly: true,
 			canEnergyCreepsHarvest: false,
 			canEnergyCreepsPickup: false,
 			canControllerEnergizersBuild: true,
@@ -108,6 +109,15 @@ module.exports = {
 		},
 		// Mob
 		{
+			roomName: "W6N9",
+			spawnOrderMaxSpawnedCounts: [
+				{ attacker: 2 },
+				{ healer: 3 },
+				{ rangedAttacker: 3 },
+			],
+			isMobTroopers: true,
+		},
+		{
 			roomName: "W7N7",
 			spawnOrderMaxSpawnedCounts: [
 				{ attacker: 2 },
@@ -117,13 +127,80 @@ module.exports = {
 			isMobTroopers: true,
 		},
 		{
-			roomName: "W8N8",
+			roomName: "W9N6",
 			spawnOrderMaxSpawnedCounts: [
 				{ attacker: 2 },
 				{ healer: 3 },
 				{ rangedAttacker: 3 },
 			],
 			isMobTroopers: true,
+		},
+		// Defending rooms
+		{
+			roomName: "W10N8",
+			spawnOrderMaxSpawnedCounts: [
+				{ decoy: 1 },
+			],
+		},
+		{
+			roomName: "W9N8",
+			spawnOrderMaxSpawnedCounts: [
+				{ decoy: 1 },
+			],
+		},
+		{
+			roomName: "W6N8",
+			spawnOrderMaxSpawnedCounts: [
+				{ decoy: 1 },
+			],
+		},
+		{
+			roomName: "W10N7",
+			spawnOrderMaxSpawnedCounts: [
+				{ decoy: 1 },
+			],
+		},
+		{
+			roomName: "W9N7",
+			spawnOrderMaxSpawnedCounts: [
+				{ decoy: 1 },
+			],
+		},
+		{
+			roomName: "W8N7",
+			spawnOrderMaxSpawnedCounts: [
+				{ decoy: 1 },
+			],
+		},
+		{
+			roomName: "W7N7",
+			spawnOrderMaxSpawnedCounts: [
+				{ decoy: 1 },
+			],
+		},
+		{
+			roomName: "W6N7",
+			spawnOrderMaxSpawnedCounts: [
+				{ decoy: 1 },
+			],
+		},
+		{
+			roomName: "W9N6",
+			spawnOrderMaxSpawnedCounts: [
+				{ decoy: 1 },
+			],
+		},
+		{
+			roomName: "W8N6",
+			spawnOrderMaxSpawnedCounts: [
+				{ decoy: 1 },
+			],
+		},
+		{
+			roomName: "W7N6",
+			spawnOrderMaxSpawnedCounts: [
+				{ decoy: 1 },
+			],
 		},
 		// Very remote rooms
 		{
@@ -146,9 +223,9 @@ module.exports = {
 		},
 		// Overflow		
 		{
-			roomName: "W8N8",
+			roomName: "W7N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ controllerEnergizer: 16 },
+				{ controllerEnergizer: 8 },
 			],
 			canControllerEnergizersBuild: true,
 		},

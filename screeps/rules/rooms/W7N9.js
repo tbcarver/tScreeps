@@ -23,8 +23,8 @@ module.exports = {
 			spawnOrderMaxSpawnedCounts: [
 				{ remoteReserver: 1 },
 				{ dropHarvester: 4 },
-				{ storageTransferer: 3 },
-				{ remoteSpawnedStorageTransferer: 3 },
+				{ storageTransferer: 2 },
+				{ remoteSpawnedStorageTransferer: 5 },
 			],
 			partsPerMove: 1,
 			minTroopersWaiting: 1,
@@ -60,7 +60,8 @@ module.exports = {
 		{
 			roomName: "W10N9",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedHarvester: 4 },
+				{ dropHarvester: 2 },
+				{ remoteSpawnedDropTransferer: 3 },
 			],
 			partsPerMove: 1,
 			canRemoteStorageTransferersPickup: true,
@@ -70,8 +71,9 @@ module.exports = {
 		{
 			roomName: "W7N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedStorageTransferer: 12 },
+				{ remoteSpawnedStorageTransferer: 0 },
 			],
+			canControllerEnergizersBuild: true,
 			canEnergizersTransferToStorageOnly: true,
 		},
 		{
@@ -92,7 +94,7 @@ module.exports = {
 		},
 		// Mob
 		{
-			roomName: "W6N9",
+			roomName: "W6N11",
 			spawnOrderMaxSpawnedCounts: [
 				{ attacker: 2 },
 				{ healer: 3 },
@@ -101,7 +103,16 @@ module.exports = {
 			isMobTroopers: true,
 		},
 		{
-			roomName: "W8N10",
+			roomName: "W9N11",
+			spawnOrderMaxSpawnedCounts: [
+				{ attacker: 2 },
+				{ healer: 3 },
+				{ rangedAttacker: 3 },
+			],
+			isMobTroopers: true,
+		},
+		{
+			roomName: "W9N9",
 			spawnOrderMaxSpawnedCounts: [
 				{ attacker: 2 },
 				{ healer: 3 },
@@ -111,13 +122,13 @@ module.exports = {
 		},
 		// Defending rooms
 		{
-			roomName: "W6N10",
+			roomName: "W10N9",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
 		},
 		{
-			roomName: "W6N9",
+			roomName: "W9N9",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
@@ -129,7 +140,14 @@ module.exports = {
 			],
 		},
 		{
-			roomName: "W8N11",
+			roomName: "W6N9",
+			spawnOrderMaxSpawnedCounts: [
+				{ decoy: 1 },
+			],
+		},
+		
+		{
+			roomName: "W10N10",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
@@ -141,19 +159,55 @@ module.exports = {
 			],
 		},
 		{
-			roomName: "W6N8",
+			roomName: "W6N10",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
 		},
 		{
-			roomName: "W7N7",
+			roomName: "W10N11",
+			spawnOrderMaxSpawnedCounts: [
+				{ decoy: 1 },
+			],
+		},
+		{
+			roomName: "W9N11",
+			spawnOrderMaxSpawnedCounts: [
+				{ decoy: 1 },
+			],
+		},
+		{
+			roomName: "W8N11",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
 		},
 		{
 			roomName: "W7N11",
+			spawnOrderMaxSpawnedCounts: [
+				{ decoy: 1 },
+			],
+		},
+		{
+			roomName: "W6N11",
+			spawnOrderMaxSpawnedCounts: [
+				{ decoy: 1 },
+			],
+		},
+		{
+			roomName: "W8N12",
+			spawnOrderMaxSpawnedCounts: [
+				{ decoy: 1 },
+			],
+		},
+		{
+			roomName: "W7N12",
+			spawnOrderMaxSpawnedCounts: [
+				{ decoy: 1 },
+			],
+		},
+		{
+			roomName: "W6N12",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
@@ -167,7 +221,7 @@ module.exports = {
 			canControllerEnergizersBuild: true,
 		},
 		{
-			roomName: "W8N8",
+			roomName: "W7N10",
 			spawnOrderMaxSpawnedCounts: [
 				{ controllerEnergizer: 16 },
 			],

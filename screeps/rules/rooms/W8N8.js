@@ -55,6 +55,15 @@ module.exports = {
 		},
 		// Very remote rooms
 		{
+			roomName: "W10N8",
+			spawnOrderMaxSpawnedCounts: [
+				{ remoteSpawnedHarvester: 6 },
+			],
+			partsPerMove: 1,
+			canEnergyCreepsHarvest: true,
+			canEnergizersTransferToStorageOnly: true,
+		},
+		{
 			roomName: "W8N6",
 			spawnOrderMaxSpawnedCounts: [
 				{ remoteSpawnedHarvester: 4 },
@@ -94,7 +103,7 @@ module.exports = {
 		{
 			roomName: "W8N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ controllerEnergizer: 4 },
+				{ controllerEnergizer: 0 },
 			],
 			canControllerEnergizersBuild: true,
 		},

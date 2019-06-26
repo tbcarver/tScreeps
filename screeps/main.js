@@ -45,11 +45,8 @@ function loop() {
 		// roomTools.lookAt();
 		// debug.primary("log", room.getEventLog(true));
 
-		// Game.rooms["W9N8"].createFlag(16, 7, "post-W9N8", COLOR_GREY, COLOR_ORANGE)
-		// Game.rooms["W9N6"].createFlag(27,1, "exit-from-W9N6-to-W9N7", COLOR_GREEN, COLOR_WHITE)
-		// Game.rooms["W10N7"].createFlag(48,31, "exit-from-W10N7-to-W9N7", COLOR_GREEN, COLOR_WHITE)
-		// Game.rooms["W9N7"].createFlag(1,31, "exit-from-W9N7-to-W10N7", COLOR_GREEN, COLOR_WHITE)
 		// Game.rooms["W8N8"].createFlag(35,1, "exit-from-W8N8-to-W8N9", COLOR_GREEN, COLOR_WHITE)
+		// Game.rooms["W9N8"].createFlag(16, 7, "post-W9N8", COLOR_GREY, COLOR_ORANGE)
 		// Game.rooms["W7N11"].createFlag(17,42, "drop-W7N11", COLOR_YELLOW)
 		// Game.rooms["W7N8"].createFlag(13,24, "wait-W7N8", COLOR_RED, COLOR_YELLOW)
 

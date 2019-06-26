@@ -63,7 +63,8 @@ creepsController.tick = function() {
 		displayCreepsTotal += `, ${spawnedRoomName}: ${spawnedRoomNamesCreepsTotal[spawnedRoomName]}/${spawnedRoomsCreepsToSpawnTotal[spawnedRoomName]} `;
 	}
 
-	debugObjectTable.muted(displayRoomsCurrentSpawnedCounts, creepsTotal, displayCreepsTotal + " stats...");
+	debug.muted(displayCreepsTotal);
+	// debugObjectTable.muted(displayRoomsCurrentSpawnedCounts, creepsTotal, displayCreepsTotal + " stats...");
 }
 
 function cleanUpTheDead() {

@@ -21,7 +21,6 @@ module.exports = {
 		{
 			roomName: "W8N11",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 0 },
 				{ remoteReserver: 1 },
 				{ dropHarvester: 4 },
 				{ remoteSpawnedStorageTransferer: 4 },
@@ -38,7 +37,6 @@ module.exports = {
 		{
 			roomName: "W9N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 0 },
 				{ remoteReserver: 1 },
 				{ dropHarvester: 4 },
 				{ storageTransferer: 2 },

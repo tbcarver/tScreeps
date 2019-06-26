@@ -4,6 +4,11 @@ var EnergyCreep = require("../baseCreeps/energyCreep");
 function ControllerEnergizer(creep) {
 
 	EnergyCreep.call(this, creep);
+
+	this.canBuild = false;
+	if (this.creepsSpawnRule && this.creepsSpawnRule.canControllerEnergizersBuild) {
+		this.canBuild = true;
+	}
 }
 
 ControllerEnergizer.prototype = Object.create(EnergyCreep.prototype);
@@ -17,7 +22,7 @@ ControllerEnergizer.prototype.energyAct = function() {
 	
 	var acted = false;
 
-	if (this.creepsSpawnRule.canControllerEnergizersBuild) {
+	if (this.canBuild) {
 
 		const target = this.creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
 

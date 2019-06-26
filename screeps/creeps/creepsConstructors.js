@@ -12,10 +12,11 @@ var Healer = require("./troopers/healer");
 var RangedAttacker = require("./troopers/rangedAttacker");
 var StructureRazer = require("./troopers/structureRazer");
 var RemoteBuilder = require("./energyWorkers/remoteBuilder");
-var RemoteClaimer = require("./troopers/remoteClaimer");
-var RemoteControllerAttacker = require("./troopers/remoteControllerAttacker");
-var RemoteReserver = require("./troopers/remoteReserver");
-var RemoteSitter = require("./troopers/remoteSitter");
+var RemoteClaimer = require("./controllers/remoteClaimer");
+var RemoteControllerAttacker = require("./controllers/remoteControllerAttacker");
+var RemoteReserver = require("./controllers/remoteReserver");
+var RemoteSitter = require("./controllers/remoteSitter");
+var RemoteSpawnedDropTransferer = require("./transferers/remoteSpawnedDropTransferer");
 var RemoteSpawnedHarvester = require("./harvesters/remoteSpawnedHarvester");
 var RemoteSpawnedStorageTransferer = require("./transferers/remoteSpawnedStorageTransferer");
 var RemoteStorageTransferer = require("./transferers/remoteStorageTransferer");
@@ -43,6 +44,7 @@ var creepConstructors = {
 	remoteControllerAttacker: RemoteControllerAttacker,
 	remoteReserver: RemoteReserver,
 	remoteSitter: RemoteSitter,
+	remoteSpawnedDropTransferer: RemoteSpawnedDropTransferer,
 	remoteSpawnedHarvester: RemoteSpawnedHarvester,
 	remoteSpawnedStorageTransferer: RemoteSpawnedStorageTransferer,
 	remoteStorageTransferer: RemoteStorageTransferer,
