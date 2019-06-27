@@ -47,13 +47,13 @@ Healer.prototype.heal = function() {
 
 Healer.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule, currentSpawnedCount) {
 
-	var creepMemory = TrooperCreep.initializeSpawnCreepMemory(room, spawn, creepsSpawnRule,
-		rules.maximumHealerSpawnCapacity);
+	var creepMemory = TrooperCreep.initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, currentSpawnedCount);
 
 	if (creepMemory) {
 
 		creepMemory.type = "healer";
 		creepMemory.bodyPartsType = "healer";
+		creepMemory.maximumSpawnCapacity = rules.maximumHealerSpawnCapacity || 800;
 	}
 
 	return creepMemory;

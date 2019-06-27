@@ -7,6 +7,7 @@ var rules = {
 	maximumHealerSpawnCapacity: 700,
 	maximumRangedAttackerSpawnCapacity: 700,
 	evacuateRemoteRooms: true,
+	logRoomsCurrentSpawnedCounts: false,
 }
 
 var creepsSpawnRules = [];

@@ -26,13 +26,13 @@ Attacker.prototype.attack = function() {
 
 Attacker.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule, currentSpawnedCount) {
 
-	var creepMemory = TrooperCreep.initializeSpawnCreepMemory(room, spawn, creepsSpawnRule,
-		rules.maximumAttackerSpawnCapacity);
+	var creepMemory = TrooperCreep.initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, currentSpawnedCount);
 
 	if (creepMemory) {
 			
 		creepMemory.type = "attacker";
 		creepMemory.bodyPartsType = "attacker";
+		creepMemory.maximumSpawnCapacity = rules.maximumAttackerSpawnCapacity || 800;
 	}
 
 	return creepMemory;

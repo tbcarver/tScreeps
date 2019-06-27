@@ -27,13 +27,13 @@ RangedAttacker.prototype.attack = function() {
 
 RangedAttacker.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule, currentSpawnedCount) {
 
-	var creepMemory = TrooperCreep.initializeSpawnCreepMemory(room, spawn, creepsSpawnRule,
-		rules.maximumRangedAttackerSpawnCapacity);
+	var creepMemory = TrooperCreep.initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, currentSpawnedCount);
 
 	if (creepMemory) {
 			
 		creepMemory.type = "rangedAttacker";
 		creepMemory.bodyPartsType = "rangedAttacker";
+		creepMemory.maximumSpawnCapacity = rules.maximumRangedAttackerSpawnCapacity || 800;
 	}
 
 	return creepMemory;

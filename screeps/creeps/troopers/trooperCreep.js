@@ -83,15 +83,11 @@ TrooperCreep.prototype.getInitialState = function() {
 	return "trooping";
 }
 
-TrooperCreep.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule, maximumSpawnCapacity) {
+TrooperCreep.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule, currentSpawnedCount) {
 
 	var creepMemory;
 	var initializeCreepMemory = false;
 	var isMobTrooper = (creepsSpawnRule && creepsSpawnRule.isMobTroopers) ? true : false;
-
-	if (!maximumSpawnCapacity) {
-		maximumSpawnCapacity = 800;
-	}
 
 	if (isMobTrooper) {
 		initializeCreepMemory = true;
@@ -103,7 +99,6 @@ TrooperCreep.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule,
 
 	if (initializeCreepMemory) {
 		creepMemory = {
-			maximumSpawnCapacity: maximumSpawnCapacity,
 			isTrooper: true,
 			isMobTrooper: isMobTrooper,
 		}

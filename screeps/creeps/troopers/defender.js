@@ -1,56 +1,29 @@
 
-var BaseCreep = require("../baseCreeps/baseCreep");
+var TrooperCreep = require("./trooperCreep");
 
 function Defender(creep) {
 
-	BaseCreep.call(this, creep);
+	TrooperCreep.call(this, creep);
 
 	this.isTrooper = true;
 }
 
-Defender.prototype = Object.create(BaseCreep.prototype);
+Defender.prototype = Object.create(TrooperCreep.prototype);
 
 Defender.prototype.act = function() {
 	
-	if (!BaseCreep.prototype.act.call(this)) {
-
-		if (Game.flags["post-" + this.creep.room.name]) {
-			this.creep.moveTo(Game.flags["post-" + this.creep.room.name].pos);
-		} else {
-			this.creep.moveTo(this.creep.room.controller);
-		}
-	}
+	TrooperCreep.prototype.act.call(this);
 }
 
 Defender.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule, currentSpawnedCount) {
 
-	var creepMemory;
+	var creepMemory = TrooperCreep.initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, currentSpawnedCount);
 
-	if (!rules.maximumTroopersSpawnCapacity) {
-		rules.maximumDefenderSpawnCapacity = 800;
-	}
-
-	if (creepsSpawnRule.minTroopersWaiting && currentSpawnedCount < creepsSpawnRule.minTroopersWaiting) {
-
-		creepMemory = {
-			type: "defender",
-			bodyPartsType: "defender",
-			isTrooper: true,
-		}
-	}
-
-	if (!creepMemory && room.find) {
-
-		var targets = room.find(FIND_HOSTILE_CREEPS);
-
-		if (targets.length > 0) {
-
-			creepMemory = {
-				type: "defender",
-				bodyPartsType: "defender",
-				isTrooper: true,
-			}
-		}
+	if (creepMemory) {
+			
+		creepMemory.type = "defender";
+		creepMemory.bodyPartsType = "defender";
+		creepMemory.maximumSpawnCapacity = rules.maximumTroopersSpawnCapacity || 800;
 	}
 
 	return creepMemory;

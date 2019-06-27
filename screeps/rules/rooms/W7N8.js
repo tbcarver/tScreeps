@@ -21,7 +21,6 @@ module.exports = {
 		{
 			roomName: "W6N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 0 },
 				{ remoteReserver: 1 },
 				{ dropHarvester: 4 },
 				{ storageTransferer: 3 },
@@ -36,7 +35,6 @@ module.exports = {
 		{
 			roomName: "W7N7",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 0 },
 				{ remoteReserver: 1 },
 				{ dropHarvester: 2 },
 				{ storageTransferer: 2 },
@@ -52,7 +50,6 @@ module.exports = {
 		{
 			roomName: "W9N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 1 },
 				{ remoteReserver: 1 },
 				{ dropHarvester: 4 },
 				{ remoteSpawnedStorageTransferer: 0 },
@@ -67,7 +64,6 @@ module.exports = {
 		{
 			roomName: "W8N7",
 			spawnOrderMaxSpawnedCounts: [
-				{ defender: 1 },
 				{ remoteReserver: 1 },
 				{ dropHarvester: 4 },
 				{ remoteSpawnedStorageTransferer: 0 },
@@ -141,66 +137,77 @@ module.exports = {
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W9N8",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W6N8",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W10N7",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W9N7",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W8N7",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W7N7",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W6N7",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W9N6",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W8N6",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W7N6",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		// Very remote rooms
 		{

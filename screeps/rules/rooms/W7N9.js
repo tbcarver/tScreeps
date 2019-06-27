@@ -126,24 +126,28 @@ module.exports = {
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W9N9",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W8N9",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W6N9",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		
 		{
@@ -151,66 +155,77 @@ module.exports = {
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W9N10",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W6N10",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W10N11",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W9N11",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W8N11",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W7N11",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W6N11",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W8N12",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W7N12",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		{
 			roomName: "W6N12",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],
+			minTroopersWaiting: 1,
 		},
 		// Overflow		
 		{
