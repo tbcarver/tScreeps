@@ -4,7 +4,7 @@ module.exports = {
 	spawnOrderMaxSpawnedCounts: [
 		{ builder: 0 },
 		{ spawnEnergizer: 1 },
-		{ extensionEnergizer: 8 },
+		{ extensionEnergizer: 4 },
 		{ dropContainerHarvester: 3 },
 		{ containerHarvester: 1 },
 		{ storageTransferer: 2 },
@@ -14,7 +14,7 @@ module.exports = {
 	canEnergyCreepsHarvest: false,
 	canEnergyCreepsPickup: false,
 	canStorageTransferersPickup: false,
-	maxExtensionsPerEnergizer: 4,
+	maxExtensionsPerEnergizer: 8,
 	waitForMinimumSpawnCapacity: true,
 	remoteRooms: [
 		// Adjacent rooms

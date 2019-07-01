@@ -4,12 +4,12 @@ var findTools = require("./findTools");
 var roomTools = require("./roomTools");
 var spawnTools = require("./spawnTools");
 var testObject = require("../creeps/energizers/extensionEnergizer");
-var bodyPartsStrategy = require("../creeps/bodies/moveWorkStrategy");
+var bodyPartsStrategy = require("../creeps/bodies/moveCarryStrategy");
 
 function tick() {
 
-// 	debug.temp(findTools.findRoute("W8N8", "W9N7"));
-// debug.temp(rules.routeAvoidRooms.includes("W9N8"));
+	// 	debug.temp(findTools.findRoute("W8N8", "W9N7"));
+	// debug.temp(rules.routeAvoidRooms.includes("W9N8"));
 
 	// var route = Game.map.findRoute("W8N8", "W9N8", {
 	// 	routeCallback(roomName, fromRoomName) {
@@ -27,7 +27,7 @@ function tick() {
 
 	// for (var count = 1; count <= 15; count++) {
 	// 	var capacity = 300 + (count * 50);
-	// 	debug.temp(capacity, bodyPartsStrategy.getBodyPartsObject(capacity, 1));
+	// 	debug.temp(capacity, bodyPartsStrategy.getBodyPartsObject(capacity, 2));
 	// }
 
 	// moveCarryWorkStrategy partsPerMove: 1
@@ -80,6 +80,23 @@ function tick() {
 	// 950 {move: 6, work: 6}
 	// 1000 {move: 7, work: 6}
 	// 1050 {move: 7, work: 7}
+
+	// moveCarryStrategy
+	// 350 {move: 2, carry: 4}
+	// 400 {move: 3, carry: 5}
+	// 450 {move: 3, carry: 6}
+	// 500 {move: 3, carry: 6}
+	// 550 {move: 4, carry: 7}
+	// 600 {move: 4, carry: 8}
+	// 650 {move: 4, carry: 8}
+	// 700 {move: 5, carry: 9}
+	// 750 {move: 5, carry: 10}
+	// 800 {move: 5, carry: 10}
+	// 850 {move: 6, carry: 11}
+	// 900 {move: 6, carry: 12}
+	// 950 {move: 6, carry: 12}
+	// 1000 {move: 7, carry: 13}
+	// 1050 {move: 7, carry: 14}
 
 	// function approximateParts(result) {
 

@@ -72,6 +72,10 @@ ExtensionEnergizer.initializeSpawnCreepMemory = function(room, spawn, creepsSpaw
 			activeExtensionIndex: 0
 		};
 
+		if (room.controller.level >= 7) {
+			creepMemory.maximumSpawnCapacity = 600;
+		}
+
 		if (availableExtensions.length > 1) {
 			creepMemory.activeExtensionIndex = 1;
 		}
@@ -92,12 +96,23 @@ ExtensionEnergizer.initializeSpawnCreepMemory = function(room, spawn, creepsSpaw
 		// debug.temp("next", nextExtension.pos, 0);
 
 		for (var index = 1; index < creepsSpawnRule.maxExtensionsPerEnergizer; index++) {
-			// NOTE: The structures must be adjacent
-			nextExtension = nextExtension.pos.findClosestByRange(FIND_STRUCTURES, {
+
+			// NOTE: The find adjacent structures first
+			var nextExtensions = nextExtension.pos.findInRange(FIND_STRUCTURES, 1, {
 				filter: nextStructure => nextStructure.structureType == STRUCTURE_EXTENSION &&
 					_.map(availableExtensions, availableExtension => availableExtension.id).includes(nextStructure.id) &&
 					!_.map(creepMemory.extensions, extension => extension.id).includes(nextStructure.id)
 			});
+
+			if (nextExtensions.length > 0) {
+				nextExtension = nextExtensions[0];
+			} else {
+				nextExtension = nextExtension.pos.findClosestByRange(FIND_STRUCTURES, {
+					filter: nextStructure => nextStructure.structureType == STRUCTURE_EXTENSION &&
+						_.map(availableExtensions, availableExtension => availableExtension.id).includes(nextStructure.id) &&
+						!_.map(creepMemory.extensions, extension => extension.id).includes(nextStructure.id)
+				});
+			}
 
 			if (!nextExtension) {
 				break;

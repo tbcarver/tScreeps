@@ -117,6 +117,26 @@ roomTools.observeRoom = function(roomName, observerRoomName) {
 	}
 }
 
+roomTools.getTotalStorageEnergy = function() {
+
+	var totalStorageEnergy = 0;
+
+	for (var roomName in Game.rooms) {
+
+		var room = Game.rooms[roomName];
+		var storage = room.find(FIND_STRUCTURES, {
+			filter: structure => structure.structureType === STRUCTURE_STORAGE ||
+				structure.structureType === STRUCTURE_TERMINAL
+		});
+
+		if (storage.length > 0) {
+			totalStorageEnergy += storage[0].store.energy;
+		}
+	}
+
+	return totalStorageEnergy;
+}
+
 // roomTools.lookAt = function() {
 
 // 	var positions =

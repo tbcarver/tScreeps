@@ -1,9 +1,8 @@
 
 var roomTools = require("./roomTools");
+var { rules } = require("../rules/rules");
 
-var enemyTools = {
-	mobAttackRoomCoolDownCountStart: 15,
-};
+var enemyTools = {};
 
 enemyTools.manageEnemies = function() {
 
@@ -62,7 +61,7 @@ enemyTools.getMobAttackRoomName = function(mobPostRoomName) {
 			watchedEnemyStats = _.sortBy(watchedEnemyStats, ["isRoomOwned", "enemyCount"]);
 			this.mobPostsMobAttackRooms[mobPostRoomName] = {
 				mobAttackRoomName: watchedEnemyStats[watchedEnemyStats.length - 1].roomName,
-				coolDownCount: this.mobAttackRoomCoolDownCountStart
+				coolDownCount: rules.mobAttackRoomCoolDownCount
 			}
 
 			Memory.state.mobPostsMobAttackRooms[mobPostRoomName] = this.mobPostsMobAttackRooms[mobPostRoomName]

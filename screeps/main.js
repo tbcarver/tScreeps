@@ -13,6 +13,7 @@ var spawnTools = require("./tools/spawnTools");
 var visualizeTools = require("./tools/visualizeTools");
 var creepsController = require("./creeps/creepsController");
 var towersController = require("./structures/towersController");
+var observersController = require("./structures/observersController");
 
 global.debug = debug;
 global.debugObjectTable = debugObjectTable;
@@ -32,8 +33,17 @@ function loop() {
 
 		initialize();
 
-		var spawnsStats = buildSpawnStats();
-		debugPairsTable.primary(spawnsStats);
+		if (rules.logSpawnStats) {
+
+			var spawnsStats = buildSpawnStats();
+			debugPairsTable.primary(spawnsStats);
+
+		} else {
+
+			var totalStorageEnergy = roomTools.getTotalStorageEnergy();
+			totalStorageEnergy = totalStorageEnergy.toLocaleString("en-US");
+			debug.primary(Game.time, totalStorageEnergy);
+		}
 
 		// console.log(controller.activateSafeMode())
 
@@ -64,6 +74,7 @@ function loop() {
 
 		creepsController.tick();
 		towersController.tick();
+		observersController.tick();
 
 		for (var roomName in Game.rooms) {
 
@@ -118,21 +129,9 @@ function buildSpawnStats() {
 
 	var spawnsStats = {};
 
-	var totalContainerEnergy = 0;
-	for (var roomName in Game.rooms) {
+	var totalStorageEnergy = roomTools.getTotalStorageEnergy();
 
-		var room = Game.rooms[roomName];
-		var storage = room.find(FIND_STRUCTURES, {
-			filter: structure => structure.structureType === STRUCTURE_STORAGE ||
-				structure.structureType === STRUCTURE_TERMINAL
-		});
-
-		if (storage.length > 0) {
-			totalContainerEnergy += storage[0].store.energy;
-		}
-	}
-
-	spawnsStats[Game.time] = totalContainerEnergy.toLocaleString("en-US");
+	spawnsStats[Game.time] = totalStorageEnergy.toLocaleString("en-US");
 
 	for (spawnName in Game.spawns) {
 

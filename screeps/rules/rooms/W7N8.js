@@ -4,7 +4,7 @@ module.exports = {
 	spawnOrderMaxSpawnedCounts: [
 		{ repairer: 0 },
 		{ spawnEnergizer: 1 },
-		{ extensionEnergizer: 12 },
+		{ extensionEnergizer: 6 },
 		{ dropContainerHarvester: 4 },
 		{ builder: 6 },
 		{ storageTransferer: 1 },
@@ -14,7 +14,7 @@ module.exports = {
 	canEnergyCreepsHarvest: false,
 	canEnergyCreepsPickup: false,
 	canStorageTransferersPickup: false,
-	maxExtensionsPerEnergizer: 4,
+	maxExtensionsPerEnergizer: 8,
 	waitForMinimumSpawnCapacity: true,
 	remoteRooms: [
 		// Adjacent remote rooms
@@ -50,7 +50,7 @@ module.exports = {
 		{
 			roomName: "W8N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedStorageTransferer: 12 },
+				{ remoteSpawnedStorageTransferer: 2 },
 			],
 			canControllerEnergizersBuild: true,
 			canEnergizersTransferToStorageOnly: true,
@@ -58,7 +58,7 @@ module.exports = {
 		{
 			roomName: "W7N9",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedStorageTransferer: 0 },
+				{ remoteStorageTransferer: 4 },
 				{ controllerEnergizer: 0 },
 			],
 			canEnergizersTransferToStorageOnly: true,
@@ -70,9 +70,9 @@ module.exports = {
 		{
 			roomName: "W6N9",
 			spawnOrderMaxSpawnedCounts: [
-				{ attacker: 3 },
+				{ attacker: 2 },
 				{ healer: 3 },
-				{ rangedAttacker: 4 },
+				{ rangedAttacker: 3 },
 			],
 			isMobTroopers: true,
 		},
@@ -97,76 +97,6 @@ module.exports = {
 		// Defending rooms
 		{
 			roomName: "W10N8",
-			spawnOrderMaxSpawnedCounts: [
-				{ decoy: 1 },
-			],
-			minTroopersWaiting: 1,
-		},
-		{
-			roomName: "W9N8",
-			spawnOrderMaxSpawnedCounts: [
-				{ decoy: 1 },
-			],
-			minTroopersWaiting: 1,
-		},
-		{
-			roomName: "W6N8",
-			spawnOrderMaxSpawnedCounts: [
-				{ decoy: 1 },
-			],
-			minTroopersWaiting: 1,
-		},
-		{
-			roomName: "W10N7",
-			spawnOrderMaxSpawnedCounts: [
-				{ decoy: 1 },
-			],
-			minTroopersWaiting: 1,
-		},
-		{
-			roomName: "W9N7",
-			spawnOrderMaxSpawnedCounts: [
-				{ decoy: 1 },
-			],
-			minTroopersWaiting: 1,
-		},
-		{
-			roomName: "W8N7",
-			spawnOrderMaxSpawnedCounts: [
-				{ decoy: 1 },
-			],
-			minTroopersWaiting: 1,
-		},
-		{
-			roomName: "W7N7",
-			spawnOrderMaxSpawnedCounts: [
-				{ decoy: 1 },
-			],
-			minTroopersWaiting: 1,
-		},
-		{
-			roomName: "W6N7",
-			spawnOrderMaxSpawnedCounts: [
-				{ decoy: 1 },
-			],
-			minTroopersWaiting: 1,
-		},
-		{
-			roomName: "W9N6",
-			spawnOrderMaxSpawnedCounts: [
-				{ decoy: 1 },
-			],
-			minTroopersWaiting: 1,
-		},
-		{
-			roomName: "W8N6",
-			spawnOrderMaxSpawnedCounts: [
-				{ decoy: 1 },
-			],
-			minTroopersWaiting: 1,
-		},
-		{
-			roomName: "W7N6",
 			spawnOrderMaxSpawnedCounts: [
 				{ decoy: 1 },
 			],

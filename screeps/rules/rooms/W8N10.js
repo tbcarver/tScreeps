@@ -14,7 +14,7 @@ module.exports = {
 	canEnergyCreepsHarvest: false,
 	canEnergyCreepsPickup: false,
 	canStorageTransferersPickup: false,
-	maxExtensionsPerEnergizer: 4,
+	maxExtensionsPerEnergizer: 8,
 	waitForMinimumSpawnCapacity: true,
 	remoteRooms: [
 		// Adjacent remote rooms
@@ -65,7 +65,7 @@ module.exports = {
 		{
 			roomName: "W8N9",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteStorageTransferer: 12 },
+				{ remoteStorageTransferer: 6 },
 				{ controllerEnergizer: 0 },
 				{ remoteBuilder: 0 },
 			],
@@ -94,10 +94,9 @@ module.exports = {
 		},
 		// Overflow
 		{
-			roomName: "W8N10",
+			roomName: "W8N9",
 			spawnOrderMaxSpawnedCounts: [
-				{ builder: 0 },
-				{ controllerEnergizer: 0 },
+				{ controllerEnergizer: 12 },
 			],
 			canControllerEnergizersBuild: true,
 		},
