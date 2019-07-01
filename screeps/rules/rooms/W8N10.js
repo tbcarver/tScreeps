@@ -11,9 +11,9 @@ module.exports = {
 		{ controllerEnergizer: 1 },
 	],
 	canControllerEnergizersBuild: true,
-	canEnergizersTransferToDropContainers: false,
 	canEnergyCreepsHarvest: false,
 	canEnergyCreepsPickup: false,
+	canStorageTransferersPickup: false,
 	maxExtensionsPerEnergizer: 4,
 	waitForMinimumSpawnCapacity: true,
 	remoteRooms: [
@@ -40,7 +40,7 @@ module.exports = {
 				{ remoteReserver: 1 },
 				{ dropHarvester: 4 },
 				{ storageTransferer: 2 },
-				{ remoteSpawnedStorageTransferer: 5 },
+				{ remoteSpawnedStorageTransferer: 7 },
 			],
 			partsPerMove: 1,
 			minTroopersWaiting: 3,
@@ -56,6 +56,16 @@ module.exports = {
 			roomName: "W7N10",
 			spawnOrderMaxSpawnedCounts: [
 				{ remoteStorageTransferer: 0 },
+				{ controllerEnergizer: 0 },
+				{ remoteBuilder: 0 },
+			],
+			canControllerEnergizersBuild: true,
+			canEnergizersTransferToStorageOnly: true,
+		},
+		{
+			roomName: "W8N9",
+			spawnOrderMaxSpawnedCounts: [
+				{ remoteStorageTransferer: 12 },
 				{ controllerEnergizer: 0 },
 				{ remoteBuilder: 0 },
 			],

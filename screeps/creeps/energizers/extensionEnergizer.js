@@ -16,37 +16,26 @@ ExtensionEnergizer.prototype.act = function() {
 
 ExtensionEnergizer.prototype.energyAct = function() {
 
-	extension = Game.getObjectById(this.memory.extensions[this.memory.activeExtensionIndex].id);
+	var energizingExtensionIDs = this.memory.extensions.map(extension => extension.id);
+	var extension = this.creep.pos.findClosestByPath(FIND_STRUCTURES, {
+		filter: structure => structure.structureType === STRUCTURE_EXTENSION &&
+			structure.energy < structure.energyCapacity && energizingExtensionIDs.includes(structure.id)
+	});
 
 	if (extension) {
 
-		var transferResult = this.creep.transfer(extension, RESOURCE_ENERGY);
-
-		if (transferResult == ERR_NOT_IN_RANGE) {
+		if (this.creep.transfer(extension, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 
 			this.creep.moveTo(extension);
-
-		} else if (transferResult == ERR_FULL) {
-
-			if (this.memory.extensions.length > 1) {
-
-				this.memory.activeExtensionIndex = coreArray.incrementArrayIndex(this.memory.extensions, this.memory.activeExtensionIndex);
-				var transferResult = this.creep.transfer(extension, RESOURCE_ENERGY);
-
-				if (transferResult == ERR_NOT_IN_RANGE) {
-
-					this.creep.moveTo(extension);
-				}
-			}
-
-			if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
-
-				this.state = "harvesting";
-			}
 		}
+	} else if (this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .75) {
+
+		this.state = "harvesting";
 	} else {
 
-		debug.danger("extensionEnergizer extension not found: " + this.memory.extensions[0].id);
+		extension = Game.getObjectById(this.memory.extensions[this.memory.activeExtensionIndex].id);
+
+		this.creep.moveTo(extension);
 	}
 }
 
@@ -82,6 +71,10 @@ ExtensionEnergizer.initializeSpawnCreepMemory = function(room, spawn, creepsSpaw
 			}],
 			activeExtensionIndex: 0
 		};
+
+		if (availableExtensions.length > 1) {
+			creepMemory.activeExtensionIndex = 1;
+		}
 
 		if (!creepsSpawnRule.canEnergyCreepsHarvest) {
 			creepMemory.bodyPartsType = "moveCarry";

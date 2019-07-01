@@ -17,7 +17,7 @@ DropHarvester.prototype.act = function() {
 			if (this.memory.resourceId) {
 				var resource = Game.getObjectById(this.memory.resourceId);
 			} else {
-				var resource = this.creep.pos.findClosestByPath(FIND_SOURCES);
+				var resource = this.creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
 			}
 
 			if (resource) {

@@ -11,9 +11,9 @@ module.exports = {
 		{ controllerEnergizer: 1 },
 	],
 	canControllerEnergizersBuild: true,
-	canEnergizersTransferToDropContainers: true,
 	canEnergyCreepsHarvest: false,
 	canEnergyCreepsPickup: false,
+	canStorageTransferersPickup: false,
 	maxExtensionsPerEnergizer: 4,
 	waitForMinimumSpawnCapacity: true,
 	remoteRooms: [
@@ -23,8 +23,8 @@ module.exports = {
 			spawnOrderMaxSpawnedCounts: [
 				{ remoteReserver: 1 },
 				{ dropHarvester: 4 },
-				{ storageTransferer: 3 },
-				{ remoteSpawnedStorageTransferer: 4 },
+				{ storageTransferer: 2 },
+				{ remoteSpawnedStorageTransferer: 3 },
 			],
 			partsPerMove: 1,
 			minTroopersWaiting: 1,
@@ -46,40 +46,11 @@ module.exports = {
 			canRemoteStorageTransferersPickup: true,
 			canStorageTransferersPickup: true,
 		},
-		// Adjacent rooms for W8N8
-		{
-			roomName: "W9N8",
-			spawnOrderMaxSpawnedCounts: [
-				{ remoteReserver: 1 },
-				{ dropHarvester: 4 },
-				{ remoteSpawnedStorageTransferer: 0 },
-			],
-			partsPerMove: 1,
-			minTroopersWaiting: 1,
-			canEnergizersTransferToStorageOnly: true,
-			canEnergyCreepsPickup: true,
-			canRemoteStorageTransferersPickup: true,
-			canStorageTransferersPickup: true,
-		},
-		{
-			roomName: "W8N7",
-			spawnOrderMaxSpawnedCounts: [
-				{ remoteReserver: 1 },
-				{ dropHarvester: 4 },
-				{ remoteSpawnedStorageTransferer: 0 },
-			],
-			partsPerMove: 1,
-			minTroopersWaiting: 1,
-			canEnergizersTransferToStorageOnly: true,
-			canEnergyCreepsPickup: true,
-			canRemoteStorageTransferersPickup: true,
-			canStorageTransferersPickup: true,
-		},
 		// Main rooms
 		{
 			roomName: "W8N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteStorageTransferer: 0 },
+				{ remoteSpawnedStorageTransferer: 12 },
 			],
 			canControllerEnergizersBuild: true,
 			canEnergizersTransferToStorageOnly: true,
@@ -92,24 +63,16 @@ module.exports = {
 			],
 			canEnergizersTransferToStorageOnly: true,
 			canEnergyCreepsHarvest: false,
-			canEnergyCreepsPickup: false,
-			canControllerEnergizersBuild: true,
-		},
-		{
-			roomName: "W7N10",
-			spawnOrderMaxSpawnedCounts: [
-				{ builder: 0 },
-			],
-			minTroopersWaiting: 1,
+			canEnergyCreepsPickup: true,
 			canControllerEnergizersBuild: true,
 		},
 		// Mob
 		{
 			roomName: "W6N9",
 			spawnOrderMaxSpawnedCounts: [
-				{ attacker: 2 },
+				{ attacker: 3 },
 				{ healer: 3 },
-				{ rangedAttacker: 3 },
+				{ rangedAttacker: 4 },
 			],
 			isMobTroopers: true,
 		},
@@ -230,9 +193,9 @@ module.exports = {
 		},
 		// Overflow		
 		{
-			roomName: "W7N10",
+			roomName: "W8N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ controllerEnergizer: 8 },
+				{ controllerEnergizer: 0 },
 			],
 			canControllerEnergizersBuild: true,
 		},

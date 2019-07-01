@@ -42,7 +42,7 @@ RemoteSpawnedHarvester.prototype.remoteRoomAct = function() {
 
 	} else if (this.state === "harvesting") {
 
-		var resource = this.creep.pos.findClosestByPath(FIND_SOURCES);
+		var resource = this.creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
 
 		if (resource) {
 

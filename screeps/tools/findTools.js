@@ -124,7 +124,7 @@ findTools.findClosestEnergy = function(pos) {
 
 	if (!energy) {
 
-		energy = pos.findClosestByPath(FIND_SOURCES, {
+		energy = pos.findClosestByPath(FIND_SOURCES_ACTIVE, {
 			filter: resource => this.isInRange(pos, resource.pos, 10) && resource.energy / resource.energyCapacity > .10
 		});
 	}
@@ -148,7 +148,7 @@ findTools.findClosestEnergy = function(pos) {
 
 	if (!energy) {
 
-		energy = pos.findClosestByPath(FIND_SOURCES, {
+		energy = pos.findClosestByPath(FIND_SOURCES_ACTIVE, {
 			filter: resource => this.isInRange(pos, resource.pos, 20) && resource.energy / resource.energyCapacity > .10
 		});
 	}
@@ -172,7 +172,7 @@ findTools.findClosestEnergy = function(pos) {
 
 	if (!energy) {
 
-		energy = pos.findClosestByPath(FIND_SOURCES, {
+		energy = pos.findClosestByPath(FIND_SOURCES_ACTIVE, {
 			filter: resource => resource.energy / resource.energyCapacity > .10
 		});
 	}
@@ -194,8 +194,8 @@ findTools.findRoute = function(fromRoom, toRoom) {
 
 			if (rules.routeIgnoreRooms.includes(roomName)) {
 				return Infinity;
-			} else if (rules.routeAvoidRooms.includes(roomName)) {
-				return 2;
+			} else if (Object.keys(rules.routeRoomsPriority).includes(roomName)) {
+				return rules.routeRoomsPriority[roomName];
 			}
 
 			return 1;

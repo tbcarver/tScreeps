@@ -172,7 +172,9 @@ BaseCreep.prototype.moveToExit = function(exitRoomName) {
 
 	if (exitFlag) {
 
-		if (this.creep.pos.inRangeTo(exitFlag, 2)) {
+		// NOTE: Flags must be next to exits, alternating between 1 and 2 help the
+		//  creeps from getting stuck.
+		if (this.creep.pos.inRangeTo(exitFlag, Game.time % 4 >= 2 ? 1 : 2)) {
 			isAtFlag = true;
 		} else {
 			this.creep.moveTo(exitFlag);
@@ -224,30 +226,32 @@ BaseCreep.prototype.moveIntoRoom = function() {
 
 BaseCreep.prototype.transferEnergy = function() {
 
-	var target = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-		filter: structure => (structure.structureType == STRUCTURE_STORAGE ||
-			structure.structureType == STRUCTURE_TERMINAL) &&
-			structure.storeCapacity - structure.store[RESOURCE_ENERGY] > this.creep.carry.energy
-	});
-
-	if (!target) {
-		target = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-			filter: structure => structure.structureType == STRUCTURE_CONTAINER &&
-				structure.storeCapacity - structure.store[RESOURCE_ENERGY] > this.creep.carry.energy
-		});
-	}
-
-	if (target) {
-		if (this.creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-			this.creep.moveTo(target);
+	var dropFlag = Game.flags[`drop-${this.creep.room.name}`];
+	
+	if (dropFlag) {
+		if (this.creep.pos.inRangeTo(dropFlag, 1)) {
+			this.creep.drop(RESOURCE_ENERGY);
+		} else {
+			this.creep.moveTo(dropFlag);
 		}
 	} else {
-		var dropFlag = Game.flags[`drop-${this.creep.room.name}`];
-		if (dropFlag) {
-			if (this.creep.pos.inRangeTo(dropFlag, 1)) {
-				this.creep.drop(RESOURCE_ENERGY);
-			} else {
-				this.creep.moveTo(dropFlag);
+
+		var target = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+			filter: structure => (structure.structureType == STRUCTURE_STORAGE ||
+				structure.structureType == STRUCTURE_TERMINAL) &&
+				structure.storeCapacity - structure.store[RESOURCE_ENERGY] > this.creep.carry.energy
+		});
+
+		if (!target) {
+			target = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+				filter: structure => structure.structureType == STRUCTURE_CONTAINER &&
+					structure.storeCapacity - structure.store[RESOURCE_ENERGY] > this.creep.carry.energy
+			});
+		}
+
+		if (target) {
+			if (this.creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+				this.creep.moveTo(target);
 			}
 		}
 	}

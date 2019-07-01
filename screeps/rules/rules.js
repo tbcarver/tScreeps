@@ -1,22 +1,23 @@
 // TODO: error handling for bad creep type
 
 var rules = {
-	routeAvoidRooms: ["W9N8"],
+	routeRoomsPriority: { W10N9: 3, W9N8: 2, W7N12: 2 },
 	routeIgnoreRooms: [],
 	maximumAttackerSpawnCapacity: 700,
 	maximumHealerSpawnCapacity: 700,
 	maximumRangedAttackerSpawnCapacity: 700,
 	evacuateRemoteRooms: true,
-	logRoomsCurrentSpawnedCounts: false,
+	logRoomsCurrentSpawnedCounts: false
 }
 
 var creepsSpawnRules = [];
 // NOTE: Order is important
+creepsSpawnRules.push(require("./rooms/W7N9"));
 creepsSpawnRules.push(require("./rooms/W7N8"));
 creepsSpawnRules.push(require("./rooms/W7N10"));
-creepsSpawnRules.push(require("./rooms/W7N9"));
-creepsSpawnRules.push(require("./rooms/W8N10"));
 creepsSpawnRules.push(require("./rooms/W8N8"));
+creepsSpawnRules.push(require("./rooms/W8N10"));
+creepsSpawnRules.push(require("./rooms/W8N9"));
 
 var roomNamesCreepsSpawnRules = _.cloneDeep(creepsSpawnRules);
 
