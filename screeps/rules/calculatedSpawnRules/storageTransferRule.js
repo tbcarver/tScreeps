@@ -1,4 +1,6 @@
 
+var roomTools = require("../../tools/roomTools");
+
 function addCalculatedSpawnRule(creepsSpawnRules) {
 
 	var transferringRooms = [];
@@ -10,18 +12,18 @@ function addCalculatedSpawnRule(creepsSpawnRules) {
 
 		if (storageStats.hasStorage) {
 
-			if (storageStats.storedEnergy >= 50) {
+			if (storageStats.percentageStoredEnergy > 50) {
 
 				transferringRooms.push({
 					roomName: roomName,
-					creepsCount: 1,
+					creepsCount: Math.floor(Math.ceil(((storageStats.percentageStoredEnergy - 50) / 10)) * 2),
 				});
 
 			} else {
 
 				receivingRooms.push({
 					roomName: roomName,
-					creepsCount: 1,
+					creepsCount: Math.floor(Math.ceil(((50 - storageStats.percentageStoredEnergy) / 10)) * 2),
 				});
 
 			}

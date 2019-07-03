@@ -27,7 +27,7 @@ DropHarvester.prototype.act = function() {
 				}
 			} else {
 
-				if (!this.memory.resourceId) {
+				if (this.memory.resourceId) {
 					debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} no resource found, resourceId: ${this.memory.resourceId}`);
 				}
 			}

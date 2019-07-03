@@ -37,7 +37,7 @@ module.exports = {
 				{ remoteReserver: 1 },
 				{ dropHarvester: 4 },
 				{ storageTransferer: 2 },
-				{ remoteSpawnedStorageTransferer: 8 },
+				{ remoteSpawnedStorageTransferer: 10 },
 			],
 			partsPerMove: 1,
 			minTroopersWaiting: 3,

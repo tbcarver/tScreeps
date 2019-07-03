@@ -48,6 +48,10 @@ BaseCreep.prototype.act = function() {
 
 	var acted = false;
 
+	if (this.creep.ticksToLive <= rules.creepsTickToLiveSpawnBuffer) {		
+		this.creep.say("🙋");
+	}
+
 	if (this.state === "suicide") {
 
 		this.creep.say("😡 .|.");
@@ -67,27 +71,28 @@ BaseCreep.prototype.act = function() {
 	} else if (this.isDying) {
 
 		this.creep.room.visual.circle(this.creep.pos, { radius: .15, stroke: "red", fill: "red", opacity: 1 });
+		this.creep.say("😡 " + this.creep.ticksToLive);
 
 		var hasCarry = this.creep.body.some(bodyPart => bodyPart.type === "carry");
 
-		if (this.creep.carry[RESOURCE_ENERGY] === 0 || !hasCarry) {
+		if (hasCarry) {
 
-			this.creep.say("😡 " + this.creep.ticksToLive);
+			if (this.creep.carry[RESOURCE_ENERGY] === 0) {
 
-			var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
-			if (waitFlag) {
-				this.creep.moveTo(waitFlag);
+				var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
+				if (waitFlag) {
+					this.creep.moveTo(waitFlag);
+				} else {
+					this.creep.moveTo(this.creep.room.controller);
+				}
 			} else {
-				this.creep.moveTo(this.creep.room.controller);
+	
+				this.creep.say("😰 " + this.creep.ticksToLive);
+				this.transferEnergy();
 			}
-		} else {
 
-			this.creep.say("😰 " + this.creep.ticksToLive);
-			this.transferEnergy();
+			acted = true;
 		}
-
-		acted = true;
-
 	} else if (this.memory.takeStepsIntoRoom && this.memory.takeStepsIntoRoom > 0) {
 
 		this.moveIntoRoom();

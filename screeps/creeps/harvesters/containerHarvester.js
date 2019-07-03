@@ -39,8 +39,7 @@ ContainerHarvester.prototype.act = function() {
 				}
 
 			} else {
-
-				debug.danger("containerHarvester resource not found: " + this.memory.resourceId);
+				debug.danger(`${this.type} ${this.creep.name} ${this.creep.room.name} no resource found, resourceId: ${this.memory.resourceId}`);
 			}
 		}
 

@@ -42,7 +42,7 @@ creepsController.tick = function() {
 			}
 		}
 
-		if (creep.ticksToLive > rules.creepsTickToLiveSpawnBuffer) {
+		if (creep.spawning || creep.ticksToLive > rules.creepsTickToLiveSpawnBuffer) {
 			creepsTotal++;
 			if (!spawnedRoomNamesCreepsTotal[baseCreep.spawnedRoomName]) {
 				spawnedRoomNamesCreepsTotal[baseCreep.spawnedRoomName] = 0;
