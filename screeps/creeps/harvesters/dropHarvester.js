@@ -1,4 +1,5 @@
 
+var roomTools = require("../../tools/roomTools");
 var BaseCreep = require("../baseCreeps/baseCreep");
 
 function DropHarvester(creep) {
@@ -25,7 +26,10 @@ DropHarvester.prototype.act = function() {
 					this.creep.moveTo(resource);
 				}
 			} else {
-				debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} no resource found, resourceId: ${this.memory.resourceId}`);
+
+				if (!this.memory.resourceId) {
+					debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} no resource found, resourceId: ${this.memory.resourceId}`);
+				}
 			}
 		}
 	}
@@ -48,9 +52,11 @@ DropHarvester.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule
 
 		var resources = room.find(FIND_SOURCES);
 		var countDropHarvesters = {};
+		var countResourceHarvestPositions = {};
 
 		for (var resource of resources) {
-			countDropHarvesters[resource.id] = countDropHarvestersAtResource(resource.id);
+			countDropHarvesters[resource.id] = getCountDropHarvestersAtResource(resource.id);
+			countResourceHarvestPositions[resource.id] = roomTools.getCountResourceHarvestPositions(resource.id);
 		}
 
 		if (room.name !== spawn.room.name) {
@@ -64,12 +70,14 @@ DropHarvester.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule
 		var found = false;
 		for (var count = 1; count <= 10; count++) {
 			for (var resource of resources) {
-				if (countDropHarvesters[resource.id] < count) {
+				if (countResourceHarvestPositions[resource.id] >= count) {
+					if (countDropHarvesters[resource.id] < count) {
 
-					creepMemory.resourceId = resource.id;
-					found = true;
-					break;
-				};
+						creepMemory.resourceId = resource.id;
+						found = true;
+						break;
+					};
+				}
 			}
 			if (found) {
 				break;
@@ -80,11 +88,11 @@ DropHarvester.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule
 	return creepMemory;
 }
 
-function countDropHarvestersAtResource(resourceId) {
+function getCountDropHarvestersAtResource(resourceId) {
 
-	var countCreeps = _.reduce(Memory.creeps, (countCreeps, creepMemory) => {
+	var countCreeps = _.reduce(Memory.creeps, (countCreeps, creepMemory, creepName) => {
 
-		if (creepMemory.type === "dropHarvester") {
+		if (creepMemory.type === "dropHarvester" && Game.creeps[creepName].ticksToLive > rules.creepsTickToLiveSpawnBuffer) {
 
 			if (creepMemory.resourceId === resourceId) {
 				countCreeps++;

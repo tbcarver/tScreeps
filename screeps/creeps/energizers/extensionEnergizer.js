@@ -132,9 +132,9 @@ ExtensionEnergizer.initializeSpawnCreepMemory = function(room, spawn, creepsSpaw
 
 function getCreepExtensionPositions() {
 
-	var result = _.reduce(Memory.creeps, (filteredPositions, creepMemory) => {
+	var result = _.reduce(Memory.creeps, (filteredPositions, creepMemory, creepName) => {
 
-		if (creepMemory.type === "extensionEnergizer") {
+		if (creepMemory.type === "extensionEnergizer" && Game.creeps[creepName].ticksToLive > rules.creepsTickToLiveSpawnBuffer) {
 
 			positions = creepMemory.extensions.reduce((extensionPositions, extension) => {
 

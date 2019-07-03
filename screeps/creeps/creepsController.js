@@ -14,6 +14,7 @@ creepsController.tick = function() {
 	var roomsCurrentSpawnedCounts = {};
 	var displayRoomsCurrentSpawnedCounts = {};
 	var creepsTotal = 0;
+	var creepsSpawnBufferTotal = 0;
 	var spawnedRoomNamesCreepsTotal = {};
 
 	for (var index in Game.creeps) {
@@ -41,25 +42,30 @@ creepsController.tick = function() {
 			}
 		}
 
-		creepsTotal++;
-		if (!spawnedRoomNamesCreepsTotal[baseCreep.spawnedRoomName]) {
-			spawnedRoomNamesCreepsTotal[baseCreep.spawnedRoomName] = 0;
-		}
-		spawnedRoomNamesCreepsTotal[baseCreep.spawnedRoomName]++;
+		if (creep.ticksToLive > rules.creepsTickToLiveSpawnBuffer) {
+			creepsTotal++;
+			if (!spawnedRoomNamesCreepsTotal[baseCreep.spawnedRoomName]) {
+				spawnedRoomNamesCreepsTotal[baseCreep.spawnedRoomName] = 0;
+			}
+			spawnedRoomNamesCreepsTotal[baseCreep.spawnedRoomName]++;
 
-		spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creep.memory.type, creep.memory.spawnedRoomName,
-			creep.memory.remoteRoomName);
 
-		if (creep.memory.remoteRoomName) {
-			spawnTools.incrementSpawnedCount(displayRoomsCurrentSpawnedCounts, creep.memory.type, creep.memory.remoteRoomName);
+			spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creep.memory.type, creep.memory.spawnedRoomName,
+				creep.memory.remoteRoomName);
+
+			if (creep.memory.remoteRoomName) {
+				spawnTools.incrementSpawnedCount(displayRoomsCurrentSpawnedCounts, creep.memory.type, creep.memory.remoteRoomName);
+			} else {
+				spawnTools.incrementSpawnedCount(displayRoomsCurrentSpawnedCounts, creep.memory.type, creep.memory.spawnedRoomName);
+			}
 		} else {
-			spawnTools.incrementSpawnedCount(displayRoomsCurrentSpawnedCounts, creep.memory.type, creep.memory.spawnedRoomName);
+			creepsSpawnBufferTotal++;
 		}
 	}
 
 	creepsSpawner.spawnCreep(roomsCurrentSpawnedCounts);
 
-	var displayCreepsTotal = `creeps: ${creepsTotal}/${creepsToSpawnTotal} `;
+	var displayCreepsTotal = `${creepsTotal}/${creepsToSpawnTotal} (${creepsSpawnBufferTotal})`;
 	for (var spawnedRoomName in spawnedRoomsCreepsToSpawnTotal) {
 		displayCreepsTotal += `, ${spawnedRoomName}: ${spawnedRoomNamesCreepsTotal[spawnedRoomName]}/${spawnedRoomsCreepsToSpawnTotal[spawnedRoomName]}
 			${roomTools.getPercentageStoredEnergy(spawnedRoomName)}%`;

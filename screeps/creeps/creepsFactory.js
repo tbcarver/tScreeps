@@ -12,8 +12,8 @@ creepsFactory.buildCreep = function(creep) {
 		var baseCreep = new constructor(creep);
 
 		// if (creep.name === "a31078") {
-		// if (creep.memory.type === "remoteSpawnedStorageTransferer") {
-			// if (creep.room.name === "W8N10") {
+		// if (creep.memory.type === "dropHarvester") {
+			// if (creep.room.name === "W6N8") {
 				// if (creep.memory.state === "energizing") {
 					// creep.memory.takeStepsIntoRoom = 6
 							// creep.memory.remoteRoomName = "W9N9";
@@ -23,8 +23,8 @@ creepsFactory.buildCreep = function(creep) {
 		// // 			debug.temp("creep memory:", creep.memory)
 				// }
 		// 	}
+			// }
 		// }
-	// }
 
 	} else {
 		debug.danger("Creep constructor not found for creep type: " + creep.memory.type);

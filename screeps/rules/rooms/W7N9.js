@@ -49,7 +49,7 @@ module.exports = {
 			roomName: "W7N10",
 			spawnOrderMaxSpawnedCounts: [
 				{ remoteSpawnedStorageTransferer: 0 },
-				{ remoteStorageTransferer: 12 },
+				{ remoteStorageTransferer: 0 },
 			],
 			canControllerEnergizersBuild: true,
 			canEnergizersTransferToStorageOnly: true,
@@ -57,7 +57,7 @@ module.exports = {
 		{
 			roomName: "W7N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedStorageTransferer: 2 },
+				{ remoteSpawnedStorageTransferer: 0 },
 			],
 			canControllerEnergizersBuild: true,
 			canEnergizersTransferToStorageOnly: true,
@@ -71,15 +71,6 @@ module.exports = {
 			canEnergizersTransferToStorageOnly: true,
 		},
 		// Mob
-		{
-			roomName: "W9N11",
-			spawnOrderMaxSpawnedCounts: [
-				{ attacker: 2 },
-				{ healer: 3 },
-				{ rangedAttacker: 3 },
-			],
-			isMobTroopers: true,
-		},
 		{
 			roomName: "W6N11",
 			spawnOrderMaxSpawnedCounts: [
@@ -97,29 +88,6 @@ module.exports = {
 				{ rangedAttacker: 3 },
 			],
 			isMobTroopers: true,
-		},
-		// Very remote rooms for W8N8
-		{
-			roomName: "W10N9",
-			spawnOrderMaxSpawnedCounts: [
-				{ remoteReserver: 1 },
-				{ dropHarvester: 4 },
-				{ remoteSpawnedDropTransferer: 5 },
-			],
-			partsPerMove: 1,
-			canRemoteStorageTransferersPickup: true,
-			canStorageTransferersPickup: true,
-		},
-		{
-			roomName: "W11N9",
-			spawnOrderMaxSpawnedCounts: [
-				{ remoteReserver: 1 },
-				{ dropHarvester: 4 },
-				{ remoteSpawnedDropTransferer: 5 },
-			],
-			partsPerMove: 1,
-			canRemoteStorageTransferersPickup: true,
-			canStorageTransferersPickup: true,
 		},
 		// Defending rooms
 		{

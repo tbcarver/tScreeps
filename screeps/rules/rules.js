@@ -1,6 +1,7 @@
 // TODO: error handling for bad creep type
 
 var rules = {
+	creepsTickToLiveSpawnBuffer: 50,
 	evacuateRemoteRooms: true,
 	logRoomsCurrentSpawnedCounts: false,
 	logSpawnStats: false,

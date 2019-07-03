@@ -107,7 +107,7 @@ ContainerHarvester.initializeSpawnCreepMemory = function(room, spawn, creepsSpaw
 	if (!creepsSpawnRule.maxEnergizersPerContainer) {
 		debug.warning(`maxEnergizersPerContainer not defined using 10`);
 		creepsSpawnRule.maxEnergizersPerContainer = 10;
-	}	
+	}
 
 	// Evenly distribute creeps to each container up to the max creeps per container
 	for (var energizersPerContainer = 1; energizersPerContainer <= creepsSpawnRule.maxEnergizersPerContainer; energizersPerContainer++) {
@@ -158,9 +158,9 @@ ContainerHarvester.initializeSpawnCreepMemory = function(room, spawn, creepsSpaw
 
 function countContainerHarvestersAtContainerPosition(x, y) {
 
-	var countCreeps = _.reduce(Memory.creeps, (countCreeps, creepMemory) => {
+	var countCreeps = _.reduce(Memory.creeps, (countCreeps, creepMemory, creepName) => {
 
-		if (creepMemory.type === "containerHarvester") {
+		if (creepMemory.type === "containerHarvester" && Game.creeps[creepName].ticksToLive > rules.creepsTickToLiveSpawnBuffer) {
 
 			if (creepMemory.containerPos.x === x && creepMemory.containerPos.y === y) {
 				countCreeps++;

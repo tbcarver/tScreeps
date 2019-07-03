@@ -37,7 +37,7 @@ module.exports = {
 				{ remoteReserver: 1 },
 				{ dropHarvester: 4 },
 				{ storageTransferer: 2 },
-				{ remoteSpawnedStorageTransferer: 7 },
+				{ remoteSpawnedStorageTransferer: 8 },
 			],
 			partsPerMove: 1,
 			minTroopersWaiting: 3,
@@ -120,9 +120,9 @@ module.exports = {
 		},
 		// Overflow
 		{
-			roomName: "W8N9",
+			roomName: "W8N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ controllerEnergizer: 0 },
+				{ controllerEnergizer: 12 },
 			],
 			canControllerEnergizersBuild: true,
 		},

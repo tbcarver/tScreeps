@@ -256,6 +256,8 @@ BaseCreep.prototype.transferEnergy = function() {
 			if (this.creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 				this.creep.moveTo(target);
 			}
+		} else {			
+			this.creep.drop(RESOURCE_ENERGY);
 		}
 	}
 }

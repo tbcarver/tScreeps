@@ -8,6 +8,10 @@ var bodyPartsStrategy = require("../creeps/bodies/moveCarryStrategy");
 
 function tick() {
 
+	// debug.temp(roomTools.getCountResourceHarvestPositions("5cfa67cb57237e0ae006627b"))
+
+	// console.log(JSON.stringify(Game.rooms.W7N6.lookAtArea(14,23,16,25,true)))
+
 	// for (var roomName in Game.rooms) {
 	// 	debug.temp(roomName, roomTools.getPercentageStoredEnergy(roomName));
 	// }

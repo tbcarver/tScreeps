@@ -119,7 +119,7 @@ roomTools.observeRoom = function(roomName, observerRoomName) {
 
 roomTools.buildStorageStats = function() {
 
-	this.roomsStorageStats = {};	
+	this.roomsStorageStats = {};
 	var totalStoredEnergy = 0;
 	var totalStorageCapacity = 0;
 
@@ -184,6 +184,26 @@ roomTools.getTotalStoredEnergy = function() {
 roomTools.getTotalPercentageStoredEnergy = function() {
 
 	return this.roomsStorageStats.totalPercentageStoredEnergy;
+}
+
+roomTools.getCountResourceHarvestPositions = function(resourceId) {
+
+	var resource = Game.getObjectById(resourceId);
+	var area = resource.room.lookAtArea(resource.pos.y - 1, resource.pos.x - 1, resource.pos.y + 1, resource.pos.x + 1, true);
+
+	var countResourceHarvestPositions = area.reduce((countOfPlain, element) => {
+
+		if (element.terrain) {
+			if (element.terrain === "plain") {
+				countOfPlain++
+			}
+		}
+
+		return countOfPlain;
+
+	}, 0);
+
+	return countResourceHarvestPositions;
 }
 
 // roomTools.lookAt = function() {

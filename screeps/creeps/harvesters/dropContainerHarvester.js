@@ -113,9 +113,9 @@ DropContainerHarvester.initializeSpawnCreepMemory = function(room, spawn, creeps
 
 function countDropContainerHarvestersAtContainerPosition(x, y) {
 
-	var countCreeps = _.reduce(Memory.creeps, (countCreeps, creepMemory) => {
+	var countCreeps = _.reduce(Memory.creeps, (countCreeps, creepMemory, creepName) => {
 
-		if (creepMemory.type === "dropContainerHarvester") {
+		if (creepMemory.type === "dropContainerHarvester" && Game.creeps[creepName].ticksToLive > rules.creepsTickToLiveSpawnBuffer) {
 
 			if (creepMemory.containerPos.x === x && creepMemory.containerPos.y === y) {
 				countCreeps++;

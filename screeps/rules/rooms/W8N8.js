@@ -22,12 +22,11 @@ module.exports = {
 			spawnOrderMaxSpawnedCounts: [
 				{ remoteReserver: 1 },
 				{ dropHarvester: 4 },
-				{ remoteSpawnedStorageTransferer: 3 },
+				{ storageTransferer: 2 },
+				{ remoteSpawnedStorageTransferer: 5 },
 			],
 			partsPerMove: 1,
-			minTroopersWaiting: 1,
 			canEnergizersTransferToStorageOnly: true,
-			canEnergyCreepsPickup: true,
 			canRemoteStorageTransferersPickup: true,
 			canStorageTransferersPickup: true,
 		},
@@ -40,9 +39,7 @@ module.exports = {
 				{ remoteSpawnedStorageTransferer: 6 },
 			],
 			partsPerMove: 1,
-			minTroopersWaiting: 1,
 			canEnergizersTransferToStorageOnly: true,
-			canEnergyCreepsPickup: true,
 			canRemoteStorageTransferersPickup: true,
 			canStorageTransferersPickup: true,
 		},
@@ -50,29 +47,34 @@ module.exports = {
 		{
 			roomName: "W8N9",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteStorageTransferer: 12 },
+				{ remoteStorageTransferer: 0 },
 			],
 		},
 		{
 			roomName: "W8N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteStorageTransferer: 12 },
+				{ remoteStorageTransferer: 0 },
 			],
 		},
 		// Very remote rooms
 		{
 			roomName: "W10N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedHarvester: 6 },
+				{ remoteReserver: 1 },
+				{ dropHarvester: 4 },
+				{ remoteSpawnedDropTransferer: 5 },
 			],
 			partsPerMove: 1,
-			canEnergyCreepsHarvest: true,
-			canEnergizersTransferToStorageOnly: true,
+			canRemoteStorageTransferersPickup: true,
+			canStorageTransferersPickup: true,
 		},
+
 		{
-			roomName: "W8N6",
+			roomName: "W10N7",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedHarvester: 4 },
+				{ remoteReserver: 1 },
+				{ dropHarvester: 3 },
+				{ remoteSpawnedDropTransferer: 5 },
 			],
 			partsPerMove: 1,
 			canEnergyCreepsHarvest: true,
@@ -81,29 +83,36 @@ module.exports = {
 		{
 			roomName: "W9N7",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedHarvester: 4 },
+				{ remoteReserver: 1 },
+				{ dropHarvester: 3 },
+				{ remoteSpawnedDropTransferer: 4 },
 			],
 			partsPerMove: 1,
-			canEnergyCreepsHarvest: true,
-			canEnergizersTransferToStorageOnly: true,
+			canRemoteStorageTransferersPickup: true,
+			canStorageTransferersPickup: true,
 		},
+		
 		{
 			roomName: "W9N6",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedHarvester: 4 },
+				{ remoteReserver: 1 },
+				{ dropHarvester: 4 },
+				{ remoteSpawnedDropTransferer: 4 },
 			],
 			partsPerMove: 1,
-			canEnergyCreepsHarvest: true,
-			canEnergizersTransferToStorageOnly: true,
+			canRemoteStorageTransferersPickup: true,
+			canStorageTransferersPickup: true,
 		},
 		{
-			roomName: "W10N7",
+			roomName: "W8N6",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedHarvester: 4 },
+				{ remoteReserver: 1 },
+				{ dropHarvester: 3 },
+				{ remoteSpawnedDropTransferer: 4 },
 			],
 			partsPerMove: 1,
-			canEnergyCreepsHarvest: true,
-			canEnergizersTransferToStorageOnly: true,
+			canRemoteStorageTransferersPickup: true,
+			canStorageTransferersPickup: true,
 		},
 		// Overflow		
 		{

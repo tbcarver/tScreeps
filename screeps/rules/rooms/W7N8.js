@@ -22,8 +22,7 @@ module.exports = {
 			spawnOrderMaxSpawnedCounts: [
 				{ remoteReserver: 1 },
 				{ dropHarvester: 4 },
-				{ storageTransferer: 2 },
-				{ remoteSpawnedStorageTransferer: 3 },
+				{ remoteSpawnedStorageTransferer: 5 },
 			],
 			partsPerMove: 1,
 			minTroopersWaiting: 1,
@@ -37,10 +36,9 @@ module.exports = {
 				{ remoteReserver: 1 },
 				{ dropHarvester: 2 },
 				{ storageTransferer: 2 },
-				{ remoteSpawnedStorageTransferer: 5 },
+				{ remoteSpawnedStorageTransferer: 11 },
 			],
 			partsPerMove: 1,
-			minTroopersWaiting: 1,
 			canEnergyCreepsPickup: true,
 			canRemoteStorageTransferersPickup: true,
 			canStorageTransferersPickup: true,
@@ -49,7 +47,7 @@ module.exports = {
 		{
 			roomName: "W8N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedStorageTransferer: 2 },
+				{ remoteSpawnedStorageTransferer: 0 },
 			],
 			canControllerEnergizersBuild: true,
 			canEnergizersTransferToStorageOnly: true,
@@ -57,7 +55,7 @@ module.exports = {
 		{
 			roomName: "W7N9",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteStorageTransferer: 4 },
+				{ remoteStorageTransferer: 0 },
 				{ controllerEnergizer: 0 },
 			],
 			canEnergizersTransferToStorageOnly: true,
@@ -97,7 +95,7 @@ module.exports = {
 		{
 			roomName: "W10N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ decoy: 1 },
+				{ decoy: 0 },
 			],
 			minTroopersWaiting: 1,
 		},
@@ -105,20 +103,22 @@ module.exports = {
 		{
 			roomName: "W7N6",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedHarvester: 4 },
+				{ remoteReserver: 1 },
+				{ dropHarvester: 3 },
+				{ remoteSpawnedDropTransferer: 5 },
 			],
 			partsPerMove: 1,
-			canEnergyCreepsHarvest: true,
-			canEnergizersTransferToStorageOnly: true,
+			canRemoteStorageTransferersPickup: true,
 		},
 		{
 			roomName: "W6N7",
 			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedHarvester: 4 },
+				{ remoteReserver: 1 },
+				{ dropHarvester: 4 },
+				{ remoteSpawnedDropTransferer: 5 },
 			],
 			partsPerMove: 1,
-			canEnergyCreepsHarvest: true,
-			canEnergizersTransferToStorageOnly: true,
+			canRemoteStorageTransferersPickup: true,
 		},
 		// Overflow		
 		{
