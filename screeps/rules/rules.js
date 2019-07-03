@@ -4,7 +4,7 @@ var rules = {
 	evacuateRemoteRooms: true,
 	logRoomsCurrentSpawnedCounts: false,
 	logSpawnStats: false,
-	routeRoomsPriority: { W10N9: 3, W9N8: 2, W7N12: 2, W10N6: 2 },
+	routeRoomsPriority: { W10N9: 3, W9N8: 2, W7N12: 2, W10N6: 2, W6N10: 2, W9N12: 2 },
 	routeIgnoreRooms: [],
 	maximumAttackerSpawnCapacity: 700,
 	maximumHealerSpawnCapacity: 700,

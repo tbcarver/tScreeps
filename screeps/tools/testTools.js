@@ -8,6 +8,10 @@ var bodyPartsStrategy = require("../creeps/bodies/moveCarryStrategy");
 
 function tick() {
 
+	// for (var roomName in Game.rooms) {
+	// 	debug.temp(roomName, roomTools.getPercentageStoredEnergy(roomName));
+	// }
+
 	// 	debug.temp(findTools.findRoute("W8N8", "W9N7"));
 	// debug.temp(rules.routeAvoidRooms.includes("W9N8"));
 

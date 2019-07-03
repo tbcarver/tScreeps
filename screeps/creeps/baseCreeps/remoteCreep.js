@@ -8,7 +8,7 @@ function RemoteCreep(creep) {
 
 	BaseCreep.call(this, creep);
 
-	this.isRemoteCreep = true;
+	this.suppressReturnToRooms = true;
 }
 
 RemoteCreep.prototype = Object.create(BaseCreep.prototype);
@@ -18,34 +18,10 @@ RemoteCreep.prototype.act = function() {
 	if (!BaseCreep.prototype.act.call(this)) {
 
 		if (!this.state) {
-			this.state = "movingToRemoteRoom";
+			this.state = "movingToSpawnedRoom";
 		}
 
-		if (this.state === "movingToSpawnedRoom") {
-			if (this.creep.room.name === this.spawnedRoomName) {
-				// NOTE: Creep must step off the exit edge of the room immediately
-				//  or will be sent back to the other room
-				this.moveIntoRoom();
-				this.memory.takeStepsIntoRoom = 2;
-				this.arrivedAtSpawnedRoom();
-			} else {
-				this.moveToExit(this.spawnedRoomName);
-			}
-		} else if (this.state === "movingToRemoteRoom") {
-			if (this.creep.room.name === this.remoteRoomName) {
-				// NOTE: Creep must step off the exit edge of the room immediately
-				//  or will be sent back to the other room
-				this.moveIntoRoom();
-				this.memory.takeStepsIntoRoom = 2;
-				this.arrivedAtRemoteRoom();
-
-			} else {
-				if (!(rules.evacuateRemoteRooms && !this.isTrooper && enemyTools.hasRoomEnemies(this.remoteRoomName))) {
-
-					this.moveToExit(this.remoteRoomName);
-				}
-			}
-		} else if (this.creep.room.name === this.spawnedRoomName) {
+		if (this.creep.room.name === this.spawnedRoomName) {
 
 			this.spawnedRoomAct();
 
@@ -56,7 +32,7 @@ RemoteCreep.prototype.act = function() {
 		} else {
 
 			if (!this.unknownRoomAct()) {
-				debug.warning(`${this.type} ${this.creep.name} in unknown room: ${this.creep.room.name}`);
+				this.state = "movingToSpawnedRoom";
 			}
 		}
 	}

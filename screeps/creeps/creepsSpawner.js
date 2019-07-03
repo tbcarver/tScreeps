@@ -1,6 +1,7 @@
 
-var findTools = require("../tools/findTools");
 var enemyTools = require("../tools/enemyTools");
+var findTools = require("../tools/findTools");
+var roomTools = require("../tools/roomTools");
 var spawnTools = require("../tools/spawnTools");
 var creepConstructors = require("./creepsConstructors");
 var { rules, creepsSpawnRules } = require("../rules/rules");
@@ -9,10 +10,6 @@ var bodyPartsFactory = require("./bodies/bodyPartsFactory");
 var creepsSpawner = {};
 
 creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
-
-	if (global.clientConfig && global.clientConfig.creepsSpawnRules) {
-		creepsSpawnRules = global.clientConfig.creepsSpawnRules;
-	}
 
 	for (creepsSpawnRule of creepsSpawnRules) {
 
@@ -160,7 +157,7 @@ function spawnCreep(spawn, creepMemory, creepsSpawnRule, spawnedRoomCreepsSpawnR
 
 		var spawnCapacity = spawnTools.calculateSpawnCapacity(spawn);
 
-		if ((spawnedRoomCreepsSpawnRule.waitForMinimumSpawnCapacity === "undefined" || spawnedRoomCreepsSpawnRule.waitForMinimumSpawnCapacity) &&
+		if (roomTools.getPercentageStoredEnergy(spawn.room.name) > 15 &&
 			creepMemory.minimumSpawnCapacity && spawnCapacity < creepMemory.minimumSpawnCapacity) {
 
 			spawnResult.waitForSpawn = true;

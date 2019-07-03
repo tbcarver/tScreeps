@@ -1,4 +1,5 @@
 
+var roomTools = require("../tools/roomTools");
 var spawnTools = require("../tools/spawnTools");
 var creepsFactory = require("./creepsFactory");
 var creepsSpawner = require("./creepsSpawner");
@@ -58,9 +59,10 @@ creepsController.tick = function() {
 
 	creepsSpawner.spawnCreep(roomsCurrentSpawnedCounts);
 
-	var displayCreepsTotal = `total creeps: ${creepsTotal}/${creepsToSpawnTotal} `;
+	var displayCreepsTotal = `creeps: ${creepsTotal}/${creepsToSpawnTotal} `;
 	for (var spawnedRoomName in spawnedRoomsCreepsToSpawnTotal) {
-		displayCreepsTotal += `, ${spawnedRoomName}: ${spawnedRoomNamesCreepsTotal[spawnedRoomName]}/${spawnedRoomsCreepsToSpawnTotal[spawnedRoomName]} `;
+		displayCreepsTotal += `, ${spawnedRoomName}: ${spawnedRoomNamesCreepsTotal[spawnedRoomName]}/${spawnedRoomsCreepsToSpawnTotal[spawnedRoomName]}
+			${roomTools.getPercentageStoredEnergy(spawnedRoomName)}%`;
 	}
 
 	if (rules.logRoomsCurrentSpawnedCounts) {

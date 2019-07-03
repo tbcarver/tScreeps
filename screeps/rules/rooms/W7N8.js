@@ -15,7 +15,6 @@ module.exports = {
 	canEnergyCreepsPickup: false,
 	canStorageTransferersPickup: false,
 	maxExtensionsPerEnergizer: 8,
-	waitForMinimumSpawnCapacity: true,
 	remoteRooms: [
 		// Adjacent remote rooms
 		{

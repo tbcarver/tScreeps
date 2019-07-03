@@ -109,7 +109,7 @@ StorageTransferer.prototype.energize = function() {
 			if (waitFlag) {
 				this.creep.moveTo(waitFlag);
 			} else {
-				debug.warning(`${this.type} ${this.creep.name} can't find any resource`);
+				debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} can't find any resource`);
 			}
 		}
 	}

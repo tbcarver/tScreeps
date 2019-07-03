@@ -9,6 +9,8 @@ findTools.findAllEnergyStructures = function(spawn) {
 		filter: { structureType: STRUCTURE_EXTENSION }
 	});
 
+	energyStructures = _.shuffle(energyStructures);
+
 	var spawns = spawn.room.find(FIND_MY_SPAWNS);
 
 	for (var spawn of spawns) {

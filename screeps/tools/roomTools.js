@@ -117,24 +117,73 @@ roomTools.observeRoom = function(roomName, observerRoomName) {
 	}
 }
 
-roomTools.getTotalStorageEnergy = function() {
+roomTools.buildStorageStats = function() {
 
-	var totalStorageEnergy = 0;
+	this.roomsStorageStats = {};	
+	var totalStoredEnergy = 0;
+	var totalStorageCapacity = 0;
 
 	for (var roomName in Game.rooms) {
 
-		var room = Game.rooms[roomName];
-		var storage = room.find(FIND_STRUCTURES, {
+		var hasStorage = false;
+		var storedEnergy = 0;
+		var storageCapacity = 0;
+		var percentageStoredEnergy = 0;
+
+		var storages = Game.rooms[roomName].find(FIND_STRUCTURES, {
 			filter: structure => structure.structureType === STRUCTURE_STORAGE ||
 				structure.structureType === STRUCTURE_TERMINAL
 		});
 
-		if (storage.length > 0) {
-			totalStorageEnergy += storage[0].store.energy;
+		if (storages.length > 0) {
+			for (var storage of storages) {
+				storedEnergy += storage.store.energy;
+				storageCapacity += storage.storeCapacity;
+			}
+
+			percentageStoredEnergy = Math.floor(storedEnergy / storageCapacity * 100);
+			hasStorage = true;
 		}
+
+		this.roomsStorageStats[roomName] = {
+			hasStorage: hasStorage,
+			storedEnergy: storedEnergy,
+			percentageStoredEnergy: percentageStoredEnergy,
+		};
+
+		totalStoredEnergy += storedEnergy;
+		totalStorageCapacity += storageCapacity;
 	}
 
-	return totalStorageEnergy;
+	this.roomsStorageStats.totalStoredEnergy = totalStoredEnergy;
+	this.roomsStorageStats.totalPercentageStoredEnergy = Math.floor(totalStoredEnergy / totalStorageCapacity * 100);
+
+	return percentageStoredEnergy;
+}
+
+roomTools.getStorageStats = function(roomName) {
+
+	return this.roomsStorageStats[roomName];
+}
+
+roomTools.getStoredEnergy = function(roomName) {
+
+	return this.roomsStorageStats[roomName].storedEnergy;
+}
+
+roomTools.getPercentageStoredEnergy = function(roomName) {
+
+	return this.roomsStorageStats[roomName].percentageStoredEnergy;
+}
+
+roomTools.getTotalStoredEnergy = function() {
+
+	return this.roomsStorageStats.totalStoredEnergy;
+}
+
+roomTools.getTotalPercentageStoredEnergy = function() {
+
+	return this.roomsStorageStats.totalPercentageStoredEnergy;
 }
 
 // roomTools.lookAt = function() {
