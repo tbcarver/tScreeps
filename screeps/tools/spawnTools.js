@@ -1,4 +1,6 @@
 
+var { rules } = require("../rules/rules");
+
 var spawnTools = {};
 
 spawnTools.calculateSpawnCapacity = function(spawn) {
@@ -28,6 +30,10 @@ spawnTools.calculateBodyCost = function(bodyParts) {
 	}, 0);
 
 	return cost;
+}
+
+spawnTools.isCreepInSpawnBuffer = function(creep) {
+	return !(creep.spawning || creep.ticksToLive > rules.creepsTickToLiveSpawnBuffer);
 }
 
 /* Example data for rooms spawned counts

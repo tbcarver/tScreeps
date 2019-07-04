@@ -1,5 +1,5 @@
 
-var roomTools = require("../../tools/roomTools");
+var tools = require("../../tools/tools");
 
 function addCalculatedSpawnRule(creepsSpawnRules) {
 
@@ -8,7 +8,7 @@ function addCalculatedSpawnRule(creepsSpawnRules) {
 
 	for (var roomName in Game.rooms) {
 
-		var storageStats = roomTools.getStorageStats(roomName);
+		var storageStats = tools.roomTools.getStorageStats(roomName);
 
 		if (storageStats.hasStorage) {
 
@@ -23,7 +23,7 @@ function addCalculatedSpawnRule(creepsSpawnRules) {
 
 				receivingRooms.push({
 					roomName: roomName,
-					creepsCount: Math.floor(Math.ceil(((50 - storageStats.percentageStoredEnergy) / 10)) * 2),
+					creepsCount: Math.floor(Math.ceil(((50 - storageStats.percentageStoredEnergy) / 10)) * 4),
 				});
 
 			}
@@ -33,10 +33,10 @@ function addCalculatedSpawnRule(creepsSpawnRules) {
 	// Adjacent rooms first
 	for (var transferringRoom of transferringRooms) {
 
-		var adjacentRoomNames = roomTools.getAdjacentRoomNames();
+		var adjacentRoomNames = tools.roomTools.getAdjacentRoomNames(transferringRoom.roomName);
 
 		for (var receivingRoom of receivingRooms) {
-			if (adjacentRoomNames.includes(receivingRoom)) {
+			if (adjacentRoomNames.includes(receivingRoom.roomName)) {
 
 
 			}

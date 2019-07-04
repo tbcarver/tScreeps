@@ -1,6 +1,6 @@
 
+var spawnTools = require("../../tools/spawnTools");
 var EnergyCreep = require("../baseCreeps/energyCreep");
-var coreArray = require("../../../lib/core/extensions/coreArray");
 
 function ExtensionEnergizer(creep) {
 
@@ -134,7 +134,7 @@ function getCreepExtensionPositions() {
 
 	var result = _.reduce(Memory.creeps, (filteredPositions, creepMemory, creepName) => {
 
-		if (creepMemory.type === "extensionEnergizer" && Game.creeps[creepName].ticksToLive > rules.creepsTickToLiveSpawnBuffer) {
+		if (creepMemory.type === "extensionEnergizer" && !spawnTools.isCreepInSpawnBuffer(Game.creeps[creepName])) {
 
 			positions = creepMemory.extensions.reduce((extensionPositions, extension) => {
 

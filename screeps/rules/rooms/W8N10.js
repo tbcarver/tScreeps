@@ -112,7 +112,7 @@ module.exports = {
 		{
 			roomName: "W10N11",
 			spawnOrderMaxSpawnedCounts: [
-				{ dropHarvester: 2 },
+				{ dropHarvester: 3 },
 				{ remoteSpawnedDropTransferer: 3 },
 			],
 			partsPerMove: 1,

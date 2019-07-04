@@ -42,7 +42,7 @@ creepsController.tick = function() {
 			}
 		}
 
-		if (creep.spawning || creep.ticksToLive > rules.creepsTickToLiveSpawnBuffer) {
+		if (!spawnTools.isCreepInSpawnBuffer(creep)) {
 			creepsTotal++;
 			if (!spawnedRoomNamesCreepsTotal[baseCreep.spawnedRoomName]) {
 				spawnedRoomNamesCreepsTotal[baseCreep.spawnedRoomName] = 0;
@@ -65,7 +65,8 @@ creepsController.tick = function() {
 
 	creepsSpawner.spawnCreep(roomsCurrentSpawnedCounts);
 
-	var displayCreepsTotal = `${creepsTotal}/${creepsToSpawnTotal} (${creepsSpawnBufferTotal})`;
+	var roomsCount = Object.keys(Game.rooms).length;
+	var displayCreepsTotal = `${roomsCount}, ${creepsTotal}/${creepsToSpawnTotal} (${creepsSpawnBufferTotal})`;
 	for (var spawnedRoomName in spawnedRoomsCreepsToSpawnTotal) {
 		displayCreepsTotal += `, ${spawnedRoomName}: ${spawnedRoomNamesCreepsTotal[spawnedRoomName]}/${spawnedRoomsCreepsToSpawnTotal[spawnedRoomName]}
 			${roomTools.getPercentageStoredEnergy(spawnedRoomName)}%`;

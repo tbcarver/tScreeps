@@ -1,8 +1,10 @@
 
+var roomTools = require("./roomTools");
 var spawnTools = require("./spawnTools");
 
 var tools = {
-	spawnTools: spawnTools
+	roomTools: roomTools,
+	spawnTools: spawnTools,
 };
 
 

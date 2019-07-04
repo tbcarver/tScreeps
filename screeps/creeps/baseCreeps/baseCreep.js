@@ -1,6 +1,7 @@
 
 var enemyTools = require("../../tools/enemyTools");
 var findTools = require("../../tools/findTools");
+var spawnTools = require("../../tools/spawnTools");
 var { rules, roomNamesCreepsSpawnRules } = require("../../rules/rules");
 
 /** @param {Creep} creep */
@@ -48,8 +49,8 @@ BaseCreep.prototype.act = function() {
 
 	var acted = false;
 
-	if (this.creep.ticksToLive <= rules.creepsTickToLiveSpawnBuffer) {		
-		this.creep.say("🙋");
+	if (spawnTools.isCreepInSpawnBuffer(this.creep)) {		
+		this.creep.say("🙋" + this.creep.ticksToLive);
 	}
 
 	if (this.state === "suicide") {

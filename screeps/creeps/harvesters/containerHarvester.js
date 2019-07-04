@@ -1,6 +1,7 @@
 
-var BaseCreep = require("../baseCreeps/baseCreep");
 var roomTools = require("../../tools/roomTools");
+var spawnTools = require("../../tools/spawnTools");
+var BaseCreep = require("../baseCreeps/baseCreep");
 
 function ContainerHarvester(creep) {
 
@@ -159,7 +160,7 @@ function countContainerHarvestersAtContainerPosition(x, y) {
 
 	var countCreeps = _.reduce(Memory.creeps, (countCreeps, creepMemory, creepName) => {
 
-		if (creepMemory.type === "containerHarvester" && Game.creeps[creepName].ticksToLive > rules.creepsTickToLiveSpawnBuffer) {
+		if (creepMemory.type === "containerHarvester" && !spawnTools.isCreepInSpawnBuffer(Game.creeps[creepName])) {
 
 			if (creepMemory.containerPos.x === x && creepMemory.containerPos.y === y) {
 				countCreeps++;
