@@ -3,7 +3,7 @@ var roomTools = require("../../../tools/roomTools");
 var sumBy = require("lodash/sumBy");
 
 var harvestToDropPointStrategy = {
-	coolOffCount: 25,
+	coolOffCount: 300,
 };
 
 harvestToDropPointStrategy.buildCreepsSpawnRule = function(remoteRoomName) {
@@ -69,9 +69,22 @@ harvestToDropPointStrategy.recalculateCreepsSpawnRule = function(creepsSpawnRule
 
 		var averageCarryCapacity = Math.floor(carryCapacities.totalCarryCapacity / carryCapacities.creepsCount);
 		var averageEnergy = Math.floor(creepsSpawnRule.measure.totalEnergy / creepsSpawnRule.measure.totalEnergyCount);
-		var percent = Math.floor(averageEnergy / averageCarryCapacity * 100);
+		var energyToCapacityPercent = Math.floor(averageEnergy / averageCarryCapacity * 100);
 
-		debug.temp(room.name, averageEnergy, averageCarryCapacity, percent);
+		if (energyToCapacityPercent > averageCarryCapacity * 2) {
+
+			var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, "remoteSpawnedDropTransferer");
+			var additionalCreepsCount = Math.floor(energyToCapacityPercent / averageCarryCapacity);		
+
+			spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"] += additionalCreepsCount;
+			debug.temp(room.name, averageEnergy, averageCarryCapacity, energyToCapacityPercent, "added: ", additionalCreepsCount);
+
+		} else if (energyToCapacityPercent < 25) {
+
+			var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, "remoteSpawnedDropTransferer");
+			spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"]--;
+			debug.temp(room.name, averageEnergy, averageCarryCapacity, energyToCapacityPercent, "removed: 1");
+		}
 		
 		creepsSpawnRule.measure.totalEnergyCount = 0;
 		creepsSpawnRule.measure.totalEnergy = 0;

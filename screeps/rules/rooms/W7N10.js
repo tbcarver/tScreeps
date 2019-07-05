@@ -100,7 +100,7 @@ module.exports = {
 			roomName: "W8N10",
 			spawnOrderMaxSpawnedCounts: [
 				{ remoteStorageTransferer: 0 },
-				{ controllerEnergizer: 12 },
+				{ controllerEnergizer: 6 },
 			],
 			canControllerEnergizersBuild: true,
 		},
