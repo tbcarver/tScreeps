@@ -3,7 +3,7 @@
 var rules = {
 	creepsTickToLiveSpawnBuffer: 50,
 	evacuateRemoteRooms: true,
-	logRoomsCurrentSpawnedCounts: true,
+	logRoomsCurrentSpawnedCounts: false,
 	logSpawnStats: false,
 	routeRoomsPriority: { W10N9: 3, W9N8: 2, W7N12: 2, W10N6: 2, W6N10: 2, W9N12: 2 },
 	routeIgnoreRooms: [],
@@ -23,53 +23,92 @@ creepsSpawnRules.push(require("./rooms/W8N8"));
 creepsSpawnRules.push(require("./rooms/W8N10"));
 creepsSpawnRules.push(require("./rooms/W8N9"));
 
-var roomNamesCreepsSpawnRules = _.cloneDeep(creepsSpawnRules);
+function updateCreepsSpawnRules(creepsSpawnRules) {
 
-for (creepsSpawnRule of roomNamesCreepsSpawnRules) {
-
-	roomNamesCreepsSpawnRules[creepsSpawnRule.roomName] = creepsSpawnRule;
-
-	if (creepsSpawnRule.remoteRooms) {
-		var remoteRooms = {};
-
-		for (remoteCreepsSpawnRule of creepsSpawnRule.remoteRooms) {
-
-			if (!remoteRooms[remoteCreepsSpawnRule.roomName]) {
-				remoteRooms[remoteCreepsSpawnRule.roomName] = remoteCreepsSpawnRule;
-			}
-		}
-
-		creepsSpawnRule.remoteRooms = remoteRooms;
-	}
+	mergeTopRemoteRoomsOptions(creepsSpawnRules);
+	buildRoomsCreepsSpawnRules(creepsSpawnRules);
 }
 
-var creepsToSpawnTotal = 0;
-var spawnedRoomsCreepsToSpawnTotal = {};
+function mergeTopRemoteRoomsOptions(creepsSpawnRules) {
 
-for (creepsSpawnRule of creepsSpawnRules) {
-	spawnedRoomsCreepsToSpawnTotal[creepsSpawnRule.roomName] = 0;
+	for (var creepsSpawnRule of creepsSpawnRules) {
 
-	for (spawnOrderMaxSpawnedCount of creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
+		var topRemoteRooms = {};
 
-		var creepType = Object.keys(spawnOrderMaxSpawnedCount)[0]
-		creepsToSpawnTotal += spawnOrderMaxSpawnedCount[creepType];
-		spawnedRoomsCreepsToSpawnTotal[creepsSpawnRule.roomName] += spawnOrderMaxSpawnedCount[creepType];
-	}
+		for (var remoteRoom of creepsSpawnRule.remoteRooms) {
 
-	if (creepsSpawnRule.remoteRooms) {
-		for (remoteRoom of creepsSpawnRule.remoteRooms) {
-			for (remoteSpawnOrderMaxSpawnedCount of remoteRoom.spawnOrderMaxSpawnedCounts) {
+			if (topRemoteRooms[remoteRoom.roomName]) {
 
-				creepType = Object.keys(remoteSpawnOrderMaxSpawnedCount)[0]
-				creepsToSpawnTotal += remoteSpawnOrderMaxSpawnedCount[creepType];
-				spawnedRoomsCreepsToSpawnTotal[creepsSpawnRule.roomName] += remoteSpawnOrderMaxSpawnedCount[creepType];
+				for (var optionName in remoteRoom) {
+					if (!(optionName === "roomName" || optionName === "spawnOrderMaxSpawnedCounts")) {
+						topRemoteRooms[remoteRoom.roomName][optionName] = remoteRoom[optionName];
+					}
+				}
+			} else {
+				topRemoteRooms[remoteRoom.roomName] = remoteRoom;
 			}
 		}
 	}
 }
+
+function buildRoomsCreepsSpawnRules(creepsSpawnRules) {
+
+	var roomNamesCreepsSpawnRules = {};
+
+	for (var creepsSpawnRule of creepsSpawnRules) {
+
+		roomNamesCreepsSpawnRules[creepsSpawnRule.roomName] = {};
+
+		if (creepsSpawnRule.remoteRooms) {
+
+			var remoteRooms = {};
+
+			for (var remoteCreepsSpawnRule of creepsSpawnRule.remoteRooms) {
+
+				if (!remoteRooms[remoteCreepsSpawnRule.roomName]) {
+					remoteRooms[remoteCreepsSpawnRule.roomName] = remoteCreepsSpawnRule;
+				}
+			}
+
+			roomNamesCreepsSpawnRules[creepsSpawnRule.roomName].remoteRooms = remoteRooms;
+		}
+	}
+
+	var creepsToSpawnTotal = 0;
+	var spawnedRoomsCreepsToSpawnTotal = {};
+
+	for (creepsSpawnRule of creepsSpawnRules) {
+		spawnedRoomsCreepsToSpawnTotal[creepsSpawnRule.roomName] = 0;
+
+		for (spawnOrderMaxSpawnedCount of creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
+
+			var creepType = Object.keys(spawnOrderMaxSpawnedCount)[0]
+			creepsToSpawnTotal += spawnOrderMaxSpawnedCount[creepType];
+			spawnedRoomsCreepsToSpawnTotal[creepsSpawnRule.roomName] += spawnOrderMaxSpawnedCount[creepType];
+		}
+
+		if (creepsSpawnRule.remoteRooms) {
+			for (remoteRoom of creepsSpawnRule.remoteRooms) {
+				for (remoteSpawnOrderMaxSpawnedCount of remoteRoom.spawnOrderMaxSpawnedCounts) {
+
+					creepType = Object.keys(remoteSpawnOrderMaxSpawnedCount)[0]
+					creepsToSpawnTotal += remoteSpawnOrderMaxSpawnedCount[creepType];
+					spawnedRoomsCreepsToSpawnTotal[creepsSpawnRule.roomName] += remoteSpawnOrderMaxSpawnedCount[creepType];
+				}
+			}
+		}
+	}
+
+	Memory.state.roomNamesCreepsSpawnRules = roomNamesCreepsSpawnRules;
+	Memory.state.creepsToSpawnTotal = creepsToSpawnTotal;
+	Memory.state.spawnedRoomsCreepsToSpawnTotal = spawnedRoomsCreepsToSpawnTotal;
+}
+
+var creepsSpawnRulesCopy = _.cloneDeep(creepsSpawnRules);
+mergeTopRemoteRoomsOptions(creepsSpawnRulesCopy);
+buildRoomsCreepsSpawnRules(creepsSpawnRulesCopy);
+
 
 module.exports.rules = rules;
 module.exports.creepsSpawnRules = creepsSpawnRules;
-module.exports.roomNamesCreepsSpawnRules = roomNamesCreepsSpawnRules;
-module.exports.creepsToSpawnTotal = creepsToSpawnTotal;
-module.exports.spawnedRoomsCreepsToSpawnTotal = spawnedRoomsCreepsToSpawnTotal;
+module.exports.updateCreepsSpawnRules = updateCreepsSpawnRules;

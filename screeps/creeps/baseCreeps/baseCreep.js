@@ -2,7 +2,7 @@
 var enemyTools = require("../../tools/enemyTools");
 var findTools = require("../../tools/findTools");
 var spawnTools = require("../../tools/spawnTools");
-var { rules, roomNamesCreepsSpawnRules } = require("../../rules/rules");
+var { rules } = require("../../rules/rules");
 
 /** @param {Creep} creep */
 function BaseCreep(creep) {
@@ -26,21 +26,18 @@ function BaseCreep(creep) {
 
 	Object.defineProperty(this, 'creepsSpawnRule', {
 		get: function() {
-			var creepsSpawnRule;
 
 			if (this.remoteRoomName) {
-				creepsSpawnRule = roomNamesCreepsSpawnRules[this.spawnedRoomName].remoteRooms[this.remoteRoomName];
+				return Memory.state.roomNamesCreepsSpawnRules[this.spawnedRoomName].remoteRooms[this.remoteRoomName];
 			} else {
-				creepsSpawnRule = roomNamesCreepsSpawnRules[this.spawnedRoomName];
+				return Memory.state.roomNamesCreepsSpawnRules[this.spawnedRoomName];
 			}
-
-			return creepsSpawnRule;
 		}
 	});
 
 	Object.defineProperty(this, 'spawnedRoomCreepsSpawnRule', {
 		get: function() {
-			return roomNamesCreepsSpawnRules[this.spawnedRoomName];
+			return Memory.state.roomNamesCreepsSpawnRules[this.spawnedRoomName];
 		}
 	});
 }

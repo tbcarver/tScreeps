@@ -4,7 +4,7 @@ var findTools = require("../tools/findTools");
 var roomTools = require("../tools/roomTools");
 var spawnTools = require("../tools/spawnTools");
 var creepConstructors = require("./creepsConstructors");
-var { rules, creepsSpawnRules } = require("../rules/rules");
+var { rules, creepsSpawnRules, updateCreepsSpawnRules } = require("../rules/rules");
 var calculatedSpawnRules = require("../rules/calculatedSpawnRules/calculatedSpawnRules");
 var bodyPartsFactory = require("./bodies/bodyPartsFactory");
 
@@ -15,7 +15,7 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 	var creepsSpawnRulesCopy = _.cloneDeep(creepsSpawnRules);
 
 	calculatedSpawnRules.addCalculatedRules(creepsSpawnRulesCopy);
-	mergeTopRemoteRoomsOptions(creepsSpawnRulesCopy);
+	updateCreepsSpawnRules(creepsSpawnRulesCopy);
 
 	for (var creepsSpawnRule of creepsSpawnRulesCopy) {
 
@@ -227,28 +227,6 @@ function spawnCreep(spawn, creepMemory, creepsSpawnRule, spawnedRoomCreepsSpawnR
 
 
 	return spawnResult;
-}
-
-function mergeTopRemoteRoomsOptions(creepsSpawnRules) {
-
-	for (var creepsSpawnRule of creepsSpawnRules) {
-
-		var topRemoteRooms = {};
-
-		for (var remoteRoom of creepsSpawnRule.remoteRooms) {
-
-			if (topRemoteRooms[remoteRoom.roomName]) {
-
-				for (var optionName in remoteRoom) {
-					if (!(optionName === "roomName" || optionName === "spawnOrderMaxSpawnedCounts")) {
-						topRemoteRooms[remoteRoom.roomName][optionName] = remoteRoom[optionName];
-					}
-				}
-			} else {
-				topRemoteRooms[remoteRoom.roomName] = remoteRoom;
-			}
-		}
-	}
 }
 
 function getNextCreepId() {

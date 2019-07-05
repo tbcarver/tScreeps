@@ -1,4 +1,5 @@
 
+var { rules } = require("../../rules/rules");
 var TrooperCreep = require("./trooperCreep");
 
 function Attacker(creep) {

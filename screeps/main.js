@@ -1,10 +1,15 @@
 
 
-var sourceMap = require("./sourceMap");
 var debug = require("../lib/coreVendor/coreScreeps/debug");
 var debugObjectTable = require("../lib/coreVendor/coreScreeps/debugObjectTable");
 var debugPairsTable = require("../lib/coreVendor/coreScreeps/debugPairsTable");
-var rules = require("./rules/rules");
+
+global.debug = debug;
+global.debugObjectTable = debugObjectTable;
+global.debugPairsTable = debugPairsTable;
+
+var sourceMap = require("./sourceMap");
+var { rules } = require("./rules/rules");
 var test = require("./tools/testTools");
 var constructionTools = require("./tools/constructionTools");
 var enemyTools = require("./tools/enemyTools");
@@ -15,10 +20,6 @@ var creepsController = require("./creeps/creepsController");
 var towersController = require("./structures/towersController");
 var observersController = require("./structures/observersController");
 
-global.debug = debug;
-global.debugObjectTable = debugObjectTable;
-global.debugPairsTable = debugPairsTable;
-global.rules = rules.rules;
 
 // var profiler = require("../screeps-profiler");
 // profiler.enable();
