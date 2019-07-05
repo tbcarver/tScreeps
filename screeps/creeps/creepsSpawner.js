@@ -41,29 +41,31 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 						spawned: false
 					};
 
-					for (spawnOrderMaxSpawnedCount of creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
+					if (creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
+						for (spawnOrderMaxSpawnedCount of creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
 
-						var creepType = Object.keys(spawnOrderMaxSpawnedCount)[0];
-						var creepConstructor = creepConstructors[creepType];
-						var maxSpawnedCount = spawnOrderMaxSpawnedCount[creepType];
-						var currentSpawnedCount = (currentSpawnedCounts) ? currentSpawnedCounts[creepType] || 0 : 0;
+							var creepType = Object.keys(spawnOrderMaxSpawnedCount)[0];
+							var creepConstructor = creepConstructors[creepType];
+							var maxSpawnedCount = spawnOrderMaxSpawnedCount[creepType];
+							var currentSpawnedCount = (currentSpawnedCounts) ? currentSpawnedCounts[creepType] || 0 : 0;
 
-						if (currentSpawnedCount < maxSpawnedCount) {
+							if (currentSpawnedCount < maxSpawnedCount) {
 
-							try {
-								spawnResult = trySpawnCreep(room, false, spawn, creepConstructor, creepsSpawnRule, creepsSpawnRule, currentSpawnedCount, spawnResult);
+								try {
+									spawnResult = trySpawnCreep(room, false, spawn, creepConstructor, creepsSpawnRule, creepsSpawnRule, currentSpawnedCount, spawnResult);
 
-								if (spawnResult.spawned) {
-									spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creepType, spawn.room.name);
-								}
-							} catch (error) {
-								if (error instanceof Error) {
+									if (spawnResult.spawned) {
+										spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creepType, spawn.room.name);
+									}
+								} catch (error) {
+									if (error instanceof Error) {
 
-									let sourceMap = require("../sourceMap");
-									sourceMap.logStackTrace(error);
+										let sourceMap = require("../sourceMap");
+										sourceMap.logStackTrace(error);
 
-								} else {
-									throw error;
+									} else {
+										throw error;
+									}
 								}
 							}
 						}
@@ -87,29 +89,31 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 								remoteCurrentSpawnedCounts = currentSpawnedCounts.remoteRooms[remoteRoom.name];
 							}
 
-							for (spawnOrderMaxSpawnedCount of remoteRoomCreepsSpawnRule.spawnOrderMaxSpawnedCounts) {
+							if (remoteRoomCreepsSpawnRule.spawnOrderMaxSpawnedCounts) {
+								for (spawnOrderMaxSpawnedCount of remoteRoomCreepsSpawnRule.spawnOrderMaxSpawnedCounts) {
 
-								var creepType = Object.keys(spawnOrderMaxSpawnedCount)[0];
-								var creepConstructor = creepConstructors[creepType];
-								var maxSpawnedCount = spawnOrderMaxSpawnedCount[creepType];
-								var currentSpawnedCount = (remoteCurrentSpawnedCounts) ? remoteCurrentSpawnedCounts[creepType] || 0 : 0;
+									var creepType = Object.keys(spawnOrderMaxSpawnedCount)[0];
+									var creepConstructor = creepConstructors[creepType];
+									var maxSpawnedCount = spawnOrderMaxSpawnedCount[creepType];
+									var currentSpawnedCount = (remoteCurrentSpawnedCounts) ? remoteCurrentSpawnedCounts[creepType] || 0 : 0;
 
-								if (currentSpawnedCount < maxSpawnedCount) {
+									if (currentSpawnedCount < maxSpawnedCount) {
 
-									try {
-										spawnResult = trySpawnCreep(remoteRoom, true, spawn, creepConstructor, remoteRoomCreepsSpawnRule, creepsSpawnRule, currentSpawnedCount, spawnResult);
+										try {
+											spawnResult = trySpawnCreep(remoteRoom, true, spawn, creepConstructor, remoteRoomCreepsSpawnRule, creepsSpawnRule, currentSpawnedCount, spawnResult);
 
-										if (spawnResult.spawned) {
-											spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creepType, spawn.room.name, remoteRoom.name);
-										}
-									} catch (error) {
-										if (error instanceof Error) {
+											if (spawnResult.spawned) {
+												spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creepType, spawn.room.name, remoteRoom.name);
+											}
+										} catch (error) {
+											if (error instanceof Error) {
 
-											let sourceMap = require("../sourceMap");
-											sourceMap.logStackTrace(error);
+												let sourceMap = require("../sourceMap");
+												sourceMap.logStackTrace(error);
 
-										} else {
-											throw error;
+											} else {
+												throw error;
+											}
 										}
 									}
 								}

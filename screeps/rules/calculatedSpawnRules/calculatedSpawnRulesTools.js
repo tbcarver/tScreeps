@@ -14,28 +14,5 @@ calculatedSpawnRulesTools.prependRemoteRoomCreepsSpawnRules = function(creepsSpa
 	}
 }
 
-calculatedSpawnRulesTools.hasCoolOffed = function(calculatedSpawnRuleName, coolOffCount) {
-
-	var hasCoolOffed = false;
-
-	if (!Memory.state.calculatedSpawnRulesCoolOffs) {
-		Memory.state.calculatedSpawnRulesCoolOffs = {};
-	}
-
-	if (!Memory.state.calculatedSpawnRulesCoolOffs[calculatedSpawnRuleName]) {
-
-		Memory.state.calculatedSpawnRulesCoolOffs[calculatedSpawnRuleName] = Game.time;
-
-	} else if (Game.time - Memory.state.calculatedSpawnRulesCoolOffs[calculatedSpawnRuleName] > coolOffCount) {
-
-		hasCoolOffed = true;
-		Memory.state.calculatedSpawnRulesCoolOffs[calculatedSpawnRuleName] = Game.time;
-	}
-
-	debug.temp(calculatedSpawnRuleName, coolOffCount, hasCoolOffed);
-
-	return hasCoolOffed;
-}
-
 
 module.exports = calculatedSpawnRulesTools;

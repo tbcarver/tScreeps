@@ -19,17 +19,7 @@ module.exports = {
 		// Adjacent remote rooms
 		{
 			roomName: "W6N9",
-			spawnOrderMaxSpawnedCounts: [
-				{ remoteReserver: 1 },
-				{ dropHarvester: 4 },
-				{ remoteSpawnedStorageTransferer: 4 },
-			],
-			partsPerMove: 1,
-			minTroopersWaiting: 1,
-			canEnergyCreepsHarvest: true,
-			canEnergyCreepsPickup: true,
-			canRemoteStorageTransferersPickup: true,
-			canStorageTransferersPickup: true,
+			roomStrategy: "harvestToDropPoint",
 		},
 		// Main rooms
 		{

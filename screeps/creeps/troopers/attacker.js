@@ -15,12 +15,22 @@ Attacker.prototype.act = function() {
 
 Attacker.prototype.attack = function() {
 
-	var target = this.creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+	var enemies = this.creep.room.find(FIND_HOSTILE_CREEPS);
 
-	if (target) {
+	if (enemies.length > 0) {
 
-		if (this.creep.attack(target) == ERR_NOT_IN_RANGE) {
-			this.creep.moveTo(target);
+		enemies = _.sortBy(enemies, ['hits']);
+		var enemy = enemies[0];
+
+		if (enemy.hits === enemy.hitsMax) {
+			enemy = this.creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+		}
+
+		if (enemy) {
+
+			if (this.creep.attack(enemy) == ERR_NOT_IN_RANGE) {
+				this.creep.moveTo(enemy);
+			}
 		}
 	}
 }
@@ -30,7 +40,7 @@ Attacker.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule, cur
 	var creepMemory = TrooperCreep.initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, currentSpawnedCount);
 
 	if (creepMemory) {
-			
+
 		creepMemory.type = "attacker";
 		creepMemory.bodyPartsType = "attacker";
 		creepMemory.maximumSpawnCapacity = rules.maximumAttackerSpawnCapacity || 800;

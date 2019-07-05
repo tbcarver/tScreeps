@@ -27,19 +27,32 @@ Healer.prototype.heal = function() {
 
 	var healed = false;
 
-	var target = this.creep.pos.findClosestByRange(FIND_MY_CREEPS, {
-		filter: creep => creep.hits < creep.hitsMax && creep.name !== this.creep.name
+	var creeps = this.creep.room.find(FIND_MY_CREEPS, {
+		filter: creep => creep.hits < creep.hitsMax && creep.name !== this.creep.name &&
+		creep.memory.isMobTrooper
 	});
 
-	if (target) {
+	if (creeps.length > 0) {
 
-		if (this.creep.rangedHeal(target) == ERR_NOT_IN_RANGE) {
-			this.creep.moveTo(target);
+		_.sortBy(creeps, ["hits"]);
+		var creep = creeps[0];
+
+	} else {
+
+		var creep = this.creep.pos.findClosestByRange(FIND_MY_CREEPS, {
+			filter: creep => creep.hits < creep.hitsMax && creep.name !== this.creep.name
+		});
+	}
+
+	if (creep) {
+
+		if (this.creep.rangedHeal(creep) == ERR_NOT_IN_RANGE) {
+			this.creep.moveTo(creep);
 		}
 		healed = true;
 
 	} else if (this.creep.hits < this.creep.hitsMax) {
-		this.creep.heal(target);
+		this.creep.heal(creep);
 		healed = true;
 	}
 

@@ -15,12 +15,22 @@ RangedAttacker.prototype.act = function() {
 
 RangedAttacker.prototype.attack = function() {
 
-	var target = this.creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+	var enemies = this.creep.room.find(FIND_HOSTILE_CREEPS);
 
-	if (target) {
+	if (enemies.length > 0) {
 
-		if (this.creep.rangedAttack(target) == ERR_NOT_IN_RANGE) {
-			this.creep.moveTo(target);
+		enemies = _.sortBy(enemies, ['hits']);
+		var enemy = enemies[0];
+
+		if (enemy.hits === enemy.hitsMax) {
+			enemy = this.creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+		}
+
+		if (enemy) {
+
+			if (this.creep.rangedAttack(enemy) == ERR_NOT_IN_RANGE) {
+				this.creep.moveTo(enemy);
+			}
 		}
 	}
 }
