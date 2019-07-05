@@ -35,8 +35,6 @@ module.exports = {
 		{
 			roomName: "W8N9",
 			spawnOrderMaxSpawnedCounts: [
-				{ dropContainerHarvester: 4 },
-				{ storageTransferer: 2 },
 				{ controllerEnergizer: 0 },
 			],
 			canControllerEnergizersBuild: true,
@@ -101,7 +99,8 @@ module.exports = {
 		{
 			roomName: "W8N9",
 			spawnOrderMaxSpawnedCounts: [
-				{ controllerEnergizer: 0 },
+				{ remoteStorageTransferer: 0 },
+				{ controllerEnergizer: 12 },
 			],
 			canControllerEnergizersBuild: true,
 		},

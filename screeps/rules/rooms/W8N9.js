@@ -4,9 +4,9 @@ module.exports = {
 	spawnOrderMaxSpawnedCounts: [
 		{ spawnEnergizer: 1 },
 		{ extensionEnergizer: 4 },
-		{ dropContainerHarvester: 0 },
+		{ dropContainerHarvester: 4 },
 		{ containerHarvester: 0 },
-		{ storageTransferer: 0 },
+		{ storageTransferer: 2 },
 		{ controllerEnergizer: 1 },
 	],
 	canControllerEnergizersBuild: false,

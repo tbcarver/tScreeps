@@ -36,7 +36,7 @@ module.exports = {
 				{ remoteReserver: 1 },
 				{ dropHarvester: 2 },
 				{ storageTransferer: 2 },
-				{ remoteSpawnedStorageTransferer: 9 },
+				{ remoteSpawnedStorageTransferer: 11 },
 			],
 			partsPerMove: 1,
 			canEnergyCreepsPickup: true,
@@ -124,7 +124,7 @@ module.exports = {
 		{
 			roomName: "W8N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ controllerEnergizer: 0 },
+				{ controllerEnergizer: 12 },
 			],
 			canControllerEnergizersBuild: true,
 		},

@@ -10,34 +10,37 @@ describe("/screeps/rules/calculatedSpawnRules/storageTransferRule", function() {
 
 		it("should return ", function() {
 
-			var tools = require("../../../../screeps/tools/tools");
-			tools.roomTools = {};
+			var roomTools = require("../../../../screeps/tools/roomTools");
 			var storageStats = {
 				W8N9: {
 					hasStorage: true,
-					storedEnergy: 200,
-					percentageStoredEnergy: 90,
+					percentageStoredEnergy: 70,
 				},
 				W8N8: {
 					hasStorage: true,
-					storedEnergy: 200,
-					percentageStoredEnergy: 10,
-				}
+					percentageStoredEnergy: 40,
+				},
+				W8N7: {
+					hasStorage: true,
+					percentageStoredEnergy: 90,
+				},
 			}
 
-			simple.mock(tools.roomTools, "getStorageStats").callFn(roomName => storageStats[roomName]);
+			simple.mock(roomTools, "getStorageStats").callFn(roomName => storageStats[roomName]);
 
 			var adjacentRooms = {
-				W8N8: ["W8N9"],
+				W8N7: ["W8N8"],
+				W8N8: ["W8N9", "W8N7"],
 				W8N9: ["W8N8"]
 			}
 
-			simple.mock(tools.roomTools, "getAdjacentRoomNames").callFn(roomName => adjacentRooms[roomName]);
+			simple.mock(roomTools, "getAdjacentRoomNames").callFn(roomName => adjacentRooms[roomName]);
 
 			global.Game = {
 				rooms: {
 					W8N9: {},
 					W8N8: {},
+					W8N7: {},
 				}
 			};
 
@@ -45,10 +48,17 @@ describe("/screeps/rules/calculatedSpawnRules/storageTransferRule", function() {
 				{
 					roomName: "W8N9",
 					spawnOrderMaxSpawnedCounts: [],
+					remoteRooms: [],
 				},
 				{
 					roomName: "W8N8",
 					spawnOrderMaxSpawnedCounts: [],
+					remoteRooms: [],
+				},
+				{
+					roomName: "W8N7",
+					spawnOrderMaxSpawnedCounts: [],
+					remoteRooms: [],
 				},
 			]
 

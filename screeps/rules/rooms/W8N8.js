@@ -23,7 +23,7 @@ module.exports = {
 				{ remoteReserver: 1 },
 				{ dropHarvester: 4 },
 				{ storageTransferer: 2 },
-				{ remoteSpawnedStorageTransferer: 5 },
+				{ remoteSpawnedStorageTransferer: 7 },
 			],
 			partsPerMove: 1,
 			canEnergizersTransferToStorageOnly: true,
@@ -36,7 +36,7 @@ module.exports = {
 				{ remoteReserver: 1 },
 				{ dropHarvester: 4 },
 				{ storageTransferer: 2 },
-				{ remoteSpawnedStorageTransferer: 8 },
+				{ remoteSpawnedStorageTransferer: 10 },
 			],
 			partsPerMove: 1,
 			canEnergizersTransferToStorageOnly: true,
@@ -114,11 +114,19 @@ module.exports = {
 			canRemoteStorageTransferersPickup: true,
 			canStorageTransferersPickup: true,
 		},
-		// Overflow		
+		// Overflow	
+		{
+			roomName: "W8N9",
+			spawnOrderMaxSpawnedCounts: [
+				{ remoteStorageTransferer: 0 },
+				{ controllerEnergizer: 12 },
+			],
+			canControllerEnergizersBuild: true,
+		},	
 		{
 			roomName: "W8N8",
 			spawnOrderMaxSpawnedCounts: [
-				{ controllerEnergizer: 0 },
+				{ controllerEnergizer: 6 },
 			],
 			canControllerEnergizersBuild: true,
 		},

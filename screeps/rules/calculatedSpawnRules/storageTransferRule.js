@@ -1,47 +1,129 @@
 
-var tools = require("../../tools/tools");
+var roomTools = require("../../tools/roomTools");
+var calculatedSpawnRulesTools = require("./calculatedSpawnRulesTools");
 
 function addCalculatedSpawnRule(creepsSpawnRules) {
 
-	var transferringRooms = [];
-	var receivingRooms = [];
+		var transferringRooms = [];
+		var receivingRooms = [];
+		var overflowTransferringRooms = [];
+		var overflowReceivingRooms = [];
 
-	for (var roomName in Game.rooms) {
+		for (var roomName in Game.rooms) {
 
-		var storageStats = tools.roomTools.getStorageStats(roomName);
+			var storageStats = roomTools.getStorageStats(roomName);
 
-		if (storageStats.hasStorage) {
+			if (storageStats.hasStorage) {
 
-			if (storageStats.percentageStoredEnergy > 50) {
+				if (storageStats.percentageStoredEnergy > 50) {
 
-				transferringRooms.push({
-					roomName: roomName,
-					creepsCount: Math.floor(Math.ceil(((storageStats.percentageStoredEnergy - 50) / 10)) * 2),
-				});
+					var transferringRoom = {
+						roomName: roomName,
+						creepsCount: Math.floor(Math.ceil(((storageStats.percentageStoredEnergy - 50) / 10)) * 2),
+					};
 
-			} else {
+					transferringRooms.push(transferringRoom);
 
-				receivingRooms.push({
-					roomName: roomName,
-					creepsCount: Math.floor(Math.ceil(((50 - storageStats.percentageStoredEnergy) / 10)) * 4),
-				});
+					if (storageStats.percentageStoredEnergy >= 90) {
 
+						overflowTransferringRooms.push(transferringRoom);
+					} else {
+
+						overflowReceivingRooms.push({
+							roomName: roomName,
+							creepsCount: Math.floor(Math.ceil(((100 - storageStats.percentageStoredEnergy) / 10)) * 1),
+						});
+					}
+				} else {
+
+					receivingRooms.push({
+						roomName: roomName,
+						creepsCount: Math.floor(Math.ceil(((50 - storageStats.percentageStoredEnergy) / 10)) * 4),
+					});
+				}
 			}
 		}
-	}
 
-	// Adjacent rooms first
-	for (var transferringRoom of transferringRooms) {
+		var remoteRoomCreepsSpawnRules = {};
+		var maxTransferringCreepsCount = transferringRooms.reduce((max, transferringRoom) =>
+			transferringRoom.creepsCount > max ? transferringRoom.creepsCount : max, 0);
 
-		var adjacentRoomNames = tools.roomTools.getAdjacentRoomNames(transferringRoom.roomName);
+		// Adjacent rooms first
+		for (var count = 1; count <= maxTransferringCreepsCount; count++) {
+			for (var transferringRoom of transferringRooms) {
 
-		for (var receivingRoom of receivingRooms) {
-			if (adjacentRoomNames.includes(receivingRoom.roomName)) {
+				var adjacentRoomNames = roomTools.getAdjacentRoomNames(transferringRoom.roomName);
 
+				for (var receivingRoom of receivingRooms) {
+					if (adjacentRoomNames.includes(receivingRoom.roomName)) {
+						if (transferringRoom.creepsCount > 0 && receivingRoom.creepsCount > 0) {
 
+							incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, transferringRoom.roomName, receivingRoom.roomName);
+							transferringRoom.creepsCount--;
+							receivingRoom.creepsCount--;
+						}
+					}
+				}
 			}
 		}
-	}
+
+		var maxTransferringCreepsCount = transferringRooms.reduce((max, transferringRoom) =>
+			transferringRoom.creepsCount > max ? transferringRoom.creepsCount : max, 0);
+
+		for (var count = 1; count <= maxTransferringCreepsCount; count++) {
+			for (var transferringRoom of transferringRooms) {
+
+				for (var receivingRoom of receivingRooms) {
+					if (transferringRoom.creepsCount > 0 && receivingRoom.creepsCount > 0) {
+
+						incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, transferringRoom.roomName, receivingRoom.roomName);
+						transferringRoom.creepsCount--;
+						receivingRoom.creepsCount--;
+					}
+				}
+			}
+		}
+
+		var maxTransferringCreepsCount = overflowTransferringRooms.reduce((max, transferringRoom) =>
+			transferringRoom.creepsCount > max ? transferringRoom.creepsCount : max, 0);
+
+		for (var count = 1; count <= maxTransferringCreepsCount; count++) {
+			for (var transferringRoom of overflowTransferringRooms) {
+
+				for (var receivingRoom of overflowReceivingRooms) {
+					if (transferringRoom.creepsCount > 0 && receivingRoom.creepsCount > 0) {
+
+						incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, transferringRoom.roomName, receivingRoom.roomName);
+						transferringRoom.creepsCount--;
+						receivingRoom.creepsCount--;
+					}
+				}
+			}
+		}
+
+		calculatedSpawnRulesTools.prependRemoteRoomCreepsSpawnRules(creepsSpawnRules, remoteRoomCreepsSpawnRules);
 }
+
+function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoomName, remoteRoomName) {
+
+	if (!remoteRoomCreepsSpawnRules[spawnRoomName]) {
+		remoteRoomCreepsSpawnRules[spawnRoomName] = { remoteRooms: [] };
+	}
+
+	if (!_.some(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName })) {
+		remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms.push({
+			roomName: remoteRoomName,
+			spawnOrderMaxSpawnedCounts: [
+				{ remoteStorageTransferer: 0 },
+			],
+			canEnergizersTransferToStorageOnly: true,
+		});
+	}
+
+	var remoteRoom = _.find(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName });
+
+	remoteRoom.spawnOrderMaxSpawnedCounts[0]["remoteStorageTransferer"]++;
+}
+
 
 module.exports = addCalculatedSpawnRule;

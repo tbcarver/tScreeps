@@ -3,7 +3,7 @@
 var rules = {
 	creepsTickToLiveSpawnBuffer: 50,
 	evacuateRemoteRooms: true,
-	logRoomsCurrentSpawnedCounts: false,
+	logRoomsCurrentSpawnedCounts: true,
 	logSpawnStats: false,
 	routeRoomsPriority: { W10N9: 3, W9N8: 2, W7N12: 2, W10N6: 2, W6N10: 2, W9N12: 2 },
 	routeIgnoreRooms: [],
