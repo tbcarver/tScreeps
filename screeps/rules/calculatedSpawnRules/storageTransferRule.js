@@ -17,9 +17,15 @@ function addCalculatedSpawnRule(creepsSpawnRules) {
 
 				if (storageStats.percentageStoredEnergy > 50) {
 
+					var creepsCountMultiplier = 1;
+
+					if (roomTools.getSpawnsCount(roomName) >= 2) {
+						creepsCountMultiplier = 2;
+					}
+
 					var transferringRoom = {
 						roomName: roomName,
-						creepsCount: Math.floor(Math.ceil(((storageStats.percentageStoredEnergy - 50) / 10)) * 2),
+						creepsCount: Math.floor(Math.ceil(((storageStats.percentageStoredEnergy - 50) / 10)) * creepsCountMultiplier),
 					};
 
 					transferringRooms.push(transferringRoom);

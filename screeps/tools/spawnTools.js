@@ -65,7 +65,7 @@ spawnTools.incrementSpawnedCount = function(roomsSpawnedCounts, creepType, spawn
 
 	var spawnedCounts = roomsSpawnedCounts[spawnedRoomName];
 
-	if (remoteRoomName){
+	if (remoteRoomName) {
 
 		if (!roomsSpawnedCounts[spawnedRoomName].remoteRooms) {
 			roomsSpawnedCounts[spawnedRoomName].remoteRooms = {};
@@ -73,7 +73,7 @@ spawnTools.incrementSpawnedCount = function(roomsSpawnedCounts, creepType, spawn
 
 		if (!spawnedCounts.remoteRooms[remoteRoomName]) {
 			spawnedCounts.remoteRooms[remoteRoomName] = {};
-		}	
+		}
 
 		spawnedCounts = spawnedCounts.remoteRooms[remoteRoomName];
 	}

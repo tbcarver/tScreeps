@@ -33,7 +33,8 @@ function loop() {
 		// profiler.wrap(function(){
 
 		initialize();
-		roomTools.buildStorageStats();
+		roomTools.buildRoomStats();
+		// spawnTools.buildSpawnStats();
 
 		if (rules.logSpawnStats) {
 

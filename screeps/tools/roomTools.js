@@ -117,6 +117,36 @@ roomTools.observeRoom = function(roomName, observerRoomName) {
 	}
 }
 
+
+roomTools.buildRoomStats = function() {
+	this.buildSpawnStats();
+	this.buildStorageStats();
+}
+
+roomTools.buildSpawnStats = function() {
+
+	this.spawnStats = {
+		rooms: {},
+	};
+
+	for (spawnName in Game.spawns) {
+
+		var spawn = Game.spawns[spawnName];
+
+		if (!this.spawnStats.rooms[spawn.room.name]) {
+			this.spawnStats.rooms[spawn.room.name] = {
+				spawnsCount: 0,
+			};
+		}
+
+		this.spawnStats.rooms[spawn.room.name].spawnsCount++;
+	}
+}
+
+roomTools.getSpawnsCount = function(roomName) {
+	return this.spawnStats.rooms[roomName].spawnsCount;
+}
+
 roomTools.buildStorageStats = function() {
 
 	this.roomsStorageStats = {};
