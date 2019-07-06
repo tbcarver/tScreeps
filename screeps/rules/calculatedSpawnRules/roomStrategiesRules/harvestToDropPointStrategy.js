@@ -67,6 +67,10 @@ harvestToDropPointStrategy.recalculateCreepsSpawnRule = function(creepsSpawnRule
 		var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, "remoteSpawnedDropTransferer");
 		var additionalCreepsCount = Math.floor(energyToCapacityPercent / averageCarryCapacity);
 
+		if (additionalCreepsCount > 10) {
+			additionalCreepsCount = 10;
+		}
+
 		if (spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"] < 20) {
 			spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"] += additionalCreepsCount;
 		}
@@ -99,7 +103,7 @@ harvestToDropPointStrategy.measureCreepsSpawnRule = function(creepsSpawnRule) {
 		creepsSpawnRule.measure.totalEnergy += totalEnergy;
 
 	} else {
-		debug.danger(`harvestToDropPointStrategy room not found for ${creepsSpawnRule.roomName}`);
+		debug.warning(`harvestToDropPointStrategy room not found for ${creepsSpawnRule.roomName}`);
 	}
 }
 

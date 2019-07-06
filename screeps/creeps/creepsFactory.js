@@ -13,11 +13,11 @@ creepsFactory.buildCreep = function(creep) {
 
 		// if (!baseCreep.isTrooper) {
 		// if (creep.memory.type === "remoteSpawnedStorageTransferer") {
-			// if (creep.room.name === "W6N8") {
+			// if (creep.memory.remoteRoomName === "W8N7") {
 				// if (creep.memory.remoteRoomName && creep.memory.state === "movingToSpawnedRoom") {
 					// creep.memory.takeStepsIntoRoom = 6
 							// creep.memory.remoteRoomName = "W9N9";
-							// creep.memory.state = "movingToRemoteRoom"
+							// creep.memory.state = "suicide"
 							// creep.suicide();
 							// creep.say("ok")
 		// // 			// // 		// debug.temp("creep:", creep)

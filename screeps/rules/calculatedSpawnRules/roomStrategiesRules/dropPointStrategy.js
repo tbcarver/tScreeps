@@ -87,6 +87,10 @@ function recalculateEnergy(creepsSpawnRule, creepType, measureMemory) {
 		var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, creepType);
 		var additionalCreepsCount = Math.floor(energyToCapacityPercent / averageCarryCapacity);
 
+		if (additionalCreepsCount > 10) {
+			additionalCreepsCount = 10;
+		}
+
 		if (spawnOrderMaxSpawnedCount[creepType] < 20) {
 			spawnOrderMaxSpawnedCount[creepType] += additionalCreepsCount;
 		}
@@ -119,7 +123,7 @@ dropPointStrategy.measureCreepsSpawnRule = function(creepsSpawnRule) {
 		}
 
 	} else {
-		debug.danger(`dropPointStrategy room not found for ${creepsSpawnRule.roomName}`);
+		debug.warning(`dropPointStrategy room not found for ${creepsSpawnRule.roomName}`);
 	}
 }
 
@@ -133,8 +137,6 @@ function measureEnergy(room, dropFlag, measureMemory, isInRangeToDropFlag) {
 
 	measureMemory.totalEnergyCount++;
 	measureMemory.totalEnergy += totalEnergy;
-
-	// debug.temp(room.name, isInRangeToDropFlag, measureMemory.totalEnergy / measureMemory.totalEnergyCount);
 }
 
 module.exports = dropPointStrategy;
