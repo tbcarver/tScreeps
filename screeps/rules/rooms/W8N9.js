@@ -34,6 +34,13 @@ module.exports = {
 		},
 		// Overflow
 		{
+			roomName: "W8N9",
+			spawnOrderMaxSpawnedCounts: [
+				{ controllerEnergizer: 12 },
+			],
+			canControllerEnergizersBuild: true,
+		},
+		{
 			roomName: "W8N8",
 			spawnOrderMaxSpawnedCounts: [
 				{ controllerEnergizer: 6 },

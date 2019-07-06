@@ -9,6 +9,16 @@ var sumBy = require("lodash/sumBy");
 
 function tick() {
 
+
+	// var temp = [{ remoteReserver: 1 }, { dropHarvester: 4 }, { storageTransferer: 0 }, { remoteSpawnedStorageTransferer: 12 }]
+
+
+	// var result = _.find(temp, element => Object.keys(element)[0] === "dropHarvester")
+
+
+	// debug.temp(result);
+
+
 	// var roomName = "W8N7";
 	// var room = Game.rooms[roomName];
 

@@ -46,9 +46,24 @@ BaseRemoteStorageTransferer.prototype.harvest = function(moveToOtherRoom) {
 
 			} else {
 
-				resource = this.creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
+				var resources = this.creep.pos.findInRange(FIND_DROPPED_RESOURCES, 3, {
 					filter: resource => resource.energy && resource.energy >= 100
 				});
+
+				if (resources.length > 0) {
+					resource = resources[0];
+				}
+
+				for (var multiplier = 5; multiplier >= 0; multiplier--) {
+
+					resource = this.creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
+						filter: resource => resource.energy && resource.energy >= 100 * 2 * multiplier
+					});
+
+					if (resource) {
+						break;
+					}
+				}
 			}
 		}
 
@@ -88,13 +103,13 @@ BaseRemoteStorageTransferer.prototype.transfer = function(moveToOtherRoom) {
 
 	} else if (this.state === "transferring") {
 
-		var dropFlag = Game.flags[`drop-${this.creep.room.name}`];				
+		var dropFlag = Game.flags[`drop-${this.creep.room.name}`];
 		if (dropFlag) {
 			if (this.creep.pos.inRangeTo(dropFlag, 1)) {
 
 				this.creep.drop(RESOURCE_ENERGY);
 				moveToOtherRoom();
-				
+
 			} else {
 				this.creep.moveTo(dropFlag);
 			}

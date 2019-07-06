@@ -6,7 +6,7 @@ var dropPointStrategy = {
 	coolOffCount: 300,
 };
 
-dropPointStrategy.buildCreepsSpawnRule = function(remoteRoomName) {
+dropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName) {
 
 	var creepsSpawnRule;
 	var room = Game.rooms[remoteRoomName];
@@ -59,13 +59,13 @@ dropPointStrategy.buildCreepsSpawnRule = function(remoteRoomName) {
 	return creepsSpawnRule;
 }
 
-dropPointStrategy.recalculateCreepsSpawnRule = function(creepsSpawnRule) {
+dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpawnRule) {
 
-	recalculateEnergy(creepsSpawnRule, "remoteSpawnedStorageTransferer", creepsSpawnRule.measure.droppedEnergy);
-	recalculateEnergy(creepsSpawnRule, "storageTransferer", creepsSpawnRule.measure.harvestedEnergy);
+	recalculateEnergy(spawnRoomName, creepsSpawnRule, "remoteSpawnedStorageTransferer", creepsSpawnRule.measure.droppedEnergy);
+	recalculateEnergy(spawnRoomName, creepsSpawnRule, "storageTransferer", creepsSpawnRule.measure.harvestedEnergy);
 }
 
-function recalculateEnergy(creepsSpawnRule, creepType, measureMemory) {
+function recalculateEnergy(spawnRoomName, creepsSpawnRule, creepType, measureMemory) {
 
 	var carryCapacities = _.reduce(Memory.creeps, (carryCapacities, creepMemory, creepName) => {
 
@@ -84,20 +84,22 @@ function recalculateEnergy(creepsSpawnRule, creepType, measureMemory) {
 
 	if (energyToCapacityPercent > averageCarryCapacity * 2) {
 
-		var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, creepType);
-		var additionalCreepsCount = Math.floor(energyToCapacityPercent / averageCarryCapacity);
+		var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, element => Object.keys(element)[0] === creepType);
 
-		if (additionalCreepsCount > 10) {
-			additionalCreepsCount = 10;
+		if (spawnOrderMaxSpawnedCount[creepType] < roomTools.getSpawnsCount(spawnRoomName) * 6) {
+			
+			var additionalCreepsCount = Math.floor(energyToCapacityPercent / averageCarryCapacity);
+
+			if (additionalCreepsCount > 5) {
+				spawnOrderMaxSpawnedCount[creepType]++;
+				spawnOrderMaxSpawnedCount[creepType]++;
+			} else {
+				spawnOrderMaxSpawnedCount[creepType]++;
+			}
 		}
+	} else if (energyToCapacityPercent < 50) {
 
-		if (spawnOrderMaxSpawnedCount[creepType] < 20) {
-			spawnOrderMaxSpawnedCount[creepType] += additionalCreepsCount;
-		}
-
-	} else if (energyToCapacityPercent < 25) {
-
-		var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, creepType);
+		var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, element => Object.keys(element)[0] === creepType);
 
 		if (spawnOrderMaxSpawnedCount[creepType] > 0) {
 			spawnOrderMaxSpawnedCount[creepType]--;
@@ -108,7 +110,7 @@ function recalculateEnergy(creepsSpawnRule, creepType, measureMemory) {
 	measureMemory.totalEnergy = 0;
 }
 
-dropPointStrategy.measureCreepsSpawnRule = function(creepsSpawnRule) {
+dropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, creepsSpawnRule) {
 
 	var room = Game.rooms[creepsSpawnRule.roomName];
 	if (room) {

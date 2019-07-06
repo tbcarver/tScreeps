@@ -6,7 +6,7 @@ var harvestToDropPointStrategy = {
 	coolOffCount: 300,
 };
 
-harvestToDropPointStrategy.buildCreepsSpawnRule = function(remoteRoomName) {
+harvestToDropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName) {
 
 	var creepsSpawnRule;
 	var room = Game.rooms[remoteRoomName];
@@ -45,7 +45,7 @@ harvestToDropPointStrategy.buildCreepsSpawnRule = function(remoteRoomName) {
 	return creepsSpawnRule;
 }
 
-harvestToDropPointStrategy.recalculateCreepsSpawnRule = function(creepsSpawnRule) {
+harvestToDropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpawnRule) {
 
 	var carryCapacities = _.reduce(Memory.creeps, (carryCapacities, creepMemory, creepName) => {
 
@@ -64,21 +64,23 @@ harvestToDropPointStrategy.recalculateCreepsSpawnRule = function(creepsSpawnRule
 
 	if (energyToCapacityPercent > averageCarryCapacity * 2) {
 
-		var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, "remoteSpawnedDropTransferer");
-		var additionalCreepsCount = Math.floor(energyToCapacityPercent / averageCarryCapacity);
+		var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts,element => Object.keys(element)[0] === "remoteSpawnedDropTransferer");
 
-		if (additionalCreepsCount > 10) {
-			additionalCreepsCount = 10;
+		if (spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"] < roomTools.getSpawnsCount(spawnRoomName) * 6) {
+
+			var additionalCreepsCount = Math.floor(energyToCapacityPercent / averageCarryCapacity);
+
+			if (additionalCreepsCount > 5) {
+				spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"]++;
+				spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"]++;
+			} else {
+				spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"]++;
+			}
 		}
+	} else if (energyToCapacityPercent < 50) {
 
-		if (spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"] < 20) {
-			spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"] += additionalCreepsCount;
-		}
+		var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, element => Object.keys(element)[0] === "remoteSpawnedDropTransferer");
 
-	} else if (energyToCapacityPercent < 25) {
-
-		var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, "remoteSpawnedDropTransferer");
-		
 		if (spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"] > 0) {
 			spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"]--;
 		}
@@ -88,7 +90,7 @@ harvestToDropPointStrategy.recalculateCreepsSpawnRule = function(creepsSpawnRule
 	creepsSpawnRule.measure.totalEnergy = 0;
 }
 
-harvestToDropPointStrategy.measureCreepsSpawnRule = function(creepsSpawnRule) {
+harvestToDropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, creepsSpawnRule) {
 
 	var room = Game.rooms[creepsSpawnRule.roomName];
 	if (room) {
