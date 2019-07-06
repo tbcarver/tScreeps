@@ -11,9 +11,7 @@ module.exports = {
 		{ controllerEnergizer: 1 },
 	],
 	canControllerEnergizersBuild: true,
-	canEnergyCreepsHarvest: false,
-	canEnergyCreepsPickup: false,
-	canStorageTransferersPickup: false,
+	canTransferersTransferToStorageOnly: true,
 	maxExtensionsPerEnergizer: 8,
 	remoteRooms: [
 		// Adjacent remote rooms
@@ -31,27 +29,11 @@ module.exports = {
 			roomName: "W9N9",
 			roomStrategy: "mobDefense",
 		},
-		// Defending rooms
-		{
-			roomName: "W10N9",
-			spawnOrderMaxSpawnedCounts: [
-				{ decoy: 0 },
-			],
-			minTroopersWaiting: 1,
-		},
-		// Overflow		
-		{
-			roomName: "W8N9",
-			spawnOrderMaxSpawnedCounts: [
-				{ remoteStorageTransferer: 0 },
-				{ controllerEnergizer: 12 },
-			],
-			canControllerEnergizersBuild: true,
-		},
+		// Overflow	
 		{
 			roomName: "W7N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ controllerEnergizer: 0 },
+				{ controllerEnergizer: 12 },
 			],
 			canControllerEnergizersBuild: true,
 		},

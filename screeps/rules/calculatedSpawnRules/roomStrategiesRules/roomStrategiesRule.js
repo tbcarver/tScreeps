@@ -1,10 +1,12 @@
 
 var gameTools = require("../../../tools/gameTools");
 var calculatedSpawnRulesTools = require("../calculatedSpawnRulesTools");
+var dropPointStrategy = require("./dropPointStrategy");
 var harvestToDropPointStrategy = require("./harvestToDropPointStrategy");
 var mobDefenseStrategy = require("./mobDefenseStrategy");
 
 var roomStrategies = {
+	"dropPoint": dropPointStrategy,
 	"harvestToDropPoint": harvestToDropPointStrategy,
 	"mobDefense": mobDefenseStrategy,
 }

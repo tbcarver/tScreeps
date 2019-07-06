@@ -39,7 +39,7 @@ harvestToDropPointStrategy.buildCreepsSpawnRule = function(remoteRoomName) {
 			},
 		}
 	} else {
-		debug.warning(`harvestToDropPointStrategy room not found for ${remoteRoomName}`);
+		debug.danger(`harvestToDropPointStrategy room not found for ${remoteRoomName}`);
 	}
 
 	return creepsSpawnRule;
@@ -47,51 +47,41 @@ harvestToDropPointStrategy.buildCreepsSpawnRule = function(remoteRoomName) {
 
 harvestToDropPointStrategy.recalculateCreepsSpawnRule = function(creepsSpawnRule) {
 
-	var room = Game.rooms[creepsSpawnRule.roomName];
-	if (room) {
+	var carryCapacities = _.reduce(Memory.creeps, (carryCapacities, creepMemory, creepName) => {
 
-		var resources = room.find(FIND_DROPPED_RESOURCES, {
-			filter: resource => resource.energy
-		});
+		if (creepMemory.type === "remoteSpawnedDropTransferer" && creepMemory.remoteRoomName === creepsSpawnRule.roomName) {
 
-		var totalEnergy = sumBy(resources, "energy");
-
-		var carryCapacities = _.reduce(Memory.creeps, (carryCapacities, creepMemory, creepName) => {
-
-			if (creepMemory.type === "remoteSpawnedDropTransferer" && creepMemory.remoteRoomName === creepsSpawnRule.roomName) {
-
-				carryCapacities.creepsCount++;
-				carryCapacities.totalCarryCapacity += Game.creeps[creepName].carryCapacity;
-			}
-
-			return carryCapacities;
-		}, { creepsCount: 0, totalCarryCapacity: 0 });
-
-		var averageCarryCapacity = Math.floor(carryCapacities.totalCarryCapacity / carryCapacities.creepsCount);
-		var averageEnergy = Math.floor(creepsSpawnRule.measure.totalEnergy / creepsSpawnRule.measure.totalEnergyCount);
-		var energyToCapacityPercent = Math.floor(averageEnergy / averageCarryCapacity * 100);
-
-		if (energyToCapacityPercent > averageCarryCapacity * 2) {
-
-			var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, "remoteSpawnedDropTransferer");
-			var additionalCreepsCount = Math.floor(energyToCapacityPercent / averageCarryCapacity);		
-
-			spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"] += additionalCreepsCount;
-			debug.temp(room.name, averageEnergy, averageCarryCapacity, energyToCapacityPercent, "added: ", additionalCreepsCount);
-
-		} else if (energyToCapacityPercent < 25) {
-
-			var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, "remoteSpawnedDropTransferer");
-			spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"]--;
-			debug.temp(room.name, averageEnergy, averageCarryCapacity, energyToCapacityPercent, "removed: 1");
+			carryCapacities.creepsCount++;
+			carryCapacities.totalCarryCapacity += Game.creeps[creepName].carryCapacity;
 		}
-		
-		creepsSpawnRule.measure.totalEnergyCount = 0;
-		creepsSpawnRule.measure.totalEnergy = 0;
 
-	} else {
-		debug.warning(`harvestToDropPointStrategy room not found for ${remoteRoomName}`);
+		return carryCapacities;
+	}, { creepsCount: 0, totalCarryCapacity: 0 });
+
+	var averageCarryCapacity = Math.floor(carryCapacities.totalCarryCapacity / carryCapacities.creepsCount);
+	var averageEnergy = Math.floor(creepsSpawnRule.measure.totalEnergy / creepsSpawnRule.measure.totalEnergyCount);
+	var energyToCapacityPercent = Math.floor(averageEnergy / averageCarryCapacity * 100);
+
+	if (energyToCapacityPercent > averageCarryCapacity * 2) {
+
+		var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, "remoteSpawnedDropTransferer");
+		var additionalCreepsCount = Math.floor(energyToCapacityPercent / averageCarryCapacity);
+
+		if (spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"] < 20) {
+			spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"] += additionalCreepsCount;
+		}
+
+	} else if (energyToCapacityPercent < 25) {
+
+		var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, "remoteSpawnedDropTransferer");
+		
+		if (spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"] > 0) {
+			spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"]--;
+		}
 	}
+
+	creepsSpawnRule.measure.totalEnergyCount = 0;
+	creepsSpawnRule.measure.totalEnergy = 0;
 }
 
 harvestToDropPointStrategy.measureCreepsSpawnRule = function(creepsSpawnRule) {
@@ -109,7 +99,7 @@ harvestToDropPointStrategy.measureCreepsSpawnRule = function(creepsSpawnRule) {
 		creepsSpawnRule.measure.totalEnergy += totalEnergy;
 
 	} else {
-		debug.warning(`harvestToDropPointStrategy room not found for ${remoteRoomName}`);
+		debug.danger(`harvestToDropPointStrategy room not found for ${creepsSpawnRule.roomName}`);
 	}
 }
 

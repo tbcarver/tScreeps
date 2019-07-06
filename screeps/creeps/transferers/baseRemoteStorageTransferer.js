@@ -12,7 +12,7 @@ function BaseRemoteStorageTransferer(creep) {
 	}
 
 	this.canTransferToStorageOnly = false;
-	if (this.creepsSpawnRule && this.creepsSpawnRule.canEnergizersTransferToStorageOnly) {
+	if (this.spawnedRoomCreepsSpawnRule && this.spawnedRoomCreepsSpawnRule.canTransferersTransferToStorageOnly) {
 		this.canTransferToStorageOnly = true;
 	}
 }

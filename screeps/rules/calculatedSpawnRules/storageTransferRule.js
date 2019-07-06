@@ -122,7 +122,7 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 			spawnOrderMaxSpawnedCounts: [
 				{ remoteStorageTransferer: 0 },
 			],
-			canEnergizersTransferToStorageOnly: true,
+			canTransferersTransferToStorageOnly: true,
 		});
 	}
 

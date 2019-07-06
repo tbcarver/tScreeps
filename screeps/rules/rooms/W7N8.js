@@ -11,9 +11,7 @@ module.exports = {
 		{ controllerEnergizer: 1 },
 	],
 	canControllerEnergizersBuild: true,
-	canEnergyCreepsHarvest: false,
-	canEnergyCreepsPickup: false,
-	canStorageTransferersPickup: false,
+	canTransferersTransferToStorageOnly: true,
 	maxExtensionsPerEnergizer: 8,
 	remoteRooms: [
 		// Adjacent remote rooms
@@ -23,16 +21,7 @@ module.exports = {
 		},
 		{
 			roomName: "W7N7",
-			spawnOrderMaxSpawnedCounts: [
-				{ remoteReserver: 1 },
-				{ dropHarvester: 2 },
-				{ storageTransferer: 2 },
-				{ remoteSpawnedStorageTransferer: 11 },
-			],
-			partsPerMove: 1,
-			canEnergyCreepsPickup: true,
-			canRemoteStorageTransferersPickup: true,
-			canStorageTransferersPickup: true,
+			roomStrategy: "dropPoint",
 		},
 		// Main rooms
 		// Mob
@@ -57,7 +46,7 @@ module.exports = {
 			roomName: "W6N7",
 			roomStrategy: "harvestToDropPoint",
 		},
-		// Overflow		
+		// Overflow
 		{
 			roomName: "W8N8",
 			spawnOrderMaxSpawnedCounts: [

@@ -1,4 +1,6 @@
 
+var reverse = require("lodash/reverse");
+
 var calculatedSpawnRulesTools = {};
 
 calculatedSpawnRulesTools.prependRemoteRoomCreepsSpawnRules = function(creepsSpawnRules, spawnRoomsRemoteRoomCreepsSpawnRules) {
@@ -6,8 +8,9 @@ calculatedSpawnRulesTools.prependRemoteRoomCreepsSpawnRules = function(creepsSpa
 	for (var spawnRoomName in spawnRoomsRemoteRoomCreepsSpawnRules) {
 
 		var spawnRoom = _.find(creepsSpawnRules, { roomName: spawnRoomName });
-
-		for (var remoteRoom of spawnRoomsRemoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms) {
+		var remoteRooms = reverse(spawnRoomsRemoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms);
+		
+		for (var remoteRoom of remoteRooms) {
 
 			spawnRoom.remoteRooms.unshift(remoteRoom);
 		}

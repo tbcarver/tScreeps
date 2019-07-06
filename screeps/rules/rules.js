@@ -59,6 +59,12 @@ function buildRoomsCreepsSpawnRules(creepsSpawnRules) {
 
 		roomNamesCreepsSpawnRules[creepsSpawnRule.roomName] = {};
 
+		for (var key in creepsSpawnRule) {
+			if (key !== "remoteRooms") {
+				roomNamesCreepsSpawnRules[creepsSpawnRule.roomName][key] = creepsSpawnRule[key];
+			}
+		}
+
 		if (creepsSpawnRule.remoteRooms) {
 
 			var remoteRooms = {};

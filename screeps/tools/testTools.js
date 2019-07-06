@@ -5,8 +5,45 @@ var roomTools = require("./roomTools");
 var spawnTools = require("./spawnTools");
 var testObject = require("../creeps/energizers/extensionEnergizer");
 var bodyPartsStrategy = require("../creeps/bodies/moveCarryStrategy");
+var sumBy = require("lodash/sumBy");
 
 function tick() {
+
+	// var roomName = "W8N7";
+	// var room = Game.rooms[roomName];
+
+	// var resources = room.find(FIND_DROPPED_RESOURCES, {
+	// 	filter: resource => resource.energy
+	// });
+	// var totalEnergy = sumBy(resources, "energy");
+
+	// var dropFlag = Game.flags[`drop-${roomName}`];
+
+	// var resources = room.find(FIND_DROPPED_RESOURCES, {
+	// 	filter: resource => resource.energy && dropFlag.pos.inRangeTo(resource, 3)
+	// });
+	// var totalDropFlag = sumBy(resources, "energy");
+
+	// var isInRangeToDropFlag = true;
+	// var resources = room.find(FIND_DROPPED_RESOURCES, {
+	// 	filter: resource => resource.energy && isInRangeToDropFlag ? dropFlag.pos.inRangeTo(resource, 3) : !dropFlag.pos.inRangeTo(resource, 3)
+	// });
+	// var totalDropFlagNear = sumBy(resources, "energy");
+
+	// var resources = room.find(FIND_DROPPED_RESOURCES, {
+	// 	filter: resource => resource.energy && !dropFlag.pos.inRangeTo(resource, 3)
+	// });
+	// var totalNotDropFlag = sumBy(resources, "energy");
+
+	// var isInRangeToDropFlag = false;
+	// var resources = room.find(FIND_DROPPED_RESOURCES, {
+	// 	filter: resource => resource.energy && isInRangeToDropFlag ? dropFlag.pos.inRangeTo(resource, 3) : !dropFlag.pos.inRangeTo(resource, 3)
+	// });
+	// var totalNotDropFlagNear = sumBy(resources, "energy");
+
+	// debug.temp(totalEnergy, totalDropFlag, totalDropFlagNear, totalNotDropFlag, totalNotDropFlagNear);
+
+
 
 	// debug.temp(roomTools.getCountResourceHarvestPositions("5cfa67cb57237e0ae006627b"))
 

@@ -11,44 +11,24 @@ module.exports = {
 		{ controllerEnergizer: 1 },
 	],
 	canControllerEnergizersBuild: true,
+	canTransferersTransferToStorageOnly: true,
 	maxExtensionsPerEnergizer: 8,
 	remoteRooms: [
 		// Adjacent remote rooms
 		{
 			roomName: "W8N11",
-			spawnOrderMaxSpawnedCounts: [
-				{ remoteReserver: 1 },
-				{ dropHarvester: 4 },
-				{ storageTransferer: 2 },
-				{ remoteSpawnedStorageTransferer: 6 },
-			],
-			partsPerMove: 1,
-			minTroopersWaiting: 3,
-			minTroopersWaiting: 3,
-			canEnergizersTransferToStorageOnly: true,
-			canEnergyCreepsHarvest: true,
-			canEnergyCreepsPickup: true,
-			canRemoteStorageTransferersPickup: true,
-			canStorageTransferersPickup: true,
+			roomStrategy: "dropPoint",
 		},
 		{
 			roomName: "W9N10",
-			spawnOrderMaxSpawnedCounts: [
-				{ remoteReserver: 1 },
-				{ dropHarvester: 4 },
-				{ storageTransferer: 2 },
-				{ remoteSpawnedStorageTransferer: 10 },
-			],
-			partsPerMove: 1,
-			minTroopersWaiting: 3,
-			minTroopersWaiting: 3,
-			canEnergizersTransferToStorageOnly: true,
-			canEnergyCreepsHarvest: true,
-			canEnergyCreepsPickup: true,
-			canRemoteStorageTransferersPickup: true,
-			canStorageTransferersPickup: true,
+			roomStrategy: "dropPoint",
 		},
 		// Main rooms
+		// Mob
+		{
+			roomName: "W10N10",
+			roomStrategy: "mobDefense",
+		},
 		// Very remote rooms
 		{
 			roomName: "W8N12",
@@ -72,9 +52,9 @@ module.exports = {
 		},
 		// Overflow
 		{
-			roomName: "W8N10",
+			roomName: "W7N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ controllerEnergizer: 0 },
+				{ controllerEnergizer: 6 },
 			],
 			canControllerEnergizersBuild: true,
 		},
