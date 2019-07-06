@@ -30,41 +30,22 @@ module.exports = {
 		// Very remote rooms
 		{
 			roomName: "W10N9",
-			spawnOrderMaxSpawnedCounts: [
-				{ remoteReserver: 1 },
-				{ dropHarvester: 3 },
-				{ remoteSpawnedDropTransferer: 5 },
-			],
-			partsPerMove: 1,
-			canRemoteStorageTransferersPickup: true,
-			canStorageTransferersPickup: true,
+			roomStrategy: "harvestToDropPoint",
 		},
 		{
 			roomName: "W11N9",
-			spawnOrderMaxSpawnedCounts: [
-				{ remoteReserver: 1 },
-				{ dropHarvester: 4 },
-				{ remoteSpawnedDropTransferer: 5 },
-			],
-			partsPerMove: 1,
-			canRemoteStorageTransferersPickup: true,
-			canStorageTransferersPickup: true,
+			roomStrategy: "harvestToDropPoint",
 		},
 		// Mob
 		{
 			roomName: "W9N11",
-			spawnOrderMaxSpawnedCounts: [
-				{ attacker: 2 },
-				{ healer: 3 },
-				{ rangedAttacker: 3 },
-			],
-			isMobTroopers: true,
+			roomStrategy: "mobDefense",
 		},
 		// Overflow
 		{
 			roomName: "W8N10",
 			spawnOrderMaxSpawnedCounts: [
-				{ controllerEnergizer: 6 },
+				{ controllerEnergizer: 0 },
 			],
 			canControllerEnergizersBuild: true,
 		},

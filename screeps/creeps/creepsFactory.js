@@ -12,8 +12,8 @@ creepsFactory.buildCreep = function(creep) {
 		var baseCreep = new constructor(creep);
 
 		// if (!baseCreep.isTrooper) {
-		// if (creep.memory.type === "dropHarvester") {
-			// if (creep.room.name === "W6N9") {
+		// if (creep.memory.type === "remoteSpawnedStorageTransferer") {
+			// if (creep.room.name === "W6N8") {
 				// if (creep.memory.remoteRoomName && creep.memory.state === "movingToSpawnedRoom") {
 					// creep.memory.takeStepsIntoRoom = 6
 							// creep.memory.remoteRoomName = "W9N9";

@@ -36,71 +36,25 @@ module.exports = {
 			canStorageTransferersPickup: true,
 		},
 		// Main rooms
-		{
-			roomName: "W8N10",
-			spawnOrderMaxSpawnedCounts: [
-				{ remoteStorageTransferer: 0 },
-				{ controllerEnergizer: 0 },
-				{ remoteBuilder: 0 },
-			],
-			canControllerEnergizersBuild: true,
-			canEnergizersTransferToStorageOnly: true,
-		},
-		{
-			roomName: "W7N9",
-			spawnOrderMaxSpawnedCounts: [
-				{ remoteStorageTransferer: 0 },
-				{ controllerEnergizer: 0 },
-			],
-			canEnergyCreepsHarvest: false,
-			canEnergyCreepsPickup: true,
-			canControllerEnergizersBuild: true,
-		},
-		{
-			roomName: "W7N8",
-			spawnOrderMaxSpawnedCounts: [
-				{ remoteStorageTransferer: 0 },
-			],
-			canEnergyCreepsHarvest: false,
-			canEnergyCreepsPickup: true,
-		},
 		// Very remote rooms
 		{
 			roomName: "W6N12",
-			spawnOrderMaxSpawnedCounts: [
-				{ remoteReserver: 1 },
-				{ dropHarvester: 4 },
-				{ remoteSpawnedDropTransferer: 5 },
-			],
-			partsPerMove: 1,
-			canRemoteStorageTransferersPickup: true,
+			roomStrategy: "harvestToDropPoint",
 		},
 		{
 			roomName: "W6N11",
-			spawnOrderMaxSpawnedCounts: [
-				{ remoteReserver: 1 },
-				{ dropHarvester: 4 },
-				{ remoteSpawnedDropTransferer: 5 },
-			],
-			partsPerMove: 1,
-			canRemoteStorageTransferersPickup: true,
+			roomStrategy: "harvestToDropPoint",
 		},
 		{
 			roomName: "W7N12",
-			spawnOrderMaxSpawnedCounts: [
-				{ remoteReserver: 1 },
-				{ dropHarvester: 4 },
-				{ remoteSpawnedDropTransferer: 5 },
-			],
-			partsPerMove: 1,
-			canRemoteStorageTransferersPickup: true,
+			roomStrategy: "harvestToDropPoint",
 		},
 		// Overflow
 		{
 			roomName: "W8N10",
 			spawnOrderMaxSpawnedCounts: [
 				{ remoteStorageTransferer: 0 },
-				{ controllerEnergizer: 6 },
+				{ controllerEnergizer: 0 },
 			],
 			canControllerEnergizersBuild: true,
 		},
@@ -110,14 +64,6 @@ module.exports = {
 				{ controllerEnergizer: 0 },
 			],
 			canControllerEnergizersBuild: true,
-		},
-		{
-			roomName: "W7N9",
-			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedStorageTransferer: 0 },
-			],
-			canControllerEnergizersBuild: true,
-			canEnergizersTransferToStorageOnly: true,
 		},
 	],
 }

@@ -22,60 +22,14 @@ module.exports = {
 			roomStrategy: "harvestToDropPoint",
 		},
 		// Main rooms
-		{
-			roomName: "W8N9",
-			spawnOrderMaxSpawnedCounts: [
-				{ controllerEnergizer: 0 },
-			],
-			canControllerEnergizersBuild: true,
-			canEnergizersTransferToStorageOnly: true,
-			canEnergyCreepsPickup: true,
-			canRemoteStorageTransferersPickup: true,
-			canStorageTransferersPickup: true,
-		},
-		{
-			roomName: "W7N10",
-			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedStorageTransferer: 0 },
-				{ remoteStorageTransferer: 0 },
-			],
-			canControllerEnergizersBuild: true,
-			canEnergizersTransferToStorageOnly: true,
-		},
-		{
-			roomName: "W7N8",
-			spawnOrderMaxSpawnedCounts: [
-				{ remoteSpawnedStorageTransferer: 0 },
-			],
-			canControllerEnergizersBuild: true,
-			canEnergizersTransferToStorageOnly: true,
-		},
-		{
-			roomName: "W8N10",
-			spawnOrderMaxSpawnedCounts: [
-				{ remoteStorageTransferer: 0 },
-			],
-			canControllerEnergizersBuild: true,
-			canEnergizersTransferToStorageOnly: true,
-		},
 		// Mob
 		{
 			roomName: "W6N11",
-			spawnOrderMaxSpawnedCounts: [
-				{ attacker: 2 },
-				{ healer: 3 },
-				{ rangedAttacker: 3 },
-			],
-			isMobTroopers: true,
+			roomStrategy: "mobDefense",
 		},
 		{
 			roomName: "W9N9",
-			spawnOrderMaxSpawnedCounts: [
-				{ attacker: 2 },
-				{ healer: 3 },
-				{ rangedAttacker: 3 },
-			],
-			isMobTroopers: true,
+			roomStrategy: "mobDefense",
 		},
 		// Defending rooms
 		{

@@ -2,9 +2,11 @@
 var gameTools = require("../../../tools/gameTools");
 var calculatedSpawnRulesTools = require("../calculatedSpawnRulesTools");
 var harvestToDropPointStrategy = require("./harvestToDropPointStrategy");
+var mobDefenseStrategy = require("./mobDefenseStrategy");
 
 var roomStrategies = {
 	"harvestToDropPoint": harvestToDropPointStrategy,
+	"mobDefense": mobDefenseStrategy,
 }
 
 function addCalculatedSpawnRule(creepsSpawnRules) {
@@ -26,6 +28,7 @@ function addCalculatedSpawnRule(creepsSpawnRules) {
 					var spawnRoomName = creepsSpawnRule.roomName;
 					var remoteRoomName = remoteRoomCreepsSpawnRule.roomName;
 					var roomStrategyName = remoteRoomCreepsSpawnRule.roomStrategy;
+
 					var roomStrategyKey = `${roomStrategyName}-${spawnRoomName}-${remoteRoomName}`;
 					roomStrategyKeys[roomStrategyKey] = true;
 
@@ -48,7 +51,7 @@ function addCalculatedSpawnRule(creepsSpawnRules) {
 
 					if (roomStrategyCreepsSpawnRule) {
 						remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms.push(roomStrategyCreepsSpawnRule);
-						harvestToDropPointStrategy.measureCreepsSpawnRule(roomStrategyCreepsSpawnRule);
+						roomStrategy.measureCreepsSpawnRule(roomStrategyCreepsSpawnRule);
 					} else {
 						debug.warning(`roomStrategiesRule rule not built for ${spawnRoomName} remote ${remoteRoomName} strategy ${roomStrategyName}`);
 					}
