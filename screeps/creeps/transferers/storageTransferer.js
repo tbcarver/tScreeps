@@ -27,9 +27,25 @@ StorageTransferer.prototype.act = function() {
 			if (this.canPickup) {
 				var dropFlag = Game.flags[`drop-${this.creep.room.name}`];
 
-				var resource = this.creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
+				var resources = this.creep.pos.findInRange(FIND_DROPPED_RESOURCES, 3, {
 					filter: resource => resource.energy && resource.energy >= 100 && (!dropFlag || !dropFlag.pos.inRangeTo(resource, 3))
 				});
+
+				if (resources.length > 0) {
+					resource = resources[0];
+				}
+
+				for (var multiplier = 5; multiplier >= 0; multiplier--) {
+
+					resource = this.creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
+						filter: resource => resource.energy && resource.energy >= 100 * 2 * multiplier &&
+							(!dropFlag || !dropFlag.pos.inRangeTo(resource, 3))
+					});
+
+					if (resource) {
+						break;
+					}
+				}
 			}
 
 			if (!resource) {
@@ -52,7 +68,7 @@ StorageTransferer.prototype.act = function() {
 						this.creep.moveTo(resource);
 					}
 				}
-			} else {			
+			} else {
 
 				var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
 				if (waitFlag) {
@@ -103,7 +119,7 @@ StorageTransferer.prototype.energize = function() {
 
 			this.state = "harvesting";
 
-		} else if (transferResult !== OK) {			
+		} else if (transferResult !== OK) {
 
 			var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
 			if (waitFlag) {

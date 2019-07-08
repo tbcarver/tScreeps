@@ -4,10 +4,20 @@ var calculatedSpawnRulesTools = require("./calculatedSpawnRulesTools");
 
 function addCalculatedSpawnRule(creepsSpawnRules) {
 
-		var transferringRooms = [];
-		var receivingRooms = [];
-		var overflowTransferringRooms = [];
-		var overflowReceivingRooms = [];
+	var breakPointMultiplier = 50;
+	var transferringRooms;
+	var receivingRooms;
+	var overflowTransferringRooms;
+	var overflowReceivingRooms;
+
+	for (var breakPointCount = 1; breakPointCount <= 3; breakPointCount++) {
+
+		var breakPoint = Math.floor(breakPointMultiplier / breakPointCount);
+		var totalRooms = 0;
+		transferringRooms = [];
+		receivingRooms = [];
+		overflowTransferringRooms = [];
+		overflowReceivingRooms = [];
 
 		for (var roomName in Game.rooms) {
 
@@ -15,7 +25,9 @@ function addCalculatedSpawnRule(creepsSpawnRules) {
 
 			if (storageStats.hasStorage) {
 
-				if (storageStats.percentageStoredEnergy > 50) {
+				totalRooms++;
+
+				if (storageStats.percentageStoredEnergy > breakPoint) {
 
 					var creepsCountMultiplier = 1;
 
@@ -25,7 +37,7 @@ function addCalculatedSpawnRule(creepsSpawnRules) {
 
 					var transferringRoom = {
 						roomName: roomName,
-						creepsCount: Math.floor(Math.ceil(((storageStats.percentageStoredEnergy - 50) / 10)) * creepsCountMultiplier),
+						creepsCount: Math.floor(Math.ceil(((storageStats.percentageStoredEnergy - breakPoint) / 10)) * creepsCountMultiplier),
 					};
 
 					transferringRooms.push(transferringRoom);
@@ -44,42 +56,29 @@ function addCalculatedSpawnRule(creepsSpawnRules) {
 
 					receivingRooms.push({
 						roomName: roomName,
-						creepsCount: Math.floor(Math.ceil(((50 - storageStats.percentageStoredEnergy) / 10)) * 4),
+						creepsCount: Math.floor(Math.ceil(((breakPoint - storageStats.percentageStoredEnergy) / 10)) * 4),
 					});
 				}
 			}
 		}
 
-		var remoteRoomCreepsSpawnRules = {};
-		var maxTransferringCreepsCount = transferringRooms.reduce((max, transferringRoom) =>
-			transferringRoom.creepsCount > max ? transferringRoom.creepsCount : max, 0);
-
-		// Adjacent rooms first
-		for (var count = 1; count <= maxTransferringCreepsCount; count++) {
-			for (var transferringRoom of transferringRooms) {
-
-				var adjacentRoomNames = roomTools.getAdjacentRoomNames(transferringRoom.roomName);
-
-				for (var receivingRoom of receivingRooms) {
-					if (adjacentRoomNames.includes(receivingRoom.roomName)) {
-						if (transferringRoom.creepsCount > 0 && receivingRoom.creepsCount > 0) {
-
-							incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, transferringRoom.roomName, receivingRoom.roomName);
-							transferringRoom.creepsCount--;
-							receivingRoom.creepsCount--;
-						}
-					}
-				}
-			}
+		if (Math.floor(transferringRooms.length / totalRooms * 100) > 33 || breakPointCount === 3) {
+			break;
 		}
+	}
 
-		var maxTransferringCreepsCount = transferringRooms.reduce((max, transferringRoom) =>
-			transferringRoom.creepsCount > max ? transferringRoom.creepsCount : max, 0);
+	var remoteRoomCreepsSpawnRules = {};
+	var maxTransferringCreepsCount = transferringRooms.reduce((max, transferringRoom) =>
+		transferringRoom.creepsCount > max ? transferringRoom.creepsCount : max, 0);
 
-		for (var count = 1; count <= maxTransferringCreepsCount; count++) {
-			for (var transferringRoom of transferringRooms) {
+	// Adjacent rooms first
+	for (var count = 1; count <= maxTransferringCreepsCount; count++) {
+		for (var transferringRoom of transferringRooms) {
 
-				for (var receivingRoom of receivingRooms) {
+			var adjacentRoomNames = roomTools.getAdjacentRoomNames(transferringRoom.roomName);
+
+			for (var receivingRoom of receivingRooms) {
+				if (adjacentRoomNames.includes(receivingRoom.roomName)) {
 					if (transferringRoom.creepsCount > 0 && receivingRoom.creepsCount > 0) {
 
 						incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, transferringRoom.roomName, receivingRoom.roomName);
@@ -89,25 +88,43 @@ function addCalculatedSpawnRule(creepsSpawnRules) {
 				}
 			}
 		}
+	}
 
-		var maxTransferringCreepsCount = overflowTransferringRooms.reduce((max, transferringRoom) =>
-			transferringRoom.creepsCount > max ? transferringRoom.creepsCount : max, 0);
+	var maxTransferringCreepsCount = transferringRooms.reduce((max, transferringRoom) =>
+		transferringRoom.creepsCount > max ? transferringRoom.creepsCount : max, 0);
 
-		for (var count = 1; count <= maxTransferringCreepsCount; count++) {
-			for (var transferringRoom of overflowTransferringRooms) {
+	for (var count = 1; count <= maxTransferringCreepsCount; count++) {
+		for (var transferringRoom of transferringRooms) {
 
-				for (var receivingRoom of overflowReceivingRooms) {
-					if (transferringRoom.creepsCount > 0 && receivingRoom.creepsCount > 0) {
+			for (var receivingRoom of receivingRooms) {
+				if (transferringRoom.creepsCount > 0 && receivingRoom.creepsCount > 0) {
 
-						incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, transferringRoom.roomName, receivingRoom.roomName);
-						transferringRoom.creepsCount--;
-						receivingRoom.creepsCount--;
-					}
+					incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, transferringRoom.roomName, receivingRoom.roomName);
+					transferringRoom.creepsCount--;
+					receivingRoom.creepsCount--;
 				}
 			}
 		}
+	}
 
-		calculatedSpawnRulesTools.prependRemoteRoomCreepsSpawnRules(creepsSpawnRules, remoteRoomCreepsSpawnRules);
+	var maxTransferringCreepsCount = overflowTransferringRooms.reduce((max, transferringRoom) =>
+		transferringRoom.creepsCount > max ? transferringRoom.creepsCount : max, 0);
+
+	for (var count = 1; count <= maxTransferringCreepsCount; count++) {
+		for (var transferringRoom of overflowTransferringRooms) {
+
+			for (var receivingRoom of overflowReceivingRooms) {
+				if (transferringRoom.creepsCount > 0 && receivingRoom.creepsCount > 0) {
+
+					incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, transferringRoom.roomName, receivingRoom.roomName);
+					transferringRoom.creepsCount--;
+					receivingRoom.creepsCount--;
+				}
+			}
+		}
+	}
+
+	calculatedSpawnRulesTools.prependRemoteRoomCreepsSpawnRules(creepsSpawnRules, remoteRoomCreepsSpawnRules);
 }
 
 function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoomName, remoteRoomName) {

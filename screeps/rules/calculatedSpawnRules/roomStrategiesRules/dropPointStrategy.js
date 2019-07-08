@@ -86,7 +86,7 @@ function recalculateEnergy(spawnRoomName, creepsSpawnRule, creepType, measureMem
 
 		var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, element => Object.keys(element)[0] === creepType);
 
-		if (spawnOrderMaxSpawnedCount[creepType] < roomTools.getSpawnsCount(spawnRoomName) * 6) {
+		if (spawnOrderMaxSpawnedCount[creepType] < roomTools.getSpawnsCount(spawnRoomName) * 10) {
 			
 			var additionalCreepsCount = Math.floor(energyToCapacityPercent / averageCarryCapacity);
 

@@ -6,8 +6,19 @@ var spawnTools = require("./spawnTools");
 var testObject = require("../creeps/energizers/extensionEnergizer");
 var bodyPartsStrategy = require("../creeps/bodies/moveCarryStrategy");
 var sumBy = require("lodash/sumBy");
+var orderBy = require("lodash/orderBy");
 
 function tick() {
+
+	// var controllers = _.map(Game.rooms, room => room.controller);
+	// var filteredControllers = controllers.filter(controller => controller.level >= 1 && controller.level <= 7);
+	// if (filteredControllers.length > 0) {
+	// 	filteredControllers = orderBy(filteredControllers, "level", "desc");
+	// 	filteredControllers = orderBy(filteredControllers, "progress", "desc");
+	// 	var controllerToUpgrade = filteredControllers[0];
+	// }
+
+	// debug.temp(controllerToUpgrade);
 
 
 	// var temp = [{ remoteReserver: 1 }, { dropHarvester: 4 }, { storageTransferer: 0 }, { remoteSpawnedStorageTransferer: 12 }]

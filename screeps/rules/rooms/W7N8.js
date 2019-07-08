@@ -14,6 +14,15 @@ module.exports = {
 	canTransferersTransferToStorageOnly: true,
 	maxExtensionsPerEnergizer: 8,
 	remoteRooms: [
+		// Mob
+		{
+			roomName: "W6N9",
+			roomStrategy: "mobDefense",
+		},
+		{
+			roomName: "W9N6",
+			roomStrategy: "mobDefense",
+		},
 		// Adjacent remote rooms
 		{
 			roomName: "W6N8",
@@ -24,19 +33,6 @@ module.exports = {
 			roomStrategy: "dropPoint",
 		},
 		// Main rooms
-		// Mob
-		{
-			roomName: "W6N9",
-			roomStrategy: "mobDefense",
-		},
-		{
-			roomName: "W7N7",
-			roomStrategy: "mobDefense",
-		},
-		{
-			roomName: "W9N6",
-			roomStrategy: "mobDefense",
-		},
 		// Very remote rooms
 		{
 			roomName: "W7N6",
