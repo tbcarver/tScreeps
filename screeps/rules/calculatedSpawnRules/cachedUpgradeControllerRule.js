@@ -1,42 +1,47 @@
 var roomTools = require("../../tools/roomTools");
-var rules = require("../rules")
-var calculatedSpawnRulesTools = require("./calculatedSpawnRulesTools");
+var { rules } = require("../../rules/rules")
 var orderBy = require("lodash/orderBy");
 
-function addCalculatedSpawnRules(creepsSpawnRules) {
+var cachedUpgradeControllerRule = {
+	coolOffCount: 0,
+};
+
+cachedUpgradeControllerRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
+
+	var remoteRoomCreepsSpawnRules;
 
 	if (rules.upgradeControllerSpawnRule) {
 
 		if (rules.upgradeControllerSpawnRule === "oneToEight") {
-			addOneToEightCalculatedSpawnRules(creepsSpawnRules);
+			remoteRoomCreepsSpawnRules = addOneToEightCalculatedSpawnRules(creepsSpawnRules);
 		} else if (rules.upgradeControllerSpawnRule === "togetherToEight") {
-			addTogetherToEightCalculatedSpawnRules(creepsSpawnRules);
+			remoteRoomCreepsSpawnRules = addTogetherToEightCalculatedSpawnRules(creepsSpawnRules);
 		} else {
-			debug.danger(`Unknown upgradeControllerSpawnRule: ${upgradeControllerSpawnRule}`)
+			debug.danger(`Unknown upgradeControllerSpawnRule: ${rules.upgradeControllerSpawnRule}`)
 		}
 	}
+
+	return remoteRoomCreepsSpawnRules;
 }
 
 function addOneToEightCalculatedSpawnRules(creepsSpawnRules) {
 
-	transferringRooms = [];
-	receivingRooms = [];
+	spawningRooms = [];
 
 	for (var roomName in Game.rooms) {
 
-		var storageStats = roomTools.getStorageStats(roomName);
 		var spawnsCount = roomTools.getSpawnsCount(roomName);
+		var storageStats = roomTools.getStorageStats(roomName);
 		var percentStoredEnergyRequiredMultiplier = 5;
 
-		if (storageStats.hasStorage && storageStats.percentageStoredEnergy >= percentStoredEnergyRequiredMultiplier * spawnsCount) {
+		if (spawnsCount > 0 && storageStats.hasStorage && storageStats.percentageStoredEnergy >= percentStoredEnergyRequiredMultiplier * spawnsCount) {
 
-			var transferringRoom = {
+			var spawningRoom = {
 				roomName: roomName,
-				creepsCount: Math.floor(Math.ceil((storageStats.percentageStoredEnergy - breakPoint) / 10) * spawnsCount),
+				creepsCount: Math.floor(Math.ceil(storageStats.percentageStoredEnergy / 20) * spawnsCount),
 			};
 
-			transferringRooms.push(transferringRoom);
-
+			spawningRooms.push(spawningRoom);
 		}
 	}
 
@@ -54,11 +59,25 @@ function addOneToEightCalculatedSpawnRules(creepsSpawnRules) {
 		controllerToUpgrade = filteredControllers[0];
 	}
 
-	if (transferringRooms.length > 0 && controllerToUpgrade) {
+	var remoteRoomCreepsSpawnRules = {};
 
+	if (spawningRooms.length > 0 && controllerToUpgrade) {
 
-		roomTools.getCountControllerUpgradePositions(controllerToUpgrade);
+		var maxCreepsCount = roomTools.getCountControllerUpgradePositions(controllerToUpgrade);
+
+		for (var count = 1; count <= maxCreepsCount; count++) {
+			for (var spawningRoom of spawningRooms) {
+
+				if (spawningRoom.creepsCount > 0) {
+
+					incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawningRoom.roomName, controllerToUpgrade.room.name, controllerToUpgrade);
+					spawningRoom.creepsCount--;
+				}
+			}
+		}
 	}
+
+	return remoteRoomCreepsSpawnRules;
 }
 
 
@@ -66,5 +85,33 @@ function addTogetherToEightCalculatedSpawnRules(creepsSpawnRules) {
 
 }
 
+function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoomName, remoteRoomName, controllerToUpgrade) {
 
-module.exports = addCalculatedSpawnRules;
+	if (!remoteRoomCreepsSpawnRules[spawnRoomName]) {
+		remoteRoomCreepsSpawnRules[spawnRoomName] = { remoteRooms: [] };
+	}
+
+	if (!_.some(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName })) {
+
+		var creepsSpawnRule = {
+			roomName: remoteRoomName,
+			spawnOrderMaxSpawnedCounts: [
+				{ controllerEnergizer: 0 },
+			],
+			canControllerEnergizersBuild: true,
+		}
+
+		if (controllerToUpgrade.level < 4) {
+			creepsSpawnRule.canEnergyCreepsPickup = true;
+		}
+
+		remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms.push(creepsSpawnRule);
+	}
+
+	var remoteRoom = _.find(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName });
+
+	remoteRoom.spawnOrderMaxSpawnedCounts[0]["controllerEnergizer"]++;
+}
+
+
+module.exports = cachedUpgradeControllerRule;

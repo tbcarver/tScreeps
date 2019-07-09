@@ -1,6 +1,10 @@
 
 var roomTools = {};
 
+if (!Memory.state.getCountControllerUpgradePositions) {
+	Memory.state.getCountControllerUpgradePositions = {};
+}
+
 var adjacentDifferentials = [
 	{ x: -1, y: -1 },
 	{ x: -1, y: 0 },
@@ -144,7 +148,8 @@ roomTools.buildSpawnStats = function() {
 }
 
 roomTools.getSpawnsCount = function(roomName) {
-	return this.spawnStats.rooms[roomName].spawnsCount;
+
+	return (this.spawnStats.rooms[roomName]) ? this.spawnStats.rooms[roomName].spawnsCount : 0;
 }
 
 roomTools.buildStorageStats = function() {
@@ -238,22 +243,57 @@ roomTools.getCountResourceHarvestPositions = function(resourceId) {
 
 roomTools.getCountControllerUpgradePositions = function(controller) {
 
-	var resource = Game.getObjectById(resourceId);
-	var area = resource.room.lookAtArea(resource.pos.y - 1, resource.pos.x - 1, resource.pos.y + 1, resource.pos.x + 1, true);
+	var countControllerUpgradePositions = 0;
 
-	var countResourceHarvestPositions = area.reduce((countOfPlain, element) => {
+	if (Memory.state.getCountControllerUpgradePositions[controller.id]) {
 
-		if (element.terrain) {
-			if (element.terrain === "plain") {
-				countOfPlain++
+		countControllerUpgradePositions = Memory.state.getCountControllerUpgradePositions[controller.id]
+
+	} else {
+
+		for (var xDifferential = -3; xDifferential <= 3; xDifferential++) {
+
+			if (roomTools.isPlainTerrain(controller.room.name, controller.pos.x + xDifferential, controller.pos.y - 3)) {
+				countControllerUpgradePositions++;
+			}
+
+			if (roomTools.isPlainTerrain(controller.room.name, controller.pos.x + xDifferential, controller.pos.y + 3)) {
+				countControllerUpgradePositions++;
 			}
 		}
 
-		return countOfPlain;
+		for (var yDifferential = -2; yDifferential <= 2; yDifferential++) {
 
-	}, 0);
+			if (roomTools.isPlainTerrain(controller.room.name, controller.pos.x - 3, controller.pos.y - yDifferential)) {
+				countControllerUpgradePositions++;
+			}
 
-	return countResourceHarvestPositions;
+			if (roomTools.isPlainTerrain(controller.room.name, controller.pos.x + 3, controller.pos.y + yDifferential)) {
+				countControllerUpgradePositions++;
+			}
+
+		}
+
+		Memory.state.getCountControllerUpgradePositions[controller.id] = countControllerUpgradePositions;
+	}
+
+	return countControllerUpgradePositions;
+}
+
+roomTools.isPlainTerrain = function(roomName, x, y) {
+
+	var isPlainTerrain = false;
+
+	var objects = Game.rooms[roomName].lookForAt(LOOK_TERRAIN, x, y);
+	if (objects.length != 1) {
+		throw new Error(`One terrain object not found in room ${controller.room.name} at position ${controller.pos.x + xDifferential},${controller.pos.y + yDifferential}`);
+	}
+
+	if (objects[0] === "plain") {
+		isPlainTerrain = true;
+	}
+
+	return isPlainTerrain;
 }
 
 // roomTools.lookAt = function() {

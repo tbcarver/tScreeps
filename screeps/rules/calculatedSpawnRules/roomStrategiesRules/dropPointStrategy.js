@@ -63,18 +63,6 @@ dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpa
 
 	recalculateEnergy(spawnRoomName, creepsSpawnRule, "remoteSpawnedStorageTransferer", creepsSpawnRule.measure.droppedEnergy);
 	recalculateEnergy(spawnRoomName, creepsSpawnRule, "storageTransferer", creepsSpawnRule.measure.harvestedEnergy);
-
-	// Limit transferers when approaching max storage
-	var storageStats = roomTools.getStorageStats(spawnRoomName);
-
-	if (storageStats.hasStorage && storageStats.percentageStoredEnergy >= 95) {
-		if (spawnOrderMaxSpawnedCount["remoteSpawnedStorageTransferer"] > 5) {
-			spawnOrderMaxSpawnedCount["remoteSpawnedStorageTransferer"] = 5;
-		}
-		if (spawnOrderMaxSpawnedCount["storageTransferer"] > 1) {
-			spawnOrderMaxSpawnedCount["storageTransferer"] = 1;
-		}
-	}
 }
 
 function recalculateEnergy(spawnRoomName, creepsSpawnRule, creepType, measureMemory) {
@@ -93,13 +81,12 @@ function recalculateEnergy(spawnRoomName, creepsSpawnRule, creepType, measureMem
 	var averageCarryCapacity = Math.floor(carryCapacities.totalCarryCapacity / carryCapacities.creepsCount);
 	var averageEnergy = Math.floor(measureMemory.totalEnergy / measureMemory.totalEnergyCount);
 	var energyToCapacityPercent = Math.floor(averageEnergy / averageCarryCapacity * 100);
+	var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, element => Object.keys(element)[0] === creepType);
 
 	if (energyToCapacityPercent > averageCarryCapacity * 2) {
 
-		var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, element => Object.keys(element)[0] === creepType);
-
 		if (spawnOrderMaxSpawnedCount[creepType] < roomTools.getSpawnsCount(spawnRoomName) * 10) {
-			
+
 			var additionalCreepsCount = Math.floor(energyToCapacityPercent / averageCarryCapacity);
 
 			if (additionalCreepsCount > 5) {
@@ -111,10 +98,21 @@ function recalculateEnergy(spawnRoomName, creepsSpawnRule, creepType, measureMem
 		}
 	} else if (energyToCapacityPercent < 50) {
 
-		var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, element => Object.keys(element)[0] === creepType);
 
 		if (spawnOrderMaxSpawnedCount[creepType] > 0) {
 			spawnOrderMaxSpawnedCount[creepType]--;
+		}
+	}
+
+	// Limit transferers when approaching max storage
+	var storageStats = roomTools.getStorageStats(spawnRoomName);
+
+	if (storageStats.hasStorage && storageStats.percentageStoredEnergy >= 95) {
+
+		var limit = (creepType === "remoteSpawnedStorageTransferer") ? 5 : 1;
+
+		if (spawnOrderMaxSpawnedCount[creepType] > limit) {
+			spawnOrderMaxSpawnedCount[creepType] = limit;
 		}
 	}
 

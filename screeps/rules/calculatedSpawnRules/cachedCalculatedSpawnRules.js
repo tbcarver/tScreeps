@@ -2,18 +2,18 @@
 var gameTools = require("../../tools/gameTools");
 var calculatedSpawnRulesTools = require("./calculatedSpawnRulesTools");
 var cachedStorageTransferRule = require("./cachedStorageTransferRule");
-// var upgradeControllerRule = require("./cachedUpgradeControllerRule");
+var upgradeControllerRule = require("./cachedUpgradeControllerRule");
 
 var calculatedSpawnRules = {
 	cachedStorageTransferRule: cachedStorageTransferRule,
-	// upgradeControllerRule: upgradeControllerRule,
+	upgradeControllerRule: upgradeControllerRule,
+}
+
+if (!Memory.state.builtCalculatedCreepsSpawnRules) {
+	Memory.state.builtCalculatedCreepsSpawnRules = {};
 }
 
 function addCalculatedSpawnRules(creepsSpawnRules) {
-
-	if (!Memory.state.builtCalculatedCreepsSpawnRules) {
-		Memory.state.builtCalculatedCreepsSpawnRules = {};
-	}
 
 	for (var calculatedSpawnRuleName in calculatedSpawnRules) {
 

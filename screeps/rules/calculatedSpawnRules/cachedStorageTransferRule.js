@@ -1,6 +1,5 @@
 
 var roomTools = require("../../tools/roomTools");
-var calculatedSpawnRulesTools = require("./calculatedSpawnRulesTools");
 
 var cachedStorageTransferRule = {
 	coolOffCount: 300,

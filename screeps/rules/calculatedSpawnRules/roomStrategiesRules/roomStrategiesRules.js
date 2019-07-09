@@ -11,11 +11,11 @@ var roomStrategies = {
 	mobDefense: mobDefenseStrategy,
 }
 
-function addCalculatedSpawnRules(creepsSpawnRules) {
+if (!Memory.state.roomStrategies) {
+	Memory.state.roomStrategies = {};
+}
 
-	if (!Memory.state.roomStrategies) {
-		Memory.state.roomStrategies = {};
-	}
+function addCalculatedSpawnRules(creepsSpawnRules) {
 
 	var remoteRoomCreepsSpawnRules = {};
 	var roomStrategyKeys = {};

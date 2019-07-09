@@ -17,5 +17,18 @@ calculatedSpawnRulesTools.prependRemoteRoomCreepsSpawnRules = function(creepsSpa
 	}
 }
 
+calculatedSpawnRulesTools.appendRemoteRoomCreepsSpawnRules = function(creepsSpawnRules, spawnRoomsRemoteRoomCreepsSpawnRules) {
+
+	for (var spawnRoomName in spawnRoomsRemoteRoomCreepsSpawnRules) {
+
+		var spawnRoom = _.find(creepsSpawnRules, { roomName: spawnRoomName });
+		
+		for (var remoteRoom of spawnRoomsRemoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms) {
+
+			spawnRoom.remoteRooms.push(remoteRoom);
+		}
+	}
+}
+
 
 module.exports = calculatedSpawnRulesTools;

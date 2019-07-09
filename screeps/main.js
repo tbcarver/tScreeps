@@ -20,6 +20,11 @@ var creepsController = require("./creeps/creepsController");
 var towersController = require("./structures/towersController");
 var observersController = require("./structures/observersController");
 
+if (!Memory.state) {
+	Memory.state = {};
+	Memory.state.rooms = {};
+}
+
 
 // var profiler = require("../screeps-profiler");
 // profiler.enable();
@@ -110,11 +115,6 @@ function loop() {
 }
 
 function initialize() {
-
-	if (!Memory.state) {
-		Memory.state = {};
-		Memory.state.rooms = {};
-	}
 
 	for (var roomName in Game.rooms) {
 

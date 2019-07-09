@@ -10,6 +10,8 @@ var orderBy = require("lodash/orderBy");
 
 function tick() {
 
+	// debug.temp(roomTools.getCountControllerUpgradePositions(Game.rooms.W7N10.controller));
+
 	// var controllers = _.map(Game.rooms, room => room.controller);
 	// var filteredControllers = controllers.filter(controller => controller.level >= 1 && controller.level <= 7);
 	// if (filteredControllers.length > 0) {
