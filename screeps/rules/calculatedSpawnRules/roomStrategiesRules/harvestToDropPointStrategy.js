@@ -86,6 +86,15 @@ harvestToDropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, 
 		}
 	}
 
+	// Limit transferers when approaching max storage
+	var storageStats = roomTools.getStorageStats(spawnRoomName);
+
+	if (storageStats.hasStorage && storageStats.percentageStoredEnergy >= 95) {
+		if (spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"] > 3) {
+			spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"] = 3;
+		}
+	}
+
 	creepsSpawnRule.measure.totalEnergyCount = 0;
 	creepsSpawnRule.measure.totalEnergy = 0;
 }
@@ -107,6 +116,18 @@ harvestToDropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, cree
 	} else {
 		debug.warning(`harvestToDropPointStrategy room not found for ${creepsSpawnRule.roomName}`);
 	}
+}
+
+harvestToDropPointStrategy.canApplyRule = function(spawnRoomName, remoteRoomName) {
+
+	var canApplyRule = false;
+	var storageStats = roomTools.getStorageStats(spawnRoomName);
+
+	if (!storageStats.hasStorage || storageStats.percentageStoredEnergy < 99) {
+		canApplyRule = true;
+	}
+
+	return canApplyRule;
 }
 
 

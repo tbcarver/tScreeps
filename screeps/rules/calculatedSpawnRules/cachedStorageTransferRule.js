@@ -2,7 +2,12 @@
 var roomTools = require("../../tools/roomTools");
 var calculatedSpawnRulesTools = require("./calculatedSpawnRulesTools");
 
-function addCalculatedSpawnRule(creepsSpawnRules) {
+var cachedStorageTransferRule = {
+	coolOffCount: 300,
+	prepend: true,
+};
+
+cachedStorageTransferRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 
 	var breakPointMultiplier = 50;
 	var transferringRooms;
@@ -124,7 +129,7 @@ function addCalculatedSpawnRule(creepsSpawnRules) {
 		}
 	}
 
-	calculatedSpawnRulesTools.prependRemoteRoomCreepsSpawnRules(creepsSpawnRules, remoteRoomCreepsSpawnRules);
+	return remoteRoomCreepsSpawnRules;
 }
 
 function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoomName, remoteRoomName) {
@@ -149,4 +154,4 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 }
 
 
-module.exports = addCalculatedSpawnRule;
+module.exports = cachedStorageTransferRule;

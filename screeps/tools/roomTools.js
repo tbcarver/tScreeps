@@ -236,6 +236,26 @@ roomTools.getCountResourceHarvestPositions = function(resourceId) {
 	return countResourceHarvestPositions;
 }
 
+roomTools.getCountControllerUpgradePositions = function(controller) {
+
+	var resource = Game.getObjectById(resourceId);
+	var area = resource.room.lookAtArea(resource.pos.y - 1, resource.pos.x - 1, resource.pos.y + 1, resource.pos.x + 1, true);
+
+	var countResourceHarvestPositions = area.reduce((countOfPlain, element) => {
+
+		if (element.terrain) {
+			if (element.terrain === "plain") {
+				countOfPlain++
+			}
+		}
+
+		return countOfPlain;
+
+	}, 0);
+
+	return countResourceHarvestPositions;
+}
+
 // roomTools.lookAt = function() {
 
 // 	var positions =

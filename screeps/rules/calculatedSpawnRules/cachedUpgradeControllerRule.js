@@ -1,23 +1,23 @@
 var roomTools = require("../../tools/roomTools");
-var rules = require("../../rules/rules")
+var rules = require("../rules")
 var calculatedSpawnRulesTools = require("./calculatedSpawnRulesTools");
 var orderBy = require("lodash/orderBy");
 
-function addCalculatedSpawnRule(creepsSpawnRules) {
+function addCalculatedSpawnRules(creepsSpawnRules) {
 
 	if (rules.upgradeControllerSpawnRule) {
 
 		if (rules.upgradeControllerSpawnRule === "oneToEight") {
-			addOneToEightCalculatedSpawnRule(creepsSpawnRules);
+			addOneToEightCalculatedSpawnRules(creepsSpawnRules);
 		} else if (rules.upgradeControllerSpawnRule === "togetherToEight") {
-			addTogetherToEightCalculatedSpawnRule(creepsSpawnRules);
+			addTogetherToEightCalculatedSpawnRules(creepsSpawnRules);
 		} else {
 			debug.danger(`Unknown upgradeControllerSpawnRule: ${upgradeControllerSpawnRule}`)
 		}
 	}
 }
 
-function addOneToEightCalculatedSpawnRule(creepsSpawnRules) {
+function addOneToEightCalculatedSpawnRules(creepsSpawnRules) {
 
 	transferringRooms = [];
 	receivingRooms = [];
@@ -44,23 +44,27 @@ function addOneToEightCalculatedSpawnRule(creepsSpawnRules) {
 	var controllers = _.map(Game.rooms, room => room.controller);
 	var filteredControllers = controllers.filter(controller => controller.level >= 1 && controller.level <= 4);
 
+	if (filteredControllers.length === 0) {
+		filteredControllers = controllers.filter(controller => controller.level >= 1 && controller.level <= 7);
+	}
+
 	if (filteredControllers.length > 0) {
+		filteredControllers = orderBy(filteredControllers, "level", "desc");
+		filteredControllers = orderBy(filteredControllers, "progress", "desc");
+		controllerToUpgrade = filteredControllers[0];
+	}
 
-	} else {
+	if (transferringRooms.length > 0 && controllerToUpgrade) {
 
-		var filteredControllers = controllers.filter(controller => controller.level >= 1 && controller.level <= 7);
-		if (filteredControllers.length > 0) {
-			filteredControllers = orderBy(filteredControllers, "level", "desc");
-			filteredControllers = orderBy(filteredControllers, "progress", "desc");
-			controllerToUpgrade = filteredControllers[0];
-		}
+
+		roomTools.getCountControllerUpgradePositions(controllerToUpgrade);
 	}
 }
 
 
-function addTogetherToEightCalculatedSpawnRule(creepsSpawnRules) {
+function addTogetherToEightCalculatedSpawnRules(creepsSpawnRules) {
 
 }
 
 
-module.exports = addCalculatedSpawnRule;
+module.exports = addCalculatedSpawnRules;

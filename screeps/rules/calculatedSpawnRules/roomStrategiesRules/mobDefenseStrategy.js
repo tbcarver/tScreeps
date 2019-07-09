@@ -28,5 +28,9 @@ mobDefenseStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSp
 mobDefenseStrategy.measureCreepsSpawnRule = function(spawnRoomName, creepsSpawnRule) {
 }
 
+mobDefenseStrategy.canApplyRule = function() {
+	return true;
+}
+
 
 module.exports = mobDefenseStrategy;

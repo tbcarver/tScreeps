@@ -63,6 +63,18 @@ dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpa
 
 	recalculateEnergy(spawnRoomName, creepsSpawnRule, "remoteSpawnedStorageTransferer", creepsSpawnRule.measure.droppedEnergy);
 	recalculateEnergy(spawnRoomName, creepsSpawnRule, "storageTransferer", creepsSpawnRule.measure.harvestedEnergy);
+
+	// Limit transferers when approaching max storage
+	var storageStats = roomTools.getStorageStats(spawnRoomName);
+
+	if (storageStats.hasStorage && storageStats.percentageStoredEnergy >= 95) {
+		if (spawnOrderMaxSpawnedCount["remoteSpawnedStorageTransferer"] > 5) {
+			spawnOrderMaxSpawnedCount["remoteSpawnedStorageTransferer"] = 5;
+		}
+		if (spawnOrderMaxSpawnedCount["storageTransferer"] > 1) {
+			spawnOrderMaxSpawnedCount["storageTransferer"] = 1;
+		}
+	}
 }
 
 function recalculateEnergy(spawnRoomName, creepsSpawnRule, creepType, measureMemory) {
@@ -139,6 +151,18 @@ function measureEnergy(room, dropFlag, measureMemory, isInRangeToDropFlag) {
 
 	measureMemory.totalEnergyCount++;
 	measureMemory.totalEnergy += totalEnergy;
+}
+
+dropPointStrategy.canApplyRule = function(spawnRoomName, remoteRoomName) {
+
+	var canApplyRule = false;
+	var storageStats = roomTools.getStorageStats(spawnRoomName);
+
+	if (!storageStats.hasStorage || storageStats.percentageStoredEnergy < 99) {
+		canApplyRule = true;
+	}
+
+	return canApplyRule;
 }
 
 module.exports = dropPointStrategy;
