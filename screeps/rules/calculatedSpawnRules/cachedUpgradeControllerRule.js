@@ -64,6 +64,7 @@ function addOneToEightCalculatedSpawnRules(creepsSpawnRules) {
 	if (spawningRooms.length > 0 && controllerToUpgrade) {
 
 		var maxCreepsCount = roomTools.getCountControllerUpgradePositions(controllerToUpgrade);
+		maxCreepsCount = Math.floor(maxCreepsCount * .25);
 
 		for (var count = 1; count <= maxCreepsCount; count++) {
 			for (var spawningRoom of spawningRooms) {

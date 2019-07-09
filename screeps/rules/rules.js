@@ -80,6 +80,8 @@ function buildRoomsCreepsSpawnRules(creepsSpawnRules) {
 			roomNamesCreepsSpawnRules[creepsSpawnRule.roomName].remoteRooms = remoteRooms;
 		}
 	}
+	
+	Memory.state.roomNamesCreepsSpawnRules = roomNamesCreepsSpawnRules;
 
 	var creepsToSpawnTotal = 0;
 	var spawnedRoomsCreepsToSpawnTotal = {};
@@ -110,7 +112,6 @@ function buildRoomsCreepsSpawnRules(creepsSpawnRules) {
 		}
 	}
 
-	Memory.state.roomNamesCreepsSpawnRules = roomNamesCreepsSpawnRules;
 	Memory.state.creepsToSpawnTotal = creepsToSpawnTotal;
 	Memory.state.spawnedRoomsCreepsToSpawnTotal = spawnedRoomsCreepsToSpawnTotal;
 }
