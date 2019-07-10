@@ -39,6 +39,15 @@ enemyTools.hasRoomEnemies = function(roomName) {
 	}
 }
 
+enemyTools.hasRoomEnemiesAndNoTower = function(roomName) {
+
+	if (this.hasEnemies > 0 && this.enemyStats.roomNameEnemyStats[roomName] && !this.enemyStats.roomNameEnemyStats[roomName].hasTower) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 enemyTools.getMobAttackRoomName = function(mobPostRoomName) {
 
 	var mobAttackRoomName;

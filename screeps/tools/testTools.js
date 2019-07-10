@@ -1,5 +1,6 @@
 
 var { rules } = require("../rules/rules")
+var enemyTools = require("./enemyTools");
 var findTools = require("./findTools");
 var roomTools = require("./roomTools");
 var spawnTools = require("./spawnTools");

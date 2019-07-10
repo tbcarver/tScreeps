@@ -46,7 +46,7 @@ BaseCreep.prototype.act = function() {
 
 	var acted = false;
 
-	if (spawnTools.isCreepInSpawnBuffer(this.creep)) {		
+	if (spawnTools.isCreepInSpawnBuffer(this.creep)) {
 		this.creep.say("🙋" + this.creep.ticksToLive);
 	}
 
@@ -84,7 +84,7 @@ BaseCreep.prototype.act = function() {
 					this.creep.moveTo(this.creep.room.controller);
 				}
 			} else {
-	
+
 				this.creep.say("😰 " + this.creep.ticksToLive);
 				this.transferEnergy();
 			}
@@ -97,11 +97,33 @@ BaseCreep.prototype.act = function() {
 		this.memory.takeStepsIntoRoom--;
 		acted = true;
 
-	} else if (rules.evacuateRemoteRooms && !this.isTrooper && this.state !== "movingToSpawnedRoom" && this.creep.room.name === this.remoteRoomName && enemyTools.hasRoomEnemies(this.creep.room.name)) {
+	} else if (this.memory.pause) {
 
-		this.state = "movingToSpawnedRoom";
+		if (Game.time >= this.memory.pause) {
+			delete this.memory.pause;
+		}
+		
 		acted = true;
 
+	} else if (this.memory.evacuateToRoom) {
+
+		if (this.creep.room.name === this.memory.evacuateToRoom) {
+
+			// NOTE: Creep must step off the exit edge of the room immediately
+			//  or will be sent back to the other room
+			this.moveIntoRoom();
+			this.memory.takeStepsIntoRoom = 2;
+
+			this.memory.pause = Game.time + rules.mobAttackRoomCoolDownCount;
+			this.state === "movingToRemoteRoom";
+
+			delete this.memory.evacuateToRoom
+			acted = true;
+
+		} else {
+			this.moveToExit(this.memory.evacuateToRoom);
+			acted = true;
+		}
 	} else if (this.state === "movingToSpawnedRoom") {
 
 		if (this.creep.room.name === this.spawnedRoomName) {
@@ -117,6 +139,14 @@ BaseCreep.prototype.act = function() {
 			this.moveToExit(this.spawnedRoomName);
 			acted = true;
 		}
+	} else if (this.shouldEvacuateRoom(this.creep.room.name)) {
+
+		var routes = findTools.findRoute(this.creep.room.name, this.spawnedRoomName);
+
+		if (routes.length > 0 && routes[0].exit >= OK) {
+
+			this.memory.evacuateToRoom = routes[0].room;
+		}
 	} else if (this.state === "movingToRemoteRoom") {
 
 
@@ -131,7 +161,7 @@ BaseCreep.prototype.act = function() {
 
 		} else {
 
-			if (!(rules.evacuateRemoteRooms && !this.isTrooper && enemyTools.hasRoomEnemies(this.remoteRoomName))) {
+			if (!(rules.evacuateRooms && !this.isTrooper && enemyTools.hasRoomEnemies(this.remoteRoomName))) {
 				this.moveToExit(this.remoteRoomName);
 			}
 
@@ -163,49 +193,43 @@ BaseCreep.prototype.arrivedAtSpawnedRoom = function() {
 
 BaseCreep.prototype.moveToExit = function(exitRoomName) {
 
-	var exitFlag = Game.flags[`exit-from-${this.creep.room.name}-to-${exitRoomName}`];
-	var isAtFlag = false;
+	var routes = findTools.findRoute(this.creep.room.name, exitRoomName);
+	if (routes.length > 0 && routes[0].exit >= OK) {
 
-	if (!exitFlag) {
+		var routeRoomName = routes[0].room;
+		var routeExit = routes[0].exit
 
-		var routes = findTools.findRoute(this.creep.room.name, exitRoomName);
+		if (!this.shouldEvacuateRoom(routeRoomName)) {
 
-		// debug.creep(creep, "");
-		if (routes.length > 0) {
-			exitFlag = Game.flags[`exit-from-${this.creep.room.name}-to-${routes[0].room}`];
-		}
-	}
+			var exitFlag = Game.flags[`exit-from-${this.creep.room.name}-to-${routeRoomName}`];
+			var isAtFlag = false;
 
-	if (exitFlag) {
+			if (exitFlag) {
 
-		// NOTE: Flags must be next to exits, alternating between 1 and 2 help the
-		//  creeps from getting stuck.
-		if (this.creep.pos.inRangeTo(exitFlag, Game.time % 4 >= 2 ? 1 : 2)) {
-			isAtFlag = true;
-		} else {
-			this.creep.moveTo(exitFlag);
-		}
-	}
-
-	if (isAtFlag || !exitFlag) {
-
-		var routes = findTools.findRoute(this.creep.room.name, exitRoomName);
-		// var exitDirection = this.creep.room.findExitTo(exitRoomName);
-
-		if (routes.length > 0 && routes[0].exit >= OK) {
-
-			var exit = this.creep.pos.findClosestByPath(routes[0].exit);
-
-			if (exit) {
-
-				this.creep.moveTo(exit);
-
-			} else {
-				debug.warning(`${this.type} ${this.creep.name} can't find a path from ${this.creep.room.name} to the exit to ${exitRoomName} with exit ${routes[0].exit}`);
+				// NOTE: Flags must be next to exits, alternating between 1 and 2 help the
+				//  creeps from getting stuck.
+				if (this.creep.pos.inRangeTo(exitFlag, Game.time % 4 >= 2 ? 1 : 2)) {
+					isAtFlag = true;
+				} else {
+					this.creep.moveTo(exitFlag);
+				}
 			}
-		} else {
-			debug.warning(`${this.type} ${this.creep.name} can't find an exit direction from ${this.creep.room.name} to ${exitRoomName}`);
+
+			if (isAtFlag || !exitFlag) {
+
+				var exit = this.creep.pos.findClosestByPath(routeExit);
+
+				if (exit) {
+
+					this.creep.moveTo(exit);
+
+				} else {
+					debug.warning(`${this.type} ${this.creep.name} can't find a path from ${this.creep.room.name} to the exit to ${routeRoomName} with exit ${routeExit}`);
+				}
+			}
 		}
+	} else {
+		debug.warning(`${this.type} ${this.creep.name} can't find a rout from ${this.creep.room.name} to ${exitRoomName}`);
 	}
 }
 
@@ -259,10 +283,15 @@ BaseCreep.prototype.transferEnergy = function() {
 			if (this.creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 				this.creep.moveTo(target);
 			}
-		} else {			
+		} else {
 			this.creep.drop(RESOURCE_ENERGY);
 		}
 	}
+}
+
+BaseCreep.prototype.shouldEvacuateRoom = function(roomName) {
+
+	return rules.evacuateRooms && !this.isTrooper && this.creep.room.name !== this.spawnedRoomName && enemyTools.hasRoomEnemiesAndNoTower(roomName);
 }
 
 BaseCreep.prototype.debug = function(creepName, ...logs) {

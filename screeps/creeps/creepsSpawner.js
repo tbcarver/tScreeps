@@ -163,7 +163,7 @@ function spawnCreep(spawn, creepMemory, creepsSpawnRule, spawnedRoomCreepsSpawnR
 		spawned: false
 	};
 
-	if (!(rules.evacuateRemoteRooms && !creepMemory.isTrooper && enemyTools.hasRoomEnemies(creepMemory.remoteRoomName))) {
+	if (!(rules.evacuateRooms && !creepMemory.isTrooper && enemyTools.hasRoomEnemies(creepMemory.remoteRoomName))) {
 
 		var spawnCapacity = spawnTools.calculateSpawnCapacity(spawn);
 
