@@ -3,7 +3,7 @@ var { rules } = require("../../rules/rules")
 var orderBy = require("lodash/orderBy");
 
 var cachedUpgradeControllerRule = {
-	coolOffCount: 300,
+	coolOffCount: 100,
 };
 
 cachedUpgradeControllerRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
