@@ -112,7 +112,7 @@ BaseCreep.prototype.act = function() {
 			// NOTE: Creep must step off the exit edge of the room immediately
 			//  or will be sent back to the other room
 			this.moveIntoRoom();
-			this.memory.takeStepsIntoRoom = 2;
+			this.memory.takeStepsIntoRoom = 4;
 
 			this.memory.pause = Game.time + rules.mobAttackRoomCoolDownCount;
 			this.state === "movingToRemoteRoom";
