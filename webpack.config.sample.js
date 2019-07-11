@@ -1,8 +1,8 @@
 var ScreepsWebpackPlugin = require('./screepsWebpackPlugin')
 
 var screepsOptions = {
-  email: 'carver230620',
-  // email: 'carver230620-sandbox',
+  // email: 'carver230620',
+  email: 'carver230620-sandbox',
   password: '5560',
   serverUrl: 'http://screeps-server.codecamp.edu:21025'
 }
