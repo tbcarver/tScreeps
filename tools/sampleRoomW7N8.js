@@ -2,11 +2,9 @@
 module.exports = {
 	roomName: "W7N8",
 	spawnOrderMaxSpawnedCounts: [
-		{ repairer: 0 },
 		{ spawnEnergizer: 1 },
 		{ extensionEnergizer: 6 },
 		{ dropContainerHarvester: 4 },
-		{ builder: 6 },
 		{ storageTransferer: 1 },
 		{ controllerEnergizer: 1 },
 	],
