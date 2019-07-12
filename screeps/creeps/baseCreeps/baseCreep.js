@@ -26,18 +26,28 @@ function BaseCreep(creep) {
 
 	Object.defineProperty(this, 'creepsSpawnRule', {
 		get: function() {
+			var creepsSpawnRule;
 
-			if (this.remoteRoomName) {
-				return Memory.state.roomNamesCreepsSpawnRules[this.spawnedRoomName].remoteRooms[this.remoteRoomName];
-			} else {
-				return Memory.state.roomNamesCreepsSpawnRules[this.spawnedRoomName];
+			if (Memory.state.roomNamesCreepsSpawnRules) {
+
+				if (this.remoteRoomName) {
+					creepsSpawnRule = Memory.state.roomNamesCreepsSpawnRules[this.spawnedRoomName].remoteRooms[this.remoteRoomName];
+				} else {
+					creepsSpawnRule = Memory.state.roomNamesCreepsSpawnRules[this.spawnedRoomName];
+				}
 			}
+			return creepsSpawnRule;
 		}
 	});
 
 	Object.defineProperty(this, 'spawnedRoomCreepsSpawnRule', {
 		get: function() {
-			return Memory.state.roomNamesCreepsSpawnRules[this.spawnedRoomName];
+
+			if (Memory.state.roomNamesCreepsSpawnRules) {
+				return Memory.state.roomNamesCreepsSpawnRules[this.spawnedRoomName];
+			} else {
+				return undefined;
+			}
 		}
 	});
 }
@@ -102,7 +112,7 @@ BaseCreep.prototype.act = function() {
 		if (Game.time >= this.memory.pause) {
 			delete this.memory.pause;
 		}
-		
+
 		acted = true;
 
 	} else if (this.memory.evacuateToRoom) {

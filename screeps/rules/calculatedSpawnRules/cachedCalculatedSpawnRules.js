@@ -9,11 +9,11 @@ var calculatedSpawnRules = {
 	upgradeControllerRule: upgradeControllerRule,
 }
 
-if (!Memory.state.builtCalculatedCreepsSpawnRules) {
-	Memory.state.builtCalculatedCreepsSpawnRules = {};
-}
-
 function addCalculatedSpawnRules(creepsSpawnRules) {
+
+	if (!Memory.state.builtCalculatedCreepsSpawnRules) {
+		Memory.state.builtCalculatedCreepsSpawnRules = {};
+	}
 
 	for (var calculatedSpawnRuleName in calculatedSpawnRules) {
 

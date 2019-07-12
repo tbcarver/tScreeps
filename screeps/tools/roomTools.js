@@ -1,10 +1,6 @@
 
 var roomTools = {};
 
-if (!Memory.state.getCountControllerUpgradePositions) {
-	Memory.state.getCountControllerUpgradePositions = {};
-}
-
 var adjacentDifferentials = [
 	{ x: -1, y: -1 },
 	{ x: -1, y: 0 },
@@ -191,7 +187,7 @@ roomTools.buildStorageStats = function() {
 	}
 
 	this.roomsStorageStats.totalStoredEnergy = totalStoredEnergy;
-	this.roomsStorageStats.totalPercentageStoredEnergy = Math.floor(totalStoredEnergy / totalStorageCapacity * 100);
+	this.roomsStorageStats.totalPercentageStoredEnergy = Math.floor(totalStoredEnergy / totalStorageCapacity * 100) || 0;
 
 	return percentageStoredEnergy;
 }
@@ -203,12 +199,12 @@ roomTools.getStorageStats = function(roomName) {
 
 roomTools.getStoredEnergy = function(roomName) {
 
-	return this.roomsStorageStats[roomName].storedEnergy;
+	return (this.roomsStorageStats[roomName]) ? this.roomsStorageStats[roomName].storedEnergy : 0;
 }
 
 roomTools.getPercentageStoredEnergy = function(roomName) {
 
-	return this.roomsStorageStats[roomName].percentageStoredEnergy;
+	return (this.roomsStorageStats[roomName]) ? this.roomsStorageStats[roomName].percentageStoredEnergy : 0;
 }
 
 roomTools.getTotalStoredEnergy = function() {
@@ -242,6 +238,10 @@ roomTools.getCountResourceHarvestPositions = function(resourceId) {
 }
 
 roomTools.getCountControllerUpgradePositions = function(controller) {
+
+	if (!Memory.state.getCountControllerUpgradePositions) {
+		Memory.state.getCountControllerUpgradePositions = {};
+	}
 
 	var countControllerUpgradePositions = 0;
 

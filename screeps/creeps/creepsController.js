@@ -25,7 +25,8 @@ creepsController.tick = function() {
 
 			var baseCreep = creepsFactory.buildCreep(creep);
 
-			// debug.temp(`creep act: type: ${creep.memory.type} ticks: ${creep.ticksToLive}`);+
+			// debug.temp(`creep act: type: ${creep.memory.type} ticks: ${creep.ticksToLive}`);
+
 			if (!creep.spawning) {
 				baseCreep.act();
 			}
@@ -68,7 +69,7 @@ creepsController.tick = function() {
 	var roomsCount = Object.keys(Game.rooms).length;
 	var displayCreepsTotal = `${roomsCount}, ${creepsTotal}/${Memory.state.creepsToSpawnTotal} (${creepsSpawnBufferTotal})`;
 	for (var spawnedRoomName in Memory.state.spawnedRoomsCreepsToSpawnTotal) {
-		displayCreepsTotal += `, ${spawnedRoomName}: ${spawnedRoomNamesCreepsTotal[spawnedRoomName]}/${Memory.state.spawnedRoomsCreepsToSpawnTotal[spawnedRoomName]}
+		displayCreepsTotal += `, ${spawnedRoomName}: ${spawnedRoomNamesCreepsTotal[spawnedRoomName] || 0}/${Memory.state.spawnedRoomsCreepsToSpawnTotal[spawnedRoomName]}
 			${roomTools.getPercentageStoredEnergy(spawnedRoomName)}%`;
 	}
 

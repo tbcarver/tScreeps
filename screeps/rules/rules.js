@@ -17,12 +17,11 @@ var rules = {
 
 var creepsSpawnRules = [];
 // NOTE: Order is important
-creepsSpawnRules.push(require("./rooms/W7N9"));
-creepsSpawnRules.push(require("./rooms/W7N8"));
-creepsSpawnRules.push(require("./rooms/W7N10"));
-creepsSpawnRules.push(require("./rooms/W8N8"));
-creepsSpawnRules.push(require("./rooms/W8N10"));
-creepsSpawnRules.push(require("./rooms/W8N9"));
+creepsSpawnRules.push(require("./rooms/W12N16"));
+
+if (!Memory.state.roomNamesCreepsSpawnRules) {
+	Memory.state.roomNamesCreepsSpawnRules = {};
+}
 
 function updateCreepsSpawnRules(creepsSpawnRules) {
 
@@ -80,7 +79,7 @@ function buildRoomsCreepsSpawnRules(creepsSpawnRules) {
 			roomNamesCreepsSpawnRules[creepsSpawnRule.roomName].remoteRooms = remoteRooms;
 		}
 	}
-	
+
 	Memory.state.roomNamesCreepsSpawnRules = roomNamesCreepsSpawnRules;
 
 	var creepsToSpawnTotal = 0;

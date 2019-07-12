@@ -1,5 +1,5 @@
 
-
+// NOTE: Declaration order is important
 var debug = require("../lib/coreVendor/coreScreeps/debug");
 var debugObjectTable = require("../lib/coreVendor/coreScreeps/debugObjectTable");
 var debugPairsTable = require("../lib/coreVendor/coreScreeps/debugPairsTable");
@@ -7,6 +7,10 @@ var debugPairsTable = require("../lib/coreVendor/coreScreeps/debugPairsTable");
 global.debug = debug;
 global.debugObjectTable = debugObjectTable;
 global.debugPairsTable = debugPairsTable;
+
+if (!Memory.state) {
+	Memory.state = {};
+}
 
 var sourceMap = require("./sourceMap");
 var { rules } = require("./rules/rules");
@@ -19,12 +23,6 @@ var visualizeTools = require("./tools/visualizeTools");
 var creepsController = require("./creeps/creepsController");
 var towersController = require("./structures/towersController");
 var observersController = require("./structures/observersController");
-
-if (!Memory.state) {
-	Memory.state = {};
-	Memory.state.rooms = {};
-}
-
 
 // var profiler = require("../screeps-profiler");
 // profiler.enable();
@@ -115,6 +113,10 @@ function loop() {
 }
 
 function initialize() {
+
+	if (!Memory.state.rooms) {
+		Memory.state.rooms = {};
+	}
 
 	for (var roomName in Game.rooms) {
 

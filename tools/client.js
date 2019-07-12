@@ -72,11 +72,11 @@
 		// console.log("result: ", result);
 
 
-		// await api.auth('carver230620-sandbox', '1234');
+		await api.auth('carver230620-sandbox', '5560');
 		// await api.auth('carver230620', '5560');
 
-		// result = await api.raw.auth.me();
-		// console.log("me: ", result);
+		result = await api.raw.auth.me();
+		console.log("me: ", result);
 
 		// result = await api.raw.user.console("console.log(Object.getPrototypeOf(Game.creeps[Object.keys(Game.creeps)[0]]))");
 		// result = await api.raw.user.console("var creep1Name = Object.keys(Game.creeps)) console.log(Object.getPrototypeOf(Game.creeps[creep1Name]))");
@@ -161,16 +161,16 @@
 		// result = await api.raw.game.roomStatus(myRoom);
 		// console.log("roomStatus: ", result);
 
-		await api.auth('carver230620', '5560');
+		// await api.auth('carver230620-sandbox', '5560');
 		// result = await api.raw.game.mapStats(myRoom);
 		// console.log("worldStatus: ", result);
 
-		result = await api.raw.game.createInvader("W7N10", 41, 6, "big", "Melee");
-		result = await api.raw.game.createInvader("W7N10", 41, 6, "big", "Melee");
-		result = await api.raw.game.createInvader("W7N10", 41, 6, "big", "Melee");
-		result = await api.raw.game.createInvader("W7N10", 41, 6, "big", "Melee");
-		result = await api.raw.game.createInvader("W7N10", 41, 6, "big", "Melee");
-		console.log("result: ", result);
+		// result = await api.raw.game.createInvader("W7N10", 41, 6, "big", "Melee");
+		// result = await api.raw.game.createInvader("W7N10", 41, 6, "big", "Melee");
+		// result = await api.raw.game.createInvader("W7N10", 41, 6, "big", "Melee");
+		// result = await api.raw.game.createInvader("W7N10", 41, 6, "big", "Melee");
+		// result = await api.raw.game.createInvader("W7N10", 41, 6, "big", "Melee");
+		// console.log("result: ", result);
 
 	} catch (error) {
 		console.log(error)
