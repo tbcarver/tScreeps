@@ -41,7 +41,7 @@ function addCalculatedSpawnRules(creepsSpawnRules) {
 
 						if (!roomStrategyCreepsSpawnRule) {
 
-							var roomStrategyCreepsSpawnRule = roomStrategy.buildCreepsSpawnRule(creepsSpawnRule.roomName, remoteRoomName);
+							var roomStrategyCreepsSpawnRule = roomStrategy.buildCreepsSpawnRule(creepsSpawnRule.roomName, remoteRoomName, creepsSpawnRule);
 							Memory.state.roomStrategies[roomStrategyKey] = roomStrategyCreepsSpawnRule;
 
 						} else if (gameTools.hasCoolOffed(roomStrategyKey, roomStrategy.coolOffCount)) {

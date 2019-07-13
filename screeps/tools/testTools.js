@@ -5,11 +5,20 @@ var findTools = require("./findTools");
 var roomTools = require("./roomTools");
 var spawnTools = require("./spawnTools");
 var testObject = require("../creeps/energizers/extensionEnergizer");
-var bodyPartsStrategy = require("../creeps/bodies/moveCarryStrategy");
+var bodyPartsStrategy = require("../creeps/bodies/moveWorkStrategy");
 var sumBy = require("lodash/sumBy");
 var orderBy = require("lodash/orderBy");
 
 function tick() {
+
+	
+	// var dropFlag = Game.flags[`drop-W12N16`];
+	// var a = Game.rooms.W12N16.find(FIND_DROPPED_RESOURCES, {
+	// 	filter: resource => 
+	// 		(!dropFlag || !dropFlag.pos.inRangeTo(resource, 3))
+	// }).map(element => element.energy).sort((a, b) => a - b);
+
+	// debug.temp(a);
 
 	// debug.temp(roomTools.getCountControllerUpgradePositions(Game.rooms.W7N10.controller));
 
@@ -116,7 +125,7 @@ function tick() {
 	// 1000 {move: 9, work: 2, carry: 7}
 	// 1050 {move: 9, work: 3, carry: 6}
 
-	// moveCarryWorkStrategy
+	// moveCarryWorkStrategy partsPerMove: 2
 	// 350 {"move":2,"work":1,"carry":3}
 	// 400 {"move":2,"work":1,"carry":3}
 	// 450 {"move":3,"work":1,"carry":4}
@@ -150,7 +159,24 @@ function tick() {
 	// 1000 {move: 7, work: 6}
 	// 1050 {move: 7, work: 7}
 
-	// moveCarryStrategy
+	// moveWorkStrategy partsPerMove: 2
+	// 350 {move: 2, work: 2}
+	// 400 {move: 2, work: 3}
+	// 450 {move: 2, work: 3}
+	// 500 {move: 2, work: 4}
+	// 550 {move: 2, work: 4}
+	// 600 {move: 3, work: 4}
+	// 650 {move: 3, work: 5}
+	// 700 {move: 3, work: 5}
+	// 750 {move: 3, work: 6}
+	// 800 {move: 3, work: 6}
+	// 850 {move: 4, work: 6}
+	// 900 {move: 4, work: 7}
+	// 950 {move: 4, work: 7}
+	// 1000 {move: 4, work: 8}
+	// 1050 {move: 4, work: 8}
+
+	// moveCarryStrategy partsPerMove: 2
 	// 350 {move: 2, carry: 4}
 	// 400 {move: 3, carry: 5}
 	// 450 {move: 3, carry: 6}

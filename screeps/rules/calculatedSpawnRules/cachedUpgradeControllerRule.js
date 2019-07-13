@@ -3,7 +3,7 @@ var { rules } = require("../../rules/rules")
 var orderBy = require("lodash/orderBy");
 
 var cachedUpgradeControllerRule = {
-	coolOffCount: 100,
+	coolOffCount: 0,
 };
 
 cachedUpgradeControllerRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
@@ -32,16 +32,35 @@ function addOneToEightCalculatedSpawnRules(creepsSpawnRules) {
 
 		var spawnsCount = roomTools.getSpawnsCount(roomName);
 		var storageStats = roomTools.getStorageStats(roomName);
+		var droppedEnergy = roomTools.getDroppedEnergy(roomName);
 		var percentStoredEnergyRequiredMultiplier = 5;
 
-		if (spawnsCount > 0 && storageStats.hasStorage && storageStats.percentageStoredEnergy >= percentStoredEnergyRequiredMultiplier * spawnsCount) {
+		if (spawnsCount > 0) {
 
-			var spawningRoom = {
-				roomName: roomName,
-				creepsCount: Math.floor(Math.ceil(storageStats.percentageStoredEnergy / 20) * spawnsCount),
-			};
+			var creepsCount = 0;
 
-			spawningRooms.push(spawningRoom);
+			if (storageStats.hasStorage && storageStats.percentageStoredEnergy >= percentStoredEnergyRequiredMultiplier * spawnsCount) {
+
+				creepsCount = Math.floor(Math.ceil(storageStats.percentageStoredEnergy / 20) * spawnsCount);
+
+			} else if (droppedEnergy > 0) {
+
+				creepsCount = 6;
+
+				if (droppedEnergy > 300) {
+					creepsCount = Math.floor(droppedEnergy / 50);
+				}
+			}
+
+			if (creepsCount > 0) {
+
+				var spawningRoom = {
+					roomName: roomName,
+					creepsCount: creepsCount,
+				};
+
+				spawningRooms.push(spawningRoom);
+			}
 		}
 	}
 
@@ -64,7 +83,7 @@ function addOneToEightCalculatedSpawnRules(creepsSpawnRules) {
 	if (spawningRooms.length > 0 && controllerToUpgrade) {
 
 		var maxCreepsCount = roomTools.getCountControllerUpgradePositions(controllerToUpgrade);
-		maxCreepsCount = Math.floor(maxCreepsCount * .25);
+		maxCreepsCount += Math.floor(maxCreepsCount * .25);
 
 		for (var count = 1; count <= maxCreepsCount; count++) {
 			for (var spawningRoom of spawningRooms) {

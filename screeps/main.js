@@ -46,9 +46,14 @@ function loop() {
 
 		} else {
 
-			var storedEnergyStats = roomTools.getTotalStoredEnergy().toLocaleString("en-US") + " " +
-				roomTools.getTotalPercentageStoredEnergy() + "%";
-			debug.primary(Game.time, storedEnergyStats);
+			var energyStats = roomTools.getTotalStoredEnergy().toLocaleString("en-US") + " " +
+			roomTools.getTotalPercentageStoredEnergy() + "%";
+		
+			if (rules.logDroppedStats) {
+				energyStats += " " + roomTools.getTotalDroppedEnergy().toLocaleString("en-US")
+			}
+
+			debug.primary(Game.time, energyStats);
 		}
 
 		// console.log(controller.activateSafeMode())
@@ -63,7 +68,7 @@ function loop() {
 
 		// Game.rooms["W8N8"].createFlag(35,1, "exit-from-W8N8-to-W8N9", COLOR_GREEN, COLOR_WHITE)
 		// Game.rooms["W9N8"].createFlag(16,7, "post-W9N8", COLOR_GREY, COLOR_ORANGE)
-		// Game.rooms["W7N11"].createFlag(17,42, "drop-W7N11", COLOR_YELLOW)
+		// Game.rooms["W12N16"].createFlag(14,9, "drop-W12N16", COLOR_YELLOW)
 		// Game.rooms["W7N8"].createFlag(13,24, "wait-W7N8", COLOR_RED, COLOR_YELLOW)
 
 		// Game.flags["wait-W7N8"].setPosition(16,7)
@@ -133,9 +138,14 @@ function initialize() {
 function buildSpawnStats() {
 
 	var spawnsStats = {};
+	var energyStats = roomTools.getTotalStoredEnergy().toLocaleString("en-US") + " " +
+	roomTools.getTotalPercentageStoredEnergy() + "%";
 
-	spawnsStats[Game.time] = roomTools.getTotalStoredEnergy().toLocaleString("en-US") + " " +
-		roomTools.getTotalPercentageStoredEnergy() + "%";
+	if (rules.logDroppedStats) {
+		energyStats += " " + roomTools.getTotalDroppedEnergy().toLocaleString("en-US")
+	}
+
+	spawnsStats[Game.time] = energyStats;
 
 	for (spawnName in Game.spawns) {
 

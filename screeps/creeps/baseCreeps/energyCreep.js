@@ -17,6 +17,8 @@ function EnergyCreep(creep) {
 	if (this.creepsSpawnRule && this.creepsSpawnRule.canEnergyCreepsPickup) {
 		this.canPickup = true;
 	}
+
+	this.availableCarryCapacity = this.creep.carryCapacity - this.creep.carry.energy;
 }
 
 EnergyCreep.prototype = Object.create(BaseCreep.prototype);
@@ -32,11 +34,11 @@ EnergyCreep.prototype.act = function() {
 			}
 
 			if (this.canHarvest) {
-				var resource = findTools.findClosestEnergy(this.creep.pos);
+				var resource = findTools.findClosestEnergy(this.creep.pos, this.availableCarryCapacity);
 			} else if (this.canPickup) {
-				var resource = findTools.findClosestDroppedOrStoredEnergy(this.creep.pos);
+				var resource = findTools.findClosestDroppedOrStoredEnergy(this.creep.pos, this.availableCarryCapacity);
 			} else {
-				var resource = findTools.findClosestStoredEnergy(this.creep.pos);
+				var resource = findTools.findClosestStoredEnergy(this.creep.pos, this.availableCarryCapacity);
 			}
 
 			if (resource) {
@@ -53,7 +55,6 @@ EnergyCreep.prototype.act = function() {
 						this.creep.moveTo(resource);
 					}
 				} else {
-
 					if (this.creep.harvest(resource) == ERR_NOT_IN_RANGE) {
 						this.creep.moveTo(resource);
 					}
@@ -62,11 +63,15 @@ EnergyCreep.prototype.act = function() {
 
 				// debug.warning(`${this.type} ${this.creep.name} energy not found`);
 			}
+
+			if (this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
+				this.state = "energyActing";
+			}
 		}
 
 		if (this.state === "energyActing" || this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
 
-			if (this.state !== "energyActing") {				
+			if (this.state !== "energyActing") {
 				this.state = "energyActing";
 				this.memory.takeStepsIntoRoom = 2;
 

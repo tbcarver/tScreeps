@@ -15,6 +15,8 @@ function BaseRemoteStorageTransferer(creep) {
 	if (this.spawnedRoomCreepsSpawnRule && this.spawnedRoomCreepsSpawnRule.canTransferersTransferToStorageOnly) {
 		this.canTransferToStorageOnly = true;
 	}
+
+	this.availableCarryCapacity = this.creep.carryCapacity - this.creep.carry.energy;
 }
 
 BaseRemoteStorageTransferer.prototype = Object.create(RemoteCreep.prototype);
@@ -54,14 +56,16 @@ BaseRemoteStorageTransferer.prototype.harvest = function(moveToOtherRoom) {
 					resource = resources[0];
 				}
 
-				for (var multiplier = 5; multiplier >= 0; multiplier--) {
+				if (!resource) {
+					for (var multiplier = 5; multiplier >= 0; multiplier--) {
 
-					resource = this.creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
-						filter: resource => resource.energy && resource.energy >= 100 * 2 * multiplier
-					});
+						resource = this.creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
+							filter: resource => resource.energy && resource.energy >= 100 * 2 * multiplier
+						});
 
-					if (resource) {
-						break;
+						if (resource) {
+							break;
+						}
 					}
 				}
 			}

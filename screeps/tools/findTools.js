@@ -21,10 +21,14 @@ findTools.findAllEnergyStructures = function(spawn) {
 }
 
 // NOTE: Order is important.
-findTools.findClosestDroppedOrStoredEnergy = function(pos) {
+findTools.findClosestDroppedOrStoredEnergy = function(pos, minimum) {
+
+	if (!minimum) {
+		minimum = 100;
+	}
 
 	var energy = pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-		filter: resource => resource.energy && resource.energy >= 100 && this.isInRange(pos, resource.pos, 10)
+		filter: resource => resource.energy && resource.energy >= minimum && this.isInRange(pos, resource.pos, 10)
 	});
 
 	if (!energy) {
@@ -33,14 +37,14 @@ findTools.findClosestDroppedOrStoredEnergy = function(pos) {
 			filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
 				structure.structureType === STRUCTURE_TERMINAL ||
 				structure.structureType === STRUCTURE_CONTAINER) &&
-				structure.store[RESOURCE_ENERGY] > 100 && this.isInRange(pos, structure.pos, 10)
+				structure.store[RESOURCE_ENERGY] > minimum && this.isInRange(pos, structure.pos, 10)
 		});
 	}
 
 	if (!energy) {
 
 		energy = pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-			filter: resource => resource.energy && resource.energy >= 100 && this.isInRange(pos, resource.pos, 20)
+			filter: resource => resource.energy && resource.energy >= minimum && this.isInRange(pos, resource.pos, 20)
 		});
 	}
 
@@ -50,14 +54,14 @@ findTools.findClosestDroppedOrStoredEnergy = function(pos) {
 			filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
 				structure.structureType === STRUCTURE_TERMINAL ||
 				structure.structureType === STRUCTURE_CONTAINER) &&
-				structure.store[RESOURCE_ENERGY] > 100 && this.isInRange(pos, structure.pos, 20)
+				structure.store[RESOURCE_ENERGY] > minimum && this.isInRange(pos, structure.pos, 20)
 		});
 	}
 
 	if (!energy) {
 
 		energy = pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-			filter: resource => resource.energy && resource.energy >= 200
+			filter: resource => resource.energy && resource.energy >= minimum + 100
 		});
 	}
 
@@ -67,7 +71,7 @@ findTools.findClosestDroppedOrStoredEnergy = function(pos) {
 			filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
 				structure.structureType === STRUCTURE_TERMINAL ||
 				structure.structureType === STRUCTURE_CONTAINER) &&
-				structure.store[RESOURCE_ENERGY] > 200
+				structure.store[RESOURCE_ENERGY] >= minimum + 100
 		});
 	}
 
@@ -75,13 +79,17 @@ findTools.findClosestDroppedOrStoredEnergy = function(pos) {
 }
 
 // NOTE: Order is important.
-findTools.findClosestStoredEnergy = function(pos) {
+findTools.findClosestStoredEnergy = function(pos, minimum) {
+
+	if (!minimum) {
+		minimum = 100;
+	}
 
 	var energy = pos.findClosestByRange(FIND_STRUCTURES, {
 		filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
 			structure.structureType === STRUCTURE_TERMINAL ||
 			structure.structureType === STRUCTURE_CONTAINER) &&
-			structure.store[RESOURCE_ENERGY] > 100 && this.isInRange(pos, structure.pos, 10)
+			structure.store[RESOURCE_ENERGY] > minimum && this.isInRange(pos, structure.pos, 10)
 	});
 
 	if (!energy) {
@@ -90,7 +98,7 @@ findTools.findClosestStoredEnergy = function(pos) {
 			filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
 				structure.structureType === STRUCTURE_TERMINAL ||
 				structure.structureType === STRUCTURE_CONTAINER) &&
-				structure.store[RESOURCE_ENERGY] > 100 && this.isInRange(pos, structure.pos, 20)
+				structure.store[RESOURCE_ENERGY] > minimum && this.isInRange(pos, structure.pos, 20)
 		});
 	}
 
@@ -100,7 +108,7 @@ findTools.findClosestStoredEnergy = function(pos) {
 			filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
 				structure.structureType === STRUCTURE_TERMINAL ||
 				structure.structureType === STRUCTURE_CONTAINER) &&
-				structure.store[RESOURCE_ENERGY] > 200
+				structure.store[RESOURCE_ENERGY] > minimum + 100
 		});
 	}
 
@@ -108,10 +116,14 @@ findTools.findClosestStoredEnergy = function(pos) {
 }
 
 // NOTE: Order is important.
-findTools.findClosestEnergy = function(pos) {
+findTools.findClosestEnergy = function(pos, minimum) {
+
+	if (!minimum) {
+		minimum = 100;
+	}
 
 	var energy = pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-		filter: resource => resource.energy && resource.energy >= 100 && this.isInRange(pos, resource.pos, 10)
+		filter: resource => resource.energy && resource.energy >= minimum && this.isInRange(pos, resource.pos, 10)
 	});
 
 	if (!energy) {
@@ -120,21 +132,14 @@ findTools.findClosestEnergy = function(pos) {
 			filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
 				structure.structureType === STRUCTURE_TERMINAL ||
 				structure.structureType === STRUCTURE_CONTAINER) &&
-				structure.store[RESOURCE_ENERGY] > 100 && this.isInRange(pos, structure.pos, 10)
-		});
-	}
-
-	if (!energy) {
-
-		energy = pos.findClosestByPath(FIND_SOURCES_ACTIVE, {
-			filter: resource => this.isInRange(pos, resource.pos, 10) && resource.energy / resource.energyCapacity > .10
+				structure.store[RESOURCE_ENERGY] > minimum && this.isInRange(pos, structure.pos, 10)
 		});
 	}
 
 	if (!energy) {
 
 		energy = pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-			filter: resource => resource.energy && resource.energy >= 100 && this.isInRange(pos, resource.pos, 20)
+			filter: resource => resource.energy && resource.energy >= minimum && this.isInRange(pos, resource.pos, 20)
 		});
 	}
 
@@ -144,7 +149,7 @@ findTools.findClosestEnergy = function(pos) {
 			filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
 				structure.structureType === STRUCTURE_TERMINAL ||
 				structure.structureType === STRUCTURE_CONTAINER) &&
-				structure.store[RESOURCE_ENERGY] > 100 && this.isInRange(pos, structure.pos, 20)
+				structure.store[RESOURCE_ENERGY] > minimum && this.isInRange(pos, structure.pos, 20)
 		});
 	}
 
@@ -158,7 +163,7 @@ findTools.findClosestEnergy = function(pos) {
 	if (!energy) {
 
 		energy = pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-			filter: resource => resource.energy && resource.energy >= 200
+			filter: resource => resource.energy && resource.energy >= minimum + 100
 		});
 	}
 
@@ -168,7 +173,7 @@ findTools.findClosestEnergy = function(pos) {
 			filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
 				structure.structureType === STRUCTURE_TERMINAL ||
 				structure.structureType === STRUCTURE_CONTAINER) &&
-				structure.store[RESOURCE_ENERGY] > 200
+				structure.store[RESOURCE_ENERGY] > minimum + 100
 		});
 	}
 

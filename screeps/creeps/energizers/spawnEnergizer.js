@@ -50,7 +50,7 @@ SpawnEnergizer.prototype.energyAct = function() {
 
 			this.creep.moveTo(targetStructure);
 
-		} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .20) {
+		} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
 
 			this.state = "harvesting";
 		}

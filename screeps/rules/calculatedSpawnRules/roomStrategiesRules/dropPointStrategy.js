@@ -6,7 +6,7 @@ var dropPointStrategy = {
 	coolOffCount: 300,
 };
 
-dropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName) {
+dropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName, creepsSpawnRule) {
 
 	var creepsSpawnRule;
 	var room = Game.rooms[remoteRoomName];
@@ -14,24 +14,17 @@ dropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName)
 		var dropFlag = Game.flags[`drop-${remoteRoomName}`];
 		if (dropFlag) {
 
-			var dropHarvesterCount = 0;
-			var resources = room.find(FIND_SOURCES);
-
-			for (var resource of resources) {
-				if (roomTools.getCountResourceHarvestPositions(resource.id) >= 2) {
-					dropHarvesterCount += 2;
-				} else {
-					dropHarvesterCount++;
-				}
-			}
+			var remoteReserverCount = !room.controller.my ? 1 : 0;
+			var dropHarvesterCount = getDropHarvesterCount(room, creepsSpawnRule);
+			var remoteSpawnedDropTransfererCount = spawnRoomName !== remoteRoomName ? 5 : 0;
 
 			creepsSpawnRule = {
 				roomName: remoteRoomName,
 				spawnOrderMaxSpawnedCounts: [
-					{ remoteReserver: 1 },
+					{ remoteReserver: remoteReserverCount },
 					{ dropHarvester: dropHarvesterCount },
 					{ storageTransferer: 3 },
-					{ remoteSpawnedStorageTransferer: 8 },
+					{ remoteSpawnedStorageTransferer: remoteSpawnedDropTransfererCount },
 				],
 				partsPerMove: 1,
 				canRemoteStorageTransferersPickup: true,
@@ -61,63 +54,70 @@ dropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName)
 
 dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpawnRule) {
 
+	var room = Game.rooms[creepsSpawnRule.roomName];
+	var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, element => Object.keys(element)[0] === "dropHarvester");
+	spawnOrderMaxSpawnedCount["dropHarvester"] = getDropHarvesterCount(room, creepsSpawnRule);
+
 	recalculateEnergy(spawnRoomName, creepsSpawnRule, "remoteSpawnedStorageTransferer", creepsSpawnRule.measure.droppedEnergy);
 	recalculateEnergy(spawnRoomName, creepsSpawnRule, "storageTransferer", creepsSpawnRule.measure.harvestedEnergy);
 }
 
 function recalculateEnergy(spawnRoomName, creepsSpawnRule, creepType, measureMemory) {
 
-	var carryCapacities = _.reduce(Memory.creeps, (carryCapacities, creepMemory, creepName) => {
+	if (creepType === "storageTransferer" || spawnRoomName !== creepsSpawnRule.roomName) {
 
-		if (creepMemory.type === creepType && creepMemory.remoteRoomName === creepsSpawnRule.roomName) {
+		var carryCapacities = _.reduce(Memory.creeps, (carryCapacities, creepMemory, creepName) => {
 
-			carryCapacities.creepsCount++;
-			carryCapacities.totalCarryCapacity += Game.creeps[creepName].carryCapacity;
-		}
+			if (creepMemory.type === creepType && creepMemory.remoteRoomName === creepsSpawnRule.roomName) {
 
-		return carryCapacities;
-	}, { creepsCount: 0, totalCarryCapacity: 0 });
+				carryCapacities.creepsCount++;
+				carryCapacities.totalCarryCapacity += Game.creeps[creepName].carryCapacity;
+			}
 
-	var averageCarryCapacity = Math.floor(carryCapacities.totalCarryCapacity / carryCapacities.creepsCount);
-	var averageEnergy = Math.floor(measureMemory.totalEnergy / measureMemory.totalEnergyCount);
-	var energyToCapacityPercent = Math.floor(averageEnergy / averageCarryCapacity * 100);
-	var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, element => Object.keys(element)[0] === creepType);
+			return carryCapacities;
+		}, { creepsCount: 0, totalCarryCapacity: 0 });
 
-	if (energyToCapacityPercent > averageCarryCapacity * 2) {
+		var averageCarryCapacity = Math.floor(carryCapacities.totalCarryCapacity / carryCapacities.creepsCount);
+		var averageEnergy = Math.floor(measureMemory.totalEnergy / measureMemory.totalEnergyCount);
+		var energyToCapacityPercent = Math.floor(averageEnergy / averageCarryCapacity * 100);
+		var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, element => Object.keys(element)[0] === creepType);
 
-		if (spawnOrderMaxSpawnedCount[creepType] < roomTools.getSpawnsCount(spawnRoomName) * 10) {
+		if (energyToCapacityPercent > averageCarryCapacity * 2) {
 
-			var additionalCreepsCount = Math.floor(energyToCapacityPercent / averageCarryCapacity);
+			if (spawnOrderMaxSpawnedCount[creepType] < roomTools.getSpawnsCount(spawnRoomName) * 10) {
 
-			if (additionalCreepsCount > 5) {
-				spawnOrderMaxSpawnedCount[creepType]++;
-				spawnOrderMaxSpawnedCount[creepType]++;
-			} else {
-				spawnOrderMaxSpawnedCount[creepType]++;
+				var additionalCreepsCount = Math.floor(energyToCapacityPercent / averageCarryCapacity);
+
+				if (additionalCreepsCount > 5) {
+					spawnOrderMaxSpawnedCount[creepType]++;
+					spawnOrderMaxSpawnedCount[creepType]++;
+				} else {
+					spawnOrderMaxSpawnedCount[creepType]++;
+				}
+			}
+		} else if (energyToCapacityPercent < 50) {
+
+
+			if (spawnOrderMaxSpawnedCount[creepType] > 0) {
+				spawnOrderMaxSpawnedCount[creepType]--;
 			}
 		}
-	} else if (energyToCapacityPercent < 50) {
 
+		// Limit transferers when approaching max storage
+		var storageStats = roomTools.getStorageStats(spawnRoomName);
 
-		if (spawnOrderMaxSpawnedCount[creepType] > 0) {
-			spawnOrderMaxSpawnedCount[creepType]--;
+		if (storageStats.hasStorage && storageStats.percentageStoredEnergy >= 95) {
+
+			var limit = (creepType === "remoteSpawnedStorageTransferer") ? 5 : 1;
+
+			if (spawnOrderMaxSpawnedCount[creepType] > limit) {
+				spawnOrderMaxSpawnedCount[creepType] = limit;
+			}
 		}
+
+		measureMemory.totalEnergyCount = 0;
+		measureMemory.totalEnergy = 0;
 	}
-
-	// Limit transferers when approaching max storage
-	var storageStats = roomTools.getStorageStats(spawnRoomName);
-
-	if (storageStats.hasStorage && storageStats.percentageStoredEnergy >= 95) {
-
-		var limit = (creepType === "remoteSpawnedStorageTransferer") ? 5 : 1;
-
-		if (spawnOrderMaxSpawnedCount[creepType] > limit) {
-			spawnOrderMaxSpawnedCount[creepType] = limit;
-		}
-	}
-
-	measureMemory.totalEnergyCount = 0;
-	measureMemory.totalEnergy = 0;
 }
 
 dropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, creepsSpawnRule) {
@@ -127,7 +127,9 @@ dropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, creepsSpawnRu
 		var dropFlag = Game.flags[`drop-${creepsSpawnRule.roomName}`];
 		if (dropFlag) {
 
-			measureEnergy(room, dropFlag, creepsSpawnRule.measure.droppedEnergy, true);
+			if (spawnRoomName !== creepsSpawnRule.roomName) {
+				measureEnergy(room, dropFlag, creepsSpawnRule.measure.droppedEnergy, true);
+			}
 			measureEnergy(room, dropFlag, creepsSpawnRule.measure.harvestedEnergy, false);
 
 		} else {
@@ -161,6 +163,28 @@ dropPointStrategy.canApplyRule = function(spawnRoomName, remoteRoomName) {
 	}
 
 	return canApplyRule;
+}
+
+function getDropHarvesterCount(room, creepsSpawnRule) {
+	
+	var dropHarvesterCount = 0;
+	var creepsPerResource = (room.energyCapacityAvailable >= 400) ? 2 : 3;
+
+	if (creepsSpawnRule.partsPerMove === 1) {
+		creepsPerResource = (room.energyCapacityAvailable >= 450) ? 2 : 3;
+	}
+
+	var resources = room.find(FIND_SOURCES);
+
+	for (var resource of resources) {
+		if (roomTools.getCountResourceHarvestPositions(resource.id) >= creepsPerResource) {
+			dropHarvesterCount += creepsPerResource;
+		} else {
+			dropHarvesterCount++;
+		}
+	}
+
+	return dropHarvesterCount;
 }
 
 module.exports = dropPointStrategy;

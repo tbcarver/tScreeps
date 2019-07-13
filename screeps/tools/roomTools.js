@@ -1,4 +1,7 @@
 
+var { rules } = require("../rules/rules")
+var sumBy = require("lodash/sumBy");
+
 var roomTools = {};
 
 var adjacentDifferentials = [
@@ -119,8 +122,96 @@ roomTools.observeRoom = function(roomName, observerRoomName) {
 
 
 roomTools.buildRoomStats = function() {
+
+	// NOTE: Order is important.
+
+	if (!Memory.state.roomTools) {
+		Memory.state.roomTools = {};
+	}
+
+	this.buildSourcesStats();
+	this.buildDroppedStats();
 	this.buildSpawnStats();
 	this.buildStorageStats();
+}
+
+roomTools.buildSourcesStats = function() {
+
+	this.sourcesStats = {};
+
+	for (var roomName in Game.rooms) {
+
+		this.sourcesStats[roomName] = {};
+		this.sourcesStats[roomName].sources = Game.rooms[roomName].find(FIND_SOURCES);
+	}
+}
+
+roomTools.getSourcesStats = function(roomName) {
+
+	return this.sourcesStats[roomName];
+}
+
+roomTools.buildDroppedStats = function() {
+
+	this.roomsDroppedStats = {};
+	var totalDroppedEnergy = 0;
+
+	for (var roomName in Game.rooms) {
+
+		var dropFlag = Game.flags[`drop-${roomName}`];
+		var sourcesStats = this.getSourcesStats(roomName);
+		var resources = Game.rooms[roomName].find(FIND_DROPPED_RESOURCES);
+
+		var droppedEnergy = 0;
+		var dropFlagDroppedEnergy = 0;
+		var dropFlagDroppedResources = [];
+		var sourceDroppedEnergy = 0;
+		var sourceDroppedResources = [];
+
+		for (var resource of resources) {
+
+			droppedEnergy += resource.energy;
+
+			if (resource.pos.inRangeTo(dropFlag, 1)) {
+
+				dropFlagDroppedEnergy += resource.energy;
+				dropFlagDroppedResources.push(resource);
+
+			} else {
+
+				for (var source of sourcesStats.sources) {
+					if (resource.pos.inRangeTo(source, 1)) {
+
+						sourceDroppedEnergy += resource.energy;
+						sourceDroppedResources.push(resource);
+					}
+				}
+			}
+		}
+
+		this.roomsDroppedStats[roomName] = {
+			droppedEnergy: droppedEnergy,
+			resources: resources,
+			dropFlagDroppedEnergy: dropFlagDroppedEnergy,
+			dropFlagDroppedResources: dropFlagDroppedResources,
+			sourceDroppedEnergy: sourceDroppedEnergy,
+			sourceDroppedResources: sourceDroppedResources,
+		};
+
+		totalDroppedEnergy += droppedEnergy;
+	}
+
+	this.roomsDroppedStats.totalDroppedEnergy = totalDroppedEnergy;
+}
+
+roomTools.getDroppedEnergy = function(roomName) {
+
+	return (this.roomsDroppedStats[roomName]) ? this.roomsDroppedStats[roomName].droppedEnergy : 0;
+}
+
+roomTools.getTotalDroppedEnergy = function() {
+
+	return this.roomsDroppedStats.totalDroppedEnergy;
 }
 
 roomTools.buildSpawnStats = function() {
@@ -219,35 +310,50 @@ roomTools.getTotalPercentageStoredEnergy = function() {
 
 roomTools.getCountResourceHarvestPositions = function(resourceId) {
 
-	var resource = Game.getObjectById(resourceId);
-	var area = resource.room.lookAtArea(resource.pos.y - 1, resource.pos.x - 1, resource.pos.y + 1, resource.pos.x + 1, true);
+	if (!Memory.state.roomTools.getCountResourceHarvestPositions) {
+		Memory.state.roomTools.getCountResourceHarvestPositions = {};
+	}
 
-	var countResourceHarvestPositions = area.reduce((countOfPlain, element) => {
+	var countResourceHarvestPositions = 0;
 
-		if (element.terrain) {
-			if (element.terrain === "plain") {
-				countOfPlain++
+	if (Memory.state.roomTools.getCountResourceHarvestPositions[resourceId]) {
+
+		countResourceHarvestPositions = Memory.state.roomTools.getCountResourceHarvestPositions[resourceId]
+
+	} else {
+
+		var resource = Game.getObjectById(resourceId);
+		var area = resource.room.lookAtArea(resource.pos.y - 1, resource.pos.x - 1, resource.pos.y + 1, resource.pos.x + 1, true);
+
+		countResourceHarvestPositions = area.reduce((countOfPlain, element) => {
+
+			if (element.terrain) {
+				if (element.terrain === "plain") {
+					countOfPlain++
+				}
 			}
-		}
 
-		return countOfPlain;
+			return countOfPlain;
 
-	}, 0);
+		}, 0);
+
+		Memory.state.roomTools.getCountResourceHarvestPositions[resourceId] = countResourceHarvestPositions;
+	}
 
 	return countResourceHarvestPositions;
 }
 
 roomTools.getCountControllerUpgradePositions = function(controller) {
 
-	if (!Memory.state.getCountControllerUpgradePositions) {
-		Memory.state.getCountControllerUpgradePositions = {};
+	if (!Memory.state.roomTools.getCountControllerUpgradePositions) {
+		Memory.state.roomTools.getCountControllerUpgradePositions = {};
 	}
 
 	var countControllerUpgradePositions = 0;
 
-	if (Memory.state.getCountControllerUpgradePositions[controller.id]) {
+	if (Memory.state.roomTools.getCountControllerUpgradePositions[controller.id]) {
 
-		countControllerUpgradePositions = Memory.state.getCountControllerUpgradePositions[controller.id]
+		countControllerUpgradePositions = Memory.state.roomTools.getCountControllerUpgradePositions[controller.id]
 
 	} else {
 
@@ -274,7 +380,7 @@ roomTools.getCountControllerUpgradePositions = function(controller) {
 
 		}
 
-		Memory.state.getCountControllerUpgradePositions[controller.id] = countControllerUpgradePositions;
+		Memory.state.roomTools.getCountControllerUpgradePositions[controller.id] = countControllerUpgradePositions;
 	}
 
 	return countControllerUpgradePositions;

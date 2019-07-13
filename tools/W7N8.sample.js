@@ -9,8 +9,12 @@ module.exports = {
 		{ controllerEnergizer: 1 },
 	],
 	canControllerEnergizersBuild: true,
+	canEnergyCreepsHarvest: true,
+	canEnergyCreepsPickup: true,
 	canTransferersTransferToStorageOnly: true,
 	maxExtensionsPerEnergizer: 8,
+	partsPerMove: 1,
+	spawnProviderTo: "W12N16",
 	remoteRooms: [
 		// Mob
 		{

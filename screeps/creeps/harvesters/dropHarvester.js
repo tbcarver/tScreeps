@@ -65,6 +65,8 @@ DropHarvester.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule
 			if (exitFlag) {
 				resources.sort((resourceA, resourceB) => resourceA.pos.getRangeTo(exitFlag) > resourceB.pos.getRangeTo(exitFlag));
 			}
+		} else {
+			resources.sort((resourceA, resourceB) => resourceA.pos.getRangeTo(spawn) > resourceB.pos.getRangeTo(spawn));
 		}
 
 		// Evenly distribute creeps

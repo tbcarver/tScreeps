@@ -10,6 +10,8 @@ function StorageTransferer(creep) {
 	if (this.creepsSpawnRule && this.creepsSpawnRule.canStorageTransferersPickup) {
 		this.canPickup = true;
 	}
+
+	this.availableCarryCapacity = this.creep.carryCapacity - this.creep.carry.energy;
 }
 
 StorageTransferer.prototype = Object.create(BaseCreep.prototype);
@@ -28,22 +30,24 @@ StorageTransferer.prototype.act = function() {
 				var dropFlag = Game.flags[`drop-${this.creep.room.name}`];
 
 				var resources = this.creep.pos.findInRange(FIND_DROPPED_RESOURCES, 3, {
-					filter: resource => resource.energy && resource.energy >= 100 && (!dropFlag || !dropFlag.pos.inRangeTo(resource, 3))
+					filter: resource => resource.energy && resource.energy >= this.availableCarryCapacity && (!dropFlag || !dropFlag.pos.inRangeTo(resource, 3))
 				});
 
 				if (resources.length > 0) {
 					resource = resources[0];
 				}
 
-				for (var multiplier = 5; multiplier >= 0; multiplier--) {
+				if (!resource) {
+					for (var multiplier = 5; multiplier >= 0; multiplier--) {
 
-					resource = this.creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
-						filter: resource => resource.energy && resource.energy >= 100 * 2 * multiplier &&
-							(!dropFlag || !dropFlag.pos.inRangeTo(resource, 3))
-					});
+						resource = this.creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
+							filter: resource => resource.energy && resource.energy >= (this.availableCarryCapacity + 100) * multiplier &&
+								(!dropFlag || !dropFlag.pos.inRangeTo(resource, 3))
+						});
 
-					if (resource) {
-						break;
+						if (resource) {
+							break;
+						}
 					}
 				}
 			}

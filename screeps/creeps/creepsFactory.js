@@ -19,7 +19,7 @@ creepsFactory.buildCreep = function(creep) {
 		// 					creep.memory.remoteRoomName = "W8N10";
 		// 					creep.memory.spawnedRoomName = "W8N9";
 		// 					creep.memory.state = "moveToSpawnedRoom"
-		// 					// creep.suicide();
+							// creep.suicide();
 		// 					// creep.say("ok")
 		// // // 			// // 		// debug.temp("creep:", creep)
 		// // // 			debug.temp("creep memory:", creep.memory)
