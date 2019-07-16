@@ -1,5 +1,6 @@
 
-var { rules } = require("../rules/rules")
+var { rules } = require("../rules/rules");
+var flagTools = require("./flagTools");
 var sumBy = require("lodash/sumBy");
 
 var roomTools = {};
@@ -151,6 +152,11 @@ roomTools.getSourcesStats = function(roomName) {
 	return this.sourcesStats[roomName];
 }
 
+roomTools.getSources = function(roomName) {
+
+	return this.sourcesStats[roomName].sources;
+}
+
 roomTools.buildDroppedStats = function() {
 
 	this.roomsDroppedStats = {};
@@ -158,32 +164,44 @@ roomTools.buildDroppedStats = function() {
 
 	for (var roomName in Game.rooms) {
 
-		var dropFlag = Game.flags[`drop-${roomName}`];
-		var sourcesStats = this.getSourcesStats(roomName);
+		var dropFlag = flagTools.getDropFlag(roomName);
+		var sources = this.getSources(roomName);
 		var resources = Game.rooms[roomName].find(FIND_DROPPED_RESOURCES);
 
 		var droppedEnergy = 0;
 		var dropFlagDroppedEnergy = 0;
 		var dropFlagDroppedResources = [];
-		var sourceDroppedEnergy = 0;
-		var sourceDroppedResources = [];
+		var sourcesDroppedEnergy = 0;
+		var sourcesDroppedResources = [];
+		var sourceDroppedResources = {};
 
 		for (var resource of resources) {
 
+			resource.writableEnergy = resource.energy;
 			droppedEnergy += resource.energy;
 
-			if (resource.pos.inRangeTo(dropFlag, 1)) {
+			if (dropFlag && resource.pos.inRangeTo(dropFlag, 1)) {
 
 				dropFlagDroppedEnergy += resource.energy;
 				dropFlagDroppedResources.push(resource);
 
 			} else {
 
-				for (var source of sourcesStats.sources) {
+				for (var source of sources) {
 					if (resource.pos.inRangeTo(source, 1)) {
 
-						sourceDroppedEnergy += resource.energy;
-						sourceDroppedResources.push(resource);
+						sourcesDroppedEnergy += resource.energy;
+						sourcesDroppedResources.push(resource);
+
+						if (!sourceDroppedResources[source.id]) {
+							sourceDroppedResources[source.id] = {
+								droppedEnergy: 0,
+								droppedResources: [],
+							}
+						}
+
+						sourceDroppedResources[source.id].droppedEnergy += resource.energy;
+						sourceDroppedResources[source.id].droppedResources.push(resource);
 					}
 				}
 			}
@@ -191,10 +209,11 @@ roomTools.buildDroppedStats = function() {
 
 		this.roomsDroppedStats[roomName] = {
 			droppedEnergy: droppedEnergy,
-			resources: resources,
+			droppedResources: resources,
 			dropFlagDroppedEnergy: dropFlagDroppedEnergy,
 			dropFlagDroppedResources: dropFlagDroppedResources,
-			sourceDroppedEnergy: sourceDroppedEnergy,
+			sourcesDroppedEnergy: sourcesDroppedEnergy,
+			sourcesDroppedResources: sourcesDroppedResources,
 			sourceDroppedResources: sourceDroppedResources,
 		};
 
@@ -212,6 +231,32 @@ roomTools.getDroppedEnergy = function(roomName) {
 roomTools.getTotalDroppedEnergy = function() {
 
 	return this.roomsDroppedStats.totalDroppedEnergy;
+}
+
+roomTools.GetWritableDroppedResources = function(roomName) {
+
+	return this.roomsDroppedStats[roomName].droppedResources;
+}
+
+roomTools.GetDropFlagWritableDroppedResources = function(roomName) {
+
+	return this.roomsDroppedStats[roomName].dropFlagDroppedResources;
+}
+
+roomTools.GetSourcesWritableDroppedResources = function(roomName) {
+
+	return this.roomsDroppedStats[roomName].sourcesDroppedResources;
+}
+
+roomTools.GetSourceWritableDroppedResources = function(roomName, sourceId) {
+
+	var droppedResources = [];
+
+	if (this.roomsDroppedStats[roomName].sourceDroppedResources[sourceId]) {
+		droppedResources = this.roomsDroppedStats[roomName].sourceDroppedResources[sourceId].droppedResources;
+	}
+
+	return droppedResources;
 }
 
 roomTools.buildSpawnStats = function() {
@@ -400,6 +445,20 @@ roomTools.isPlainTerrain = function(roomName, x, y) {
 	}
 
 	return isPlainTerrain;
+}
+
+roomTools.inRangeToAny = function(pos, targets, range) {
+
+	var isInRangeToAny = false;
+
+	for (var target of targets) {
+		if (pos.inRangeTo(target, range)) {
+			isInRangeToAny = true;
+			break;
+		}
+	}
+
+	return isInRangeToAny;
 }
 
 // roomTools.lookAt = function() {

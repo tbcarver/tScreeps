@@ -42,7 +42,7 @@ harvestToDropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remote
 			},
 		}
 	} else {
-		debug.danger(`harvestToDropPointStrategy room not found for ${remoteRoomName}`);
+		debug.danger(`harvestToDropPointStrategy: room not found for ${remoteRoomName}`);
 	}
 
 	return creepsSpawnRule;
@@ -68,15 +68,14 @@ harvestToDropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, 
 		var energyToCapacityPercent = Math.floor(averageEnergy / averageCarryCapacity * 100);
 		var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, element => Object.keys(element)[0] === "remoteSpawnedDropTransferer");
 
-		if (energyToCapacityPercent > averageCarryCapacity * 2) {
+		if (energyToCapacityPercent > averageCarryCapacity * 2.5) {
 
 			if (spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"] < roomTools.getSpawnsCount(spawnRoomName) * 6) {
 
 				var additionalCreepsCount = Math.floor(energyToCapacityPercent / averageCarryCapacity);
 
 				if (additionalCreepsCount > 5) {
-					spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"]++;
-					spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"]++;
+					spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"] += 2;
 				} else {
 					spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"]++;
 				}
@@ -109,9 +108,7 @@ harvestToDropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, cree
 		var room = Game.rooms[creepsSpawnRule.roomName];
 		if (room) {
 
-			var resources = room.find(FIND_DROPPED_RESOURCES, {
-				filter: resource => resource.energy
-			});
+			var resources = roomTools.GetSourcesWritableDroppedResources(room.name);
 
 			var totalEnergy = sumBy(resources, "energy");
 
@@ -119,7 +116,7 @@ harvestToDropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, cree
 			creepsSpawnRule.measure.totalEnergy += totalEnergy;
 
 		} else {
-			debug.warning(`harvestToDropPointStrategy room not found for ${creepsSpawnRule.roomName}`);
+			debug.warning(`harvestToDropPointStrategy: room not found for ${creepsSpawnRule.roomName}`);
 		}
 	}
 }

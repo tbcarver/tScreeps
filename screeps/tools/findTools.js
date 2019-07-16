@@ -1,5 +1,7 @@
 
 var { rules } = require("../rules/rules");
+var flagTools = require("./flagTools");
+var roomTools = require("./roomTools");
 var findTools = {};
 
 // NOTE: Order is important.
@@ -21,14 +23,20 @@ findTools.findAllEnergyStructures = function(spawn) {
 }
 
 // NOTE: Order is important.
-findTools.findClosestDroppedOrStoredEnergy = function(pos, minimum) {
+findTools.findClosestWritableDroppedOrStoredEnergy = function(pos, minimum) {
 
 	if (!minimum) {
 		minimum = 100;
 	}
 
-	var energy = pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-		filter: resource => resource.energy && resource.energy >= minimum && this.isInRange(pos, resource.pos, 10)
+	var droppedResources = roomTools.GetSourcesWritableDroppedResources(pos.roomName);
+
+	if (flagTools.getDropFlag(pos.roomName)) {
+		droppedResources = roomTools.GetDropFlagWritableDroppedResources(pos.roomName);
+	}
+
+	var energy = pos.findClosestByRange(droppedResources, {
+		filter: resource => resource.energy >= minimum && this.isInRange(pos, resource.pos, 10)
 	});
 
 	if (!energy) {
@@ -43,8 +51,8 @@ findTools.findClosestDroppedOrStoredEnergy = function(pos, minimum) {
 
 	if (!energy) {
 
-		energy = pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-			filter: resource => resource.energy && resource.energy >= minimum && this.isInRange(pos, resource.pos, 20)
+		energy = pos.findClosestByPath(droppedResources, {
+			filter: resource => resource.energy >= minimum && this.isInRange(pos, resource.pos, 20)
 		});
 	}
 
@@ -60,8 +68,8 @@ findTools.findClosestDroppedOrStoredEnergy = function(pos, minimum) {
 
 	if (!energy) {
 
-		energy = pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-			filter: resource => resource.energy && resource.energy >= minimum + 100
+		energy = pos.findClosestByPath(droppedResources, {
+			filter: resource => resource.energy >= minimum * 2
 		});
 	}
 
@@ -71,7 +79,7 @@ findTools.findClosestDroppedOrStoredEnergy = function(pos, minimum) {
 			filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
 				structure.structureType === STRUCTURE_TERMINAL ||
 				structure.structureType === STRUCTURE_CONTAINER) &&
-				structure.store[RESOURCE_ENERGY] >= minimum + 100
+				structure.store[RESOURCE_ENERGY] >= minimum * 2
 		});
 	}
 
@@ -108,7 +116,7 @@ findTools.findClosestStoredEnergy = function(pos, minimum) {
 			filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
 				structure.structureType === STRUCTURE_TERMINAL ||
 				structure.structureType === STRUCTURE_CONTAINER) &&
-				structure.store[RESOURCE_ENERGY] > minimum + 100
+				structure.store[RESOURCE_ENERGY] > minimum * minimum
 		});
 	}
 
@@ -122,8 +130,10 @@ findTools.findClosestEnergy = function(pos, minimum) {
 		minimum = 100;
 	}
 
-	var energy = pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-		filter: resource => resource.energy && resource.energy >= minimum && this.isInRange(pos, resource.pos, 10)
+	var droppedResources = roomTools.GetWritableDroppedResources(pos.roomName);
+
+	var energy = pos.findClosestByPath(droppedResources, {
+		filter: resource => resource.energy >= minimum && this.isInRange(pos, resource.pos, 10)
 	});
 
 	if (!energy) {
@@ -138,8 +148,8 @@ findTools.findClosestEnergy = function(pos, minimum) {
 
 	if (!energy) {
 
-		energy = pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-			filter: resource => resource.energy && resource.energy >= minimum && this.isInRange(pos, resource.pos, 20)
+		energy = pos.findClosestByPath(droppedResources, {
+			filter: resource => resource.energy >= minimum && this.isInRange(pos, resource.pos, 20)
 		});
 	}
 
@@ -162,8 +172,8 @@ findTools.findClosestEnergy = function(pos, minimum) {
 
 	if (!energy) {
 
-		energy = pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-			filter: resource => resource.energy && resource.energy >= minimum + 100
+		energy = pos.findClosestByPath(droppedResources, {
+			filter: resource => resource.energy >= minimum * minimum
 		});
 	}
 
@@ -173,7 +183,7 @@ findTools.findClosestEnergy = function(pos, minimum) {
 			filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
 				structure.structureType === STRUCTURE_TERMINAL ||
 				structure.structureType === STRUCTURE_CONTAINER) &&
-				structure.store[RESOURCE_ENERGY] > minimum + 100
+				structure.store[RESOURCE_ENERGY] > minimum * minimum
 		});
 	}
 
@@ -185,6 +195,64 @@ findTools.findClosestEnergy = function(pos, minimum) {
 	}
 
 	return energy;
+}
+
+findTools.findSourcesWritableDroppedResource = function(pos, minimum) {
+
+	if (!minimum) {
+		minimum = 100;
+	}
+
+	var resources;
+	var resource;
+	var droppedResources = roomTools.GetSourcesWritableDroppedResources(pos.roomName);
+
+	resources = pos.findInRange(droppedResources, 3, {
+		filter: resource => resource.writableEnergy >= minimum
+	});
+
+	if (resources.length > 0) {
+		resource = pos.findClosestByPath(resources);
+	}
+
+	if (!resource) {
+		resources = pos.findInRange(droppedResources, 3, {
+			filter: resource => resource.writableEnergy >= minimum / 4
+		});
+
+		if (resources.length > 0) {
+			resource = pos.findClosestByPath(resources);
+		}
+	}
+
+	if (!resource) {
+		var sources = roomTools.getSources(pos.roomName);
+		var source = pos.findClosestByRange(sources);
+		var droppedResources = roomTools.GetSourceWritableDroppedResources(pos.roomName, source.id);
+
+		resource = pos.findClosestByPath(droppedResources, {
+			filter: resource => resource.writableEnergy >= minimum * 2
+		});
+
+		if (!resource) {
+
+			var droppedResources = roomTools.GetSourcesWritableDroppedResources(pos.roomName);
+
+			resource = pos.findClosestByPath(droppedResources, {
+				filter: resource => resource.writableEnergy >= minimum / 2
+			});
+		}
+	}
+
+	if (!resource) {
+		var resources = pos.findInRange(droppedResources, 1);
+
+		if (resources.length > 0) {
+			resource = pos.findClosestByPath(resources);
+		}
+	}
+
+	return resource;
 }
 
 findTools.isInRange = function(sourcePos, targetPos, range) {

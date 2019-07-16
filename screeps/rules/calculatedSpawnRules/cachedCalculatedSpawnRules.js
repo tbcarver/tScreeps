@@ -20,7 +20,7 @@ function addCalculatedSpawnRules(creepsSpawnRules) {
 		var calculatedSpawnRule = calculatedSpawnRules[calculatedSpawnRuleName];
 		var builtCalculatedCreepsSpawnRules  = Memory.state.builtCalculatedCreepsSpawnRules[calculatedSpawnRuleName];
 
-		if (!builtCalculatedCreepsSpawnRules || gameTools.hasCoolOffed(builtCalculatedCreepsSpawnRules, calculatedSpawnRule.coolOffCount)) {
+		if (!builtCalculatedCreepsSpawnRules || gameTools.hasCoolOffed(calculatedSpawnRuleName, calculatedSpawnRule.coolOffCount)) {
 
 			builtCalculatedCreepsSpawnRules = calculatedSpawnRule.buildCreepsSpawnRules(creepsSpawnRules);
 			Memory.state.builtCalculatedCreepsSpawnRules[calculatedSpawnRuleName] = builtCalculatedCreepsSpawnRules;

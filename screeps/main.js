@@ -8,10 +8,6 @@ global.debug = debug;
 global.debugObjectTable = debugObjectTable;
 global.debugPairsTable = debugPairsTable;
 
-if (!Memory.state) {
-	Memory.state = {};
-}
-
 var sourceMap = require("./sourceMap");
 var { rules } = require("./rules/rules");
 var test = require("./tools/testTools");
@@ -118,6 +114,10 @@ function loop() {
 }
 
 function initialize() {
+
+	if (!Memory.state) {
+		Memory.state = {};
+	}
 
 	if (!Memory.state.rooms) {
 		Memory.state.rooms = {};

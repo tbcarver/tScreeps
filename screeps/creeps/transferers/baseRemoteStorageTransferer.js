@@ -1,6 +1,9 @@
 
 var RemoteCreep = require("../baseCreeps/remoteCreep");
+var flagTools = require("../../tools/flagTools");
 var roomTools = require("../../tools/roomTools");
+var orderBy = require("lodash/orderBy");
+
 
 function BaseRemoteStorageTransferer(creep) {
 
@@ -38,36 +41,17 @@ BaseRemoteStorageTransferer.prototype.harvest = function(moveToOtherRoom) {
 
 		if (this.canPickup) {
 
-			var dropFlag = Game.flags[`drop-${this.creep.room.name}`];
-			if (dropFlag) {
+			if (flagTools.hasDropFlag(this.creep.room.name)) {
 
-				var resources = dropFlag.pos.findInRange(FIND_DROPPED_RESOURCES, 3);
-				if (resources.length > 0) {
+				var droppedResources = roomTools.GetDropFlagWritableDroppedResources(pos.roomName);
+
+				if (droppedResources.length > 0) {
+					droppedResources = orderBy(droppedResources, "writableEnergy", "desc");
 					resource = resources[0];
 				}
 
 			} else {
-
-				var resources = this.creep.pos.findInRange(FIND_DROPPED_RESOURCES, 3, {
-					filter: resource => resource.energy && resource.energy >= 100
-				});
-
-				if (resources.length > 0) {
-					resource = resources[0];
-				}
-
-				if (!resource) {
-					for (var multiplier = 5; multiplier >= 0; multiplier--) {
-
-						resource = this.creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
-							filter: resource => resource.energy && resource.energy >= 100 * 2 * multiplier
-						});
-
-						if (resource) {
-							break;
-						}
-					}
-				}
+				resource = findTools.findSourcesWritableDroppedResource(this.creep.pos, this.availableCarryCapacity);
 			}
 		}
 
@@ -88,7 +72,11 @@ BaseRemoteStorageTransferer.prototype.harvest = function(moveToOtherRoom) {
 				}
 			} else if (resource.resourceType) {
 
-				if (this.creep.pickup(resource) == ERR_NOT_IN_RANGE) {
+				var result = this.creep.pickup(resource);
+
+				if (result === OK) {
+					resource.writableEnergy -= this.availableCarryCapacity;
+				} else if (result == ERR_NOT_IN_RANGE) {
 					this.creep.moveTo(resource);
 				}
 			}

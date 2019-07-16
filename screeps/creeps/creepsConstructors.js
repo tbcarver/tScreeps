@@ -7,6 +7,7 @@ var Decoy = require("./troopers/decoy");
 var Defender = require("./troopers/defender");
 var DropContainerHarvester = require("./harvesters/dropContainerHarvester");
 var DropHarvester = require("./harvesters/dropHarvester");
+var DropTransferer = require("./transferers/dropTransferer");
 var ExtensionEnergizer = require("./energizers/extensionEnergizer");
 var Healer = require("./troopers/healer");
 var RangedAttacker = require("./troopers/rangedAttacker");
@@ -35,6 +36,7 @@ var creepConstructors = {
 	defender: Defender,
 	dropContainerHarvester: DropContainerHarvester,
 	dropHarvester: DropHarvester,
+	dropTransferer: DropTransferer,
 	extensionEnergizer: ExtensionEnergizer,
 	healer: Healer,
 	rangedAttacker: RangedAttacker,

@@ -1,5 +1,6 @@
 
 var BaseCreep = require("../baseCreeps/baseCreep");
+var findTools = require("../../tools/findTools");
 var roomTools = require("../../tools/roomTools");
 
 function StorageTransferer(creep) {
@@ -26,61 +27,7 @@ StorageTransferer.prototype.act = function() {
 				this.state = "harvesting";
 			}
 
-			if (this.canPickup) {
-				var dropFlag = Game.flags[`drop-${this.creep.room.name}`];
-
-				var resources = this.creep.pos.findInRange(FIND_DROPPED_RESOURCES, 3, {
-					filter: resource => resource.energy && resource.energy >= this.availableCarryCapacity && (!dropFlag || !dropFlag.pos.inRangeTo(resource, 3))
-				});
-
-				if (resources.length > 0) {
-					resource = resources[0];
-				}
-
-				if (!resource) {
-					for (var multiplier = 5; multiplier >= 0; multiplier--) {
-
-						resource = this.creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
-							filter: resource => resource.energy && resource.energy >= (this.availableCarryCapacity + 100) * multiplier &&
-								(!dropFlag || !dropFlag.pos.inRangeTo(resource, 3))
-						});
-
-						if (resource) {
-							break;
-						}
-					}
-				}
-			}
-
-			if (!resource) {
-				var resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-					filter: container => container.structureType === STRUCTURE_CONTAINER &&
-						roomTools.isDropContainer(container, 2) &&
-						container.store[RESOURCE_ENERGY] / container.storeCapacity > .65
-				});
-			}
-
-			if (resource) {
-				if (resource.structureType) {
-
-					if (this.creep.withdraw(resource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-						this.creep.moveTo(resource);
-					}
-				} else if (resource.resourceType) {
-
-					if (this.creep.pickup(resource) == ERR_NOT_IN_RANGE) {
-						this.creep.moveTo(resource);
-					}
-				}
-			} else {
-
-				var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
-				if (waitFlag) {
-					this.creep.moveTo(waitFlag);
-				} else {
-					// debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} can't find any resource to harvest`);
-				}
-			}
+			this.harvest();
 		}
 
 		if (this.state === "energizing" || this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
@@ -90,6 +37,55 @@ StorageTransferer.prototype.act = function() {
 			}
 
 			this.energize();
+		}
+	}
+}
+
+StorageTransferer.prototype.harvest = function() {
+
+	if (this.canPickup) {
+		resource = findTools.findSourcesWritableDroppedResource(this.creep.pos, this.availableCarryCapacity);
+	}
+
+	if (!resource) {
+		var resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+			filter: container => container.structureType === STRUCTURE_CONTAINER &&
+				roomTools.isDropContainer(container, 2) &&
+				container.store[RESOURCE_ENERGY] / container.storeCapacity > .65
+		});
+	}
+
+	if (resource) {
+		if (resource.structureType) {
+
+			if (this.creep.withdraw(resource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+				this.creep.moveTo(resource);
+			}
+		} else if (resource.resourceType) {
+
+			var result = this.creep.pickup(resource);
+
+			if (result === OK) {
+				resource.writableEnergy -= this.availableCarryCapacity;
+			} else if (result == ERR_NOT_IN_RANGE) {
+				this.creep.moveTo(resource);
+			}
+		}
+	} else if (this.canPickup) {
+
+		var sources = roomTools.getSources(this.creep.room.name);
+
+		if (!roomTools.inRangeToAny(this.creep.pos, sources, 3)) {
+			resource = this.creep.pos.findClosestByRange(sources);
+			this.creep.moveTo(resource);
+		}
+	} else {
+
+		var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
+		if (waitFlag) {
+			this.creep.moveTo(waitFlag);
+		} else {
+			// debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} can't find any resource to harvest`);
 		}
 	}
 }

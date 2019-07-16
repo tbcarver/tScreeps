@@ -20,10 +20,6 @@ var creepsSpawnRules = [];
 // NOTE: Order is important
 creepsSpawnRules.push(require("./rooms/W12N16"));
 
-if (!Memory.state.roomNamesCreepsSpawnRules) {
-	Memory.state.roomNamesCreepsSpawnRules = {};
-}
-
 function updateCreepsSpawnRules(creepsSpawnRules) {
 
 	mergeTopRemoteRoomsOptions(creepsSpawnRules);
@@ -53,6 +49,14 @@ function mergeTopRemoteRoomsOptions(creepsSpawnRules) {
 }
 
 function buildRoomsCreepsSpawnRules(creepsSpawnRules) {
+
+	if (!Memory.state) {
+		Memory.state = {};
+	}
+
+	if (!Memory.state.roomNamesCreepsSpawnRules) {
+		Memory.state.roomNamesCreepsSpawnRules = {};
+	}
 
 	var roomNamesCreepsSpawnRules = {};
 
@@ -119,7 +123,6 @@ function buildRoomsCreepsSpawnRules(creepsSpawnRules) {
 var creepsSpawnRulesCopy = _.cloneDeep(creepsSpawnRules);
 mergeTopRemoteRoomsOptions(creepsSpawnRulesCopy);
 buildRoomsCreepsSpawnRules(creepsSpawnRulesCopy);
-
 
 module.exports.rules = rules;
 module.exports.creepsSpawnRules = creepsSpawnRules;
