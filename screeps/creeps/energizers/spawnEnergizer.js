@@ -55,8 +55,13 @@ SpawnEnergizer.prototype.energyAct = function() {
 			this.state = "harvesting";
 		}
 	} else {
-		this.creep.moveTo(this.creep.room.controller);
+		BaseCreep.prototype.moveIntoRoom();
 	}
+}
+
+SpawnEnergizer.prototype.moveIntoRoom = function() {
+
+	this.energyAct();
 }
 
 SpawnEnergizer.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule) {

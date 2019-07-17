@@ -1,5 +1,6 @@
 
 var { rules } = require("../rules/rules");
+var SpawnOrderMaxSpawnedCount = require("../rules/spawnOrderMaxSpawnedCount");
 
 var spawnTools = {};
 
@@ -57,7 +58,9 @@ spawnTools.isCreepInSpawnBuffer = function(creep) {
 		}
 	}
  */
-spawnTools.incrementSpawnedCount = function(roomsSpawnedCounts, creepType, spawnedRoomName, remoteRoomName) {
+spawnTools.incrementSpawnedCount = function(roomsSpawnedCounts, creepType, creepSubType, spawnedRoomName, remoteRoomName) {
+
+	var creepTypeKey = SpawnOrderMaxSpawnedCount.buildCreepTypeKey(creepType, creepSubType);
 
 	if (!roomsSpawnedCounts[spawnedRoomName]) {
 		roomsSpawnedCounts[spawnedRoomName] = {};
@@ -78,11 +81,11 @@ spawnTools.incrementSpawnedCount = function(roomsSpawnedCounts, creepType, spawn
 		spawnedCounts = spawnedCounts.remoteRooms[remoteRoomName];
 	}
 
-	if (!spawnedCounts[creepType]) {
-		spawnedCounts[creepType] = 0;
+	if (!spawnedCounts[creepTypeKey]) {
+		spawnedCounts[creepTypeKey] = 0;
 	}
 
-	spawnedCounts[creepType]++;
+	spawnedCounts[creepTypeKey]++;
 }
 
 module.exports = spawnTools;

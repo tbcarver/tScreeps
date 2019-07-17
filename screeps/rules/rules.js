@@ -1,4 +1,6 @@
+
 // TODO: error handling for bad creep type
+var SpawnOrderMaxSpawnedCount = require("./spawnOrderMaxSpawnedCount");
 
 var rules = {
 	creepsTickToLiveSpawnBuffer: 50,
@@ -13,7 +15,7 @@ var rules = {
 	maximumRangedAttackerSpawnCapacity: 700,
 	mobAttackRoomCoolDownCount: 15,
 	observingRooms: ["W10N9", "W9N9", "W6N9", "W10N10", "W9N10", "W6N10", "W10N11", "W9N11", "W8N11", "W7N11", "W6N11", "W8N12", "W7N12", "W6N12", "W10N8", "W9N8", "W6N8", "W10N7", "W9N7", "W8N7", "W7N7", "W6N7", "W9N6", "W8N6", "W7N6", "W11N9"],
-	upgradeControllerSpawnRule: "oneToEight", // oneToEight, togetherToEight
+	upgradeControllerSpawnRule: "", // oneToEight
 }
 
 var creepsSpawnRules = [];
@@ -96,18 +98,18 @@ function buildRoomsCreepsSpawnRules(creepsSpawnRules) {
 		if (creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
 			for (spawnOrderMaxSpawnedCount of creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
 
-				var creepType = Object.keys(spawnOrderMaxSpawnedCount)[0]
+				var creepType = SpawnOrderMaxSpawnedCount.getCreepType(spawnOrderMaxSpawnedCount);
 				creepsToSpawnTotal += spawnOrderMaxSpawnedCount[creepType];
 				spawnedRoomsCreepsToSpawnTotal[creepsSpawnRule.roomName] += spawnOrderMaxSpawnedCount[creepType];
 			}
 		}
 
 		if (creepsSpawnRule.remoteRooms) {
-			for (remoteRoom of creepsSpawnRule.remoteRooms) {
+			for (var remoteRoom of creepsSpawnRule.remoteRooms) {
 				if (remoteRoom.spawnOrderMaxSpawnedCounts) {
-					for (remoteSpawnOrderMaxSpawnedCount of remoteRoom.spawnOrderMaxSpawnedCounts) {
+					for (var remoteSpawnOrderMaxSpawnedCount of remoteRoom.spawnOrderMaxSpawnedCounts) {
 
-						creepType = Object.keys(remoteSpawnOrderMaxSpawnedCount)[0]
+						creepType = SpawnOrderMaxSpawnedCount.getCreepType(remoteSpawnOrderMaxSpawnedCount);
 						creepsToSpawnTotal += remoteSpawnOrderMaxSpawnedCount[creepType];
 						spawnedRoomsCreepsToSpawnTotal[creepsSpawnRule.roomName] += remoteSpawnOrderMaxSpawnedCount[creepType];
 					}

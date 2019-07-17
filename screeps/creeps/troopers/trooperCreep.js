@@ -83,7 +83,7 @@ TrooperCreep.prototype.getInitialState = function() {
 	return "trooping";
 }
 
-TrooperCreep.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule, currentSpawnedCount) {
+TrooperCreep.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount) {
 
 	var creepMemory;
 	var initializeCreepMemory = false;

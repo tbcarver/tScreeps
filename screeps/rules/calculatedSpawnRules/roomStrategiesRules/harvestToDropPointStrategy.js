@@ -1,5 +1,6 @@
 
 var roomTools = require("../../../tools/roomTools");
+var SpawnOrderMaxSpawnedCount = require("../../../rules/spawnOrderMaxSpawnedCount");
 var sumBy = require("lodash/sumBy");
 
 var harvestToDropPointStrategy = {
@@ -66,7 +67,7 @@ harvestToDropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, 
 		var averageCarryCapacity = Math.floor(carryCapacities.totalCarryCapacity / carryCapacities.creepsCount);
 		var averageEnergy = Math.floor(creepsSpawnRule.measure.totalEnergy / creepsSpawnRule.measure.totalEnergyCount);
 		var energyToCapacityPercent = Math.floor(averageEnergy / averageCarryCapacity * 100);
-		var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, element => Object.keys(element)[0] === "remoteSpawnedDropTransferer");
+		var spawnOrderMaxSpawnedCount = SpawnOrderMaxSpawnedCount.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, "remoteSpawnedDropTransferer");
 
 		if (energyToCapacityPercent > averageCarryCapacity * 2.5) {
 

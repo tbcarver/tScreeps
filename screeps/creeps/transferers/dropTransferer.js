@@ -81,7 +81,7 @@ DropTransferer.prototype.harvesting = function() {
 		if (result === OK) {
 
 			var pickedUpAmount = resource.writableEnergy;
-			
+
 			if (pickedUpAmount > this.availableCarryCapacity) {
 				pickedUpAmount = this.availableCarryCapacity;
 			}
@@ -155,34 +155,18 @@ DropTransferer.prototype.getInitialState = function() {
 	return "harvesting";
 }
 
-DropTransferer.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule) {
+DropTransferer.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount) {
 
 	var creepMemory;
 
-	if (creepsSpawnRule.spawnCreepMemory && creepsSpawnRule.spawnCreepMemory.dropTransferer
-		&& creepsSpawnRule.spawnCreepMemory.dropTransferer.sourceIdsCounts) {
+	if (spawnOrderMaxSpawnedCount.creepMemory) {
 
-		var sources = roomTools.getSources(room.name);
-		var currentSourceId;
-		var currentCount = Number.MAX_VALUE;
-
-		for (var source of sources) {
-			var count = getCountDropTransferersAtSource(source.id);
-
-			if (count < creepsSpawnRule.spawnCreepMemory.dropTransferer.sourceIdsCounts[source.id]) {
-				if (count < currentCount) {
-					currentSourceId = source.id;
-					currentCount = count;
-				}
-			}
+		creepMemory = {
+			type: "dropTransferer",
+			subType: spawnOrderMaxSpawnedCount.creepSubType,
 		}
 
-		if (currentSourceId) {
-			creepMemory = {
-				type: "dropTransferer",
-				sourceId: currentSourceId,
-			}
-		}
+		creepMemory = Object.assign(creepMemory, spawnOrderMaxSpawnedCount.creepMemory);
 
 	} else if (room.find) {
 

@@ -245,22 +245,63 @@ BaseCreep.prototype.moveToExit = function(exitRoomName) {
 
 BaseCreep.prototype.moveIntoRoom = function() {
 
-	var target = this.creep.pos.findClosestByPath(FIND_STRUCTURES, {
-		filter: { structureType: STRUCTURE_CONTROLLER }
-	});
-
-	if (!target) {
-		var target = this.creep.pos.findClosestByPath(FIND_SOURCES);
-	}
-
-	if (!target) {
-		var target = this.creep.pos.findClosestByPath(FIND_STRUCTURES);
-	}
+	var target = this.creep.pos.findPathTo(25, 25);
 
 	if (target) {
-		this.creep.moveTo(target);
+
+		this.creep.moveByPath(target);
+
 	} else {
-		this.creep.moveTo(25, 25);
+
+		var target = roomTools.getSpawn(this.creep.room.name);
+	
+		if (!target) {
+			var target = this.creep.room.controller;
+		}
+	
+		if (!target) {
+			var targets = roomTools.getSources(this.creep.room.name);
+			target = targets.length > 0 ? targets[0] : null;
+		}
+	
+		if (!target) {
+			target = this.creep.pos.findClosestByPath(FIND_STRUCTURES);
+		}
+	
+		if (target) {
+			this.creep.moveTo(target);
+		}
+	}
+}
+
+BaseCreep.prototype.moveIntoRoom = function() {
+
+	var target = this.creep.pos.findPathTo(25, 25);
+
+	if (target) {
+
+		this.creep.moveByPath(target);
+
+	} else {
+
+		var target = roomTools.getSpawn(this.creep.room.name);
+	
+		if (!target) {
+			var target = this.creep.room.controller;
+		}
+	
+		if (!target) {
+			var targets = roomTools.getSources(this.creep.room.name);
+			target = targets.length > 0 ? targets[0] : null;
+		}
+	
+		if (!target) {
+			target = this.creep.pos.findClosestByPath(FIND_STRUCTURES);
+		}
+	
+		if (target) {
+			this.creep.moveTo(target);
+		}
 	}
 }
 

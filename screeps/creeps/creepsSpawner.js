@@ -6,6 +6,7 @@ var spawnTools = require("../tools/spawnTools");
 var creepConstructors = require("./creepsConstructors");
 var { rules, creepsSpawnRules, updateCreepsSpawnRules } = require("../rules/rules");
 var calculatedSpawnRules = require("../rules/calculatedSpawnRules/calculatedSpawnRules");
+var SpawnOrderMaxSpawnedCount = require("../rules/spawnOrderMaxSpawnedCount");
 var bodyPartsFactory = require("./bodies/bodyPartsFactory");
 
 var creepsSpawner = {};
@@ -40,18 +41,20 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 						if (creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
 							for (spawnOrderMaxSpawnedCount of creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
 
-								var creepType = Object.keys(spawnOrderMaxSpawnedCount)[0];
+								var creepTypeKey = SpawnOrderMaxSpawnedCount.getCreepTypeKey(spawnOrderMaxSpawnedCount);
+								var creepType = SpawnOrderMaxSpawnedCount.getCreepType(spawnOrderMaxSpawnedCount);
+								var creepSubType = SpawnOrderMaxSpawnedCount.getCreepSubType(spawnOrderMaxSpawnedCount);
 								var creepConstructor = creepConstructors[creepType];
 								var maxSpawnedCount = spawnOrderMaxSpawnedCount[creepType];
-								var currentSpawnedCount = (currentSpawnedCounts) ? currentSpawnedCounts[creepType] || 0 : 0;
+								var currentSpawnedCount = (currentSpawnedCounts) ? currentSpawnedCounts[creepTypeKey] || 0 : 0;
 
 								if (currentSpawnedCount < maxSpawnedCount) {
 
 									try {
-										spawnResult = trySpawnCreep(room, false, spawn, creepConstructor, creepsSpawnRule, creepsSpawnRule, currentSpawnedCount, spawnResult);
+										spawnResult = trySpawnCreep(room, false, spawn, creepConstructor, creepsSpawnRule, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount, spawnResult);
 
 										if (spawnResult.spawned) {
-											spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creepType, spawn.room.name);
+											spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creepType, creepSubType, spawn.room.name);
 										}
 									} catch (error) {
 										if (error instanceof Error) {
@@ -86,20 +89,22 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 								}
 
 								if (remoteRoomCreepsSpawnRule.spawnOrderMaxSpawnedCounts) {
-									for (spawnOrderMaxSpawnedCount of remoteRoomCreepsSpawnRule.spawnOrderMaxSpawnedCounts) {
+									for (var remoteSpawnOrderMaxSpawnedCount of remoteRoomCreepsSpawnRule.spawnOrderMaxSpawnedCounts) {
 
-										var creepType = Object.keys(spawnOrderMaxSpawnedCount)[0];
+										var creepTypeKey = SpawnOrderMaxSpawnedCount.getCreepTypeKey(remoteSpawnOrderMaxSpawnedCount);
+										var creepType = SpawnOrderMaxSpawnedCount.getCreepType(remoteSpawnOrderMaxSpawnedCount);
+										var creepSubType = SpawnOrderMaxSpawnedCount.getCreepSubType(spawnOrderMaxSpawnedCount);
 										var creepConstructor = creepConstructors[creepType];
-										var maxSpawnedCount = spawnOrderMaxSpawnedCount[creepType];
-										var currentSpawnedCount = (remoteCurrentSpawnedCounts) ? remoteCurrentSpawnedCounts[creepType] || 0 : 0;
+										var maxSpawnedCount = remoteSpawnOrderMaxSpawnedCount[creepType];
+										var currentSpawnedCount = (remoteCurrentSpawnedCounts) ? remoteCurrentSpawnedCounts[creepTypeKey] || 0 : 0;
 
 										if (currentSpawnedCount < maxSpawnedCount) {
 
 											try {
-												spawnResult = trySpawnCreep(remoteRoom, true, spawn, creepConstructor, remoteRoomCreepsSpawnRule, creepsSpawnRule, currentSpawnedCount, spawnResult);
+												spawnResult = trySpawnCreep(remoteRoom, true, spawn, creepConstructor, remoteRoomCreepsSpawnRule, creepsSpawnRule, remoteSpawnOrderMaxSpawnedCount, currentSpawnedCount, spawnResult);
 
 												if (spawnResult.spawned) {
-													spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creepType, spawn.room.name, remoteRoom.name);
+													spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creepType, creepSubType, spawn.room.name, remoteRoom.name);
 												}
 											} catch (error) {
 												if (error instanceof Error) {
@@ -125,11 +130,11 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 	}
 }
 
-function trySpawnCreep(room, isRemoteRoom, spawn, creepConstructor, creepsSpawnRule, spawnedRoomCreepsSpawnRule, currentSpawnedCount, previousSpawnResult) {
+function trySpawnCreep(room, isRemoteRoom, spawn, creepConstructor, creepsSpawnRule, spawnedRoomCreepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount, previousSpawnResult) {
 
 	if (!previousSpawnResult.waitForSpawn && !previousSpawnResult.spawned) {
 
-		var creepMemory = creepConstructor.initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, currentSpawnedCount);
+		var creepMemory = creepConstructor.initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount);
 
 		if (creepMemory) {
 

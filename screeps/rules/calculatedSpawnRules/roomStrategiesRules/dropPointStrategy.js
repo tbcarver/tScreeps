@@ -1,6 +1,7 @@
 
 var flagTools = require("../../../tools/flagTools");
 var roomTools = require("../../../tools/roomTools");
+var SpawnOrderMaxSpawnedCount = require("../../../rules/spawnOrderMaxSpawnedCount");
 var sumBy = require("lodash/sumBy");
 
 var dropPointStrategy = {
@@ -18,32 +19,9 @@ dropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName,
 			var dropHarvesterCount = getDropHarvesterCount(room, spawnCreepsSpawnRule);
 			var remoteSpawnedDropTransfererCount = spawnRoomName !== remoteRoomName ? 6 : 0;
 
-			var dropTransfererSpawnCreepMemory = {
-				sourceIdsCounts: {}
-			};
-			var measureHarvestedEnergy = {};
-			var sources = roomTools.getSources(remoteRoomName);
-
-			for (var source of sources) {
-				dropTransfererSpawnCreepMemory.sourceIdsCounts[source.id] = 2;
-				measureHarvestedEnergy[source.id] = {
-					totalEnergyCount: 0,
-					totalEnergy: 0,
-					averageTotalEnergy: 0,
-				};
-			}
-
 			creepsSpawnRule = {
 				roomName: remoteRoomName,
-				spawnOrderMaxSpawnedCounts: [
-					{ remoteReserver: remoteReserverCount },
-					{ dropTransferer: sources.length * 2 },
-					{ remoteSpawnedStorageTransferer: remoteSpawnedDropTransfererCount },
-					{ dropHarvester: dropHarvesterCount }, // dropHarvester will be moved after remoteReserver when recalculation starts
-				],
-				spawnCreepMemory: {
-					dropTransferer: dropTransfererSpawnCreepMemory,
-				},
+				spawnOrderMaxSpawnedCounts: [],
 				partsPerMove: 1,
 				canRemoteStorageTransferersPickup: true,
 				canStorageTransferersPickup: true,
@@ -52,10 +30,28 @@ dropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName,
 						totalEnergyCount: 0,
 						totalEnergy: 0
 					},
-					harvestedEnergy: measureHarvestedEnergy,
+					harvestedEnergy: {},
 					canRecalculate: false,
 				},
 			}
+
+			creepsSpawnRule.spawnOrderMaxSpawnedCounts.push({ remoteReserver: remoteReserverCount });
+
+			for (var source of roomTools.getSources(remoteRoomName)) {
+
+				creepsSpawnRule.spawnOrderMaxSpawnedCounts.push({ dropTransferer: 2, creepSubType: source.id, creepMemory: { sourceId: source.id } });
+
+				creepsSpawnRule.measure.harvestedEnergy[source.id] = {
+					totalEnergyCount: 0,
+					totalEnergy: 0,
+					averageTotalEnergy: 0,
+				};
+			}
+
+			creepsSpawnRule.spawnOrderMaxSpawnedCounts.push({ remoteSpawnedStorageTransferer: remoteSpawnedDropTransfererCount });
+
+			// dropHarvester will be moved after remoteReserver when recalculation starts
+			creepsSpawnRule.spawnOrderMaxSpawnedCounts.push({ dropHarvester: dropHarvesterCount });
 
 		} else {
 			debug.danger(`dropPointStrategy: drop flag not found for ${remoteRoomName}`);
@@ -73,7 +69,7 @@ dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpa
 
 		var creepType = "dropHarvester";
 		var room = Game.rooms[creepsSpawnRule.roomName];
-		var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, element => Object.keys(element)[0] === creepType);
+		var spawnOrderMaxSpawnedCount = SpawnOrderMaxSpawnedCount.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, creepType);
 		spawnOrderMaxSpawnedCount[creepType] = getDropHarvesterCount(room, creepsSpawnRule);
 
 		var maxSpawnedCount;
@@ -84,7 +80,7 @@ dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpa
 		if (spawnRoomName !== creepsSpawnRule.roomName) {
 
 			creepType = "remoteSpawnedStorageTransferer";
-			spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, element => Object.keys(element)[0] === creepType);
+			spawnOrderMaxSpawnedCount = SpawnOrderMaxSpawnedCount.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, creepType);
 			maxSpawnedCount = spawnOrderMaxSpawnedCount[creepType];
 			maxSpawnedCount = recalculateEnergy(spawnRoomName, creepsSpawnRule, creepType, creepsSpawnRule.measure.droppedEnergy, maxSpawnedCount);
 
@@ -101,15 +97,13 @@ dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpa
 			spawnOrderMaxSpawnedCount[creepType] = maxSpawnedCount;
 		}
 
-		creepType = "dropTransferer";
-		spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, element => Object.keys(element)[0] === creepType);
-
-		var dropTransfererMaxSpawnedCount = 0;
 		var sources = roomTools.getSources(creepsSpawnRule.roomName);
 
 		for (var source of sources) {
 
-			maxSpawnedCount = creepsSpawnRule.spawnCreepMemory.dropTransferer.sourceIdsCounts[source.id];
+			creepType = "dropTransferer";
+			spawnOrderMaxSpawnedCount = SpawnOrderMaxSpawnedCount.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, creepType, source.id);
+			maxSpawnedCount = spawnOrderMaxSpawnedCount[creepType];
 			maxSpawnedCount = recalculateEnergy(spawnRoomName, creepsSpawnRule, creepType, creepsSpawnRule.measure.harvestedEnergy[source.id], maxSpawnedCount);
 
 			if (isAtStorageLimit) {
@@ -122,13 +116,8 @@ dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpa
 				maxSpawnedCount = roomTools.getSpawnsCount(spawnRoomName) * 5;
 			}
 
-			creepsSpawnRule.spawnCreepMemory.dropTransferer.sourceIdsCounts[source.id] = maxSpawnedCount;
-
-			dropTransfererMaxSpawnedCount += maxSpawnedCount;
+			spawnOrderMaxSpawnedCount[creepType] = maxSpawnedCount;
 		}
-
-		spawnOrderMaxSpawnedCount[creepType] = dropTransfererMaxSpawnedCount;
-
 	}
 }
 
@@ -236,7 +225,7 @@ function setCanRecalculate(creepsSpawnRule) {
 		return count;
 	}, 0);
 
-	var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, element => Object.keys(element)[0] === "dropHarvester");
+	var spawnOrderMaxSpawnedCount = SpawnOrderMaxSpawnedCount.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, "dropHarvester");
 	var dropHarvesterMaxSpawnedCount = spawnOrderMaxSpawnedCount["dropHarvester"];
 
 	if (currentDropHarvesterCount >= dropHarvesterMaxSpawnedCount) {

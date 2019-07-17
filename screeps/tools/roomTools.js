@@ -272,16 +272,30 @@ roomTools.buildSpawnStats = function() {
 		if (!this.spawnStats.rooms[spawn.room.name]) {
 			this.spawnStats.rooms[spawn.room.name] = {
 				spawnsCount: 0,
+				spawns: [],
+				spawn: null,
 			};
 		}
 
 		this.spawnStats.rooms[spawn.room.name].spawnsCount++;
+		this.spawnStats.rooms[spawn.room.name].spawns.push(spawn);
+		this.spawnStats.rooms[spawn.room.name].spawn = spawn;
 	}
 }
 
 roomTools.getSpawnsCount = function(roomName) {
 
 	return (this.spawnStats.rooms[roomName]) ? this.spawnStats.rooms[roomName].spawnsCount : 0;
+}
+
+roomTools.getSpawns = function(roomName) {
+
+	return (this.spawnStats.rooms[roomName]) ? this.spawnStats.rooms[roomName].spawns : [];
+}
+
+roomTools.getSpawn = function(roomName) {
+
+	return (this.spawnStats.rooms[roomName]) ? this.spawnStats.rooms[roomName].spawn : null;
 }
 
 roomTools.buildStorageStats = function() {

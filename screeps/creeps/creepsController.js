@@ -51,19 +51,20 @@ creepsController.tick = function() {
 			spawnedRoomNamesCreepsTotal[baseCreep.spawnedRoomName]++;
 
 
-			spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creep.memory.type, creep.memory.spawnedRoomName,
+			spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creep.memory.type, creep.memory.subType, creep.memory.spawnedRoomName,
 				creep.memory.remoteRoomName);
 
 			if (creep.memory.remoteRoomName) {
-				spawnTools.incrementSpawnedCount(displayRoomsCurrentSpawnedCounts, creep.memory.type, creep.memory.remoteRoomName);
+				spawnTools.incrementSpawnedCount(displayRoomsCurrentSpawnedCounts, creep.memory.type, null, creep.memory.remoteRoomName);
 			} else {
-				spawnTools.incrementSpawnedCount(displayRoomsCurrentSpawnedCounts, creep.memory.type, creep.memory.spawnedRoomName);
+				spawnTools.incrementSpawnedCount(displayRoomsCurrentSpawnedCounts, creep.memory.type, null, creep.memory.spawnedRoomName);
 			}
 		} else {
 			creepsSpawnBufferTotal++;
 		}
 	}
 
+	debug.temp(roomsCurrentSpawnedCounts)
 	creepsSpawner.spawnCreep(roomsCurrentSpawnedCounts);
 
 	var roomsCount = Object.keys(Game.rooms).length;
