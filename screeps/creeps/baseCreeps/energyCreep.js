@@ -32,12 +32,8 @@ EnergyCreep.prototype.act = function() {
 			if (this.state !== "harvesting") {
 				this.state = "harvesting";
 			}
-
+			
 			this.harvest();
-
-			if (this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
-				this.state = "energyActing";
-			}
 		}
 
 		if (this.state === "energyActing" || this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {

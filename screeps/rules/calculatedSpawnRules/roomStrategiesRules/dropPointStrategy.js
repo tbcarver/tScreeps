@@ -4,7 +4,7 @@ var roomTools = require("../../../tools/roomTools");
 var sumBy = require("lodash/sumBy");
 
 var dropPointStrategy = {
-	coolOffCount: 300,
+	coolOffCount: 150,
 };
 
 dropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName, spawnCreepsSpawnRule) {
@@ -17,7 +17,7 @@ dropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName,
 			var remoteReserverCount = !room.controller.my ? 1 : 0;
 			var dropHarvesterCount = getDropHarvesterCount(room, spawnCreepsSpawnRule);
 			var remoteSpawnedDropTransfererCount = spawnRoomName !== remoteRoomName ? 6 : 0;
-			
+
 			var dropTransfererSpawnCreepMemory = {
 				sourceIdsCounts: {}
 			};
@@ -109,7 +109,7 @@ dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpa
 
 		for (var source of sources) {
 
-			maxSpawnedCount = spawnOrderMaxSpawnedCount[creepType];
+			maxSpawnedCount = creepsSpawnRule.spawnCreepMemory.dropTransferer.sourceIdsCounts[source.id];
 			maxSpawnedCount = recalculateEnergy(spawnRoomName, creepsSpawnRule, creepType, creepsSpawnRule.measure.harvestedEnergy[source.id], maxSpawnedCount);
 
 			if (isAtStorageLimit) {
@@ -235,7 +235,7 @@ function setCanRecalculate(creepsSpawnRule) {
 
 		return count;
 	}, 0);
-	
+
 	var spawnOrderMaxSpawnedCount = _.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, element => Object.keys(element)[0] === "dropHarvester");
 	var dropHarvesterMaxSpawnedCount = spawnOrderMaxSpawnedCount["dropHarvester"];
 
