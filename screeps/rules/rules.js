@@ -6,7 +6,7 @@ var rules = {
 	creepsTickToLiveSpawnBuffer: 50,
 	evacuateRooms: true,
 	logDroppedStats: true,
-	logRoomsCurrentSpawnedCounts: true,
+	logRoomsCurrentSpawnedCounts: true, // true, collapsed or false
 	logSpawnStats: true,
 	routeRoomsPriority: { W10N9: 3, W9N8: 2, W7N12: 2, W10N6: 2, W6N10: 2, W9N12: 2 },
 	routeIgnoreRooms: [],
@@ -15,7 +15,7 @@ var rules = {
 	maximumRangedAttackerSpawnCapacity: 700,
 	mobAttackRoomCoolDownCount: 15,
 	observingRooms: ["W10N9", "W9N9", "W6N9", "W10N10", "W9N10", "W6N10", "W10N11", "W9N11", "W8N11", "W7N11", "W6N11", "W8N12", "W7N12", "W6N12", "W10N8", "W9N8", "W6N8", "W10N7", "W9N7", "W8N7", "W7N7", "W6N7", "W9N6", "W8N6", "W7N6", "W11N9"],
-	upgradeControllerSpawnRule: "", // oneToEight
+	upgradeControllerSpawnRule: "oneToEight", // oneToEight
 }
 
 var creepsSpawnRules = [];

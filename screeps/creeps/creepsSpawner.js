@@ -15,7 +15,7 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 
 	var creepsSpawnRulesCopy = _.cloneDeep(creepsSpawnRules);
 
-	calculatedSpawnRules.addCalculatedRules(creepsSpawnRulesCopy);
+	calculatedSpawnRules.addCalculatedRules(creepsSpawnRulesCopy, roomsCurrentSpawnedCounts);
 	updateCreepsSpawnRules(creepsSpawnRulesCopy);
 
 	for (var creepsSpawnRule of creepsSpawnRulesCopy) {

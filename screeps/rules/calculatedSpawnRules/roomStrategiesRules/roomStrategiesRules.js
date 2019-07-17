@@ -11,7 +11,7 @@ var roomStrategies = {
 	mobDefense: mobDefenseStrategy,
 }
 
-function addCalculatedSpawnRules(creepsSpawnRules) {
+function addCalculatedSpawnRules(creepsSpawnRules, roomsCurrentSpawnedCounts) {
 
 	if (!Memory.state.roomStrategies) {
 		Memory.state.roomStrategies = {};
@@ -29,8 +29,11 @@ function addCalculatedSpawnRules(creepsSpawnRules) {
 
 					var spawnRoomName = creepsSpawnRule.roomName;
 					var remoteRoomName = remoteRoomCreepsSpawnRule.roomName;
-					var roomStrategyName = remoteRoomCreepsSpawnRule.roomStrategy;
+					var currentSpawnedCounts = (roomsCurrentSpawnedCounts && roomsCurrentSpawnedCounts[spawnRoomName] &&
+						roomsCurrentSpawnedCounts[spawnRoomName].remoteRooms && roomsCurrentSpawnedCounts[spawnRoomName].remoteRooms[remoteRoomName]) ?
+						roomsCurrentSpawnedCounts[spawnRoomName].remoteRooms[remoteRoomName] : {};
 
+					var roomStrategyName = remoteRoomCreepsSpawnRule.roomStrategy;
 					var roomStrategyKey = `${roomStrategyName}-${spawnRoomName}-${remoteRoomName}`;
 					roomStrategyKeys[roomStrategyKey] = true;
 
@@ -46,7 +49,7 @@ function addCalculatedSpawnRules(creepsSpawnRules) {
 
 						} else if (gameTools.hasCoolOffed(roomStrategyKey, roomStrategy.coolOffCount)) {
 
-							roomStrategy.recalculateCreepsSpawnRule(creepsSpawnRule.roomName, roomStrategyCreepsSpawnRule);
+							roomStrategy.recalculateCreepsSpawnRule(creepsSpawnRule.roomName, roomStrategyCreepsSpawnRule, currentSpawnedCounts);
 						}
 
 						if (!remoteRoomCreepsSpawnRules[spawnRoomName]) {
@@ -55,7 +58,7 @@ function addCalculatedSpawnRules(creepsSpawnRules) {
 
 						if (roomStrategyCreepsSpawnRule) {
 							remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms.push(roomStrategyCreepsSpawnRule);
-							roomStrategy.measureCreepsSpawnRule(creepsSpawnRule.roomName, roomStrategyCreepsSpawnRule);
+							roomStrategy.measureCreepsSpawnRule(creepsSpawnRule.roomName, roomStrategyCreepsSpawnRule, currentSpawnedCounts);
 						} else {
 							debug.warning(`roomStrategiesRule rule not built for ${spawnRoomName} remote ${remoteRoomName} strategy ${roomStrategyName}`);
 						}

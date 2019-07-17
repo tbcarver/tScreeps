@@ -64,7 +64,6 @@ creepsController.tick = function() {
 		}
 	}
 
-	debug.temp(roomsCurrentSpawnedCounts)
 	creepsSpawner.spawnCreep(roomsCurrentSpawnedCounts);
 
 	var roomsCount = Object.keys(Game.rooms).length;
@@ -75,7 +74,13 @@ creepsController.tick = function() {
 	}
 
 	if (rules.logRoomsCurrentSpawnedCounts) {
-		debugObjectTable.muted(displayRoomsCurrentSpawnedCounts, creepsTotal, displayCreepsTotal + " stats...");
+
+		if (rules.logRoomsCurrentSpawnedCounts === "collapsed") {
+			debugObjectTable.muted(displayRoomsCurrentSpawnedCounts, creepsTotal, displayCreepsTotal + " stats...");
+		} else {
+			debug.muted(displayCreepsTotal);
+			debugObjectTable.muted(displayRoomsCurrentSpawnedCounts, creepsTotal);
+		}
 	} else {
 		debug.muted(displayCreepsTotal);
 	}

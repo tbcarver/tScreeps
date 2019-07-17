@@ -81,7 +81,7 @@ harvestToDropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, 
 					spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"]++;
 				}
 			}
-		} else if (energyToCapacityPercent < 50) {
+		} else if (energyToCapacityPercent < 25) {
 
 			if (spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"] > 0) {
 				spawnOrderMaxSpawnedCount["remoteSpawnedDropTransferer"]--;

@@ -4,10 +4,10 @@ var roomStrategiesRules = require("./roomStrategiesRules/roomStrategiesRules");
 
 var calculatedSpawnRules = {};
 
-calculatedSpawnRules.addCalculatedRules = function(creepsSpawnRules) {
+calculatedSpawnRules.addCalculatedRules = function(creepsSpawnRules, roomsCurrentSpawnedCounts) {
 
-	cachedCalculatedSpawnRules(creepsSpawnRules);
-	roomStrategiesRules(creepsSpawnRules);
+	cachedCalculatedSpawnRules(creepsSpawnRules, roomsCurrentSpawnedCounts);
+	roomStrategiesRules(creepsSpawnRules, roomsCurrentSpawnedCounts);
 }
 
 
