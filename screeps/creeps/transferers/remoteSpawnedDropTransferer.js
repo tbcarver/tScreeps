@@ -1,5 +1,6 @@
 
 var BaseRemoteStorageTransferer = require("./baseRemoteStorageTransferer");
+var DropTransferer = require("./dropTransferer");
 
 function RemoteSpawnedDropTransferer(creep) {
 
@@ -34,8 +35,15 @@ RemoteSpawnedDropTransferer.prototype.spawnedRoomAct = function() {
 }
 
 RemoteSpawnedDropTransferer.prototype.remoteRoomAct = function() {
+	
+	if (this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
 
-	BaseRemoteStorageTransferer.prototype.harvest.call(this, this.moveToSpawnedRoom.bind(this));
+		this.moveToSpawnedRoom();
+
+	} else if (this.state === "harvesting") {
+
+		DropTransferer.prototype.harvesting.call(this);
+	}
 }
 
 RemoteSpawnedDropTransferer.prototype.unknownRoomAct = function() {
@@ -51,9 +59,28 @@ RemoteSpawnedDropTransferer.prototype.unknownRoomAct = function() {
 	return acted;
 }
 
-RemoteSpawnedDropTransferer.initializeSpawnCreepMemory = function(room) {
+RemoteSpawnedDropTransferer.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount) {
 
-	return BaseRemoteStorageTransferer.initializeSpawnCreepMemory("remoteSpawnedDropTransferer", room);
+	var creepMemory;
+
+	if (spawnOrderMaxSpawnedCount.creepMemory) {
+
+		creepMemory = {
+			type: "remoteSpawnedDropTransferer",
+			subType: spawnOrderMaxSpawnedCount.creepSubType,
+			bodyPartsType: "moveCarry",
+			maximumSpawnCapacity: 750,
+			minimumSpawnCapacity: 600,
+		}
+
+		creepMemory = Object.assign(creepMemory, spawnOrderMaxSpawnedCount.creepMemory);
+
+	} else {
+
+		var creepMemory = BaseRemoteStorageTransferer.initializeSpawnCreepMemory("remoteSpawnedDropTransferer", room);
+	}
+
+	return creepMemory;
 }
 
 

@@ -156,9 +156,7 @@ BaseRemoteStorageTransferer.initializeSpawnCreepMemory = function(type, room) {
 
 	if (room.find) {
 
-		var resources = room.find(FIND_DROPPED_RESOURCES, {
-			filter: resource => resource.energy && resource.energy >= 100
-		});
+		var resources = roomTools.GetSourcesWritableDroppedResources(room.name);
 
 		if (resources.length === 0) {
 
