@@ -94,8 +94,6 @@ dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpa
 				spawnOrderMaxSpawnedCount = SpawnOrderMaxSpawnedCount.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, creepType);
 				maxSpawnedCount = spawnOrderMaxSpawnedCount[creepType];
 
-				debug.temp(currentSpawnedCount, maxSpawnedCount, creepTypeKey);
-
 				maxSpawnedCount = dropStrategyTools.recalculateEnergy(creepsSpawnRule, creepType, creepsSpawnRule.measure.droppedEnergy, maxSpawnedCount, currentSpawnedCount);
 
 
@@ -121,8 +119,6 @@ dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpa
 				currentSpawnedCount = currentSpawnedCounts[creepTypeKey] || 0;
 				spawnOrderMaxSpawnedCount = SpawnOrderMaxSpawnedCount.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, creepType, source.id);
 				maxSpawnedCount = spawnOrderMaxSpawnedCount[creepType];
-
-				debug.temp(currentSpawnedCount, maxSpawnedCount, creepTypeKey);
 
 				maxSpawnedCount = dropStrategyTools.recalculateEnergy(creepsSpawnRule, creepType, creepsSpawnRule.measure.harvestedEnergy[source.id], maxSpawnedCount, currentSpawnedCount);
 

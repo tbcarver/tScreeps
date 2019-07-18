@@ -77,7 +77,9 @@ StorageTransferer.prototype.harvest = function() {
 
 		if (!roomTools.inRangeToAny(this.creep.pos, sources, 3)) {
 			resource = this.creep.pos.findClosestByRange(sources);
-			this.creep.moveTo(resource);
+			this.creep.moveTo(resource, {
+				ignoreCreeps: true,
+			});
 		}
 	} else {
 

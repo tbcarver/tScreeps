@@ -5,6 +5,9 @@ var roomTools = require("../../tools/roomTools");
 var spawnTools = require("../../tools/spawnTools");
 var orderBy = require("lodash/orderBy");
 
+
+var visualizeTools = require("../../tools/visualizeTools");
+
 function DropTransferer(creep) {
 
 	BaseCreep.call(this, creep);
@@ -51,8 +54,11 @@ DropTransferer.prototype.harvesting = function() {
 
 		var source = Game.getObjectById(this.memory.sourceId);
 
+
 		if (!this.creep.pos.inRangeTo(source, 3)) {
-			this.creep.moveTo(source);
+			this.creep.moveTo(source, {
+				ignoreCreeps: true,
+			});
 		} else {
 
 			var resources = roomTools.GetSourceWritableDroppedResources(this.creep.room.name, this.memory.sourceId);

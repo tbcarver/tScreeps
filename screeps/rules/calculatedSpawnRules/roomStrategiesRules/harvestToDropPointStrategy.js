@@ -81,8 +81,6 @@ harvestToDropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, 
 				spawnOrderMaxSpawnedCount = SpawnOrderMaxSpawnedCount.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, creepType, source.id);
 				maxSpawnedCount = spawnOrderMaxSpawnedCount[creepType];
 
-				debug.temp(currentSpawnedCount, maxSpawnedCount, creepTypeKey);
-
 				maxSpawnedCount = dropStrategyTools.recalculateEnergy(creepsSpawnRule, creepType, creepsSpawnRule.measure.harvestedEnergy[source.id], maxSpawnedCount, currentSpawnedCount);
 
 				if (isAtStorageLimit) {

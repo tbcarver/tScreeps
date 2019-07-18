@@ -23,8 +23,6 @@ dropStrategyTools.recalculateEnergy = function(creepsSpawnRule, creepType, measu
 		var averageEnergy = Math.floor(measureMemory.totalEnergy / measureMemory.totalEnergyCount);
 		var energyToCapacityPercent = Math.floor(averageEnergy / averageCarryCapacity * 100);
 
-		debug.temp(creepType, averageCarryCapacity, averageEnergy, energyToCapacityPercent, energyToCapacityPercent > averageCarryCapacity * 2.3, energyToCapacityPercent < 20)
-
 		if (energyToCapacityPercent > averageCarryCapacity * 2.3) {
 
 			var additionalCreepsCount = Math.floor(energyToCapacityPercent / averageCarryCapacity);

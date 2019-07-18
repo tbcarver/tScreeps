@@ -119,10 +119,7 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 				{ controllerEnergizer: 0 },
 			],
 			canControllerEnergizersBuild: true,
-		}
-
-		if (controllerToUpgrade.level < 4) {
-			creepsSpawnRule.canEnergyCreepsPickup = true;
+			canEnergyCreepsPickup: true,
 		}
 
 		remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms.push(creepsSpawnRule);
