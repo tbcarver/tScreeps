@@ -198,7 +198,7 @@ roomTools.buildDroppedStats = function() {
 			resource.writableEnergy = resource.energy;
 			droppedEnergy += resource.energy;
 
-			if (dropFlag && resource.pos.inRangeTo(dropFlag, 1)) {
+			if (dropFlag && resource.pos.inRangeTo(dropFlag, 0)) {
 
 				dropFlagDroppedEnergy += resource.energy;
 				dropFlagDroppedResources.push(resource);
