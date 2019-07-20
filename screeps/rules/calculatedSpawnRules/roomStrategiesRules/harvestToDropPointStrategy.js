@@ -46,7 +46,7 @@ harvestToDropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remote
 
 	} else {
 		roomTools.addObservingRoom(remoteRoomName);
-		debug.warning(`harvestToDropPointStrategy: room not found for ${remoteRoomName}, observing room`);
+		debug.warning(`harvestToDropPointStrategy: room not found for ${remoteRoomName}, added observing room`);
 	}
 
 	return creepsSpawnRule;
@@ -98,7 +98,7 @@ harvestToDropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, 
 			}
 		} else {
 			observersController.observeRoom(remoteRoomName);
-			debug.warning(`harvestToDropPointStrategy: room not found for ${remoteRoomName}, observing room`);
+			debug.warning(`harvestToDropPointStrategy: room not found for ${remoteRoomName}, added observing room`);
 		}
 	}
 }

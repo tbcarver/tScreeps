@@ -60,7 +60,7 @@ dropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName,
 		}
 	} else {
 		roomTools.addObservingRoom(remoteRoomName);
-		debug.warning(`dropPointStrategy: room not found for ${remoteRoomName}, observing room`);
+		debug.warning(`dropPointStrategy: room not found for ${remoteRoomName}, added observing room`);
 	}
 
 	return creepsSpawnRule;
@@ -138,7 +138,7 @@ dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpa
 			}
 		} else {
 			observersController.observeRoom(remoteRoomName);
-			debug.warning(`dropPointStrategy: room not found for ${remoteRoomName}, observing room`);
+			debug.warning(`dropPointStrategy: room not found for ${remoteRoomName}, added observing room`);
 		}
 	}
 }

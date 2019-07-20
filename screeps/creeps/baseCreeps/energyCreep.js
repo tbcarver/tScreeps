@@ -39,8 +39,10 @@ EnergyCreep.prototype.act = function() {
 		if (this.state === "energyActing" || this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
 
 			if (this.state !== "energyActing") {
+
+				this.moveIntoRoom()
+				this.memory.takeStepsIntoRoom = 1;
 				this.state = "energyActing";
-				this.memory.takeStepsIntoRoom = 2;
 
 			} else {
 				this.energyAct();

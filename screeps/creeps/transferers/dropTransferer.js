@@ -120,7 +120,7 @@ DropTransferer.prototype.energize = function() {
 
 	var dropFlag = Game.flags[`drop-${this.creep.room.name}`];
 	if (dropFlag) {
-		if (this.creep.pos.inRangeTo(dropFlag, 1)) {
+		if (this.creep.pos.inRangeTo(dropFlag, 0)) {
 			this.creep.drop(RESOURCE_ENERGY);
 			this.state = "harvesting";
 		} else {

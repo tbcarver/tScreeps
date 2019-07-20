@@ -60,7 +60,6 @@ SpawnEnergizer.prototype.energyAct = function() {
 }
 
 SpawnEnergizer.prototype.moveIntoRoom = function() {
-
 	this.energyAct();
 }
 

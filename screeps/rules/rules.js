@@ -15,7 +15,7 @@ var rules = {
 	maximumRangedAttackerSpawnCapacity: 700,
 	mobAttackRoomCoolDownCount: 15,
 	observingRooms: [],
-	upgradeControllerSpawnRule: "", // oneToEight
+	upgradeControllerSpawnRule: "oneToEight", // oneToEight
 }
 
 var creepsSpawnRules = [];
