@@ -42,16 +42,11 @@ DropHarvester.prototype.getInitialState = function() {
 
 DropHarvester.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule) {
 
-	var creepMemory = {
-		type: "dropHarvester",
-		bodyPartsType: "moveWork",
-		state: "harvesting",
-		maximumSpawnCapacity: 500,
-	}
+	var creepMemory;
 
 	if (room.find) {
 
-		var resources = room.find(FIND_SOURCES);
+		var resources = roomTools.getSources(room.name);
 		var countDropHarvesters = {};
 		var countResourceHarvestPositions = {};
 
@@ -76,7 +71,10 @@ DropHarvester.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule
 				if (countResourceHarvestPositions[resource.id] >= count) {
 					if (countDropHarvesters[resource.id] < count) {
 
-						creepMemory.resourceId = resource.id;
+						creepMemory = {
+							type: "dropHarvester",
+							resourceId: resource.id,
+						}
 						found = true;
 						break;
 					};
@@ -86,6 +84,18 @@ DropHarvester.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule
 				break;
 			}
 		}
+	} else {
+
+		creepMemory = {
+			type: "dropHarvester",
+		};
+	}
+
+	if (creepMemory) {
+
+		creepMemory.bodyPartsType = "moveWork";
+		creepMemory.state = "harvesting";
+		creepMemory.maximumSpawnCapacity = 500;
 	}
 
 	return creepMemory;

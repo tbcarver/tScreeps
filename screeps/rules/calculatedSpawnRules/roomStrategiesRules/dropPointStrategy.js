@@ -59,7 +59,8 @@ dropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName,
 			debug.danger(`dropPointStrategy: drop flag not found for ${remoteRoomName}`);
 		}
 	} else {
-		debug.danger(`dropPointStrategy: room not found for ${remoteRoomName}`);
+		roomTools.addObservingRoom(remoteRoomName);
+		debug.warning(`dropPointStrategy: room not found for ${remoteRoomName}, observing room`);
 	}
 
 	return creepsSpawnRule;
@@ -136,7 +137,8 @@ dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpa
 				spawnOrderMaxSpawnedCount[creepType] = maxSpawnedCount;
 			}
 		} else {
-			debug.warning(`dropPointStrategy: room not found for ${creepsSpawnRule.roomName}`);
+			observersController.observeRoom(remoteRoomName);
+			debug.warning(`dropPointStrategy: room not found for ${remoteRoomName}, observing room`);
 		}
 	}
 }

@@ -8,8 +8,30 @@ var testObject = require("../creeps/energizers/extensionEnergizer");
 var bodyPartsStrategy = require("../creeps/bodies/moveWorkStrategy");
 var sumBy = require("lodash/sumBy");
 var orderBy = require("lodash/orderBy");
+var DropHarvester = require("../creeps/harvesters/dropHarvester");
 
 function tick() {
+
+	// var spawn = Game.spawns["Spawn1"]
+	// var room = Game.rooms.W11N16
+
+	// debug.temp(DropHarvester.initializeSpawnCreepMemory(room, spawn))
+
+	// var creepsPerResource = 3
+	// var resources = roomTools.getSources("W11N16");
+	// var dropHarvesterCount = 0;
+
+
+	// for (var resource of resources) {
+	// 	debug.temp(roomTools.getCountResourceHarvestPositions(resource.id), roomTools.getCountResourceHarvestPositions(resource.id) >= creepsPerResource)
+	// 	if (roomTools.getCountResourceHarvestPositions(resource.id) >= creepsPerResource) {
+	// 		dropHarvesterCount += creepsPerResource;
+	// 	} else {
+	// 		dropHarvesterCount++;
+	// 	}
+	// }
+
+	// debug.temp("total", dropHarvesterCount)
 
 	
 	// var dropFlag = Game.flags[`drop-W12N16`];

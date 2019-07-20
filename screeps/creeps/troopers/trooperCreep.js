@@ -91,7 +91,7 @@ TrooperCreep.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule,
 
 	if (isMobTrooper) {
 		initializeCreepMemory = true;
-	} else if (creepsSpawnRule.minTroopersWaiting && currentSpawnedCount < creepsSpawnRule.minTroopersWaiting) {
+	} else if (!creepsSpawnRule.minTroopersWaiting || currentSpawnedCount < creepsSpawnRule.minTroopersWaiting) {
 		initializeCreepMemory = true;
 	} else if (enemyTools.hasRoomEnemies(room.name)) {
 		initializeCreepMemory = true;

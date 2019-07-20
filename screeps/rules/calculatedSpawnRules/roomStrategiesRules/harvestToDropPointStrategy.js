@@ -45,7 +45,8 @@ harvestToDropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remote
 		creepsSpawnRule.spawnOrderMaxSpawnedCounts.push({ dropHarvester: dropHarvesterCount });
 
 	} else {
-		debug.danger(`harvestToDropPointStrategy: room not found for ${remoteRoomName}`);
+		roomTools.addObservingRoom(remoteRoomName);
+		debug.warning(`harvestToDropPointStrategy: room not found for ${remoteRoomName}, observing room`);
 	}
 
 	return creepsSpawnRule;
@@ -96,7 +97,8 @@ harvestToDropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, 
 				spawnOrderMaxSpawnedCount[creepType] = maxSpawnedCount;
 			}
 		} else {
-			debug.warning(`harvestToDropPointStrategy: room not found for ${creepsSpawnRule.roomName}`);
+			observersController.observeRoom(remoteRoomName);
+			debug.warning(`harvestToDropPointStrategy: room not found for ${remoteRoomName}, observing room`);
 		}
 	}
 }

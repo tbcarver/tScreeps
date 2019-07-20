@@ -1,4 +1,5 @@
 
+var coreMath = require("../../lib/core/extensions/coreMath");
 var { rules } = require("../rules/rules");
 var SpawnOrderMaxSpawnedCount = require("../rules/spawnOrderMaxSpawnedCount");
 
@@ -86,6 +87,21 @@ spawnTools.incrementSpawnedCount = function(roomsSpawnedCounts, creepType, creep
 	}
 
 	spawnedCounts[creepTypeKey]++;
+}
+
+spawnTools.getRandomSpawn = function() {
+
+	var spawn;
+
+	var spawnNames = Object.keys(Game.spawns);
+
+	if (spawnNames.length > 0) {
+
+		var randomIndex = coreMath.randomInteger(0, spawnNames.length - 1);
+		spawn = Game.spawns[spawnNames[randomIndex]];
+	}
+
+	return spawn;
 }
 
 module.exports = spawnTools;

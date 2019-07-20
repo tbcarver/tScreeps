@@ -101,6 +101,24 @@ roomTools.createFlag = function(name, colorConstant, positions) {
 	}
 }
 
+roomTools.addObservingRoom = function(roomName) {
+
+	if (!Memory.state.observingRooms) {
+		Memory.state.observingRooms = {};
+	}
+
+	Memory.state.observingRooms[roomName] = null;
+}
+
+roomTools.removeObservingRoom = function(roomName) {
+
+	if (!Memory.state.observingRooms) {
+		Memory.state.observingRooms = {};
+	}
+
+	delete Memory.state.observingRooms[roomName];
+}
+
 roomTools.observeRoom = function(roomName, observerRoomName) {
 
 	var observers = Game.rooms[observerRoomName].find(FIND_STRUCTURES, {
