@@ -42,7 +42,7 @@ RemoteSpawnedDropTransferer.prototype.remoteRoomAct = function() {
 
 	} else if (this.state === "harvesting") {
 
-		DropTransferer.prototype.harvesting.call(this);
+		DropTransferer.prototype.harvest.call(this, this.moveToSpawnedRoom.bind(this));
 	}
 }
 

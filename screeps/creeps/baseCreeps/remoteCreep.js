@@ -50,10 +50,12 @@ RemoteCreep.prototype.unknownRoomAct = function() {
 
 RemoteCreep.prototype.moveToSpawnedRoom = function() {
 	this.state = "movingToSpawnedRoom";
+	this.moveToExit(this.spawnedRoomName);
 }
 
 RemoteCreep.prototype.moveToRemoteRoom = function() {
 	this.state = "movingToRemoteRoom";
+	this.moveToExit(this.remoteRoomName);
 }
 
 RemoteCreep.prototype.arrivedAtSpawnedRoom = function() {

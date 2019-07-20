@@ -40,7 +40,7 @@ EnergyCreep.prototype.act = function() {
 
 			if (this.state !== "energyActing") {
 
-				this.moveIntoRoom()
+				this.moveIntoRoom();
 				this.memory.takeStepsIntoRoom = 1;
 				this.state = "energyActing";
 
@@ -75,6 +75,8 @@ EnergyCreep.prototype.harvest = function() {
 
 			if (result === OK) {
 				resource.writableEnergy -= this.availableCarryCapacity;
+				this.energyAct();
+
 			} else if (result == ERR_NOT_IN_RANGE) {
 				this.creep.moveTo(resource);
 			}

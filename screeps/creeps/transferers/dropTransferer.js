@@ -32,7 +32,7 @@ DropTransferer.prototype.act = function() {
 				this.state = "harvesting";
 			}
 
-			this.harvesting();
+			this.harvest();
 		}
 
 		if (this.state === "energizing" || this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
@@ -41,19 +41,18 @@ DropTransferer.prototype.act = function() {
 				this.state = "energizing";
 			}
 
-			this.energize();
+			this.transfer();
 		}
 	}
 }
 
-DropTransferer.prototype.harvesting = function() {
+DropTransferer.prototype.harvest = function(transferAction) {
 
 	var resource;
 
 	if (this.memory.sourceId) {
 
 		var source = Game.getObjectById(this.memory.sourceId);
-
 
 		if (!this.creep.pos.inRangeTo(source, 3)) {
 			this.creep.moveTo(source, {
@@ -90,6 +89,8 @@ DropTransferer.prototype.harvesting = function() {
 
 			if (pickedUpAmount > this.availableCarryCapacity) {
 				pickedUpAmount = this.availableCarryCapacity;
+
+				this.transfer(transferAction);
 			}
 
 			resource.writableEnergy -= pickedUpAmount;
@@ -116,13 +117,14 @@ DropTransferer.prototype.harvesting = function() {
 	}
 }
 
-DropTransferer.prototype.energize = function() {
+DropTransferer.prototype.transfer = function() {
 
 	var dropFlag = Game.flags[`drop-${this.creep.room.name}`];
 	if (dropFlag) {
 		if (this.creep.pos.inRangeTo(dropFlag, 0)) {
 			this.creep.drop(RESOURCE_ENERGY);
 			this.state = "harvesting";
+			this.harvest();
 		} else {
 			this.creep.moveTo(dropFlag);
 		}
@@ -144,6 +146,7 @@ DropTransferer.prototype.energize = function() {
 		} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
 
 			this.state = "harvesting";
+			this.harvest();
 
 		} else if (transferResult !== OK) {
 
