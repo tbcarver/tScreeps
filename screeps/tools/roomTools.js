@@ -365,6 +365,11 @@ roomTools.getStorageStats = function(roomName) {
 	return this.roomsStorageStats[roomName];
 }
 
+roomTools.hasStorage = function(roomName) {
+
+	return (this.roomsStorageStats[roomName]) ? this.roomsStorageStats[roomName].hasStorage : false;
+}
+
 roomTools.getStoredEnergy = function(roomName) {
 
 	return (this.roomsStorageStats[roomName]) ? this.roomsStorageStats[roomName].storedEnergy : 0;

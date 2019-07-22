@@ -3,7 +3,7 @@ var { rules } = require("../../rules/rules")
 var orderBy = require("lodash/orderBy");
 
 var cachedUpgradeControllerRule = {
-	coolOffCount: 0,
+	coolOffCount: 300,
 };
 
 cachedUpgradeControllerRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
@@ -113,6 +113,18 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 
 	if (!_.some(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName })) {
 
+		var partsPerMove = 2;
+
+		if (!roomTools.hasStorage(remoteRoomName)) {
+			var roads = Game.rooms[remoteRoomName].find(FIND_STRUCTURES, {
+				filter: { structureType: STRUCTURE_ROAD }
+			})
+
+			if (roads.length === 0) {
+				partsPerMove = 1;
+			}
+		}
+
 		var creepsSpawnRule = {
 			roomName: remoteRoomName,
 			spawnOrderMaxSpawnedCounts: [
@@ -120,6 +132,7 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 			],
 			canControllerEnergizersBuild: true,
 			canEnergyCreepsPickup: true,
+			partsPerMove: partsPerMove,
 		}
 
 		remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms.push(creepsSpawnRule);

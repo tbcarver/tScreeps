@@ -68,10 +68,12 @@ dropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName,
 
 dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpawnRule, currentSpawnedCounts) {
 
+	var remoteRoomName = creepsSpawnRule.roomName;
+
 	if (creepsSpawnRule.measure.canRecalculate) {
 
 		var currentSpawnedCount = 0;
-		var room = Game.rooms[creepsSpawnRule.roomName];
+		var room = Game.rooms[remoteRoomName];
 
 		if (room) {
 
@@ -88,7 +90,7 @@ dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpa
 			var isAtStorageLimit = (storageStats.hasStorage && storageStats.percentageStoredEnergy >= 95);
 
 			// Dropped energy recalculation only necessary if using remoteSpawnedStorageTransferer, not the case if in the spawned room
-			if (spawnRoomName !== creepsSpawnRule.roomName) {
+			if (spawnRoomName !== remoteRoomName) {
 
 				creepType = "remoteSpawnedStorageTransferer";
 				currentSpawnedCount = currentSpawnedCounts[creepType] || 0;
@@ -111,7 +113,7 @@ dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpa
 				spawnOrderMaxSpawnedCount[creepType] = maxSpawnedCount;
 			}
 
-			var sources = roomTools.getSources(creepsSpawnRule.roomName);
+			var sources = roomTools.getSources(remoteRoomName);
 
 			for (var source of sources) {
 
@@ -145,14 +147,16 @@ dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpa
 
 dropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, creepsSpawnRule, currentSpawnedCounts) {
 
+	var remoteRoomName = creepsSpawnRule.roomName;
+
 	if (creepsSpawnRule.measure.canRecalculate) {
 
-		var room = Game.rooms[creepsSpawnRule.roomName];
+		var room = Game.rooms[remoteRoomName];
 		if (room) {
-			if (flagTools.hasDropFlag(creepsSpawnRule.roomName)) {
+			if (flagTools.hasDropFlag(remoteRoomName)) {
 
 				// Dropped energy measurement only necessary if using remoteSpawnedStorageTransferer, not the case if in the spawned room
-				if (spawnRoomName !== creepsSpawnRule.roomName) {
+				if (spawnRoomName !== remoteRoomName) {
 					var resources = roomTools.GetDropFlagWritableDroppedResources(room.name);
 					dropStrategyTools.measureEnergy(creepsSpawnRule.measure.droppedEnergy, resources);
 				}
@@ -165,11 +169,11 @@ dropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, creepsSpawnRu
 				}
 
 			} else {
-				debug.danger(`dropPointStrategy: drop flag not found for ${creepsSpawnRule.roomName}`);
+				debug.danger(`dropPointStrategy: drop flag not found for ${remoteRoomName}`);
 			}
 
 		} else {
-			debug.warning(`dropPointStrategy: room not found for ${creepsSpawnRule.roomName}`);
+			debug.warning(`dropPointStrategy: room not found for ${remoteRoomName}`);
 		}
 	} else {
 		dropStrategyTools.setCanRecalculate(creepsSpawnRule, currentSpawnedCounts);

@@ -18,8 +18,8 @@ ControllerEnergizer.prototype.act = function() {
 	EnergyCreep.prototype.act.call(this);
 }
 
-ControllerEnergizer.prototype.energyAct = function() {
-	
+ControllerEnergizer.prototype.energyAct = function(moveOnly) {
+
 	var acted = false;
 
 	if (this.canBuild) {
@@ -28,26 +28,36 @@ ControllerEnergizer.prototype.energyAct = function() {
 
 		if (target) {
 
-			if (this.creep.build(target) == ERR_NOT_IN_RANGE) {
-
+			if (moveOnly) {
 				this.creep.moveTo(target);
+			} else {
+				if (this.creep.build(target) == ERR_NOT_IN_RANGE) {
+
+					this.creep.moveTo(target);
+				}
+
+				acted = true;
 			}
 
-			acted = true;
 		}
 	}
 
 	if (!acted) {
 
-		var transferResult = this.creep.upgradeController(this.creep.room.controller);
-
-		if (transferResult == ERR_NOT_IN_RANGE) {
-
+		if (moveOnly) {
 			this.creep.moveTo(this.creep.room.controller);
+		} else {
 
-		} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+			var transferResult = this.creep.upgradeController(this.creep.room.controller);
 
-			this.state = "harvesting";
+			if (transferResult == ERR_NOT_IN_RANGE) {
+
+				this.creep.moveTo(this.creep.room.controller);
+
+			} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+
+				this.state = "harvesting";
+			}
 		}
 	}
 }

@@ -4,9 +4,9 @@ var attackerStrategy = {};
 attackerStrategy.getBodyPartsObject = function(spawnCapacity) {
 
 	var bodyPartsObject = {
-		move: 4,
+		move: 3,
 		attack: 1,
-		tough: 3,
+		tough: 2,
 	};
 
 	if (spawnCapacity >= 500) {

@@ -13,7 +13,7 @@ SpawnEnergizer.prototype.act = function() {
 	EnergyCreep.prototype.act.call(this);
 }
 
-SpawnEnergizer.prototype.energyAct = function() {
+SpawnEnergizer.prototype.energyAct = function(moveToOnly) {
 
 	var targetStructures = this.creep.room.find(FIND_STRUCTURES, {
 		filter: structure => structure.structureType === STRUCTURE_TOWER &&
@@ -44,16 +44,27 @@ SpawnEnergizer.prototype.energyAct = function() {
 
 	if (targetStructure) {
 
-		var transferResult = this.creep.transfer(targetStructure, RESOURCE_ENERGY);
-
-		if (transferResult == ERR_NOT_IN_RANGE) {
-
+		if (moveToOnly) {
 			this.creep.moveTo(targetStructure);
-
-		} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
-
-			this.state = "harvesting";
+		} else {
+			var transferResult = this.creep.transfer(targetStructure, RESOURCE_ENERGY);
+	
+			if (transferResult == OK) {
+				
+				this.state = "harvesting";
+				this.harvest(true);
+	
+			} else if (transferResult == ERR_NOT_IN_RANGE) {
+	
+				this.creep.moveTo(targetStructure);
+	
+			} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+	
+				this.state = "harvesting";
+				this.harvest(true);
+			}
 		}
+
 	} else {
 		BaseCreep.prototype.moveIntoRoom();
 	}
@@ -80,11 +91,11 @@ SpawnEnergizer.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRul
 	});
 
 	if (spawns.length >= 2) {
-		creepMemory.maximumSpawnCapacity= 600;
+		creepMemory.maximumSpawnCapacity = 600;
 	}
 
 	if (spawns.length >= 3) {
-		creepMemory.maximumSpawnCapacity= 750;
+		creepMemory.maximumSpawnCapacity = 750;
 	}
 
 	creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, room, spawn, creepsSpawnRule);

@@ -11,9 +11,9 @@ mobDefenseStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName
 	var creepsSpawnRule = {
 		roomName: remoteRoomName,
 		spawnOrderMaxSpawnedCounts: [
-			{ attacker: 2 },
+			{ attacker: 3 },
 			{ healer: 3 },
-			{ rangedAttacker: 3 },
+			{ rangedAttacker: 1 },
 		],
 		partsPerMove: 1,
 		isMobTroopers: true,

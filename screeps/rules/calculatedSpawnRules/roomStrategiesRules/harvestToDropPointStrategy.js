@@ -54,10 +54,12 @@ harvestToDropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remote
 
 harvestToDropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpawnRule, currentSpawnedCounts) {
 
+	var remoteRoomName = creepsSpawnRule.roomName;
+
 	if (creepsSpawnRule.measure.canRecalculate) {
 
 		var currentSpawnedCount = 0;
-		var room = Game.rooms[creepsSpawnRule.roomName];
+		var room = Game.rooms[remoteRoomName];
 
 		if (room) {
 
@@ -72,7 +74,7 @@ harvestToDropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, 
 			var maxSpawnedCount;
 			var storageStats = roomTools.getStorageStats(spawnRoomName);
 			var isAtStorageLimit = (storageStats.hasStorage && storageStats.percentageStoredEnergy >= 95);
-			var sources = roomTools.getSources(creepsSpawnRule.roomName);
+			var sources = roomTools.getSources(remoteRoomName);
 
 			for (var source of sources) {
 
@@ -97,7 +99,7 @@ harvestToDropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, 
 				spawnOrderMaxSpawnedCount[creepType] = maxSpawnedCount;
 			}
 		} else {
-			observersController.observeRoom(remoteRoomName);
+			roomTools.addObservingRoom(remoteRoomName);
 			debug.warning(`harvestToDropPointStrategy: room not found for ${remoteRoomName}, added observing room`);
 		}
 	}
@@ -105,9 +107,11 @@ harvestToDropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, 
 
 harvestToDropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, creepsSpawnRule, currentSpawnedCounts) {
 
+	var remoteRoomName = creepsSpawnRule.roomName;
+
 	if (creepsSpawnRule.measure.canRecalculate) {
 
-		var room = Game.rooms[creepsSpawnRule.roomName];
+		var room = Game.rooms[remoteRoomName];
 		if (room) {
 
 			var sources = roomTools.getSources(room.name);
@@ -118,7 +122,7 @@ harvestToDropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, cree
 			}
 
 		} else {
-			debug.warning(`harvestToDropPointStrategy: room not found for ${creepsSpawnRule.roomName}`);
+			debug.warning(`harvestToDropPointStrategy: room not found for ${remoteRoomName}`);
 		}
 	} else {
 		dropStrategyTools.setCanRecalculate(creepsSpawnRule, currentSpawnedCounts);

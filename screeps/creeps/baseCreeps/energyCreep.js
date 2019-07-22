@@ -32,7 +32,7 @@ EnergyCreep.prototype.act = function() {
 			if (this.state !== "harvesting") {
 				this.state = "harvesting";
 			}
-			
+
 			this.harvest();
 		}
 
@@ -51,7 +51,7 @@ EnergyCreep.prototype.act = function() {
 	}
 }
 
-EnergyCreep.prototype.harvest = function() {
+EnergyCreep.prototype.harvest = function(moveToOnly) {
 
 	if (this.canHarvest) {
 		var resource = findTools.findClosestEnergy(this.creep.pos, this.availableCarryCapacity);
@@ -63,26 +63,39 @@ EnergyCreep.prototype.harvest = function() {
 
 	if (resource) {
 
-		if (resource.structureType) {
-
-			if (this.creep.withdraw(resource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-				this.creep.moveTo(resource);
-			}
-
-		} else if (resource.resourceType) {
-
-			var result = this.creep.pickup(resource);
-
-			if (result === OK) {
-				resource.writableEnergy -= this.availableCarryCapacity;
-				this.energyAct();
-
-			} else if (result == ERR_NOT_IN_RANGE) {
-				this.creep.moveTo(resource);
-			}
+		if (moveToOnly) {
+			this.creep.moveTo(resource);
 		} else {
-			if (this.creep.harvest(resource) == ERR_NOT_IN_RANGE) {
-				this.creep.moveTo(resource);
+
+			if (resource.structureType) {
+
+				if (this.creep.withdraw(resource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+					this.creep.moveTo(resource);
+				}
+
+			} else if (resource.resourceType) {
+
+				var result = this.creep.pickup(resource);
+
+				if (result === OK) {
+
+					var pickedUpAmount = resource.writableEnergy;
+
+					if (pickedUpAmount > this.availableCarryCapacity) {
+						pickedUpAmount = this.availableCarryCapacity;
+
+						this.energyAct(true);
+					}
+
+					resource.writableEnergy -= this.availableCarryCapacity;
+
+				} else if (result == ERR_NOT_IN_RANGE) {
+					this.creep.moveTo(resource);
+				}
+			} else {
+				if (this.creep.harvest(resource) == ERR_NOT_IN_RANGE) {
+					this.creep.moveTo(resource);
+				}
 			}
 		}
 	} else {
