@@ -184,6 +184,22 @@ BaseCreep.prototype.act = function() {
 	} else if (!this.suppressReturnToRooms && !this.remoteRoomName && this.creep.room.name !== this.spawnedRoomName) {
 		this.state = "movingToSpawnedRoom";
 		acted = true;
+	} else if (this.isTraveling()) {
+
+		debug.temp(this.memory.travel, this.memory._move, this.creep.fatigue)
+
+		if (this.creep.fatigue <= 2 && this.memory.travel.previousX && this.creep.pos.x && this.memory.travel.previousY && this.creep.pos.y) {
+			this.memory.travel.stuckCount++;
+		}
+
+		if (this.memory.travel.stuckCount < 2) {
+			this.creep.moveTo(this.memory.travel.x, this.memory.travel.y);
+			debug.temp("moved")
+			acted = true;
+		}
+
+		this.memory.travel.previousX = this.creep.pos.x;
+		this.memory.travel.previousY = this.creep.pos.y;
 	}
 
 	return acted;
@@ -254,20 +270,20 @@ BaseCreep.prototype.moveIntoRoom = function() {
 	} else {
 
 		var target = roomTools.getSpawn(this.creep.room.name);
-	
+
 		if (!target) {
 			var target = this.creep.room.controller;
 		}
-	
+
 		if (!target) {
 			var targets = roomTools.getSources(this.creep.room.name);
 			target = targets.length > 0 ? targets[0] : null;
 		}
-	
+
 		if (!target) {
 			target = this.creep.pos.findClosestByPath(FIND_STRUCTURES);
 		}
-	
+
 		if (target) {
 			this.creep.moveTo(target);
 		}
@@ -285,24 +301,52 @@ BaseCreep.prototype.moveIntoRoom = function() {
 	} else {
 
 		var target = roomTools.getSpawn(this.creep.room.name);
-	
+
 		if (!target) {
 			var target = this.creep.room.controller;
 		}
-	
+
 		if (!target) {
 			var targets = roomTools.getSources(this.creep.room.name);
 			target = targets.length > 0 ? targets[0] : null;
 		}
-	
+
 		if (!target) {
 			target = this.creep.pos.findClosestByPath(FIND_STRUCTURES);
 		}
-	
+
 		if (target) {
 			this.creep.moveTo(target);
 		}
 	}
+}
+
+BaseCreep.prototype.travelTo = function(target, options) {
+
+	var result = this.creep.moveTo(target, {
+		reusePath: 100,
+		ignoreCreeps: true,
+		ignoreRoads: (this.memory.partsPerMove && this.memory.partsPerMove === 1) ? true : false,
+	})
+
+	if (result === OK) {
+
+		this.memory.travel = {
+			x: target.pos.x,
+			y: target.pos.y,
+			previousX: this.creep.pos.x,
+			previousY: this.creep.pos.y,
+			stuckCount: 0,
+		}
+	}
+
+	return result;
+}
+
+BaseCreep.prototype.isTraveling = function() {
+
+	return (this.memory.travel && this.memory._move && this.memory.travel.x && this.memory._move.dest.x &&
+		this.memory.travel.y && this.memory._move.dest.y);
 }
 
 BaseCreep.prototype.transferEnergy = function() {

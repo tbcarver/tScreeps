@@ -198,6 +198,8 @@ function spawnCreep(spawn, creepMemory, creepsSpawnRule, spawnedRoomCreepsSpawnR
 					partsPerMove = creepsSpawnRule.partsPerMove;
 				}
 
+				creepMemory.partsPerMove = partsPerMove;
+
 				var id = getNextCreepId();
 				var bodyParts = bodyPartsFactory.getBodyParts(creepMemory.bodyPartsType, plannedSpawnCapacity, partsPerMove);
 				var bodyCost = spawnTools.calculateBodyCost(bodyParts);

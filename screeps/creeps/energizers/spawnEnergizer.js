@@ -1,4 +1,5 @@
 
+var BaseCreep = require("../baseCreeps/baseCreep");
 var EnergyCreep = require("../baseCreeps/energyCreep");
 
 function SpawnEnergizer(creep) {

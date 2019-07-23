@@ -18,7 +18,7 @@ ControllerEnergizer.prototype.act = function() {
 	EnergyCreep.prototype.act.call(this);
 }
 
-ControllerEnergizer.prototype.energyAct = function(moveOnly) {
+ControllerEnergizer.prototype.energyAct = function(moveToOnly) {
 
 	var acted = false;
 
@@ -28,7 +28,7 @@ ControllerEnergizer.prototype.energyAct = function(moveOnly) {
 
 		if (target) {
 
-			if (moveOnly) {
+			if (moveToOnly) {
 				this.creep.moveTo(target);
 			} else {
 				if (this.creep.build(target) == ERR_NOT_IN_RANGE) {
