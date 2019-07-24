@@ -1,78 +1,79 @@
 
 var EnergyCreep = require("../baseCreeps/energyCreep");
 
-function ControllerEnergizer(creep) {
+class ControllerEnergizer extends EnergyCreep {
 
-	EnergyCreep.call(this, creep);
+	/** @param {Creep} creep */
+	constructor(creep) {
+		super(creep);
 
-	this.canBuild = false;
-	if (this.creepsSpawnRule && this.creepsSpawnRule.canControllerEnergizersBuild) {
-		this.canBuild = true;
+		this.canBuild = false;
+		if (this.creepsSpawnRule && this.creepsSpawnRule.canControllerEnergizersBuild) {
+			this.canBuild = true;
+		}
 	}
-}
 
-ControllerEnergizer.prototype = Object.create(EnergyCreep.prototype);
+	act() {
+		super.act();
+	}
 
-ControllerEnergizer.prototype.act = function() {
+	energyAct(moveToOnly) {
 
-	EnergyCreep.prototype.act.call(this);
-}
+		var acted = false;
 
-ControllerEnergizer.prototype.energyAct = function(moveToOnly) {
+		if (this.canBuild) {
 
-	var acted = false;
+			const target = this.creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
 
-	if (this.canBuild) {
+			if (target) {
 
-		const target = this.creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
-
-		if (target) {
-
-			if (moveToOnly) {
-				this.creep.moveTo(target);
-			} else {
-				if (this.creep.build(target) == ERR_NOT_IN_RANGE) {
-
+				if (moveToOnly) {
 					this.creep.moveTo(target);
+				} else {
+					if (this.creep.build(target) == ERR_NOT_IN_RANGE) {
+
+						this.creep.moveTo(target);
+					}
+
+					acted = true;
 				}
 
-				acted = true;
 			}
-
 		}
-	}
 
-	if (!acted) {
+		if (!acted) {
 
-		if (moveOnly) {
-			this.creep.moveTo(this.creep.room.controller);
-		} else {
-
-			var transferResult = this.creep.upgradeController(this.creep.room.controller);
-
-			if (transferResult == ERR_NOT_IN_RANGE) {
-
+			if (moveOnly) {
 				this.creep.moveTo(this.creep.room.controller);
+			} else {
 
-			} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+				var transferResult = this.creep.upgradeController(this.creep.room.controller);
 
-				this.state = "harvesting";
+				if (transferResult == ERR_NOT_IN_RANGE) {
+
+					this.creep.moveTo(this.creep.room.controller);
+
+				} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+
+					this.state = "harvesting";
+				}
 			}
 		}
 	}
-}
 
-ControllerEnergizer.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule) {
+	static initializeSpawnCreepMemory(room, spawn, creepsSpawnRule) {
 
-	var creepMemory = {
-		type: "controllerEnergizer",
-		bodyPartsType: "moveCarryWork",
-		maximumSpawnCapacity: 850,
+		var creepMemory = {
+			type: "controllerEnergizer",
+			bodyPartsType: "moveCarryWork",
+			maximumSpawnCapacity: 850,
+		}
+
+		creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, room, spawn, creepsSpawnRule);
+
+		return creepMemory;
 	}
-
-	creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, room, spawn, creepsSpawnRule);
-
-	return creepMemory;
 }
+
 
 module.exports = ControllerEnergizer

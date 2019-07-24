@@ -1,43 +1,44 @@
 
 var TrooperCreep = require("./trooperCreep");
 
-function StructureRazer(creep) {
+class StructureRazer extends TrooperCreep {
 
-	TrooperCreep.call(this, creep);
-}
+	/** @param {Creep} creep */
+	constructor(creep) {
+		super(creep);
+	}
 
-StructureRazer.prototype = Object.create(TrooperCreep.prototype);
+	act() {
+		super.act();
+	}
 
-StructureRazer.prototype.act = function() {
-	TrooperCreep.prototype.act.call(this);
-}
+	attack() {
 
-StructureRazer.prototype.attack = function() {
+		var target = this.creep.pos.findClosestByPath(FIND_STRUCTURES, {
+			filter: structure => !structure.my
+		});
 
-	var target = this.creep.pos.findClosestByPath(FIND_STRUCTURES, {
-		filter: structure => !structure.my
-	});
-
-	if (target) {
-		if (this.creep.dismantle(target) == ERR_NOT_IN_RANGE) {
-			this.creep.moveTo(target);
+		if (target) {
+			if (this.creep.dismantle(target) == ERR_NOT_IN_RANGE) {
+				this.creep.moveTo(target);
+			}
+		} else {
+			debug.warning(`${this.type} ${this.creep.name} no structures found`);
 		}
-	} else {
-		debug.warning(`${this.type} ${this.creep.name} no structures found`);
-	}
-}
-
-StructureRazer.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount) {
-
-	var creepMemory = TrooperCreep.initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount);
-
-	var creepMemory = {
-		type: "structureRazer",
-		bodyPartsType: "moveWork",
-		maximumSpawnCapacity: 600,
 	}
 
-	return creepMemory;
+	static initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount) {
+
+		var creepMemory = TrooperCreep.initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount);
+
+		var creepMemory = {
+			type: "structureRazer",
+			bodyPartsType: "moveWork",
+			maximumSpawnCapacity: 600,
+		}
+
+		return creepMemory;
+	}
 }
 
 

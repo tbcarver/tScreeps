@@ -3,65 +3,64 @@ var enemyTools = require("../../tools/enemyTools");
 
 var BaseCreep = require("./baseCreep");
 
-/** @param {Creep} creep */
-function RemoteCreep(creep) {
+class RemoteCreep extends BaseCreep {
 
-	BaseCreep.call(this, creep);
+	/** @param {Creep} creep */
+	constructor(creep) {
+		super(creep);
 
-	this.suppressReturnToRooms = true;
-}
+		this.suppressReturnToRooms = true;
+	}
 
-RemoteCreep.prototype = Object.create(BaseCreep.prototype);
+	act() {
+		if (!super.act()) {
 
-RemoteCreep.prototype.act = function() {
-
-	if (!BaseCreep.prototype.act.call(this)) {
-
-		if (!this.state) {
-			this.state = "movingToSpawnedRoom";
-		}
-
-		if (this.creep.room.name === this.spawnedRoomName) {
-
-			this.spawnedRoomAct();
-
-		} else if (this.creep.room.name === this.remoteRoomName) {
-
-			this.remoteRoomAct();
-
-		} else {
-
-			if (!this.unknownRoomAct()) {
+			if (!this.state) {
 				this.state = "movingToSpawnedRoom";
+			}
+
+			if (this.creep.room.name === this.spawnedRoomName) {
+
+				this.spawnedRoomAct();
+
+			} else if (this.creep.room.name === this.remoteRoomName) {
+
+				this.remoteRoomAct();
+
+			} else {
+
+				if (!this.unknownRoomAct()) {
+					this.state = "movingToSpawnedRoom";
+				}
 			}
 		}
 	}
-}
 
-RemoteCreep.prototype.spawnedRoomAct = function() {
-}
+	spawnedRoomAct() {
+	}
 
-RemoteCreep.prototype.remoteRoomAct = function() {
-}
+	remoteRoomAct() {
+	}
 
-RemoteCreep.prototype.unknownRoomAct = function() {
-	return false;
-}
+	unknownRoomAct() {
+		return false;
+	}
 
-RemoteCreep.prototype.moveToSpawnedRoom = function() {
-	this.state = "movingToSpawnedRoom";
-	this.moveToExit(this.spawnedRoomName);
-}
+	moveToSpawnedRoom() {
+		this.state = "movingToSpawnedRoom";
+		this.moveToExit(this.spawnedRoomName);
+	}
 
-RemoteCreep.prototype.moveToRemoteRoom = function() {
-	this.state = "movingToRemoteRoom";
-	this.moveToExit(this.remoteRoomName);
-}
+	moveToRemoteRoom() {
+		this.state = "movingToRemoteRoom";
+		this.moveToExit(this.remoteRoomName);
+	}
 
-RemoteCreep.prototype.arrivedAtSpawnedRoom = function() {
-}
+	arrivedAtSpawnedRoom() {
+	}
 
-RemoteCreep.prototype.arrivedAtRemoteRoom = function() {
+	arrivedAtRemoteRoom() {
+	}
 }
 
 

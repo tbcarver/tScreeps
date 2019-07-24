@@ -1,65 +1,66 @@
 
 var RemoteCreep = require("../baseCreeps/remoteCreep");
 
-function RemoteClaimer(creep) {
+class RemoteClaimer extends RemoteCreep {
 
-	RemoteCreep.call(this, creep);
-}
+	/** @param {Creep} creep */
+	constructor(creep) {
+		super(creep);
+	}
 
-RemoteClaimer.prototype = Object.create(RemoteCreep.prototype);
+	act() {
+		super.act();
+	}
 
-RemoteClaimer.prototype.act = function() {
+	arrivedAtSpawnedRoom() {
+	}
 
-	RemoteCreep.prototype.act.call(this);
-}
+	arrivedAtRemoteRoom() {
+		this.state = "claiming";
+	}
 
-RemoteClaimer.prototype.arrivedAtSpawnedRoom = function() {
-}
+	spawnedRoomAct() {
+	}
 
-RemoteClaimer.prototype.arrivedAtRemoteRoom = function() {
-	this.state = "claiming";
-}
+	remoteRoomAct() {
 
-RemoteClaimer.prototype.spawnedRoomAct = function() {
-}
+		var controller = this.creep.room.controller;
 
-RemoteClaimer.prototype.remoteRoomAct = function() {
+		if (controller) {
+			if (!controller.my) {
 
-	var controller = this.creep.room.controller;
+				var result = this.creep.claimController(controller);
 
-	if (controller) {
-		if (!controller.my) {
+				if (result === OK) {
 
-			var result = this.creep.claimController(controller);
+					debug.highlight(`${this.type} claimed controller ${this.creep.room.name}`);
 
-			if (result === OK) {
+				} else if (result === ERR_NOT_IN_RANGE) {
 
-				debug.highlight(`${this.type} claimed controller ${this.creep.room.name}`);
+					this.creep.moveTo(controller);
 
-			} else if (result === ERR_NOT_IN_RANGE) {
+				} else {
 
-				this.creep.moveTo(controller);
-
-			} else {
-
-				debug.warning(`${this.type} ${this.creep.name} can't claim ${this.creep.room.name} ${result}`);
+					debug.warning(`${this.type} ${this.creep.name} can't claim ${this.creep.room.name} ${result}`);
+				}
 			}
+		} else {
+
+			debug.warning(`${this.type} ${this.creep.name} can't find remote controller ${this.creep.room.name}`);
 		}
-	} else {
+	}
 
-		debug.warning(`${this.type} ${this.creep.name} can't find remote controller ${this.creep.room.name}`);
+	static initializeSpawnCreepMemory() {
+
+		var creepMemory = {
+			type: "remoteClaimer",
+			bodyPartsType: "claimer",
+			minimumSpawnCapacity: 700,
+		}
+
+		return creepMemory;
 	}
 }
 
-RemoteClaimer.initializeSpawnCreepMemory = function() {
-
-	var creepMemory = {
-		type: "remoteClaimer",
-		bodyPartsType: "claimer",
-		minimumSpawnCapacity: 700,
-	}
-
-	return creepMemory;
-}
 
 module.exports = RemoteClaimer

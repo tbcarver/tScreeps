@@ -1,61 +1,62 @@
 
 var RemoteCreep = require("../baseCreeps/remoteCreep");
 
-function RemoteControllerAttacker(creep) {
+class RemoteControllerAttacker extends RemoteCreep {
 
-	RemoteCreep.call(this, creep);
-}
+	/** @param {Creep} creep */
+	constructor(creep) {
+		super(creep);
+	}
 
-RemoteControllerAttacker.prototype = Object.create(RemoteCreep.prototype);
+	act() {
+		super.act();
+	}
 
-RemoteControllerAttacker.prototype.act = function() {
+	arrivedAtSpawnedRoom() {
+	}
 
-	RemoteCreep.prototype.act.call(this);
-}
+	arrivedAtRemoteRoom() {
+		this.state = "claiming";
+	}
 
-RemoteControllerAttacker.prototype.arrivedAtSpawnedRoom = function() {
-}
+	spawnedRoomAct() {
+	}
 
-RemoteControllerAttacker.prototype.arrivedAtRemoteRoom = function() {
-	this.state = "claiming";
-}
+	remoteRoomAct() {
 
-RemoteControllerAttacker.prototype.spawnedRoomAct = function() {
-}
+		var controller = this.creep.room.controller;
 
-RemoteControllerAttacker.prototype.remoteRoomAct = function() {
+		if (controller) {
+			if (!controller.my) {
 
-	var controller = this.creep.room.controller;
+				var result = this.creep.attackController(controller);
 
-	if (controller) {
-		if (!controller.my) {
+				if (result === ERR_NOT_IN_RANGE) {
 
-			var result = this.creep.attackController(controller);
+					this.creep.moveTo(controller);
 
-			if (result === ERR_NOT_IN_RANGE) {
+				} else if (!(result === OK || result === ERR_TIRED)) {
 
-				this.creep.moveTo(controller);
-
-			} else if (!(result === OK || result === ERR_TIRED)) {
-
-				debug.warning(`${this.type} ${this.creep.name} can't attackController ${this.creep.room.name} ${result}`);
+					debug.warning(`${this.type} ${this.creep.name} can't attackController ${this.creep.room.name} ${result}`);
+				}
 			}
+		} else {
+
+			debug.warning(`${this.type} ${this.creep.name} can't find controller ${this.creep.room.name}`);
 		}
-	} else {
+	}
 
-		debug.warning(`${this.type} ${this.creep.name} can't find controller ${this.creep.room.name}`);
+	static initializeSpawnCreepMemory() {
+
+		var creepMemory = {
+			type: "remoteControllerAttacker",
+			bodyPartsType: "claimer",
+			minimumSpawnCapacity: 700,
+		}
+
+		return creepMemory;
 	}
 }
 
-RemoteControllerAttacker.initializeSpawnCreepMemory = function() {
-
-	var creepMemory = {
-		type: "remoteControllerAttacker",
-		bodyPartsType: "claimer",
-		minimumSpawnCapacity: 700,
-	}
-
-	return creepMemory;
-}
 
 module.exports = RemoteControllerAttacker

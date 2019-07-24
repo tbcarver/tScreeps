@@ -2,57 +2,57 @@
 
 var RemoteEnergyWorker = require("./remoteEnergyWorker");
 
-function RemoteBuilder(creep) {
+class RemoteBuilder extends RemoteEnergyWorker {
 
-	RemoteEnergyWorker.call(this, creep);
-}
-
-RemoteBuilder.prototype = Object.create(RemoteEnergyWorker.prototype);
-
-RemoteBuilder.prototype.act = function() {
-
-	RemoteEnergyWorker.prototype.act.call(this);
-}
-
-RemoteBuilder.prototype.work = function() {
-
-	const target = this.creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
-
-	if (target) {
-
-		if (this.creep.build(target) == ERR_NOT_IN_RANGE) {
-
-			this.creep.moveTo(target);
-		}
-
-	} else {
-
-		if (this.creep.transfer(this.creep.room.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-
-			this.creep.moveTo(this.creep.room.controller);
-		}
+	/** @param {Creep} creep */
+	constructor(creep) {
+		super(creep);
 	}
-}
 
-RemoteBuilder.initializeSpawnCreepMemory = function(room) {
+	act() {
+		super.act();
+	}
 
-	var creepMemory;
+	work() {
 
-	if (room.find) {
+		const target = this.creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
 
-		const targets = room.find(FIND_CONSTRUCTION_SITES);
+		if (target) {
 
-		if (targets.length > 0) {
+			if (this.creep.build(target) == ERR_NOT_IN_RANGE) {
 
-			creepMemory = {
-				type: "remoteBuilder",
-				bodyPartsType: "moveCarryWork",
-				maximumSpawnCapacity: 800,
+				this.creep.moveTo(target);
+			}
+
+		} else {
+
+			if (this.creep.transfer(this.creep.room.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+
+				this.creep.moveTo(this.creep.room.controller);
 			}
 		}
 	}
 
-	return creepMemory;
+	static initializeSpawnCreepMemory(room) {
+
+		var creepMemory;
+
+		if (room.find) {
+
+			const targets = room.find(FIND_CONSTRUCTION_SITES);
+
+			if (targets.length > 0) {
+
+				creepMemory = {
+					type: "remoteBuilder",
+					bodyPartsType: "moveCarryWork",
+					maximumSpawnCapacity: 800,
+				}
+			}
+		}
+
+		return creepMemory;
+	}
 }
 
 

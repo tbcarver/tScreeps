@@ -2,70 +2,70 @@
 var RemoteCreep = require("../baseCreeps/remoteCreep");
 var findTools = require("../../tools/findTools");
 
-function RemoteEnergyWorker(creep) {
+class RemoteEnergyWorker extends RemoteCreep {
 
-	RemoteCreep.call(this, creep);
-}
+	/** @param {Creep} creep */
+	constructor(creep) {
+		super(creep);
+	}
 
-RemoteEnergyWorker.prototype = Object.create(RemoteCreep.prototype);
+	act() {
+		super.act();
+	}
 
-RemoteEnergyWorker.prototype.act = function() {
+	arrivedAtSpawnedRoom() {
+		this.state = "harvesting";
+	}
 
-	RemoteCreep.prototype.act.call(this);
-}
+	arrivedAtRemoteRoom() {
+		this.state = "working";
+	}
 
-RemoteEnergyWorker.prototype.arrivedAtSpawnedRoom = function() {
-	this.state = "harvesting";
-}
+	spawnedRoomAct() {
 
-RemoteEnergyWorker.prototype.arrivedAtRemoteRoom = function() {
-	this.state = "working";
-}
+		if (this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
 
-RemoteEnergyWorker.prototype.spawnedRoomAct = function() {
+			this.moveToRemoteRoom();
 
-	if (this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
+		} else if (this.state === "harvesting") {
 
-		this.moveToRemoteRoom();
+			var resource = findTools.findClosestEnergy(this.creep.pos);
 
-	} else if (this.state === "harvesting") {
+			if (resource) {
 
-		var resource = findTools.findClosestEnergy(this.creep.pos);
+				if (resource.structureType) {
 
-		if (resource) {
+					if (this.creep.withdraw(resource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+						this.creep.moveTo(resource);
+					}
+				} else {
 
-			if (resource.structureType) {
+					if (this.creep.harvest(resource) == ERR_NOT_IN_RANGE) {
+						this.creep.moveTo(resource);
 
-				if (this.creep.withdraw(resource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-					this.creep.moveTo(resource);
+					} else if (this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
+						// Step away from an energy source to not block it
+						this.moveToRemoteRoom();
+						this.memory.takeStepsIntoRoom = 2;
+					}
 				}
 			} else {
 
-				if (this.creep.harvest(resource) == ERR_NOT_IN_RANGE) {
-					this.creep.moveTo(resource);
-
-				} else if (this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
-					// Step away from an energy source to not block it
-					this.moveToRemoteRoom();
-					this.memory.takeStepsIntoRoom = 2;
-				}
+				// debug.warning(`${this.type} ${this.creep.name} energy not found`);
 			}
-		} else {
-
-			// debug.warning(`${this.type} ${this.creep.name} energy not found`);
 		}
 	}
-}
 
-RemoteEnergyWorker.prototype.remoteRoomAct = function() {
+	remoteRoomAct() {
 
-	if (this.creep.carry[RESOURCE_ENERGY] === 0) {
+		if (this.creep.carry[RESOURCE_ENERGY] === 0) {
 
-		this.moveToSpawnedRoom();
+			this.moveToSpawnedRoom();
 
-	} else if (this.state === "working") {
+		} else if (this.state === "working") {
 
-		this.work();
+			this.work();
+		}
 	}
 }
 

@@ -2,132 +2,132 @@
 var spawnTools = require("../../tools/spawnTools");
 var EnergyCreep = require("../baseCreeps/energyCreep");
 
-function ExtensionEnergizer(creep) {
+class ExtensionEnergizer extends EnergyCreep {
 
-	EnergyCreep.call(this, creep);
-}
+	/** @param {Creep} creep */
+	constructor(creep) {
+		super(creep);
+	}
 
-ExtensionEnergizer.prototype = Object.create(EnergyCreep.prototype);
+	act() {
+		super.act();
+	}
 
-ExtensionEnergizer.prototype.act = function() {
+	energyAct() {
 
-	EnergyCreep.prototype.act.call(this);
-}
+		var energizingExtensionIDs = this.memory.extensions.map(extension => extension.id);
+		var extension = this.creep.pos.findClosestByPath(FIND_STRUCTURES, {
+			filter: structure => structure.structureType === STRUCTURE_EXTENSION &&
+				structure.energy < structure.energyCapacity && energizingExtensionIDs.includes(structure.id)
+		});
 
-ExtensionEnergizer.prototype.energyAct = function() {
+		if (extension) {
 
-	var energizingExtensionIDs = this.memory.extensions.map(extension => extension.id);
-	var extension = this.creep.pos.findClosestByPath(FIND_STRUCTURES, {
-		filter: structure => structure.structureType === STRUCTURE_EXTENSION &&
-			structure.energy < structure.energyCapacity && energizingExtensionIDs.includes(structure.id)
-	});
+			if (this.creep.transfer(extension, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 
-	if (extension) {
+				this.creep.moveTo(extension);
+			}
+		} else if (this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .75) {
 
-		if (this.creep.transfer(extension, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+			this.state = "harvesting";
+		} else {
+
+			extension = Game.getObjectById(this.memory.extensions[this.memory.activeExtensionIndex].id);
 
 			this.creep.moveTo(extension);
 		}
-	} else if (this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .75) {
-
-		this.state = "harvesting";
-	} else {
-
-		extension = Game.getObjectById(this.memory.extensions[this.memory.activeExtensionIndex].id);
-
-		this.creep.moveTo(extension);
 	}
-}
 
-ExtensionEnergizer.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule) {
+	static initializeSpawnCreepMemory(room, spawn, creepsSpawnRule) {
 
-	var creepMemory;
+		var creepMemory;
 
-	var extensions = room.find(FIND_MY_STRUCTURES, {
-		filter: {
-			structureType: STRUCTURE_EXTENSION
-		}
-	});
-
-	var occupiedPositions = getCreepExtensionPositions();
-
-	availableExtensions = extensions.filter(extension => {
-
-		var isExtensionOccupied = occupiedPositions.some(occupiedPos => occupiedPos.x === extension.pos.x &&
-			occupiedPos.y === extension.pos.y && occupiedPos.roomName === extension.pos.roomName)
-
-		return !isExtensionOccupied;
-	});
-
-	if (availableExtensions.length > 0) {
-
-		creepMemory = {
-			type: "extensionEnergizer",
-			bodyPartsType: "moveCarryWork",
-			maximumSpawnCapacity: 450,
-			extensions: [{
-				id: "",
-				pos: {}
-			}],
-			activeExtensionIndex: 0
-		};
-
-		if (room.controller.level >= 7) {
-			creepMemory.maximumSpawnCapacity = 600;
-		}
-
-		if (availableExtensions.length > 1) {
-			creepMemory.activeExtensionIndex = 1;
-		}
-
-		if (!creepsSpawnRule.canEnergyCreepsHarvest) {
-			creepMemory.bodyPartsType = "moveCarry";
-		}
-
-		creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, room, spawn, creepsSpawnRule);
-
-		var nextExtension = spawn.pos.findClosestByRange(FIND_STRUCTURES, {
-			filter: nextStructure => nextStructure.structureType == STRUCTURE_EXTENSION &&
-				_.map(availableExtensions, availableExtension => availableExtension.id).includes(nextStructure.id)
+		var extensions = room.find(FIND_MY_STRUCTURES, {
+			filter: {
+				structureType: STRUCTURE_EXTENSION
+			}
 		});
 
-		creepMemory.extensions[0].id = nextExtension.id;
-		creepMemory.extensions[0].pos = nextExtension.pos;
-		// debug.temp("next", nextExtension.pos, 0);
+		var occupiedPositions = getCreepExtensionPositions();
 
-		for (var index = 1; index < creepsSpawnRule.maxExtensionsPerEnergizer; index++) {
+		availableExtensions = extensions.filter(extension => {
 
-			// NOTE: The find adjacent structures first
-			var nextExtensions = nextExtension.pos.findInRange(FIND_STRUCTURES, 1, {
+			var isExtensionOccupied = occupiedPositions.some(occupiedPos => occupiedPos.x === extension.pos.x &&
+				occupiedPos.y === extension.pos.y && occupiedPos.roomName === extension.pos.roomName)
+
+			return !isExtensionOccupied;
+		});
+
+		if (availableExtensions.length > 0) {
+
+			creepMemory = {
+				type: "extensionEnergizer",
+				bodyPartsType: "moveCarryWork",
+				maximumSpawnCapacity: 450,
+				extensions: [{
+					id: "",
+					pos: {}
+				}],
+				activeExtensionIndex: 0
+			};
+
+			if (room.controller.level >= 7) {
+				creepMemory.maximumSpawnCapacity = 600;
+			}
+
+			if (availableExtensions.length > 1) {
+				creepMemory.activeExtensionIndex = 1;
+			}
+
+			if (!creepsSpawnRule.canEnergyCreepsHarvest) {
+				creepMemory.bodyPartsType = "moveCarry";
+			}
+
+			creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, room, spawn, creepsSpawnRule);
+
+			var nextExtension = spawn.pos.findClosestByRange(FIND_STRUCTURES, {
 				filter: nextStructure => nextStructure.structureType == STRUCTURE_EXTENSION &&
-					_.map(availableExtensions, availableExtension => availableExtension.id).includes(nextStructure.id) &&
-					!_.map(creepMemory.extensions, extension => extension.id).includes(nextStructure.id)
+					_.map(availableExtensions, availableExtension => availableExtension.id).includes(nextStructure.id)
 			});
 
-			if (nextExtensions.length > 0) {
-				nextExtension = nextExtensions[0];
-			} else {
-				nextExtension = nextExtension.pos.findClosestByRange(FIND_STRUCTURES, {
+			creepMemory.extensions[0].id = nextExtension.id;
+			creepMemory.extensions[0].pos = nextExtension.pos;
+			// debug.temp("next", nextExtension.pos, 0);
+
+			for (var index = 1; index < creepsSpawnRule.maxExtensionsPerEnergizer; index++) {
+
+				// NOTE: The find adjacent structures first
+				var nextExtensions = nextExtension.pos.findInRange(FIND_STRUCTURES, 1, {
 					filter: nextStructure => nextStructure.structureType == STRUCTURE_EXTENSION &&
 						_.map(availableExtensions, availableExtension => availableExtension.id).includes(nextStructure.id) &&
 						!_.map(creepMemory.extensions, extension => extension.id).includes(nextStructure.id)
 				});
+
+				if (nextExtensions.length > 0) {
+					nextExtension = nextExtensions[0];
+				} else {
+					nextExtension = nextExtension.pos.findClosestByRange(FIND_STRUCTURES, {
+						filter: nextStructure => nextStructure.structureType == STRUCTURE_EXTENSION &&
+							_.map(availableExtensions, availableExtension => availableExtension.id).includes(nextStructure.id) &&
+							!_.map(creepMemory.extensions, extension => extension.id).includes(nextStructure.id)
+					});
+				}
+
+				if (!nextExtension) {
+					break;
+				}
+
+				// debug.temp("next", nextExtension.pos, index);
+
+				creepMemory.extensions.push({
+					id: nextExtension.id,
+					pos: nextExtension.pos
+				});
 			}
-
-			if (!nextExtension) {
-				break;
-			}
-
-			// debug.temp("next", nextExtension.pos, index);
-
-			creepMemory.extensions.push({
-				id: nextExtension.id,
-				pos: nextExtension.pos
-			});
 		}
-	}
 
-	return creepMemory;
+		return creepMemory;
+	}
 }
 
 function getCreepExtensionPositions() {
@@ -151,5 +151,6 @@ function getCreepExtensionPositions() {
 
 	return result;
 }
+
 
 module.exports = ExtensionEnergizer

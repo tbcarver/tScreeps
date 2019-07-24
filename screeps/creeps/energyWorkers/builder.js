@@ -2,59 +2,59 @@
 
 var EnergyCreep = require("../baseCreeps/energyCreep");
 
-function Builder(creep) {
+class Builder extends EnergyCreep {
 
-	EnergyCreep.call(this, creep);
-}
-
-Builder.prototype = Object.create(EnergyCreep.prototype);
-
-Builder.prototype.act = function() {
-
-	EnergyCreep.prototype.act.call(this);
-}
-
-Builder.prototype.energyAct = function() {
-
-	const target = this.creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
-
-	if (target) {
-
-		if (this.creep.build(target) == ERR_NOT_IN_RANGE) {
-
-			this.creep.moveTo(target);
-		}
-
-	} else {
-
-		if (this.creep.transfer(this.creep.room.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-
-			this.creep.moveTo(this.creep.room.controller);
-		}
+	/** @param {Creep} creep */
+	constructor(creep) {
+		super(creep);
 	}
-}
 
-Builder.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule) {
+	act() {
+		super.act();
+	}
 
-	var creepMemory;
+	energyAct() {
 
-	if (room.find) {
+		const target = this.creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
 
-		const targets = room.find(FIND_CONSTRUCTION_SITES);
+		if (target) {
 
-		if (targets.length > 0) {
-	
-			creepMemory = {
-				type: "builder",
-				bodyPartsType: "moveCarryWork",
-				maximumSpawnCapacity: 700,
+			if (this.creep.build(target) == ERR_NOT_IN_RANGE) {
+
+				this.creep.moveTo(target);
 			}
 
-			creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, creepMemory, room, spawn, creepsSpawnRule);
+		} else {
+
+			if (this.creep.transfer(this.creep.room.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+
+				this.creep.moveTo(this.creep.room.controller);
+			}
 		}
 	}
 
-	return creepMemory;
+	static initializeSpawnCreepMemory(room, spawn, creepsSpawnRule) {
+
+		var creepMemory;
+
+		if (room.find) {
+
+			const targets = room.find(FIND_CONSTRUCTION_SITES);
+
+			if (targets.length > 0) {
+
+				creepMemory = {
+					type: "builder",
+					bodyPartsType: "moveCarryWork",
+					maximumSpawnCapacity: 700,
+				}
+
+				creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, creepMemory, room, spawn, creepsSpawnRule);
+			}
+		}
+
+		return creepMemory;
+	}
 }
 
 

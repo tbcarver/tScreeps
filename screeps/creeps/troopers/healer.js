@@ -3,75 +3,76 @@ var { rules } = require("../../rules/rules");
 var BaseCreep = require("../baseCreeps/baseCreep");
 var TrooperCreep = require("./trooperCreep");
 
-function Healer(creep) {
+class Healer extends TrooperCreep {
 
-	TrooperCreep.call(this, creep);
-}
+	/** @param {Creep} creep */
+	constructor(creep) {
+		super(creep);
+	}
 
-Healer.prototype = Object.create(TrooperCreep.prototype);
+	act() {
 
-Healer.prototype.act = function() {
-
-	if (!BaseCreep.prototype.act.call(this)) {
-		if (!this.heal()) {
-			TrooperCreep.prototype.act.call(this);
+		if (!super.act()) {
+			if (!this.heal()) {
+				TrooperCreep.prototype.act.call(this);
+			}
 		}
 	}
-}
 
-Healer.prototype.attack = function() {
-	this.heal();
-}
+	attack() {
+		this.heal();
+	}
 
-Healer.prototype.heal = function() {
+	heal() {
 
-	var healed = false;
+		var healed = false;
 
-	var creeps = this.creep.room.find(FIND_MY_CREEPS, {
-		filter: creep => creep.hits < creep.hitsMax && creep.name !== this.creep.name &&
-		creep.memory.isMobTrooper
-	});
-
-	if (creeps.length > 0) {
-
-		_.sortBy(creeps, ["hits"]);
-		var creep = creeps[0];
-
-	} else {
-
-		var creep = this.creep.pos.findClosestByRange(FIND_MY_CREEPS, {
-			filter: creep => creep.hits < creep.hitsMax && creep.name !== this.creep.name
+		var creeps = this.creep.room.find(FIND_MY_CREEPS, {
+			filter: creep => creep.hits < creep.hitsMax && creep.name !== this.creep.name &&
+				creep.memory.isMobTrooper
 		});
-	}
 
-	if (creep) {
+		if (creeps.length > 0) {
 
-		if (this.creep.rangedHeal(creep) == ERR_NOT_IN_RANGE) {
-			this.creep.moveTo(creep);
+			_.sortBy(creeps, ["hits"]);
+			var creep = creeps[0];
+
+		} else {
+
+			var creep = this.creep.pos.findClosestByRange(FIND_MY_CREEPS, {
+				filter: creep => creep.hits < creep.hitsMax && creep.name !== this.creep.name
+			});
 		}
-		healed = true;
 
-	} else if (this.creep.hits < this.creep.hitsMax) {
-		this.creep.heal(creep);
-		healed = true;
+		if (creep) {
+
+			if (this.creep.rangedHeal(creep) == ERR_NOT_IN_RANGE) {
+				this.creep.moveTo(creep);
+			}
+			healed = true;
+
+		} else if (this.creep.hits < this.creep.hitsMax) {
+			this.creep.heal(creep);
+			healed = true;
+		}
+
+		return healed;
 	}
 
-	return healed;
-}
-
-Healer.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount) {
+	static initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount) {
 
 
-	var creepMemory = TrooperCreep.initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount);
+		var creepMemory = TrooperCreep.initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount);
 
-	if (creepMemory) {
+		if (creepMemory) {
 
-		creepMemory.type = "healer";
-		creepMemory.bodyPartsType = "healer";
-		creepMemory.maximumSpawnCapacity = rules.maximumHealerSpawnCapacity || 800;
+			creepMemory.type = "healer";
+			creepMemory.bodyPartsType = "healer";
+			creepMemory.maximumSpawnCapacity = rules.maximumHealerSpawnCapacity || 800;
+		}
+
+		return creepMemory;
 	}
-
-	return creepMemory;
 }
 
 

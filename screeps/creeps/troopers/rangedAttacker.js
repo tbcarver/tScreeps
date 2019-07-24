@@ -2,51 +2,52 @@
 var { rules } = require("../../rules/rules");
 var TrooperCreep = require("./trooperCreep");
 
-function RangedAttacker(creep) {
+class RangedAttacker extends TrooperCreep {
 
-	TrooperCreep.call(this, creep);
-}
+	/** @param {Creep} creep */
+	constructor(creep) {
+		super(creep);
+	}
 
-RangedAttacker.prototype = Object.create(TrooperCreep.prototype);
+	act() {
+		super.act();
+	}
 
-RangedAttacker.prototype.act = function() {
-	TrooperCreep.prototype.act.call(this);
-}
+	attack() {
 
-RangedAttacker.prototype.attack = function() {
+		var enemies = this.creep.room.find(FIND_HOSTILE_CREEPS);
 
-	var enemies = this.creep.room.find(FIND_HOSTILE_CREEPS);
+		if (enemies.length > 0) {
 
-	if (enemies.length > 0) {
+			enemies = _.sortBy(enemies, ['hits']);
+			var enemy = enemies[0];
 
-		enemies = _.sortBy(enemies, ['hits']);
-		var enemy = enemies[0];
+			if (enemy.hits === enemy.hitsMax) {
+				enemy = this.creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+			}
 
-		if (enemy.hits === enemy.hitsMax) {
-			enemy = this.creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-		}
+			if (enemy) {
 
-		if (enemy) {
-
-			if (this.creep.rangedAttack(enemy) == ERR_NOT_IN_RANGE) {
-				this.creep.moveTo(enemy);
+				if (this.creep.rangedAttack(enemy) == ERR_NOT_IN_RANGE) {
+					this.creep.moveTo(enemy);
+				}
 			}
 		}
 	}
-}
 
-RangedAttacker.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount) {
+	static initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount) {
 
-	var creepMemory = TrooperCreep.initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount);
+		var creepMemory = TrooperCreep.initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount);
 
-	if (creepMemory) {
-			
-		creepMemory.type = "rangedAttacker";
-		creepMemory.bodyPartsType = "rangedAttacker";
-		creepMemory.maximumSpawnCapacity = rules.maximumRangedAttackerSpawnCapacity || 800;
+		if (creepMemory) {
+
+			creepMemory.type = "rangedAttacker";
+			creepMemory.bodyPartsType = "rangedAttacker";
+			creepMemory.maximumSpawnCapacity = rules.maximumRangedAttackerSpawnCapacity || 800;
+		}
+
+		return creepMemory;
 	}
-
-	return creepMemory;
 }
 
 

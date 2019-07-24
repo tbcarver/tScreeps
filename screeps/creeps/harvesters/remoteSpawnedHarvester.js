@@ -2,84 +2,86 @@
 var RemoteCreep = require("../baseCreeps/remoteCreep");
 var BaseRemoteStorageTransferer = require("../transferers/baseRemoteStorageTransferer");
 
-function RemoteSpawnedHarvester(creep) {
+class RemoteSpawnedHarvester extends RemoteCreep {
 
-	RemoteCreep.call(this, creep);
-}
-
-RemoteSpawnedHarvester.prototype = Object.create(RemoteCreep.prototype);
-
-RemoteSpawnedHarvester.prototype.act = function() {
-	
-	if (this.state === "movingToSpawnedRoom") {
-		var dropFlag = Game.flags[`drop-${this.creep.room.name}`];
-		if (dropFlag) {
-			this.state = "transferring";
-		}
+	/** @param {Creep} creep */
+	constructor(creep) {
+		super(creep);
 	}
 
-	RemoteCreep.prototype.act.call(this);
-}
+	act() {
 
-RemoteSpawnedHarvester.prototype.arrivedAtSpawnedRoom = function() {
-	this.state = "transferring";
-}
+		if (this.state === "movingToSpawnedRoom") {
+			var dropFlag = Game.flags[`drop-${this.creep.room.name}`];
+			if (dropFlag) {
+				this.state = "transferring";
+			}
+		}
 
-RemoteSpawnedHarvester.prototype.arrivedAtRemoteRoom = function() {
-	this.state = "harvesting";
-}
+		super.act();
+	}
 
-RemoteSpawnedHarvester.prototype.spawnedRoomAct = function() {
+	arrivedAtSpawnedRoom() {
+		this.state = "transferring";
+	}
 
-	BaseRemoteStorageTransferer.prototype.transfer.call(this, this.moveToRemoteRoom.bind(this));
-}
+	arrivedAtRemoteRoom() {
+		this.state = "harvesting";
+	}
 
-RemoteSpawnedHarvester.prototype.remoteRoomAct = function() {
+	spawnedRoomAct() {
 
-	if (this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
+		BaseRemoteStorageTransferer.prototype.transfer.call(this, this.moveToRemoteRoom.bind(this));
+	}
 
-		this.moveToSpawnedRoom();
+	remoteRoomAct() {
 
-	} else if (this.state === "harvesting") {
+		if (this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
 
-		var resource = this.creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+			this.moveToSpawnedRoom();
 
-		if (resource) {
+		} else if (this.state === "harvesting") {
 
-			if (this.creep.harvest(resource) == ERR_NOT_IN_RANGE) {
-				this.creep.moveTo(resource);
+			var resource = this.creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+
+			if (resource) {
+
+				if (this.creep.harvest(resource) == ERR_NOT_IN_RANGE) {
+					this.creep.moveTo(resource);
+				}
+			} else {
+
+				// debug.warning(`${this.type} ${this.creep.name} energy not found`);
 			}
 		} else {
-
-			// debug.warning(`${this.type} ${this.creep.name} energy not found`);
+			debug.warning(`${this.type} ${this.creep.name} spawnedRoomAct called with unknown state: ${this.state}`);
 		}
-	} else {
-		debug.warning(`${this.type} ${this.creep.name} spawnedRoomAct called with unknown state: ${this.state}`);
+	}
+
+	unknownRoomAct() {
+
+		var acted = false;
+
+		if (this.state === "transferring") {
+
+			this.spawnedRoomAct();
+			acted = true;
+		}
+
+		return acted;
+	}
+
+	static initializeSpawnCreepMemory() {
+
+		var creepMemory = {
+			type: "remoteSpawnedHarvester",
+			bodyPartsType: "moveCarryWork",
+			maximumSpawnCapacity: 850,
+		}
+
+		return creepMemory;
 	}
 }
 
-RemoteSpawnedHarvester.prototype.unknownRoomAct = function() {
-
-	var acted = false;
-
-	if (this.state === "transferring") {
-		
-		this.spawnedRoomAct();
-		acted = true;
-	}
-
-	return acted;
-}
-
-RemoteSpawnedHarvester.initializeSpawnCreepMemory = function() {
-
-	var creepMemory = {
-		type: "remoteSpawnedHarvester",
-		bodyPartsType: "moveCarryWork",
-		maximumSpawnCapacity: 850,
-	}
-
-	return creepMemory;
-}
 
 module.exports = RemoteSpawnedHarvester

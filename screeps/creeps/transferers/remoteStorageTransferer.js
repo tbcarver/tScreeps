@@ -1,39 +1,39 @@
 
 var BaseRemoteStorageTransferer = require("./baseRemoteStorageTransferer");
 
-function RemoteStorageTransferer(creep) {
+class RemoteStorageTransferer extends BaseRemoteStorageTransferer {
 
-	BaseRemoteStorageTransferer.call(this, creep);
-}
+	/** @param {Creep} creep */
+	constructor(creep) {
+		super(creep);
+	}
 
-RemoteStorageTransferer.prototype = Object.create(BaseRemoteStorageTransferer.prototype);
+	act() {
+		super.act();
+	}
 
-RemoteStorageTransferer.prototype.act = function() {
+	arrivedAtSpawnedRoom() {
+		this.state = "harvesting";
+	}
 
-	BaseRemoteStorageTransferer.prototype.act.call(this);
-}
+	arrivedAtRemoteRoom() {
+		this.state = "transferring";
+	}
 
-RemoteStorageTransferer.prototype.arrivedAtSpawnedRoom = function() {
-	this.state = "harvesting";
-}
+	spawnedRoomAct() {
 
-RemoteStorageTransferer.prototype.arrivedAtRemoteRoom = function() {
-	this.state = "transferring";
-}
+		super.harvest(this.moveToRemoteRoom.bind(this));
+	}
 
-RemoteStorageTransferer.prototype.spawnedRoomAct = function() {
+	remoteRoomAct() {
 
-	BaseRemoteStorageTransferer.prototype.harvest.call(this, this.moveToRemoteRoom.bind(this));
-}
+		super.transfer(this.moveToSpawnedRoom.bind(this));
+	}
 
-RemoteStorageTransferer.prototype.remoteRoomAct = function() {
+	static initializeSpawnCreepMemory(room) {
 
-	BaseRemoteStorageTransferer.prototype.transfer.call(this, this.moveToSpawnedRoom.bind(this));
-}
-
-RemoteStorageTransferer.initializeSpawnCreepMemory = function(room) {
-
-	return BaseRemoteStorageTransferer.initializeSpawnCreepMemory("remoteStorageTransferer", room);
+		return BaseRemoteStorageTransferer.initializeSpawnCreepMemory("remoteStorageTransferer", room);
+	}
 }
 
 

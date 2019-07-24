@@ -1,68 +1,68 @@
 
 var EnergyCreep = require("../baseCreeps/energyCreep");
 
-function WallRepairer(creep) {
+class WallRepairer extends EnergyCreep {
 
-	EnergyCreep.call(this, creep);
-}
+	/** @param {Creep} creep */
+	constructor(creep) {
+		super(creep);
+	}
 
-WallRepairer.prototype = Object.create(EnergyCreep.prototype);
+	act() {
+		super.act();
+	}
 
-WallRepairer.prototype.act = function() {
+	energyAct() {
 
-	EnergyCreep.prototype.act.call(this);
-}
+		var target;
 
-WallRepairer.prototype.energyAct = function() {
+		for (var count = 1; count <= 150; count++) {
 
-	var target;
+			target = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+				filter: structure => (structure.structureType === STRUCTURE_WALL ||
+					structure.structureType === STRUCTURE_RAMPART) &&
+					structure.hits < (2000 * count)
+			});
 
-	for (var count = 1; count <= 150; count++) {
-
-		target = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-			filter: structure => (structure.structureType === STRUCTURE_WALL ||
-				structure.structureType === STRUCTURE_RAMPART) &&
-				structure.hits < (2000 * count)
-		});
+			if (target) {
+				break;
+			}
+		}
 
 		if (target) {
-			break;
-		}
-	}
 
-	if (target) {
+			if (this.creep.repair(target) == ERR_NOT_IN_RANGE) {
 
-		if (this.creep.repair(target) == ERR_NOT_IN_RANGE) {
-
-			this.creep.moveTo(target);
-		}
-	}
-}
-
-WallRepairer.initializeSpawnCreepMemory = function(room, spawn, creepsSpawnRule) {
-
-	var creepMemory;
-
-	if (room.find) {
-
-		const targets = room.find(FIND_STRUCTURES, {
-			filter: structure => structure.structureType === STRUCTURE_WALL ||
-				structure.structureType === STRUCTURE_RAMPART
-		});
-
-		if (targets.length > 0) {
-
-			creepMemory = {
-				type: "wallRepairer",
-				bodyPartsType: "moveCarryWork",
-				maximumSpawnCapacity: 700,
+				this.creep.moveTo(target);
 			}
-
-			creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, creepMemory, room, spawn, creepsSpawnRule);
 		}
 	}
 
-	return creepMemory;
+	static initializeSpawnCreepMemory(room, spawn, creepsSpawnRule) {
+
+		var creepMemory;
+
+		if (room.find) {
+
+			const targets = room.find(FIND_STRUCTURES, {
+				filter: structure => structure.structureType === STRUCTURE_WALL ||
+					structure.structureType === STRUCTURE_RAMPART
+			});
+
+			if (targets.length > 0) {
+
+				creepMemory = {
+					type: "wallRepairer",
+					bodyPartsType: "moveCarryWork",
+					maximumSpawnCapacity: 700,
+				}
+
+				creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, creepMemory, room, spawn, creepsSpawnRule);
+			}
+		}
+
+		return creepMemory;
+	}
 }
 
 

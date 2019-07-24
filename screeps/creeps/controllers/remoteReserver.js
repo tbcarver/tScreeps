@@ -1,63 +1,63 @@
 
 var RemoteCreep = require("../baseCreeps/remoteCreep");
 
-function RemoteReserver(creep) {
+class RemoteReserver extends RemoteCreep {
 
-	RemoteCreep.call(this, creep);
-}
+	/** @param {Creep} creep */
+	constructor(creep) {
+		super(creep);
+	}
 
-RemoteReserver.prototype = Object.create(RemoteCreep.prototype);
+	act() {
+		super.act();
+	}
 
-RemoteReserver.prototype.act = function() {
+	arrivedAtSpawnedRoom() {
+	}
 
-	RemoteCreep.prototype.act.call(this);
-}
+	arrivedAtRemoteRoom() {
+		this.state = "reserving";
+	}
 
-RemoteReserver.prototype.arrivedAtSpawnedRoom = function() {
-}
+	spawnedRoomAct() {
+	}
 
-RemoteReserver.prototype.arrivedAtRemoteRoom = function() {
-	this.state = "reserving";
-}
+	remoteRoomAct() {
 
-RemoteReserver.prototype.spawnedRoomAct = function() {
-}
+		var controller = this.creep.room.controller;
 
-RemoteReserver.prototype.remoteRoomAct = function() {
+		if (controller) {
 
-	var controller = this.creep.room.controller;
+			var result = this.creep.reserveController(controller);
 
-	if (controller) {
+			if (result === OK) {
 
-		var result = this.creep.reserveController(controller);
+				// debug.highlight(`${this.type} reserved controller ${this.creep.room.name}`);
 
-		if (result === OK) {
+			} else if (result === ERR_NOT_IN_RANGE) {
 
-			// debug.highlight(`${this.type} reserved controller ${this.creep.room.name}`);
+				this.creep.moveTo(controller);
 
-		} else if (result === ERR_NOT_IN_RANGE) {
+			} else {
 
-			this.creep.moveTo(controller);
-
+				debug.warning(`${this.type} ${this.creep.name} can't reserve ${this.creep.room.name} ${result}`);
+			}
 		} else {
 
-			debug.warning(`${this.type} ${this.creep.name} can't reserve ${this.creep.room.name} ${result}`);
+			debug.warning(`${this.type} ${this.creep.name} can't find remote controller ${this.creep.room.name}`);
 		}
-	} else {
-
-		debug.warning(`${this.type} ${this.creep.name} can't find remote controller ${this.creep.room.name}`);
-	}
-}
-
-RemoteReserver.initializeSpawnCreepMemory = function() {
-
-	var creepMemory = {
-		type: "remoteReserver",
-		bodyPartsType: "claimer",
-		minimumSpawnCapacity: 700,
 	}
 
-	return creepMemory;
+	static initializeSpawnCreepMemory() {
+
+		var creepMemory = {
+			type: "remoteReserver",
+			bodyPartsType: "claimer",
+			minimumSpawnCapacity: 700,
+		}
+
+		return creepMemory;
+	}
 }
 
 module.exports = RemoteReserver
