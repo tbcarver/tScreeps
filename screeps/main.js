@@ -69,7 +69,6 @@ function loop() {
 
 		// Game.flags["wait-W7N8"].setPosition(16,7)
 
-		// roomTools.consoleWall();
 		COLOR_ORANGE
 		// roomTools.consoleEnemies();
 		visualizeTools.visualizeStructureHealth();

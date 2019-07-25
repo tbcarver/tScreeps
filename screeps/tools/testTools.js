@@ -68,31 +68,31 @@ function tick() {
 	// var room = Game.rooms[roomName];
 
 	// var resources = room.find(FIND_DROPPED_RESOURCES, {
-	// 	filter: resource => resource.energy
+	// 	filter: resource => resource.amount
 	// });
 	// var totalEnergy = sumBy(resources, "energy");
 
 	// var dropFlag = Game.flags[`drop-${roomName}`];
 
 	// var resources = room.find(FIND_DROPPED_RESOURCES, {
-	// 	filter: resource => resource.energy && dropFlag.pos.inRangeTo(resource, 3)
+	// 	filter: resource => resource.amount && dropFlag.pos.inRangeTo(resource, 3)
 	// });
 	// var totalDropFlag = sumBy(resources, "energy");
 
 	// var isInRangeToDropFlag = true;
 	// var resources = room.find(FIND_DROPPED_RESOURCES, {
-	// 	filter: resource => resource.energy && isInRangeToDropFlag ? dropFlag.pos.inRangeTo(resource, 3) : !dropFlag.pos.inRangeTo(resource, 3)
+	// 	filter: resource => resource.amount && isInRangeToDropFlag ? dropFlag.pos.inRangeTo(resource, 3) : !dropFlag.pos.inRangeTo(resource, 3)
 	// });
 	// var totalDropFlagNear = sumBy(resources, "energy");
 
 	// var resources = room.find(FIND_DROPPED_RESOURCES, {
-	// 	filter: resource => resource.energy && !dropFlag.pos.inRangeTo(resource, 3)
+	// 	filter: resource => resource.amount && !dropFlag.pos.inRangeTo(resource, 3)
 	// });
 	// var totalNotDropFlag = sumBy(resources, "energy");
 
 	// var isInRangeToDropFlag = false;
 	// var resources = room.find(FIND_DROPPED_RESOURCES, {
-	// 	filter: resource => resource.energy && isInRangeToDropFlag ? dropFlag.pos.inRangeTo(resource, 3) : !dropFlag.pos.inRangeTo(resource, 3)
+	// 	filter: resource => resource.amount && isInRangeToDropFlag ? dropFlag.pos.inRangeTo(resource, 3) : !dropFlag.pos.inRangeTo(resource, 3)
 	// });
 	// var totalNotDropFlagNear = sumBy(resources, "energy");
 

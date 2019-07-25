@@ -6,9 +6,10 @@ towersController.tick = function() {
 	for (var roomName in Game.rooms) {
 
 		var room = Game.rooms[roomName];
-		var towers = room.find(FIND_STRUCTURES, {
+
+		var towers = /** @type {StructureTower[]} */ (room.find(FIND_STRUCTURES, {
 			filter: structure => structure.structureType === STRUCTURE_TOWER
-		});
+		}));
 
 		if (towers.length > 0) {
 
@@ -37,12 +38,12 @@ towersController.tick = function() {
 					var creeps = room.find(FIND_MY_CREEPS, {
 						filter: creep => creep.hits < creep.hitsMax
 					});
-				
+
 					if (creeps.length > 0) {
-				
+
 						for (var tower of towers) {
 							tower.heal(creeps[0]);
-						}			
+						}
 					}
 				}
 			}

@@ -9,7 +9,7 @@ class Repairer extends EnergyCreep {
 	}
 
 	act() {
-		super.act();
+		return super.act();
 	}
 
 	energyAct() {
@@ -56,7 +56,7 @@ class Repairer extends EnergyCreep {
 					maximumSpawnCapacity: 700,
 				}
 
-				creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, creepMemory, room, spawn, creepsSpawnRule);
+				creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, creepMemory, room, spawn);
 			}
 		}
 

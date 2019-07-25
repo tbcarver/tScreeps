@@ -39,7 +39,7 @@ cachedStorageTransferRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 						creepsCountMultiplier = 2;
 					}
 
-					var transferringRoom = {
+					transferringRoom = {
 						roomName: roomName,
 						creepsCount: Math.floor(Math.ceil(((storageStats.percentageStoredEnergy - breakPoint) / 10)) * creepsCountMultiplier),
 					};
@@ -81,7 +81,7 @@ cachedStorageTransferRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 
 			var adjacentRoomNames = roomTools.getAdjacentRoomNames(transferringRoom.roomName);
 
-			for (var receivingRoom of receivingRooms) {
+			for (let receivingRoom of receivingRooms) {
 				if (adjacentRoomNames.includes(receivingRoom.roomName)) {
 					if (transferringRoom.creepsCount > 0 && receivingRoom.creepsCount > 0) {
 
@@ -100,7 +100,7 @@ cachedStorageTransferRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 	for (var count = 1; count <= maxTransferringCreepsCount; count++) {
 		for (var transferringRoom of transferringRooms) {
 
-			for (var receivingRoom of receivingRooms) {
+			for (let receivingRoom of receivingRooms) {
 				if (transferringRoom.creepsCount > 0 && receivingRoom.creepsCount > 0) {
 
 					incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, transferringRoom.roomName, receivingRoom.roomName);
@@ -117,7 +117,7 @@ cachedStorageTransferRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 	for (var count = 1; count <= maxTransferringCreepsCount; count++) {
 		for (var transferringRoom of overflowTransferringRooms) {
 
-			for (var receivingRoom of overflowReceivingRooms) {
+			for (let receivingRoom of overflowReceivingRooms) {
 				if (transferringRoom.creepsCount > 0 && receivingRoom.creepsCount > 0) {
 
 					incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, transferringRoom.roomName, receivingRoom.roomName);
@@ -147,7 +147,7 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 		});
 	}
 
-	var remoteRoom = _.find(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName });
+	var remoteRoom = /** @type {RemoteRoomCreepsSpawnRule} */(_.find(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName }));
 
 	remoteRoom.spawnOrderMaxSpawnedCounts[0]["remoteStorageTransferer"]++;
 }

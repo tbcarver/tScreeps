@@ -2,7 +2,11 @@
 var roomTools = require("./roomTools");
 var { rules } = require("../rules/rules");
 
-var enemyTools = {};
+var enemyTools = {
+	enemyStats: null,
+	hasEnemies: null,
+	mobPostsMobAttackRooms: null,
+};
 
 enemyTools.manageEnemies = function() {
 
@@ -110,7 +114,7 @@ function buildEnemyStats() {
 			enemyStats.countRoomsWithEnemies++;
 
 			var health = "";
-			for (enemy of enemies) {
+			for (var enemy of enemies) {
 				health += enemy.hits + " " + Math.ceil((enemy.hits / enemy.hitsMax) * 100) + "% " +
 					enemy.ticksToLive + " ";
 			}

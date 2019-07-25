@@ -12,14 +12,17 @@ class DropHarvester extends BaseCreep {
 
 	act() {
 
-		if (!super.act()) {
+		var acted = super.act();
+		var resource;
+
+		if (!acted) {
 
 			if (this.state === "harvesting") {
 
 				if (this.memory.resourceId) {
-					var resource = Game.getObjectById(this.memory.resourceId);
+					resource = Game.getObjectById(this.memory.resourceId);
 				} else {
-					var resource = this.creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+					resource = this.creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
 				}
 
 				if (resource) {
@@ -33,7 +36,11 @@ class DropHarvester extends BaseCreep {
 					}
 				}
 			}
+
+			acted = true;
 		}
+
+		return acted;
 	}
 
 	getInitialState() {
@@ -58,10 +65,10 @@ class DropHarvester extends BaseCreep {
 			if (room.name !== spawn.room.name) {
 				var exitFlag = Game.flags[`exit-from-${room.name}-to-${spawn.room.name}`];
 				if (exitFlag) {
-					resources.sort((resourceA, resourceB) => resourceA.pos.getRangeTo(exitFlag) > resourceB.pos.getRangeTo(exitFlag));
+					resources.sort((resourceA, resourceB) => resourceA.pos.getRangeTo(exitFlag) - resourceB.pos.getRangeTo(exitFlag));
 				}
 			} else {
-				resources.sort((resourceA, resourceB) => resourceA.pos.getRangeTo(spawn) > resourceB.pos.getRangeTo(spawn));
+				resources.sort((resourceA, resourceB) => resourceA.pos.getRangeTo(spawn) - resourceB.pos.getRangeTo(spawn));
 			}
 
 			// Evenly distribute creeps
@@ -93,9 +100,9 @@ class DropHarvester extends BaseCreep {
 
 		if (creepMemory) {
 
-			creepMemory.bodyPartsType = "moveWork";
-			creepMemory.state = "harvesting";
-			creepMemory.maximumSpawnCapacity = 500;
+			creepMemory["bodyPartsType"] =  "moveWork";
+			creepMemory["state"] = "harvesting";
+			creepMemory["maximumSpawnCapacity"] = 500;
 		}
 
 		return creepMemory;

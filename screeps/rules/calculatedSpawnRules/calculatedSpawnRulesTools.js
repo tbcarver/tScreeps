@@ -3,6 +3,7 @@ var reverse = require("lodash/reverse");
 
 var calculatedSpawnRulesTools = {};
 
+/** @param {CreepsSpawnRule[]} creepsSpawnRules */
 calculatedSpawnRulesTools.prependRemoteRoomCreepsSpawnRules = function(creepsSpawnRules, spawnRoomsRemoteRoomCreepsSpawnRules) {
 
 	for (var spawnRoomName in spawnRoomsRemoteRoomCreepsSpawnRules) {
@@ -17,6 +18,7 @@ calculatedSpawnRulesTools.prependRemoteRoomCreepsSpawnRules = function(creepsSpa
 	}
 }
 
+/** @param {CreepsSpawnRule[]} creepsSpawnRules */
 calculatedSpawnRulesTools.appendRemoteRoomCreepsSpawnRules = function(creepsSpawnRules, spawnRoomsRemoteRoomCreepsSpawnRules) {
 
 	for (var spawnRoomName in spawnRoomsRemoteRoomCreepsSpawnRules) {

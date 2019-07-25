@@ -121,11 +121,11 @@ roomTools.removeObservingRoom = function(roomName) {
 
 roomTools.observeRoom = function(roomName, observerRoomName) {
 
-	var observers = Game.rooms[observerRoomName].find(FIND_STRUCTURES, {
+	var observers = /** @type {StructureObserver[]} */ (Game.rooms[observerRoomName].find(FIND_STRUCTURES, {
 		filter: {
 			structureType: STRUCTURE_OBSERVER
 		}
-	})
+	}));
 
 	if (observers.length > 0) {
 
@@ -184,23 +184,23 @@ roomTools.buildDroppedStats = function() {
 
 		var dropFlag = flagTools.getDropFlag(roomName);
 		var sources = this.getSources(roomName);
-		var resources = Game.rooms[roomName].find(FIND_DROPPED_RESOURCES);
+		var resources = /** @type {ResourceWritable[]} */ (Game.rooms[roomName].find(FIND_DROPPED_RESOURCES));
 
 		var droppedEnergy = 0;
 		var dropFlagDroppedEnergy = 0;
-		var dropFlagDroppedResources = [];
+		var dropFlagDroppedResources = /** @type {ResourceWritable[]} */ ([]);
 		var sourcesDroppedEnergy = 0;
-		var sourcesDroppedResources = [];
+		var sourcesDroppedResources = /** @type {ResourceWritable[]} */ ([]);
 		var sourceDroppedResources = {};
 
 		for (var resource of resources) {
 
-			resource.writableEnergy = resource.energy;
-			droppedEnergy += resource.energy;
+			resource.writableAmount = resource.amount;
+			droppedEnergy += resource.amount;
 
 			if (dropFlag && resource.pos.inRangeTo(dropFlag, 0)) {
 
-				dropFlagDroppedEnergy += resource.energy;
+				dropFlagDroppedEnergy += resource.amount;
 				dropFlagDroppedResources.push(resource);
 
 			} else {
@@ -208,17 +208,17 @@ roomTools.buildDroppedStats = function() {
 				for (var source of sources) {
 					if (resource.pos.inRangeTo(source, 1)) {
 
-						sourcesDroppedEnergy += resource.energy;
+						sourcesDroppedEnergy += resource.amount;
 						sourcesDroppedResources.push(resource);
 
 						if (!sourceDroppedResources[source.id]) {
 							sourceDroppedResources[source.id] = {
 								droppedEnergy: 0,
-								droppedResources: [],
+								droppedResources: /** @type {ResourceWritable[]} */ ([]),
 							}
 						}
 
-						sourceDroppedResources[source.id].droppedEnergy += resource.energy;
+						sourceDroppedResources[source.id].droppedEnergy += resource.amount;
 						sourceDroppedResources[source.id].droppedResources.push(resource);
 					}
 				}
@@ -268,7 +268,7 @@ roomTools.GetSourcesWritableDroppedResources = function(roomName) {
 
 roomTools.GetSourceWritableDroppedResources = function(roomName, sourceId) {
 
-	var droppedResources = [];
+	var droppedResources = /** @type {ResourceWritable[]} */ ([]);
 
 	if (this.roomsDroppedStats[roomName].sourceDroppedResources[sourceId]) {
 		droppedResources = this.roomsDroppedStats[roomName].sourceDroppedResources[sourceId].droppedResources;
@@ -283,7 +283,7 @@ roomTools.buildSpawnStats = function() {
 		rooms: {},
 	};
 
-	for (spawnName in Game.spawns) {
+	for (var spawnName in Game.spawns) {
 
 		var spawn = Game.spawns[spawnName];
 
@@ -329,10 +329,10 @@ roomTools.buildStorageStats = function() {
 		var storageCapacity = 0;
 		var percentageStoredEnergy = 0;
 
-		var storages = Game.rooms[roomName].find(FIND_STRUCTURES, {
+		var storages = /** @type {StructureStorage[] | StructureTerminal[]} */ (Game.rooms[roomName].find(FIND_STRUCTURES, {
 			filter: structure => structure.structureType === STRUCTURE_STORAGE ||
 				structure.structureType === STRUCTURE_TERMINAL
-		});
+		}));
 
 		if (storages.length > 0) {
 			for (var storage of storages) {
@@ -474,7 +474,7 @@ roomTools.isPlainTerrain = function(roomName, x, y) {
 
 	var objects = Game.rooms[roomName].lookForAt(LOOK_TERRAIN, x, y);
 	if (objects.length != 1) {
-		throw new Error(`One terrain object not found in room ${controller.room.name} at position ${controller.pos.x + xDifferential},${controller.pos.y + yDifferential}`);
+		throw new Error(`One terrain object not found in room ${roomName} at position ${x},${y}`);
 	}
 
 	if (objects[0] === "plain") {
@@ -532,7 +532,7 @@ roomTools.consoleEnemies = function() {
 
 			var health = "";
 
-			for (enemy of enemies) {
+			for (var enemy of enemies) {
 
 				health += enemy.hits + " " + Math.ceil((enemy.hits / enemy.hitsMax) * 100) + "% " +
 					enemy.ticksToLive + " ";
@@ -540,79 +540,6 @@ roomTools.consoleEnemies = function() {
 
 			debug.danger(room.name + " Enemies!", health);
 		}
-	}
-}
-
-roomTools.consoleWall = function() {
-
-	const target = spawn.pos.findClosestByRange(FIND_STRUCTURES, {
-		filter: structure => structure.structureType === STRUCTURE_WALL
-	});
-
-	if (target) {
-
-		debug.primary("wall", target);
-	}
-}
-
-roomTools.visualize = function(pathToObject, pathFromObject) {
-
-	var path = room.findPath(pathToObject.pos, pathFromObject.pos, { ignoreCreeps: true });
-
-	// debug.danger(spawn.pos);
-
-	for (var location of path) {
-
-		if (location.x === 39 && location.y === 7) {
-			continue;
-		}
-
-		if (location.x === 38 && location.y === 8) {
-			continue;
-		}
-
-		if (location.x === 37 && location.y === 8) {
-			continue;
-		}
-
-		// 	debug.danger(location)
-		// 	room.visual.rect(0, 0, location, 15, 15, {fill:"#777"})
-		room.visual.circle(location, { radius: 1 / 2, fill: "danger" });
-		// room.visual.rect(0, 0, location, .60, .60, {fill:"#777"})
-	}
-	// room.visual.circle(spawn.pos.x + 5, spawn.pos.y + 5, {radius:.30,fill:"danger"});
-}
-
-roomTools.visualizeStructureHealth = function() {
-
-	const targets = room.find(FIND_STRUCTURES, {
-		filter: structure => structure.hits < structure.hitsMax &&
-			structure.structureType !== STRUCTURE_WALL
-	});
-
-	for (var index in targets) {
-
-		room.visual.circle(targets[index].pos, { radius: .25, stroke: "red", fill: "transparent" });
-	}
-}
-
-roomTools.visualizeFlags = function() {
-
-	const flags = room.find(FIND_FLAGS);
-
-	for (var index in flags) {
-		var pos = flags[index].pos;
-		room.visual.line(pos.x, pos.y, pos.x, pos.y - 1, { width: .2, color: "red" });
-	}
-}
-
-roomTools.visualizeCreepByType = function(creepType, color) {
-
-	const targets = _.filter(Game.creeps, creep => creep.memory.type === creepType);
-
-	for (var index in targets) {
-
-		room.visual.circle(targets[index].pos, { radius: .25, stroke: color, fill: color });
 	}
 }
 

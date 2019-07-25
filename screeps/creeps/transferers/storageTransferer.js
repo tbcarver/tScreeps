@@ -19,7 +19,9 @@ class StorageTransferer extends BaseCreep {
 
 	act() {
 
-		if (!super.act()) {
+		var acted = super.act();
+
+		if (!acted) {
 
 			if (this.state === "harvesting" || this.creep.carry[RESOURCE_ENERGY] === 0) {
 
@@ -38,17 +40,23 @@ class StorageTransferer extends BaseCreep {
 
 				this.energize();
 			}
+
+			acted = true;
 		}
+
+		return acted;
 	}
 
 	harvest() {
+
+		var resource;
 
 		if (this.canPickup) {
 			resource = findTools.findSourcesWritableDroppedResource(this.creep.pos, this.availableCarryCapacity);
 		}
 
 		if (!resource) {
-			var resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+			resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 				filter: container => container.structureType === STRUCTURE_CONTAINER &&
 					roomTools.isDropContainer(container, 2) &&
 					container.store[RESOURCE_ENERGY] / container.storeCapacity > .65
@@ -66,7 +74,7 @@ class StorageTransferer extends BaseCreep {
 				var result = this.creep.pickup(resource);
 
 				if (result === OK) {
-					resource.writableEnergy -= this.availableCarryCapacity;
+					resource.writableAmount -= this.availableCarryCapacity;
 				} else if (result == ERR_NOT_IN_RANGE) {
 					this.creep.moveTo(resource);
 				}
@@ -144,7 +152,7 @@ class StorageTransferer extends BaseCreep {
 		if (room.find) {
 
 			var resources = room.find(FIND_DROPPED_RESOURCES, {
-				filter: resource => resource.energy && resource.energy >= 100
+				filter: resource => resource.amount && resource.amount >= 100
 			});
 
 			if (resources.length === 0) {
@@ -158,7 +166,7 @@ class StorageTransferer extends BaseCreep {
 
 			if (resources.length > 0) {
 
-				var creepMemory = {
+				creepMemory = {
 					type: "storageTransferer",
 					bodyPartsType: "moveCarry",
 					maximumSpawnCapacity: 600,

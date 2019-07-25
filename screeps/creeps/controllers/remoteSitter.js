@@ -9,7 +9,7 @@ class RemoteSitter extends RemoteCreep {
 	}
 
 	act() {
-		super.act();
+		return super.act();
 	}
 
 	arrivedAtSpawnedRoom() {

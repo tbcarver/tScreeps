@@ -112,15 +112,16 @@ constructionTools.removeConstructionSite = function() {
 
 		for (var index in positions) {
 
+			var position = new RoomPosition(parseInt(positions[index].x), parseInt(positions[index].y), positions[index].roomName);
+
 			var room = Game.rooms[positions[index].roomName];
 			var sites = room.find(FIND_CONSTRUCTION_SITES, {
-				filter: (site) => site.pos.x == positions[index].x &&
-					site.pos.y == positions[index].y
+				filter: (site) => site.pos.x == position.x && site.pos.y == position.y
 			});
 
 			if (sites) {
 
-				for (site of sites) {
+				for (var site of sites) {
 
 					var result = site.remove();
 					debug.highlight("removed construction site:", result);
@@ -139,16 +140,18 @@ constructionTools.destroyStructure = function() {
 	if (positions.length > 0) {
 
 		for (var index in positions) {
+
+			var position = new RoomPosition(parseInt(positions[index].x), parseInt(positions[index].y), positions[index].roomName);
 			
 			var room = Game.rooms[positions[index].roomName];
 			var structures = room.find(FIND_STRUCTURES, {
-				filter: (structure) => structure.pos.x == positions[index].x &&
-					structure.pos.y == positions[index].y && structure.structureType == STRUCTURE_ROAD
+				filter: (structure) => structure.pos.x === position.x &&
+					structure.pos.y === position.y && structure.structureType == STRUCTURE_ROAD
 			});
 
 			if (structures.length > 0) {
 
-				for (structure of structures) {
+				for (var structure of structures) {
 
 					var result = structure.destroy();
 					debug.highlight("destroyed structure site:", result);

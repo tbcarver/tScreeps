@@ -48,6 +48,8 @@ class EnergyCreep extends BaseCreep {
 				}
 			}
 		}
+
+		return true;
 	}
 
 	harvest(moveToOnly) {
@@ -78,7 +80,7 @@ class EnergyCreep extends BaseCreep {
 
 					if (result === OK) {
 
-						var pickedUpAmount = resource.writableEnergy;
+						var pickedUpAmount = resource.writableAmount;
 
 						if (pickedUpAmount > this.availableCarryCapacity) {
 							pickedUpAmount = this.availableCarryCapacity;
@@ -86,7 +88,7 @@ class EnergyCreep extends BaseCreep {
 							this.energyAct(true);
 						}
 
-						resource.writableEnergy -= this.availableCarryCapacity;
+						resource.writableAmount -= this.availableCarryCapacity;
 
 					} else if (result == ERR_NOT_IN_RANGE) {
 						this.creep.moveTo(resource);
@@ -103,7 +105,7 @@ class EnergyCreep extends BaseCreep {
 		}
 	}
 
-	energyAct() {
+	energyAct(moveToOnly) {
 	}
 
 	getInitialState() {

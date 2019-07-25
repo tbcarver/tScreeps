@@ -26,7 +26,7 @@ cachedUpgradeControllerRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 
 function addOneToEightCalculatedSpawnRules(creepsSpawnRules) {
 
-	spawningRooms = [];
+	var spawningRooms = [];
 
 	for (var roomName in Game.rooms) {
 
@@ -138,7 +138,7 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 		remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms.push(creepsSpawnRule);
 	}
 
-	var remoteRoom = _.find(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName });
+	var remoteRoom = /** @type {RemoteRoomCreepsSpawnRule} */(_.find(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName }));
 
 	remoteRoom.spawnOrderMaxSpawnedCounts[0]["controllerEnergizer"]++;
 }

@@ -10,7 +10,7 @@ class RemoteBuilder extends RemoteEnergyWorker {
 	}
 
 	act() {
-		super.act();
+		return super.act();
 	}
 
 	work() {

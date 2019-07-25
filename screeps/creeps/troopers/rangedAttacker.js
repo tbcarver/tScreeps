@@ -10,7 +10,7 @@ class RangedAttacker extends TrooperCreep {
 	}
 
 	act() {
-		super.act();
+		return super.act();
 	}
 
 	attack() {
@@ -40,7 +40,6 @@ class RangedAttacker extends TrooperCreep {
 		var creepMemory = TrooperCreep.initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount);
 
 		if (creepMemory) {
-
 			creepMemory.type = "rangedAttacker";
 			creepMemory.bodyPartsType = "rangedAttacker";
 			creepMemory.maximumSpawnCapacity = rules.maximumRangedAttackerSpawnCapacity || 800;

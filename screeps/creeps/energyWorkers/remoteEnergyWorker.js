@@ -10,7 +10,7 @@ class RemoteEnergyWorker extends RemoteCreep {
 	}
 
 	act() {
-		super.act();
+		return super.act();
 	}
 
 	arrivedAtSpawnedRoom() {
@@ -66,6 +66,9 @@ class RemoteEnergyWorker extends RemoteCreep {
 
 			this.work();
 		}
+	}
+
+	work(){
 	}
 }
 

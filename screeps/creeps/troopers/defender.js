@@ -1,4 +1,5 @@
 
+var { rules } = require("../../rules/rules");
 var TrooperCreep = require("./trooperCreep");
 
 class Defender extends TrooperCreep {
@@ -9,7 +10,7 @@ class Defender extends TrooperCreep {
 	}
 
 	act() {
-		super.act();
+		return super.act();
 	}
 
 	static initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount) {
@@ -17,9 +18,8 @@ class Defender extends TrooperCreep {
 		var creepMemory = TrooperCreep.initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount);
 
 		if (creepMemory) {
-
 			creepMemory.type = "defender";
-			creepMemory.bodyPartsType = "defender";
+			creepMemory.bodyPartsType =  "defender";
 			creepMemory.maximumSpawnCapacity = rules.maximumTroopersSpawnCapacity || 800;
 		}
 

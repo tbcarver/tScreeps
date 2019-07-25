@@ -3,6 +3,7 @@ var dropStrategyTools = require("./dropStrategyTools");
 var flagTools = require("../../../tools/flagTools");
 var roomTools = require("../../../tools/roomTools");
 var SpawnOrderMaxSpawnedCount = require("../../../rules/spawnOrderMaxSpawnedCount");
+var observersController = require("../../../structures/observersController");
 
 var dropPointStrategy = {
 	coolOffCount: 150,
@@ -151,20 +152,21 @@ dropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, creepsSpawnRu
 
 	if (creepsSpawnRule.measure.canRecalculate) {
 
+		var resources;
 		var room = Game.rooms[remoteRoomName];
 		if (room) {
 			if (flagTools.hasDropFlag(remoteRoomName)) {
 
 				// Dropped energy measurement only necessary if using remoteSpawnedStorageTransferer, not the case if in the spawned room
 				if (spawnRoomName !== remoteRoomName) {
-					var resources = roomTools.GetDropFlagWritableDroppedResources(room.name);
+					resources = roomTools.GetDropFlagWritableDroppedResources(room.name);
 					dropStrategyTools.measureEnergy(creepsSpawnRule.measure.droppedEnergy, resources);
 				}
 
 				var sources = roomTools.getSources(room.name);
 
 				for (var source of sources) {
-					var resources = roomTools.GetSourceWritableDroppedResources(room.name, source.id);
+					resources = roomTools.GetSourceWritableDroppedResources(room.name, source.id);
 					dropStrategyTools.measureEnergy(creepsSpawnRule.measure.harvestedEnergy[source.id], resources);
 				}
 

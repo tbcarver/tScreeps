@@ -11,7 +11,7 @@ moveCarryStrategy.getBodyPartsObject = function(spawnCapacity, partsPerMove) {
 
 	balanced50100MoveParts = bodyPartsTools.balance50100MoveParts(balanced50100MoveParts, spawnCapacity, partsPerMove);
 
-	bodyPartsObject = {
+	var bodyPartsObject = {
 		move: balanced50100MoveParts.numberOfMoves,
 		carry: balanced50100MoveParts.numberOf50s,
 	};

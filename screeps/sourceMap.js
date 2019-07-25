@@ -1,5 +1,6 @@
 // Thanks to kamyl @stackoverflow: Screeps: How do I set up source map using TypeScript and Webpack?
 
+// @ts-ignore
 var rawSourceMap = require('main.js.map');
 var { SourceMapConsumer } = require('source-map');
 

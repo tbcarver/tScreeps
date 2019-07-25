@@ -12,11 +12,17 @@ class Healer extends TrooperCreep {
 
 	act() {
 
+		var acted = super.act();
+
 		if (!super.act()) {
 			if (!this.heal()) {
 				TrooperCreep.prototype.act.call(this);
 			}
+
+			acted = true;
 		}
+
+		return acted;
 	}
 
 	attack() {
@@ -65,7 +71,6 @@ class Healer extends TrooperCreep {
 		var creepMemory = TrooperCreep.initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount);
 
 		if (creepMemory) {
-
 			creepMemory.type = "healer";
 			creepMemory.bodyPartsType = "healer";
 			creepMemory.maximumSpawnCapacity = rules.maximumHealerSpawnCapacity || 800;

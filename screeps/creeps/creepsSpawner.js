@@ -17,12 +17,14 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 	var creepsSpawnRulesCopy = _.cloneDeep(creepsSpawnRules);
 
 	calculatedSpawnRules.addCalculatedRules(creepsSpawnRulesCopy, roomsCurrentSpawnedCounts);
-	addOneTimeOneCreepSpawnRules(creepsSpawnRulesCopy, roomsCurrentSpawnedCounts);
+	addOneTimeOneCreepSpawnRules(creepsSpawnRulesCopy);
 	updateCreepsSpawnRules(creepsSpawnRulesCopy);
 
 	for (var creepsSpawnRule of creepsSpawnRulesCopy) {
 
 		var room = Game.rooms[creepsSpawnRule.roomName];
+		var remoteRoom;
+		
 		if (room) {
 
 			var spawns = room.find(FIND_MY_SPAWNS);
@@ -41,7 +43,7 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 						};
 
 						if (creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
-							for (spawnOrderMaxSpawnedCount of creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
+							for (var spawnOrderMaxSpawnedCount of creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
 
 								var creepTypeKey = SpawnOrderMaxSpawnedCount.getCreepTypeKey(spawnOrderMaxSpawnedCount);
 								var creepType = SpawnOrderMaxSpawnedCount.getCreepType(spawnOrderMaxSpawnedCount);
@@ -74,9 +76,9 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 
 						if (creepsSpawnRule.remoteRooms) {
 
-							for (remoteRoomCreepsSpawnRule of creepsSpawnRule.remoteRooms) {
+							for (var remoteRoomCreepsSpawnRule of creepsSpawnRule.remoteRooms) {
 
-								var remoteRoom = Game.rooms[remoteRoomCreepsSpawnRule.roomName];
+								remoteRoom = Game.rooms[remoteRoomCreepsSpawnRule.roomName];
 
 								if (!remoteRoom) {
 									remoteRoom = {
@@ -238,7 +240,7 @@ function spawnCreep(spawn, creepMemory, creepsSpawnRule, spawnedRoomCreepsSpawnR
 				}
 			} else {
 
-				debug.warning(`${creepMemory.type} planned spawn capacity: ${plannedSpawnCapacity} was more than the spawned capacity: ${spawnCapacity}`);
+				debug.danger(`${creepMemory.type} planned spawn capacity: ${plannedSpawnCapacity} was more than the spawned capacity: ${spawnCapacity}`);
 			}
 		}
 	}
@@ -290,10 +292,10 @@ creepsSpawner.scheduleOneTimeOneCreepRemoteRoomCreepsSpawnRule = function(spawnR
 			Memory.state.oneTimeOneCreepRemoteRoomCreepsSpawnRules[scheduleId] = spawnRoomRemoteRoomCreepsSpawnRule;
 
 		} else {
-			debug.error("Add one time rule: single remote rule not found: ", spawnRoomRemoteRoomCreepsSpawnRule);
+			debug.warning("Add one time rule: single remote rule not found: ", spawnRoomRemoteRoomCreepsSpawnRule);
 		}
 	} else {
-		debug.error(`Did not schedule one time creep remote rule: spawnRoomName: ${spawnRoomName} remoteRoomCreepsSpawnRule:`, remoteRoomCreepsSpawnRule)
+		debug.warning(`Did not schedule one time creep remote rule: spawnRoomName: ${spawnRoomName} remoteRoomCreepsSpawnRule:`, remoteRoomCreepsSpawnRule)
 	}
 
 	return scheduleId;

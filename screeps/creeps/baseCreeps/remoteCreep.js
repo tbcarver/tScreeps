@@ -34,6 +34,8 @@ class RemoteCreep extends BaseCreep {
 				}
 			}
 		}
+
+		return true;
 	}
 
 	spawnedRoomAct() {

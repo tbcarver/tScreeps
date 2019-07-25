@@ -21,7 +21,9 @@ class DropTransferer extends BaseCreep {
 
 	act() {
 
-		if (!super.act()) {
+		var acted = super.act();
+
+		if (!acted) {
 
 			if (this.state === "harvesting" || this.creep.carry[RESOURCE_ENERGY] === 0) {
 
@@ -40,7 +42,11 @@ class DropTransferer extends BaseCreep {
 
 				this.transfer();
 			}
+
+			acted = true;
 		}
+
+		return acted;
 	}
 
 	harvest(transferAction) {
@@ -61,13 +67,13 @@ class DropTransferer extends BaseCreep {
 
 				if (resources.length > 0) {
 
-					var resource = this.creep.pos.findClosestByPath(resources, {
-						filter: resource => resource.writableEnergy >= this.creep.carryCapacity
+					resource = this.creep.pos.findClosestByPath(resources, {
+						filter: resource => resource.writableAmount >= this.creep.carryCapacity
 					});
 
 					if (!resource) {
 
-						resources = orderBy(resources, "writableEnergy", "desc");
+						resources = orderBy(resources, "writableAmount", "desc");
 						resource = resources[0];
 					}
 				}
@@ -82,7 +88,7 @@ class DropTransferer extends BaseCreep {
 
 			if (result === OK) {
 
-				var pickedUpAmount = resource.writableEnergy;
+				var pickedUpAmount = resource.writableAmount;
 
 				if (pickedUpAmount > this.availableCarryCapacity) {
 					pickedUpAmount = this.availableCarryCapacity;
@@ -90,7 +96,7 @@ class DropTransferer extends BaseCreep {
 					this.transfer(transferAction);
 				}
 
-				resource.writableEnergy -= pickedUpAmount;
+				resource.writableAmount -= pickedUpAmount;
 
 			} else if (result == ERR_NOT_IN_RANGE) {
 				this.creep.moveTo(resource);
@@ -114,7 +120,7 @@ class DropTransferer extends BaseCreep {
 		}
 	}
 
-	transfer() {
+	transfer(transferAction) {
 
 		var dropFlag = Game.flags[`drop-${this.creep.room.name}`];
 		if (dropFlag) {
@@ -180,16 +186,16 @@ class DropTransferer extends BaseCreep {
 
 			if (resources.length > 0) {
 
-				var creepMemory = {
+				creepMemory = {
 					type: "dropTransferer",
 				}
 			}
 		}
 
 		if (creepMemory) {
-			creepMemory.bodyPartsType = "moveCarry";
-			creepMemory.maximumSpawnCapacity = 600;
-			creepMemory.minimumSpawnCapacity = 450;
+			creepMemory["bodyPartsType"] =  "moveCarry";
+			creepMemory["maximumSpawnCapacity"] = 600;
+			creepMemory["minimumSpawnCapacity"] = 450;
 		}
 
 		return creepMemory;

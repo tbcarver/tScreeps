@@ -1,5 +1,6 @@
 
 var RemoteCreep = require("../baseCreeps/remoteCreep");
+var findTools = require("../../tools/findTools");
 var flagTools = require("../../tools/flagTools");
 var roomTools = require("../../tools/roomTools");
 var orderBy = require("lodash/orderBy");
@@ -24,7 +25,7 @@ class BaseRemoteStorageTransferer extends RemoteCreep {
 	}
 
 	act() {
-		super.act();
+		return super.act();
 	}
 
 	harvest(moveToOtherRoom) {
@@ -41,11 +42,11 @@ class BaseRemoteStorageTransferer extends RemoteCreep {
 
 				if (flagTools.hasDropFlag(this.creep.room.name)) {
 
-					var droppedResources = roomTools.GetDropFlagWritableDroppedResources(pos.roomName);
+					var droppedResources = roomTools.GetDropFlagWritableDroppedResources(this.creep.room.name);
 
 					if (droppedResources.length > 0) {
-						droppedResources = orderBy(droppedResources, "writableEnergy", "desc");
-						resource = resources[0];
+						droppedResources = orderBy(droppedResources, "writableAmount", "desc");
+						resource = droppedResources[0];
 					}
 
 				} else {
@@ -73,7 +74,7 @@ class BaseRemoteStorageTransferer extends RemoteCreep {
 					var result = this.creep.pickup(resource);
 
 					if (result === OK) {
-						resource.writableEnergy -= this.availableCarryCapacity;
+						resource.writableAmount -= this.availableCarryCapacity;
 					} else if (result == ERR_NOT_IN_RANGE) {
 						this.creep.moveTo(resource);
 					}

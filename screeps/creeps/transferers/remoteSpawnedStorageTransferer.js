@@ -9,7 +9,7 @@ class RemoteSpawnedStorageTransferer extends BaseRemoteStorageTransferer {
 	}
 
 	act() {
-		super.act();
+		return super.act();
 	}
 
 	arrivedAtSpawnedRoom() {

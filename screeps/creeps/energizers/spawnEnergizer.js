@@ -10,36 +10,36 @@ class SpawnEnergizer extends EnergyCreep {
 	}
 
 	act() {
-		super.act();
+		return super.act();
 	}
 
 	energyAct(moveToOnly) {
 
-		var targetStructures = this.creep.room.find(FIND_STRUCTURES, {
+		var targetStructures = /** @type {StructureTower[] | StructureSpawn[]} */ (this.creep.room.find(FIND_STRUCTURES, {
 			filter: structure => structure.structureType === STRUCTURE_TOWER &&
 				structure.energy < structure.energyCapacity
-		});
+		}));
 
 		if (targetStructures.length > 0) {
 
 			// Sort for the lowest energy first
-			targetStructures.sort((targetStructureA, targetStructureB) => targetStructureA.energy > targetStructureB.energy);
+			targetStructures.sort((targetStructureA, targetStructureB) => targetStructureA.energy - targetStructureB.energy);
 			var targetStructure = targetStructures[0];
 		}
 
 		if (!targetStructure) {
 
-			var targetStructure = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+			targetStructure = /** @type {StructureSpawn} */ (this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 				filter: structure => structure.structureType === STRUCTURE_SPAWN &&
 					structure.energy < structure.energyCapacity
-			});
+			}));
 		}
 
 		if (!targetStructure) {
 
-			var targetStructure = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+			targetStructure = /** @type {StructureSpawn} */ (this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 				filter: structure => structure.structureType === STRUCTURE_SPAWN
-			});
+			}));
 		}
 
 		if (targetStructure) {

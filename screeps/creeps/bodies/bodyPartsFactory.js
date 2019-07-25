@@ -31,7 +31,7 @@ bodyPartsFactory.getBodyParts = function(bodyPartsStrategyName, spawnCapacity, p
 
 	if (bodyPartsStrategy) {
 
-		bodyPartsObject = bodyPartsStrategy.getBodyPartsObject(spawnCapacity, partsPerMove);
+		var bodyPartsObject = bodyPartsStrategy.getBodyPartsObject(spawnCapacity, partsPerMove);
 
 		if (bodyPartsObject) {
 

@@ -10,7 +10,7 @@ class ExtensionEnergizer extends EnergyCreep {
 	}
 
 	act() {
-		super.act();
+		return super.act();
 	}
 
 	energyAct() {
@@ -50,7 +50,7 @@ class ExtensionEnergizer extends EnergyCreep {
 
 		var occupiedPositions = getCreepExtensionPositions();
 
-		availableExtensions = extensions.filter(extension => {
+		var availableExtensions = extensions.filter(extension => {
 
 			var isExtensionOccupied = occupiedPositions.some(occupiedPos => occupiedPos.x === extension.pos.x &&
 				occupiedPos.y === extension.pos.y && occupiedPos.roomName === extension.pos.roomName)
@@ -80,7 +80,7 @@ class ExtensionEnergizer extends EnergyCreep {
 			}
 
 			if (!creepsSpawnRule.canEnergyCreepsHarvest) {
-				creepMemory.bodyPartsType = "moveCarry";
+				creepMemory["bodyPartsType"] =  "moveCarry";
 			}
 
 			creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, room, spawn, creepsSpawnRule);
@@ -136,7 +136,7 @@ function getCreepExtensionPositions() {
 
 		if (creepMemory.type === "extensionEnergizer" && !spawnTools.isCreepInSpawnBuffer(Game.creeps[creepName])) {
 
-			positions = creepMemory.extensions.reduce((extensionPositions, extension) => {
+			var positions = creepMemory.extensions.reduce((extensionPositions, extension) => {
 
 				extensionPositions.push(extension.pos);
 

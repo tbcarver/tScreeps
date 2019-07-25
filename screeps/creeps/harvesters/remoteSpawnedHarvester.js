@@ -18,7 +18,7 @@ class RemoteSpawnedHarvester extends RemoteCreep {
 			}
 		}
 
-		super.act();
+		return super.act();
 	}
 
 	arrivedAtSpawnedRoom() {

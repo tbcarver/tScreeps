@@ -2,6 +2,7 @@
 var enemyTools = require("../../tools/enemyTools");
 var findTools = require("../../tools/findTools");
 var spawnTools = require("../../tools/spawnTools");
+var roomTools = require("../../tools/roomTools");
 var { rules } = require("../../rules/rules");
 
 class BaseCreep {
@@ -15,6 +16,7 @@ class BaseCreep {
 		this.isDying = this.creep.ticksToLive < 25;
 		this.spawnedRoomName = creep.memory.spawnedRoomName;
 		this.remoteRoomName = creep.memory.remoteRoomName;
+		this.suppressReturnToRooms = false;
 		this.isTrooper = false;
 	}
 
@@ -150,7 +152,7 @@ class BaseCreep {
 
 			var routes = findTools.findRoute(this.creep.room.name, this.spawnedRoomName);
 
-			if (routes.length > 0 && routes[0].exit >= OK) {
+			if (routes !== ERR_NO_PATH && routes.length > 0 && routes[0].exit >= OK) {
 
 				this.memory.evacuateToRoom = routes[0].room;
 			}
@@ -217,7 +219,7 @@ class BaseCreep {
 	moveToExit(exitRoomName) {
 
 		var routes = findTools.findRoute(this.creep.room.name, exitRoomName);
-		if (routes.length > 0 && routes[0].exit >= OK) {
+		if (routes !== ERR_NO_PATH && routes.length > 0 && routes[0].exit >= OK) {
 
 			var routeRoomName = routes[0].room;
 			var routeExit = routes[0].exit
@@ -258,49 +260,18 @@ class BaseCreep {
 
 	moveIntoRoom() {
 
-		var target = this.creep.pos.findPathTo(25, 25);
+		var path = this.creep.pos.findPathTo(25, 25);
 
-		if (target) {
+		if (path) {
 
-			this.creep.moveByPath(target);
-
-		} else {
-
-			var target = roomTools.getSpawn(this.creep.room.name);
-
-			if (!target) {
-				var target = this.creep.room.controller;
-			}
-
-			if (!target) {
-				var targets = roomTools.getSources(this.creep.room.name);
-				target = targets.length > 0 ? targets[0] : null;
-			}
-
-			if (!target) {
-				target = this.creep.pos.findClosestByPath(FIND_STRUCTURES);
-			}
-
-			if (target) {
-				this.creep.moveTo(target);
-			}
-		}
-	}
-
-	moveIntoRoom() {
-
-		var target = this.creep.pos.findPathTo(25, 25);
-
-		if (target) {
-
-			this.creep.moveByPath(target);
+			this.creep.moveByPath(path);
 
 		} else {
 
 			var target = roomTools.getSpawn(this.creep.room.name);
 
 			if (!target) {
-				var target = this.creep.room.controller;
+				target = this.creep.room.controller;
 			}
 
 			if (!target) {
@@ -387,7 +358,7 @@ class BaseCreep {
 	}
 
 	debug(creepName, ...logs) {
-		debug.creep(this.creep, creepName, ...logs);
+		debug.temp(this.creep, creepName, ...logs);
 	}
 }
 

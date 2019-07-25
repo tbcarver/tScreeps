@@ -23,7 +23,7 @@ function addCalculatedSpawnRules(creepsSpawnRules, roomsCurrentSpawnedCounts) {
 	for (var creepsSpawnRule of creepsSpawnRules) {
 
 		if (creepsSpawnRule.remoteRooms) {
-			for (remoteRoomCreepsSpawnRule of creepsSpawnRule.remoteRooms) {
+			for (var remoteRoomCreepsSpawnRule of creepsSpawnRule.remoteRooms) {
 
 				if (remoteRoomCreepsSpawnRule.roomStrategy) {
 

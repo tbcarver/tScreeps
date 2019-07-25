@@ -23,9 +23,9 @@ class TrooperCreep extends BaseCreep {
 			this.state = "trooping";
 		}
 
-		if (!super.act()) {
+		var acted = super.act();
 
-			var acted = false;
+		if (!acted) {
 
 			if (this.isMobTrooper) {
 				if (!this.mobAttackRoomName && this.creep.room.name !== this.remoteRoomName) {
@@ -74,6 +74,8 @@ class TrooperCreep extends BaseCreep {
 				}
 			}
 		}
+
+		return acted;
 	}
 
 	attack() {
@@ -85,6 +87,7 @@ class TrooperCreep extends BaseCreep {
 
 	static initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount) {
 
+		/** @type {CreepMemory} */
 		var creepMemory;
 		var initializeCreepMemory = false;
 		var isMobTrooper = (creepsSpawnRule && creepsSpawnRule.isMobTroopers) ? true : false;

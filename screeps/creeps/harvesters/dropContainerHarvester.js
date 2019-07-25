@@ -12,6 +12,8 @@ class DropContainerHarvester extends BaseCreep {
 
 	act() {
 
+		var result;
+
 		if (!super.act()) {
 
 			if (this.state === "arrivedAtRemoteRoom") {
@@ -25,7 +27,7 @@ class DropContainerHarvester extends BaseCreep {
 
 				if (resource && container) {
 
-					var result = this.creep.harvest(resource);
+					result = this.creep.harvest(resource);
 
 					if (!(result === OK || result === ERR_NOT_ENOUGH_RESOURCES)) {
 
@@ -42,7 +44,7 @@ class DropContainerHarvester extends BaseCreep {
 
 				var container = Game.getObjectById(this.memory.containerId);
 
-				var result = this.creep.moveTo(container);
+				result = this.creep.moveTo(container);
 
 				if (result !== OK) {
 
@@ -55,6 +57,8 @@ class DropContainerHarvester extends BaseCreep {
 				}
 			}
 		}
+
+		return true;
 	}
 
 	getInitialState() {

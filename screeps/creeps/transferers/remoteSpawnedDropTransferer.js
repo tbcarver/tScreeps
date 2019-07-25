@@ -18,7 +18,7 @@ class RemoteSpawnedDropTransferer extends BaseRemoteStorageTransferer {
 			}
 		}
 
-		super.act();
+		return super.act();
 	}
 
 	arrivedAtSpawnedRoom() {
@@ -31,7 +31,7 @@ class RemoteSpawnedDropTransferer extends BaseRemoteStorageTransferer {
 
 	spawnedRoomAct() {
 
-		BaseRemoteStorageTransferer.prototype.transfer.call(this, this.moveToRemoteRoom.bind(this));
+		super.transfer(this.moveToRemoteRoom.bind(this));
 	}
 
 	remoteRoomAct() {
@@ -77,7 +77,7 @@ class RemoteSpawnedDropTransferer extends BaseRemoteStorageTransferer {
 
 		} else {
 
-			var creepMemory = BaseRemoteStorageTransferer.initializeSpawnCreepMemory("remoteSpawnedDropTransferer", room);
+			creepMemory = BaseRemoteStorageTransferer.initializeSpawnCreepMemory("remoteSpawnedDropTransferer", room);
 		}
 
 		return creepMemory;

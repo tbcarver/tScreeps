@@ -6,7 +6,7 @@ var calculatedSpawnRules = {};
 
 calculatedSpawnRules.addCalculatedRules = function(creepsSpawnRules, roomsCurrentSpawnedCounts) {
 
-	cachedCalculatedSpawnRules(creepsSpawnRules, roomsCurrentSpawnedCounts);
+	cachedCalculatedSpawnRules(creepsSpawnRules);
 	roomStrategiesRules(creepsSpawnRules, roomsCurrentSpawnedCounts);
 }
 

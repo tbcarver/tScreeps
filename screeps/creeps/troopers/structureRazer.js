@@ -9,13 +9,13 @@ class StructureRazer extends TrooperCreep {
 	}
 
 	act() {
-		super.act();
+		return super.act();
 	}
 
 	attack() {
 
 		var target = this.creep.pos.findClosestByPath(FIND_STRUCTURES, {
-			filter: structure => !structure.my
+			filter: structure => !structure["my"]
 		});
 
 		if (target) {
@@ -31,10 +31,11 @@ class StructureRazer extends TrooperCreep {
 
 		var creepMemory = TrooperCreep.initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount);
 
-		var creepMemory = {
-			type: "structureRazer",
-			bodyPartsType: "moveWork",
-			maximumSpawnCapacity: 600,
+		if (creepMemory) {
+			creepMemory.type = "structureRazer";
+			creepMemory.bodyPartsType =  "moveWork";
+			creepMemory.maximumSpawnCapacity = 600;
+
 		}
 
 		return creepMemory;

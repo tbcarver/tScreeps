@@ -36,7 +36,7 @@ findTools.findClosestWritableDroppedOrStoredEnergy = function(pos, minimum) {
 	}
 
 	var energy = pos.findClosestByRange(droppedResources, {
-		filter: resource => resource.energy >= minimum && this.isInRange(pos, resource.pos, 10)
+		filter: resource => resource.amount >= minimum && this.isInRange(pos, resource.pos, 10)
 	});
 
 	if (!energy) {
@@ -52,7 +52,7 @@ findTools.findClosestWritableDroppedOrStoredEnergy = function(pos, minimum) {
 	if (!energy) {
 
 		energy = pos.findClosestByPath(droppedResources, {
-			filter: resource => resource.energy >= minimum && this.isInRange(pos, resource.pos, 20)
+			filter: resource => resource.amount >= minimum && this.isInRange(pos, resource.pos, 20)
 		});
 	}
 
@@ -69,7 +69,7 @@ findTools.findClosestWritableDroppedOrStoredEnergy = function(pos, minimum) {
 	if (!energy) {
 
 		energy = pos.findClosestByPath(droppedResources, {
-			filter: resource => resource.energy >= minimum * 2
+			filter: resource => resource.amount >= minimum * 2
 		});
 	}
 
@@ -133,7 +133,7 @@ findTools.findClosestEnergy = function(pos, minimum) {
 	var droppedResources = roomTools.GetWritableDroppedResources(pos.roomName);
 
 	var energy = pos.findClosestByPath(droppedResources, {
-		filter: resource => resource.energy >= minimum && this.isInRange(pos, resource.pos, 10)
+		filter: resource => resource.amount >= minimum && this.isInRange(pos, resource.pos, 10)
 	});
 
 	if (!energy) {
@@ -149,7 +149,7 @@ findTools.findClosestEnergy = function(pos, minimum) {
 	if (!energy) {
 
 		energy = pos.findClosestByPath(droppedResources, {
-			filter: resource => resource.energy >= minimum && this.isInRange(pos, resource.pos, 20)
+			filter: resource => resource.amount >= minimum && this.isInRange(pos, resource.pos, 20)
 		});
 	}
 
@@ -166,14 +166,14 @@ findTools.findClosestEnergy = function(pos, minimum) {
 	if (!energy) {
 
 		energy = pos.findClosestByPath(FIND_SOURCES_ACTIVE, {
-			filter: resource => this.isInRange(pos, resource.pos, 20) && resource.energy / resource.energyCapacity > .10
+			filter: resource => this.isInRange(pos, resource.pos, 20) && resource.amount / resource.amountCapacity > .10
 		});
 	}
 
 	if (!energy) {
 
 		energy = pos.findClosestByPath(droppedResources, {
-			filter: resource => resource.energy >= minimum * minimum
+			filter: resource => resource.amount >= minimum * minimum
 		});
 	}
 
@@ -190,7 +190,7 @@ findTools.findClosestEnergy = function(pos, minimum) {
 	if (!energy) {
 
 		energy = pos.findClosestByPath(FIND_SOURCES_ACTIVE, {
-			filter: resource => resource.energy / resource.energyCapacity > .10
+			filter: resource => resource.amount / resource.amountCapacity > .10
 		});
 	}
 
@@ -208,7 +208,7 @@ findTools.findSourcesWritableDroppedResource = function(pos, minimum) {
 	var droppedResources = roomTools.GetSourcesWritableDroppedResources(pos.roomName);
 
 	resources = pos.findInRange(droppedResources, 3, {
-		filter: resource => resource.writableEnergy >= minimum
+		filter: resource => resource.writableAmount >= minimum
 	});
 
 	if (resources.length > 0) {
@@ -217,7 +217,7 @@ findTools.findSourcesWritableDroppedResource = function(pos, minimum) {
 
 	if (!resource) {
 		resources = pos.findInRange(droppedResources, 3, {
-			filter: resource => resource.writableEnergy >= minimum / 4
+			filter: resource => resource.writableAmount >= minimum / 4
 		});
 
 		if (resources.length > 0) {
@@ -228,10 +228,10 @@ findTools.findSourcesWritableDroppedResource = function(pos, minimum) {
 	if (!resource) {
 		var sources = roomTools.getSources(pos.roomName);
 		var source = pos.findClosestByRange(sources);
-		var droppedResources = roomTools.GetSourceWritableDroppedResources(pos.roomName, source.id);
+		droppedResources = roomTools.GetSourceWritableDroppedResources(pos.roomName, source.id);
 
 		resource = pos.findClosestByPath(droppedResources, {
-			filter: resource => resource.writableEnergy >= minimum * 2
+			filter: resource => resource.writableAmount >= minimum * 2
 		});
 
 		if (!resource) {
@@ -239,7 +239,7 @@ findTools.findSourcesWritableDroppedResource = function(pos, minimum) {
 			var droppedResources = roomTools.GetSourcesWritableDroppedResources(pos.roomName);
 
 			resource = pos.findClosestByPath(droppedResources, {
-				filter: resource => resource.writableEnergy >= minimum / 2
+				filter: resource => resource.writableAmount >= minimum / 2
 			});
 		}
 	}

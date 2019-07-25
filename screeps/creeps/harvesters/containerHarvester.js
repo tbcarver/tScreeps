@@ -14,6 +14,8 @@ class ContainerHarvester extends BaseCreep {
 
 		if (!super.act()) {
 
+			var container;
+
 			if (this.state === "arrivedAtRemoteRoom") {
 				this.state = "harvesting";
 			}
@@ -46,7 +48,7 @@ class ContainerHarvester extends BaseCreep {
 
 			if (this.state === "alternateTransferring") {
 
-				var container = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+				container = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 					filter: container => (container.structureType === STRUCTURE_CONTAINER ||
 						container.structureType === STRUCTURE_STORAGE) &&
 						container.store[RESOURCE_ENERGY] / container.storeCapacity < .80 &&
@@ -65,7 +67,7 @@ class ContainerHarvester extends BaseCreep {
 					this.state = "transferring";
 				}
 
-				var container = Game.getObjectById(this.memory.containerId);
+				container = Game.getObjectById(this.memory.containerId);
 
 				if (container) {
 
@@ -91,6 +93,8 @@ class ContainerHarvester extends BaseCreep {
 			}
 
 		}
+
+		return true;
 	}
 
 	getInitialState() {

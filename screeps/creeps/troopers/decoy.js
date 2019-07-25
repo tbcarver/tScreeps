@@ -11,11 +11,17 @@ class Decoy extends TrooperCreep {
 
 	act() {
 
-		if (!super.act()) {
+		var acted = super.act();
+
+		if (!acted) {
 			if (!this.heal()) {
 				TrooperCreep.prototype.act.call(this);
 			}
+
+			acted = true;
 		}
+
+		return acted;
 	}
 
 	attack() {
@@ -55,9 +61,8 @@ class Decoy extends TrooperCreep {
 		var creepMemory = TrooperCreep.initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount);
 
 		if (creepMemory) {
-
 			creepMemory.type = "decoy";
-			creepMemory.bodyPartsType = "healerTough";
+			creepMemory.bodyPartsType =  "healerTough";
 			creepMemory.minimumSpawnCapacity = 450;
 			creepMemory.maximumSpawnCapacity = 450;
 		}

@@ -96,7 +96,7 @@ function buildRoomsCreepsSpawnRules(creepsSpawnRules) {
 		spawnedRoomsCreepsToSpawnTotal[creepsSpawnRule.roomName] = 0;
 
 		if (creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
-			for (spawnOrderMaxSpawnedCount of creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
+			for (var spawnOrderMaxSpawnedCount of creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
 
 				var creepType = SpawnOrderMaxSpawnedCount.getCreepType(spawnOrderMaxSpawnedCount);
 				creepsToSpawnTotal += spawnOrderMaxSpawnedCount[creepType];

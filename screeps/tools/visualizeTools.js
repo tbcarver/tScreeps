@@ -4,7 +4,7 @@ var visualizeTools = {};
 
 visualizeTools.visualize = function(pathToObject, pathFromObject) {
 
-	var path = room.findPath(pathToObject.pos, pathFromObject.pos, { ignoreCreeps: true });
+	var path = pathToObject.pos.room.findPath(pathToObject.pos, pathFromObject.pos, { ignoreCreeps: true });
 
 	// debug.danger(spawn.pos);
 
@@ -24,7 +24,7 @@ visualizeTools.visualize = function(pathToObject, pathFromObject) {
 
 		// 	debug.danger(location)
 		// 	room.visual.rect(0, 0, location, 15, 15, {fill:"#777"})
-		room.visual.circle(location, { radius: 1 / 2, fill: "danger" });
+		pathToObject.pos.room.visual.circle(location, { radius: 1 / 2, fill: "danger" });
 		// room.visual.rect(0, 0, location, .60, .60, {fill:"#777"})
 	}
 	// room.visual.circle(spawn.pos.x + 5, spawn.pos.y + 5, {radius:.30,fill:"danger"});
@@ -75,34 +75,23 @@ visualizeTools.visualizeStructureHealth = function() {
 	}
 }
 
-visualizeTools.visualizeFlags = function() {
-
-	const flags = room.find(FIND_FLAGS);
-
-	for (var index in flags) {
-		var pos = flags[index].pos;
-		var color = getColorFromConstant(flags[index].color);
-		room.visual.line(pos.x, pos.y, pos.x, pos.y - 1, { width: .2, color: color });
-	}
-}
-
 visualizeTools.visualizeCreepByType = function(creepType, color) {
 
 	const targets = _.filter(Game.creeps, creep => creep.memory.type === creepType);
 
 	for (var index in targets) {
 
-		room.visual.circle(targets[index].pos, { radius: .25, stroke: color, fill: color });
+		targets[index].room.visual.circle(targets[index].pos, { radius: .25, stroke: color, fill: color });
 	}
 }
 
-visualizeTools.visualizeDyingCreep = function(creep) {
+visualizeTools.visualizeDyingCreep = function() {
 
 	const targets = _.filter(Game.creeps, creep => creep.ticksToLive < 25);
 
 	for (var index in targets) {
 
-		room.visual.circle(targets[index].pos, { radius: .25, stroke: "red", fill: "red", opacity: 1 });
+		targets[index].room.visual.circle(targets[index].pos, { radius: .25, stroke: "red", fill: "red", opacity: 1 });
 	}
 }
 

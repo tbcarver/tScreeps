@@ -14,7 +14,7 @@ class ControllerEnergizer extends EnergyCreep {
 	}
 
 	act() {
-		super.act();
+		return super.act();
 	}
 
 	energyAct(moveToOnly) {
@@ -43,7 +43,7 @@ class ControllerEnergizer extends EnergyCreep {
 
 		if (!acted) {
 
-			if (moveOnly) {
+			if (moveToOnly) {
 				this.creep.moveTo(this.creep.room.controller);
 			} else {
 
