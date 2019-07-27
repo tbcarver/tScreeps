@@ -1,9 +1,13 @@
 
+
+
 var { rules } = require("../rules/rules")
 var enemyTools = require("./enemyTools");
 var findTools = require("./findTools");
+var flagTools = require("./flagTools");
 var roomTools = require("./roomTools");
 var spawnTools = require("./spawnTools");
+var visualizeTools = require("./visualizeTools");
 var testObject = require("../creeps/energizers/extensionEnergizer");
 var bodyPartsStrategy = require("../creeps/bodies/moveWorkStrategy");
 var sumBy = require("lodash/sumBy");
@@ -11,6 +15,24 @@ var orderBy = require("lodash/orderBy");
 var DropHarvester = require("../creeps/harvesters/dropHarvester");
 
 function tick() {
+
+	// var pos = new RoomPosition(25, 9 , "W12N16");
+	// var target = Game.spawns.Spawn1;
+
+	// var path = Game.rooms.W12N16.findPath(pos, target.pos, {
+	// 	ignoreCreeps:true,
+	// 	range:0
+	// });
+
+	// debug.temp(path)
+	// if (path.length > 3) {
+	// 	path.splice(path.length - 3);
+	// }
+
+	// debug.temp(path)
+
+
+	// visualizeTools.visualizePath(Game.rooms.W12N16, path, "yellow");
 
 	// var spawn = Game.spawns["Spawn1"]
 	// var room = Game.rooms.W11N16

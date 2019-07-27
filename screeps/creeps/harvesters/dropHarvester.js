@@ -21,13 +21,16 @@ class DropHarvester extends BaseCreep {
 
 				if (this.memory.resourceId) {
 					resource = Game.getObjectById(this.memory.resourceId);
+
 				} else {
 					resource = this.creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
 				}
 
 				if (resource) {
-					if (this.creep.harvest(resource) == ERR_NOT_IN_RANGE) {
-						this.creep.moveTo(resource);
+					if (this.isInTravelDistance(resource)) {
+						this.travelNearTo(resource);
+					} else if (this.creep.harvest(resource) == ERR_NOT_IN_RANGE) {
+						this.travelRemainingTo(resource);
 					}
 				} else {
 
@@ -49,7 +52,7 @@ class DropHarvester extends BaseCreep {
 
 	static initializeSpawnCreepMemory(room, spawn, creepsSpawnRule) {
 
-		var creepMemory;
+		var creepMemory = /** @type {CreepMemory} */(undefined);
 
 		if (room.find) {
 
@@ -99,10 +102,9 @@ class DropHarvester extends BaseCreep {
 		}
 
 		if (creepMemory) {
-
-			creepMemory["bodyPartsType"] =  "moveWork";
-			creepMemory["state"] = "harvesting";
-			creepMemory["maximumSpawnCapacity"] = 500;
+			creepMemory.bodyPartsType =  "moveWork";
+			creepMemory.state = "harvesting";
+			creepMemory.maximumSpawnCapacity = 500;
 		}
 
 		return creepMemory;

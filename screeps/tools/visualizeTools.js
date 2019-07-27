@@ -30,7 +30,15 @@ visualizeTools.visualize = function(pathToObject, pathFromObject) {
 	// room.visual.circle(spawn.pos.x + 5, spawn.pos.y + 5, {radius:.30,fill:"danger"});
 }
 
-visualizeTools.visualizePath = function(room, path) {
+visualizeTools.visualizePath = function(room, path, color) {
+
+	if (typeof path === "string") {
+		path = Room.deserializePath(path)
+	}
+
+	if (!color) {
+		color = "white";
+	}
 
 	// debug.danger(spawn.pos);
 
@@ -50,7 +58,7 @@ visualizeTools.visualizePath = function(room, path) {
 
 		// 	debug.danger(location)
 		// 	room.visual.rect(0, 0, location, 15, 15, {fill:"#777"})
-		room.visual.circle(location, { radius: 1 / 2, fill: "danger" });
+		room.visual.circle(location, { radius: 1 / 3, stroke: "black", fill: color, opacity: .3 });
 		// room.visual.rect(0, 0, location, .60, .60, {fill:"#777"})
 	}
 	// room.visual.circle(spawn.pos.x + 5, spawn.pos.y + 5, {radius:.30,fill:"danger"});

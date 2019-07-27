@@ -96,19 +96,24 @@ class BaseRemoteStorageTransferer extends RemoteCreep {
 
 			var dropFlag = Game.flags[`drop-${this.creep.room.name}`];
 			if (dropFlag) {
-				if (this.creep.pos.inRangeTo(dropFlag, 0)) {
+				if (this.isInTravelDistance(dropFlag)) {
+					this.travelNearTo(dropFlag);
+
+				} else if (this.creep.pos.inRangeTo(dropFlag, 0)) {
 
 					this.creep.drop(RESOURCE_ENERGY);
 					moveToOtherRoom();
 
 				} else {
-					this.creep.moveTo(dropFlag);
+					this.travelRemainingTo(dropFlag);
 				}
 			} else {
 
+				var resource;
+
 				if (this.canTransferToStorageOnly) {
 
-					var resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+					resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 						filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
 							structure.structureType === STRUCTURE_TERMINAL) &&
 							structure.storeCapacity - structure.store[RESOURCE_ENERGY] > this.creep.carry[RESOURCE_ENERGY]
@@ -116,7 +121,7 @@ class BaseRemoteStorageTransferer extends RemoteCreep {
 
 				} else {
 
-					var resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+					resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 						filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
 							structure.structureType === STRUCTURE_TERMINAL ||
 							structure.structureType === STRUCTURE_CONTAINER) &&
@@ -126,21 +131,30 @@ class BaseRemoteStorageTransferer extends RemoteCreep {
 				}
 
 				if (resource) {
-					var transferResult = this.creep.transfer(resource, RESOURCE_ENERGY);
 
-					if (transferResult == ERR_NOT_IN_RANGE) {
+					if (this.isInTravelDistance(resource)) {
+						this.travelNearTo(resource);
+					} else {
+						var transferResult = this.creep.transfer(resource, RESOURCE_ENERGY);
 
-						this.creep.moveTo(resource);
+						if (transferResult == ERR_NOT_IN_RANGE) {
 
-					} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+							this.travelRemainingTo(resource);
 
-						moveToOtherRoom();
+						} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+
+							moveToOtherRoom();
+						}
 					}
 				} else {
 
 					var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
 					if (waitFlag) {
-						this.creep.moveTo(waitFlag);
+						if (this.isInTravelDistance(waitFlag)) {
+							this.travelTo(waitFlag);
+						} else if (!this.creep.pos.inRangeTo(waitFlag, 2)) {
+							this.creep.moveTo(waitFlag);
+						}
 					} else {
 						debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} can't find any resource`);
 					}

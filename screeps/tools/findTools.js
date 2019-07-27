@@ -166,7 +166,7 @@ findTools.findClosestEnergy = function(pos, minimum) {
 	if (!energy) {
 
 		energy = pos.findClosestByPath(FIND_SOURCES_ACTIVE, {
-			filter: resource => this.isInRange(pos, resource.pos, 20) && resource.amount / resource.amountCapacity > .10
+			filter: resource => this.isInRange(pos, resource.pos, 20) && resource.energy / resource.energyCapacity > .10
 		});
 	}
 
@@ -190,9 +190,10 @@ findTools.findClosestEnergy = function(pos, minimum) {
 	if (!energy) {
 
 		energy = pos.findClosestByPath(FIND_SOURCES_ACTIVE, {
-			filter: resource => resource.amount / resource.amountCapacity > .10
+			filter: resource => resource.energy / resource.energyCapacity > .10
 		});
 	}
+
 
 	return energy;
 }

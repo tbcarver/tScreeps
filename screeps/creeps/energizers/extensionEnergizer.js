@@ -80,7 +80,7 @@ class ExtensionEnergizer extends EnergyCreep {
 			}
 
 			if (!creepsSpawnRule.canEnergyCreepsHarvest) {
-				creepMemory["bodyPartsType"] =  "moveCarry";
+				creepMemory.bodyPartsType =  "moveCarry";
 			}
 
 			creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, room, spawn, creepsSpawnRule);

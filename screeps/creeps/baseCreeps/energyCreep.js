@@ -26,24 +26,29 @@ class EnergyCreep extends BaseCreep {
 
 		if (!super.act()) {
 
-			if (this.state === "harvesting" || this.creep.carry[RESOURCE_ENERGY] === 0) {
+			debug.temp("ACT")
+
+			if ((this.state === "harvesting" && this.creep.carry[RESOURCE_ENERGY] !== this.creep.carryCapacity) ||
+				this.creep.carry[RESOURCE_ENERGY] === 0) {
 
 				if (this.state !== "harvesting") {
 					this.state = "harvesting";
 				}
 
+				debug.temp("Harvesting")
 				this.harvest();
 			}
 
 			if (this.state === "energyActing" || this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
 
 				if (this.state !== "energyActing") {
-
+					this.state = "energyActing";
 					this.moveIntoRoom();
 					this.memory.takeStepsIntoRoom = 1;
-					this.state = "energyActing";
-
+					debug.temp("set energyActing")
 				} else {
+
+					debug.temp("energyAct")
 					this.energyAct();
 				}
 			}
@@ -64,10 +69,10 @@ class EnergyCreep extends BaseCreep {
 
 		if (resource) {
 
-			if (moveToOnly) {
-				this.creep.moveTo(resource);
-			} else {
 
+			if (this.isInTravelDistance(resource)) {
+				this.travelNearTo(resource, true);
+			} else {
 				if (resource.structureType) {
 
 					if (this.creep.withdraw(resource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
@@ -76,7 +81,7 @@ class EnergyCreep extends BaseCreep {
 
 				} else if (resource.resourceType) {
 
-					var result = this.creep.pickup(resource);
+					let result = this.creep.pickup(resource);
 
 					if (result === OK) {
 
@@ -85,7 +90,9 @@ class EnergyCreep extends BaseCreep {
 						if (pickedUpAmount > this.availableCarryCapacity) {
 							pickedUpAmount = this.availableCarryCapacity;
 
-							this.energyAct(true);
+							this.state = "energyActing";
+							this.moveIntoRoom();
+							this.memory.takeStepsIntoRoom = 1;
 						}
 
 						resource.writableAmount -= this.availableCarryCapacity;
@@ -94,6 +101,7 @@ class EnergyCreep extends BaseCreep {
 						this.creep.moveTo(resource);
 					}
 				} else {
+
 					if (this.creep.harvest(resource) == ERR_NOT_IN_RANGE) {
 						this.creep.moveTo(resource);
 					}

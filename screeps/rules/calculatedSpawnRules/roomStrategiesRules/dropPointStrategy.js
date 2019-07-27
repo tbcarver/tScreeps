@@ -3,7 +3,6 @@ var dropStrategyTools = require("./dropStrategyTools");
 var flagTools = require("../../../tools/flagTools");
 var roomTools = require("../../../tools/roomTools");
 var SpawnOrderMaxSpawnedCount = require("../../../rules/spawnOrderMaxSpawnedCount");
-var observersController = require("../../../structures/observersController");
 
 var dropPointStrategy = {
 	coolOffCount: 150,
@@ -140,7 +139,7 @@ dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpa
 				spawnOrderMaxSpawnedCount[creepType] = maxSpawnedCount;
 			}
 		} else {
-			observersController.observeRoom(remoteRoomName);
+			roomTools.addObservingRoom(remoteRoomName);
 			debug.warning(`dropPointStrategy: room not found for ${remoteRoomName}, added observing room`);
 		}
 	}

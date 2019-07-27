@@ -15,6 +15,8 @@ class SpawnEnergizer extends EnergyCreep {
 
 	energyAct(moveToOnly) {
 
+		debug.temp("spawn energyAct")
+
 		var targetStructures = /** @type {StructureTower[] | StructureSpawn[]} */ (this.creep.room.find(FIND_STRUCTURES, {
 			filter: structure => structure.structureType === STRUCTURE_TOWER &&
 				structure.energy < structure.energyCapacity
@@ -44,11 +46,11 @@ class SpawnEnergizer extends EnergyCreep {
 
 		if (targetStructure) {
 
-			if (moveToOnly) {
-				this.creep.moveTo(targetStructure);
+			if (this.isInTravelDistance(targetStructure)) {
+				this.travelNearTo(targetStructure, true);
 			} else {
-				var transferResult = this.creep.transfer(targetStructure, RESOURCE_ENERGY);
 
+				var transferResult = this.creep.transfer(targetStructure, RESOURCE_ENERGY);
 				if (transferResult == OK) {
 
 					this.state = "harvesting";
@@ -56,6 +58,7 @@ class SpawnEnergizer extends EnergyCreep {
 
 				} else if (transferResult == ERR_NOT_IN_RANGE) {
 
+					debug.temp("move spawn", this.creep.name);
 					this.creep.moveTo(targetStructure);
 
 				} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
@@ -68,10 +71,6 @@ class SpawnEnergizer extends EnergyCreep {
 		} else {
 			BaseCreep.prototype.moveIntoRoom();
 		}
-	}
-
-	moveIntoRoom() {
-		this.energyAct(true);
 	}
 
 	static initializeSpawnCreepMemory(room, spawn, creepsSpawnRule) {

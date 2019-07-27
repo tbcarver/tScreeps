@@ -16,6 +16,8 @@ var rules = {
 	mobAttackRoomCoolDownCount: 15,
 	observingRooms: [],
 	upgradeControllerSpawnRule: "", // oneToEight
+	visualizeMovePaths: true,
+	visualizeTravelPaths: true,
 }
 
 var creepsSpawnRules = [];

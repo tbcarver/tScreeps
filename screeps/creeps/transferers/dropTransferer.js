@@ -58,9 +58,7 @@ class DropTransferer extends BaseCreep {
 			var source = Game.getObjectById(this.memory.sourceId);
 
 			if (!this.creep.pos.inRangeTo(source, 3)) {
-				this.creep.moveTo(source, {
-					ignoreCreeps: true,
-				});
+				this.travelTo(source, 3);
 			} else {
 
 				var resources = roomTools.GetSourceWritableDroppedResources(this.creep.room.name, this.memory.sourceId);
@@ -113,7 +111,7 @@ class DropTransferer extends BaseCreep {
 
 			var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
 			if (waitFlag) {
-				this.creep.moveTo(waitFlag);
+				this.travelTo(waitFlag);
 			} else {
 				// debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} can't find any resource to harvest`);
 			}
@@ -193,9 +191,9 @@ class DropTransferer extends BaseCreep {
 		}
 
 		if (creepMemory) {
-			creepMemory["bodyPartsType"] =  "moveCarry";
-			creepMemory["maximumSpawnCapacity"] = 600;
-			creepMemory["minimumSpawnCapacity"] = 450;
+			creepMemory.bodyPartsType =  "moveCarry";
+			creepMemory.maximumSpawnCapacity = 600;
+			creepMemory.minimumSpawnCapacity = 450;
 		}
 
 		return creepMemory;

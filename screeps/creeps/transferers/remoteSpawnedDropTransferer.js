@@ -1,4 +1,5 @@
 
+var roomTools = require("../../tools/roomTools");
 var BaseRemoteStorageTransferer = require("./baseRemoteStorageTransferer");
 var DropTransferer = require("./dropTransferer");
 
@@ -68,16 +69,26 @@ class RemoteSpawnedDropTransferer extends BaseRemoteStorageTransferer {
 			creepMemory = {
 				type: "remoteSpawnedDropTransferer",
 				subType: spawnOrderMaxSpawnedCount.creepSubType,
-				bodyPartsType: "moveCarry",
-				maximumSpawnCapacity: 750,
-				minimumSpawnCapacity: 600,
 			}
 
 			creepMemory = Object.assign(creepMemory, spawnOrderMaxSpawnedCount.creepMemory);
 
-		} else {
+		} else if (room.find) {
 
-			creepMemory = BaseRemoteStorageTransferer.initializeSpawnCreepMemory("remoteSpawnedDropTransferer", room);
+			var resources = roomTools.GetSourcesWritableDroppedResources(room.name);
+
+			if (resources.length > 0) {
+
+				creepMemory = {
+					type: "dropTransferer",
+				}
+			}
+		}
+
+		if (creepMemory) {
+			creepMemory.bodyPartsType =  "moveCarry";
+			creepMemory.maximumSpawnCapacity = 750;
+			creepMemory.minimumSpawnCapacity = 600;
 		}
 
 		return creepMemory;
