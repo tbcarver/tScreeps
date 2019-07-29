@@ -162,7 +162,7 @@ class BaseCreep {
 
 				if (result === OK) {
 					if (rules.visualizeTravelPaths) {
-						visualizeTools.visualizePath(this.creep.room, path, "lightblue");
+						// visualizeTools.visualizePath(this.creep.room, path, "lightblue");
 					}
 					acted = true;
 				}
@@ -429,6 +429,7 @@ class BaseCreep {
 				this.travelNearTo(dropFlag);
 			} else if (this.creep.pos.inRangeTo(dropFlag, 0)) {
 				this.creep.drop(RESOURCE_ENERGY);
+				this.creep.moveTo(this.creep.room.controller);
 			} else {
 				this.creep.moveTo(dropFlag);
 			}

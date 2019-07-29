@@ -17,6 +17,11 @@ class ControllerEnergizer extends EnergyCreep {
 		return super.act();
 	}
 
+	harvest() {
+		delete this.creep.memory.upgradeControllerRange;
+		super.harvest();
+	}
+
 	energyAct() {
 
 		var acted = false;
@@ -44,8 +49,14 @@ class ControllerEnergizer extends EnergyCreep {
 
 			if (target) {
 
-				if (this.isInTravelDistance(target)) {
-					this.travelNearTo(target, true);
+				if (this.avoidCreeps) {
+					this.creep.memory.upgradeControllerRange = 3;
+				}
+
+				var range = this.creep.memory.upgradeControllerRange || 2;
+
+				if (!this.creep.pos.inRangeTo(target, range)) {
+					this.travelTo(target, range, true);
 				} else {
 
 					var transferResult = this.creep.upgradeController(this.creep.room.controller);
