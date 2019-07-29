@@ -1,6 +1,5 @@
 
 var { rules } = require("../rules/rules");
-var flagTools = require("./flagTools");
 var sumBy = require("lodash/sumBy");
 
 var roomTools = {};
@@ -182,7 +181,7 @@ roomTools.buildDroppedStats = function() {
 
 	for (var roomName in Game.rooms) {
 
-		var dropFlag = flagTools.getDropFlag(roomName);
+		var dropFlag = this.getDropFlag(roomName);
 		var sources = this.getSources(roomName);
 		var resources = /** @type {ResourceWritable[]} */ (Game.rooms[roomName].find(FIND_DROPPED_RESOURCES));
 
@@ -441,22 +440,22 @@ roomTools.getCountControllerUpgradePositions = function(controller) {
 
 		for (var xDifferential = -3; xDifferential <= 3; xDifferential++) {
 
-			if (roomTools.isPlainTerrain(controller.room.name, controller.pos.x + xDifferential, controller.pos.y - 3)) {
+			if (roomTools.isPlainTerrain(controller.pos.x + xDifferential, controller.pos.y - 3, controller.room.name)) {
 				countControllerUpgradePositions++;
 			}
 
-			if (roomTools.isPlainTerrain(controller.room.name, controller.pos.x + xDifferential, controller.pos.y + 3)) {
+			if (roomTools.isPlainTerrain(controller.pos.x + xDifferential, controller.pos.y + 3, controller.room.name)) {
 				countControllerUpgradePositions++;
 			}
 		}
 
 		for (var yDifferential = -2; yDifferential <= 2; yDifferential++) {
 
-			if (roomTools.isPlainTerrain(controller.room.name, controller.pos.x - 3, controller.pos.y - yDifferential)) {
+			if (roomTools.isPlainTerrain(controller.pos.x - 3, controller.pos.y - yDifferential, controller.room.name)) {
 				countControllerUpgradePositions++;
 			}
 
-			if (roomTools.isPlainTerrain(controller.room.name, controller.pos.x + 3, controller.pos.y + yDifferential)) {
+			if (roomTools.isPlainTerrain(controller.pos.x + 3, controller.pos.y + yDifferential, controller.room.name)) {
 				countControllerUpgradePositions++;
 			}
 
@@ -468,7 +467,7 @@ roomTools.getCountControllerUpgradePositions = function(controller) {
 	return countControllerUpgradePositions;
 }
 
-roomTools.isPlainTerrain = function(roomName, x, y) {
+roomTools.isPlainTerrain = function(x, y, roomName) {
 
 	var isPlainTerrain = false;
 
@@ -484,6 +483,13 @@ roomTools.isPlainTerrain = function(roomName, x, y) {
 	return isPlainTerrain;
 }
 
+roomTools.isOccupiedByCreep = function(x, y, roomName) {
+
+	var objects = Game.rooms[roomName].lookForAt(LOOK_CREEPS, x, y);
+
+	return (objects.length > 0);
+}
+
 roomTools.inRangeToAny = function(pos, targets, range) {
 
 	var isInRangeToAny = false;
@@ -496,6 +502,16 @@ roomTools.inRangeToAny = function(pos, targets, range) {
 	}
 
 	return isInRangeToAny;
+}
+
+roomTools.getDropFlag = function(roomName) {
+
+	return Game.flags[`drop-${roomName}`];
+}
+
+roomTools.hasDropFlag = function(roomName) {
+
+	return (Game.flags[`drop-${roomName}`]) ? true : false;
 }
 
 // roomTools.lookAt = function() {

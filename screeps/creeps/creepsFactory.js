@@ -16,7 +16,6 @@ creepsFactory.buildCreep = function(creep) {
 		// 	if (creep.room.name === "W8N10") {
 		// 		// if (creep.memory.remoteRoomName && creep.memory.state === "movingToSpawnedRoom") {
 		// 			// creep.memory.takeStepsIntoRoom = 6
-		// 					creep.memory.remoteRoomName = "W8N10";
 		// 					creep.memory.spawnedRoomName = "W8N9";
 		// 					creep.memory.state = "moveToSpawnedRoom"
 							// creep.suicide();

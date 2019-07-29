@@ -1,6 +1,5 @@
 
 var { rules } = require("../rules/rules");
-var flagTools = require("./flagTools");
 var roomTools = require("./roomTools");
 var findTools = {};
 
@@ -31,7 +30,7 @@ findTools.findClosestWritableDroppedOrStoredEnergy = function(pos, minimum) {
 
 	var droppedResources = roomTools.GetSourcesWritableDroppedResources(pos.roomName);
 
-	if (flagTools.getDropFlag(pos.roomName)) {
+	if (roomTools.hasDropFlag(pos.roomName)) {
 		droppedResources = roomTools.GetDropFlagWritableDroppedResources(pos.roomName);
 	}
 

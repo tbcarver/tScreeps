@@ -20,29 +20,12 @@ class BaseCreep {
 		this.suppressReturnToRooms = false;
 		this.isTrooper = false;
 
-		debug.temp("pre", this.creep.name, this.memory.state, !!this.memory.travel)
-
 		if (this.memory.travel && (this.memory._move ||
-			(this.memory.travel.roomName !== this.creep.room.name) ||
-			(this.memory.travel.x === this.creep.pos.x && this.memory.travel.y === this.creep.pos.y))) {
+			(this.memory.travel.pathDestination.roomName !== this.creep.room.name) ||
+			(this.memory.travel.pathDestination.x === this.creep.pos.x &&
+				this.memory.travel.pathDestination.y === this.creep.pos.y))) {
 			delete this.memory.travel;
-			debug.temp("DELETED")
 		}
-
-		// if (this.memory.travel && this.memory._move) {
-		// 	if (!(this.memory.travel.x === this.memory._move.dest.x &&
-		// 		this.memory.travel.y === this.memory._move.dest.y)) {
-
-		// 		delete this.memory.travel;
-		// 		debug.temp("DELETED")
-		// 	} else if (this.memory.travel.x === this.creep.pos.x &&
-		// 		this.memory.travel.y === this.creep.pos.y) {
-
-		// 		delete this.memory.travel;
-		// 		debug.temp("DELETED arrived")
-		// 	}
-		// }
-		// debug.temp("post", !!this.memory.travel, !!this.memory._move)
 	}
 
 	get state() {
@@ -74,19 +57,6 @@ class BaseCreep {
 		} else {
 			return undefined;
 		}
-	}
-
-	get isTraveling() {
-
-		var isTraveling = false;
-
-		if (this.memory.travel && this.memory.travel.roomName === this.creep.room.name) {
-
-			isTraveling = (this.memory.travel && this.memory._move && this.memory.travel.x === this.memory._move.dest.x &&
-				this.memory.travel.y === this.memory._move.dest.y);
-		}
-
-		return isTraveling;
 	}
 
 	act() {
@@ -181,22 +151,14 @@ class BaseCreep {
 			}
 		} else if (this.memory.travel && !this.memory.travel.isStuck) {
 
-			debug.temp("isTraveling", this.creep.name, this.memory.travel);
-
 			if (this.creep.fatigue <= 2 && this.memory.travel.previousX === this.creep.pos.x && this.memory.travel.previousY === this.creep.pos.y) {
 				this.memory.travel.stuckCount++;
 			}
 
-			if (this.memory.travel.stuckCount <= 2) {
+			if (this.memory.travel.stuckCount < 2) {
 
 				var path = Room.deserializePath(this.memory.travel.path);
 				var result = this.creep.moveByPath(path);
-
-				// var pos = new RoomPosition(this.memory.travel.x, this.memory.travel.y, this.memory.travel.roomName);
-
-				// var result = this.creep.moveTo(pos, {
-				// 	reusePath: 100,
-				// });
 
 				if (result === OK) {
 					if (rules.visualizeTravelPaths) {
@@ -209,7 +171,20 @@ class BaseCreep {
 				this.memory.travel.previousY = this.creep.pos.y;
 
 			} else {
-				this.memory.travel.isStuck = true;
+
+				var occupied = roomTools.isOccupiedByCreep(this.memory.travel.pathDestination.x,
+					this.memory.travel.pathDestination.y, this.memory.travel.pathDestination.roomName);
+
+				if (occupied) {
+					this.avoidCreeps = true;
+					delete this.memory.travel;
+				} else {
+					var finalDestinationPos = new RoomPosition(this.memory.travel.finalDestination.x,
+						this.memory.travel.finalDestination.y, this.memory.travel.finalDestination.roomName);
+
+					this.travelTo(finalDestinationPos, this.memory.travel.range, true);
+					acted = true;
+				}
 			}
 		} else if (this.state === "movingToSpawnedRoom") {
 
@@ -325,9 +300,6 @@ class BaseCreep {
 
 	moveIntoRoom() {
 
-		
-		debug.temp("moveIntoRoom")
-
 		var path = this.creep.pos.findPathTo(25, 25);
 
 		if (path) {
@@ -370,8 +342,8 @@ class BaseCreep {
 			room = Game.rooms[pos.roomName];
 		}
 
-		if (!avoidCreeps) {
-			avoidCreeps = (this.memory.travel && this.memory.travel.isStuck) ? true : false;
+		if (this.avoidCreeps) {
+			avoidCreeps = true;
 		}
 
 		var options = {
@@ -383,6 +355,7 @@ class BaseCreep {
 		}
 
 		var path = room.findPath(this.creep.pos, pos, options);
+		var pathColor = options.ignoreCreeps ? "blue" : "yellow";
 
 		if (range) {
 			if (path.length > range) {
@@ -399,23 +372,32 @@ class BaseCreep {
 			if (result === OK) {
 
 				if (rules.visualizeTravelPaths) {
-					visualizeTools.visualizePath(this.creep.room, path, "blue");
+					visualizeTools.visualizePath(this.creep.room, path, pathColor);
 				}
 
+				var pathDestinationPos = path[path.length - 1];
+
 				this.memory.travel = {
-					x: pos.x,
-					y: pos.y,
-					roomName: pos.roomName,
+					finalDestination: {
+						x: pos.x,
+						y: pos.y,
+						roomName: pos.roomName,
+					},
+					pathDestination: {
+						x: pathDestinationPos.x,
+						y: pathDestinationPos.y,
+						roomName: pos.roomName,
+					},
 					path: Room.serializePath(path),
+					range: range || 0,
 					previousX: -1,
 					previousY: -1,
 					stuckCount: 0,
-					isStuck: false,
 				}
 
 				delete this.memory._move;
-
-				debug.temp("travel to", this.creep.name, result, pos, options, this.memory.travel);
+			} else {
+				debug.warning(`${this.type} ${this.creep.name} could not move by path: ${result} ${path.length}`)
 			}
 		}
 
@@ -424,10 +406,6 @@ class BaseCreep {
 
 	travelNearTo(target, avoidCreeps) {
 		this.travelTo(target, 3, avoidCreeps);
-	}
-
-	travelRemainingTo(target) {
-		this.travelTo(target);
 	}
 
 	isInTravelDistance(target) {
@@ -445,10 +423,11 @@ class BaseCreep {
 
 	transferEnergy() {
 
-		var dropFlag = Game.flags[`drop-${this.creep.room.name}`];
-
+		var dropFlag = roomTools.getDropFlag(this.creep.room.name);
 		if (dropFlag) {
-			if (this.creep.pos.inRangeTo(dropFlag, 0)) {
+			if (this.isInTravelDistance(dropFlag)) {
+				this.travelNearTo(dropFlag);
+			} else if (this.creep.pos.inRangeTo(dropFlag, 0)) {
 				this.creep.drop(RESOURCE_ENERGY);
 			} else {
 				this.creep.moveTo(dropFlag);
@@ -469,7 +448,9 @@ class BaseCreep {
 			}
 
 			if (target) {
-				if (this.creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+				if (this.isInTravelDistance(target)) {
+					this.travelNearTo(target);
+				} else if (this.creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 					this.creep.moveTo(target);
 				}
 			} else {

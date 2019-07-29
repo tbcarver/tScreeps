@@ -4,7 +4,6 @@
 var { rules } = require("../rules/rules")
 var enemyTools = require("./enemyTools");
 var findTools = require("./findTools");
-var flagTools = require("./flagTools");
 var roomTools = require("./roomTools");
 var spawnTools = require("./spawnTools");
 var visualizeTools = require("./visualizeTools");
@@ -551,7 +550,7 @@ function tick() {
 	// var target = room.find(FIND_STRUCTURES, { filter: { structureType: STRUCTURE_CONTROLLER } });
 	// debug("target: ", target);
 
-	// debug("targetid: ", target.id);
+	// debug("targetId: ", target.id);
 	// var gotObject = Game.getObjectById(target.id);
 	// debug("gotObject: ", gotObject);
 

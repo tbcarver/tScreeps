@@ -17,45 +17,47 @@ class ControllerEnergizer extends EnergyCreep {
 		return super.act();
 	}
 
-	energyAct(moveToOnly) {
+	energyAct() {
 
 		var acted = false;
+		var target;
 
 		if (this.canBuild) {
 
-			const target = this.creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
+			target = this.creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
 
 			if (target) {
-
-				if (moveToOnly) {
-					this.creep.moveTo(target);
+				if (this.isInTravelDistance(target)) {
+					this.travelNearTo(target, true);
 				} else {
 					if (this.creep.build(target) == ERR_NOT_IN_RANGE) {
-
 						this.creep.moveTo(target);
 					}
-
 					acted = true;
 				}
-
 			}
 		}
 
 		if (!acted) {
 
-			if (moveToOnly) {
-				this.creep.moveTo(this.creep.room.controller);
-			} else {
+			target = this.creep.room.controller;
 
-				var transferResult = this.creep.upgradeController(this.creep.room.controller);
+			if (target) {
 
-				if (transferResult == ERR_NOT_IN_RANGE) {
+				if (this.isInTravelDistance(target)) {
+					this.travelNearTo(target, true);
+				} else {
 
-					this.creep.moveTo(this.creep.room.controller);
+					var transferResult = this.creep.upgradeController(this.creep.room.controller);
 
-				} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+					if (transferResult == ERR_NOT_IN_RANGE) {
 
-					this.state = "harvesting";
+						this.creep.moveTo(this.creep.room.controller);
+
+					} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+
+						this.state = "harvesting";
+					}
 				}
 			}
 		}

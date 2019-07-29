@@ -57,8 +57,9 @@ class DropTransferer extends BaseCreep {
 
 			var source = Game.getObjectById(this.memory.sourceId);
 
-			if (!this.creep.pos.inRangeTo(source, 3)) {
-				this.travelTo(source, 3);
+			if (this.isInTravelDistance(source)) {
+				this.travelNearTo(source);
+
 			} else {
 
 				var resources = roomTools.GetSourceWritableDroppedResources(this.creep.room.name, this.memory.sourceId);
@@ -79,6 +80,11 @@ class DropTransferer extends BaseCreep {
 
 		} else if (this.canPickup) {
 			resource = findTools.findSourcesWritableDroppedResource(this.creep.pos, this.availableCarryCapacity);
+
+			if (this.isInTravelDistance(resource)) {
+				this.travelNearTo(resource);
+				resource = undefined;
+			}
 		}
 
 		if (resource) {
@@ -91,6 +97,7 @@ class DropTransferer extends BaseCreep {
 				if (pickedUpAmount > this.availableCarryCapacity) {
 					pickedUpAmount = this.availableCarryCapacity;
 
+					this.state = "energizing";
 					this.transfer(transferAction);
 				}
 
@@ -120,12 +127,18 @@ class DropTransferer extends BaseCreep {
 
 	transfer(transferAction) {
 
-		var dropFlag = Game.flags[`drop-${this.creep.room.name}`];
+		var dropFlag = roomTools.getDropFlag(this.creep.room.name);
 		if (dropFlag) {
-			if (this.creep.pos.inRangeTo(dropFlag, 0)) {
+
+			if (this.isInTravelDistance(dropFlag)) {
+				this.travelNearTo(dropFlag);
+
+			} else if (this.creep.pos.inRangeTo(dropFlag, 0)) {
+
 				this.creep.drop(RESOURCE_ENERGY);
 				this.state = "harvesting";
 				this.harvest();
+
 			} else {
 				this.creep.moveTo(dropFlag);
 			}
@@ -138,24 +151,30 @@ class DropTransferer extends BaseCreep {
 					structure.store[RESOURCE_ENERGY] / structure.storeCapacity < .95
 			});
 
-			var transferResult = this.creep.transfer(resource, RESOURCE_ENERGY);
+			if (this.isInTravelDistance(resource)) {
+				this.travelNearTo(resource);
 
-			if (transferResult == ERR_NOT_IN_RANGE) {
+			} else {
 
-				this.creep.moveTo(resource);
+				var transferResult = this.creep.transfer(resource, RESOURCE_ENERGY);
 
-			} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+				if (transferResult == ERR_NOT_IN_RANGE) {
 
-				this.state = "harvesting";
-				this.harvest();
+					this.creep.moveTo(resource);
 
-			} else if (transferResult !== OK) {
+				} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
 
-				var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
-				if (waitFlag) {
-					this.creep.moveTo(waitFlag);
-				} else {
-					debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} can't find any resource`);
+					this.state = "harvesting";
+					this.harvest();
+
+				} else if (transferResult !== OK) {
+
+					var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
+					if (waitFlag) {
+						this.creep.moveTo(waitFlag);
+					} else {
+						debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} can't find any resource`);
+					}
 				}
 			}
 		}
@@ -191,7 +210,7 @@ class DropTransferer extends BaseCreep {
 		}
 
 		if (creepMemory) {
-			creepMemory.bodyPartsType =  "moveCarry";
+			creepMemory.bodyPartsType = "moveCarry";
 			creepMemory.maximumSpawnCapacity = 600;
 			creepMemory.minimumSpawnCapacity = 450;
 		}

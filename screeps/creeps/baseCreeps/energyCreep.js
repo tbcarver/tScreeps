@@ -26,8 +26,6 @@ class EnergyCreep extends BaseCreep {
 
 		if (!super.act()) {
 
-			debug.temp("ACT")
-
 			if ((this.state === "harvesting" && this.creep.carry[RESOURCE_ENERGY] !== this.creep.carryCapacity) ||
 				this.creep.carry[RESOURCE_ENERGY] === 0) {
 
@@ -35,7 +33,6 @@ class EnergyCreep extends BaseCreep {
 					this.state = "harvesting";
 				}
 
-				debug.temp("Harvesting")
 				this.harvest();
 			}
 
@@ -45,10 +42,8 @@ class EnergyCreep extends BaseCreep {
 					this.state = "energyActing";
 					this.moveIntoRoom();
 					this.memory.takeStepsIntoRoom = 1;
-					debug.temp("set energyActing")
 				} else {
 
-					debug.temp("energyAct")
 					this.energyAct();
 				}
 			}
@@ -57,7 +52,7 @@ class EnergyCreep extends BaseCreep {
 		return true;
 	}
 
-	harvest(moveToOnly) {
+	harvest() {
 
 		if (this.canHarvest) {
 			var resource = findTools.findClosestEnergy(this.creep.pos, this.availableCarryCapacity);
@@ -68,7 +63,6 @@ class EnergyCreep extends BaseCreep {
 		}
 
 		if (resource) {
-
 
 			if (this.isInTravelDistance(resource)) {
 				this.travelNearTo(resource, true);
@@ -113,7 +107,7 @@ class EnergyCreep extends BaseCreep {
 		}
 	}
 
-	energyAct(moveToOnly) {
+	energyAct() {
 	}
 
 	getInitialState() {

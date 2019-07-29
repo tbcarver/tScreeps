@@ -30,7 +30,7 @@ class DropHarvester extends BaseCreep {
 					if (this.isInTravelDistance(resource)) {
 						this.travelNearTo(resource);
 					} else if (this.creep.harvest(resource) == ERR_NOT_IN_RANGE) {
-						this.travelRemainingTo(resource);
+						this.creep.moveTo(resource);
 					}
 				} else {
 
