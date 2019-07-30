@@ -52,7 +52,7 @@ class DropHarvester extends BaseCreep {
 
 	static initializeSpawnCreepMemory(room, spawn, creepsSpawnRule) {
 
-		var creepMemory = /** @type {CreepMemory} */(undefined);
+		var creepMemory = /** @type {CreepMemory} */ (undefined);
 
 		if (room.find) {
 

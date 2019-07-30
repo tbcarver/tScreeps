@@ -23,111 +23,106 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 	for (var creepsSpawnRule of creepsSpawnRulesCopy) {
 
 		var room = Game.rooms[creepsSpawnRule.roomName];
-		var remoteRoom;
-
 		if (room) {
 
+			var currentSpawnedCounts = roomsCurrentSpawnedCounts[room.name];
 			var spawns = room.find(FIND_MY_SPAWNS);
-			if (spawns.length > 0) {
-				for (var spawn of spawns) {
 
-					var currentSpawnedCounts = roomsCurrentSpawnedCounts[room.name];
+			for (var spawn of spawns) {
 
-					if (!spawn.spawning && room.energyAvailable >= 300) {
+				if (!spawn.spawning && room.energyAvailable >= 300) {
 
-						// debug.primary(`${spawn.room.name} ${spawn.name} spawn chance ${room.energyAvailable}`);
+					// debug.primary(`${spawn.room.name} ${spawn.name} spawn chance ${room.energyAvailable}`);
 
-						var spawnResult = {
-							waitForSpawn: false,
-							spawned: false
-						};
+					var spawnResult = {
+						waitForSpawn: false,
+						spawned: false
+					};
 
-						if (creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
-							for (var spawnOrderMaxSpawnedCount of creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
+					if (creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
+						for (var spawnOrderMaxSpawnedCount of creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
 
-								var creepTypeKey = SpawnOrderMaxSpawnedCount.getCreepTypeKey(spawnOrderMaxSpawnedCount);
-								var creepType = SpawnOrderMaxSpawnedCount.getCreepType(spawnOrderMaxSpawnedCount);
-								var creepSubType = SpawnOrderMaxSpawnedCount.getCreepSubType(spawnOrderMaxSpawnedCount);
-								var creepConstructor = creepConstructors[creepType];
-								var maxSpawnedCount = spawnOrderMaxSpawnedCount[creepType];
-								var currentSpawnedCount = (currentSpawnedCounts) ? currentSpawnedCounts[creepTypeKey] || 0 : 0;
+							var creepTypeKey = SpawnOrderMaxSpawnedCount.getCreepTypeKey(spawnOrderMaxSpawnedCount);
+							var creepType = SpawnOrderMaxSpawnedCount.getCreepType(spawnOrderMaxSpawnedCount);
+							var creepSubType = SpawnOrderMaxSpawnedCount.getCreepSubType(spawnOrderMaxSpawnedCount);
+							var creepConstructor = creepConstructors[creepType];
+							var maxSpawnedCount = spawnOrderMaxSpawnedCount[creepType];
+							var currentSpawnedCount = (currentSpawnedCounts) ? currentSpawnedCounts[creepTypeKey] || 0 : 0;
 
-								if (currentSpawnedCount < maxSpawnedCount) {
+							if (currentSpawnedCount < maxSpawnedCount) {
 
-									try {
-										spawnResult = trySpawnCreep(room, false, spawn, creepConstructor, creepsSpawnRule, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount, spawnResult);
+								try {
+									spawnResult = trySpawnCreep(room, false, spawn, creepConstructor, creepsSpawnRule, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount, spawnResult);
 
-										if (spawnResult.spawned) {
-											spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creepType, creepSubType, spawn.room.name);
-										}
-									} catch (error) {
-										if (error instanceof Error) {
+									if (spawnResult.spawned) {
+										spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creepType, creepSubType, spawn.room.name);
+									}
+								} catch (error) {
+									if (error instanceof Error) {
 
-											let sourceMap = require("../sourceMap");
-											sourceMap.logStackTrace(error);
+										let sourceMap = require("../sourceMap");
+										sourceMap.logStackTrace(error);
 
-										} else {
-											throw error;
-										}
+									} else {
+										throw error;
 									}
 								}
 							}
 						}
+					}
 
-						if (creepsSpawnRule.remoteRooms) {
+					if (creepsSpawnRule.remoteRooms) {
 
-							for (var remoteRoomCreepsSpawnRule of creepsSpawnRule.remoteRooms) {
+						for (var remoteRoomCreepsSpawnRule of creepsSpawnRule.remoteRooms) {
 
-								remoteRoom = Game.rooms[remoteRoomCreepsSpawnRule.roomName];
+							var remoteRoom = Game.rooms[remoteRoomCreepsSpawnRule.roomName];
+							if (!remoteRoom) {
+								remoteRoom = /** @type {Room} */ ({
+									name: remoteRoomCreepsSpawnRule.roomName
+								});
+							}
 
-								if (!remoteRoom) {
-									remoteRoom = {
-										name: remoteRoomCreepsSpawnRule.roomName
-									};
+							if (remoteRoom) {
+
+								var remoteCurrentSpawnedCounts = undefined;
+
+								if (currentSpawnedCounts && currentSpawnedCounts.remoteRooms) {
+									remoteCurrentSpawnedCounts = currentSpawnedCounts.remoteRooms[remoteRoom.name];
 								}
 
-								if (remoteRoom) {
+								if (remoteRoomCreepsSpawnRule.spawnOrderMaxSpawnedCounts) {
+									for (var remoteSpawnOrderMaxSpawnedCount of remoteRoomCreepsSpawnRule.spawnOrderMaxSpawnedCounts) {
 
-									var remoteCurrentSpawnedCounts = undefined;
+										var creepTypeKey = SpawnOrderMaxSpawnedCount.getCreepTypeKey(remoteSpawnOrderMaxSpawnedCount);
+										var creepType = SpawnOrderMaxSpawnedCount.getCreepType(remoteSpawnOrderMaxSpawnedCount);
+										var creepSubType = SpawnOrderMaxSpawnedCount.getCreepSubType(spawnOrderMaxSpawnedCount);
+										var creepConstructor = creepConstructors[creepType];
+										var maxSpawnedCount = remoteSpawnOrderMaxSpawnedCount[creepType];
+										var currentSpawnedCount = (remoteCurrentSpawnedCounts) ? remoteCurrentSpawnedCounts[creepTypeKey] || 0 : 0;
 
-									if (currentSpawnedCounts && currentSpawnedCounts.remoteRooms) {
-										remoteCurrentSpawnedCounts = currentSpawnedCounts.remoteRooms[remoteRoom.name];
-									}
+										if (currentSpawnedCount < maxSpawnedCount) {
 
-									if (remoteRoomCreepsSpawnRule.spawnOrderMaxSpawnedCounts) {
-										for (var remoteSpawnOrderMaxSpawnedCount of remoteRoomCreepsSpawnRule.spawnOrderMaxSpawnedCounts) {
+											try {
+												spawnResult = trySpawnCreep(remoteRoom, true, spawn, creepConstructor, remoteRoomCreepsSpawnRule, creepsSpawnRule, remoteSpawnOrderMaxSpawnedCount, currentSpawnedCount, spawnResult);
 
-											var creepTypeKey = SpawnOrderMaxSpawnedCount.getCreepTypeKey(remoteSpawnOrderMaxSpawnedCount);
-											var creepType = SpawnOrderMaxSpawnedCount.getCreepType(remoteSpawnOrderMaxSpawnedCount);
-											var creepSubType = SpawnOrderMaxSpawnedCount.getCreepSubType(spawnOrderMaxSpawnedCount);
-											var creepConstructor = creepConstructors[creepType];
-											var maxSpawnedCount = remoteSpawnOrderMaxSpawnedCount[creepType];
-											var currentSpawnedCount = (remoteCurrentSpawnedCounts) ? remoteCurrentSpawnedCounts[creepTypeKey] || 0 : 0;
+												if (spawnResult.spawned) {
+													spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creepType, creepSubType, spawn.room.name, remoteRoom.name);
+												}
+											} catch (error) {
+												if (error instanceof Error) {
 
-											if (currentSpawnedCount < maxSpawnedCount) {
+													let sourceMap = require("../sourceMap");
+													sourceMap.logStackTrace(error);
 
-												try {
-													spawnResult = trySpawnCreep(remoteRoom, true, spawn, creepConstructor, remoteRoomCreepsSpawnRule, creepsSpawnRule, remoteSpawnOrderMaxSpawnedCount, currentSpawnedCount, spawnResult);
-
-													if (spawnResult.spawned) {
-														spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creepType, creepSubType, spawn.room.name, remoteRoom.name);
-													}
-												} catch (error) {
-													if (error instanceof Error) {
-
-														let sourceMap = require("../sourceMap");
-														sourceMap.logStackTrace(error);
-
-													} else {
-														throw error;
-													}
+												} else {
+													throw error;
 												}
 											}
 										}
 									}
-								} else {
-									debug.danger(`No remote room name found for creepsSpawnRule ${remoteRoomCreepsSpawnRule}`);
 								}
+							} else {
+								debug.danger(`No remote room name found for creepsSpawnRule `, remoteRoomCreepsSpawnRule);
 							}
 						}
 					}

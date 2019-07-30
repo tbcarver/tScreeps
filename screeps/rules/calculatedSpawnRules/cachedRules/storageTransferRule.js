@@ -147,7 +147,7 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 		});
 	}
 
-	var remoteRoom = /** @type {RemoteRoomCreepsSpawnRule} */(_.find(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName }));
+	var remoteRoom = /** @type {RemoteRoomCreepsSpawnRule} */ (_.find(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName }));
 
 	remoteRoom.spawnOrderMaxSpawnedCounts[0]["remoteStorageTransferer"]++;
 }
