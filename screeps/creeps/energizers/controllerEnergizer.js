@@ -72,6 +72,7 @@ class ControllerEnergizer extends EnergyCreep {
 					} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
 
 						this.state = "harvesting";
+						this.harvest();
 					}
 				}
 			}

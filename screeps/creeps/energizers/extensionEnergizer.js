@@ -19,26 +19,38 @@ class ExtensionEnergizer extends EnergyCreep {
 
 	energyAct() {
 
-		var energizingExtensionIDs = this.memory.extensions.map(extension => extension.id);
-		var extension = this.creep.pos.findClosestByPath(FIND_STRUCTURES, {
-			filter: structure => structure.structureType === STRUCTURE_EXTENSION &&
-				structure.energy < structure.energyCapacity && energizingExtensionIDs.includes(structure.id)
-		});
+		var activeExtension = Game.getObjectById(this.memory.extensions[this.memory.activeExtensionIndex].id);
 
-		if (extension) {
-
-			if (this.creep.transfer(extension, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-
-				this.creep.moveTo(extension);
-			}
-		} else if (this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .75) {
-
-			this.state = "harvesting";
+		if (!this.creep.pos.inRangeTo(activeExtension, 4)) {
+			this.travelTo(activeExtension, 3, true);
 		} else {
 
-			extension = Game.getObjectById(this.memory.extensions[this.memory.activeExtensionIndex].id);
 
-			this.creep.moveTo(extension);
+			var energizingExtensionIDs = this.memory.extensions.map(extension => extension.id);
+			var extension = this.creep.pos.findClosestByPath(FIND_STRUCTURES, {
+				filter: structure => structure.structureType === STRUCTURE_EXTENSION &&
+					structure.energy < structure.energyCapacity && energizingExtensionIDs.includes(structure.id)
+			});
+
+			if (extension) {
+				
+
+				debug.temp(transferResult, this.creep.carry[RESOURCE_ENERGY]);
+				var transferResult = this.creep.transfer(extension, RESOURCE_ENERGY);
+debug.temp(transferResult, this.creep.carry[RESOURCE_ENERGY]);
+				if (transferResult == ERR_NOT_IN_RANGE) {
+
+					this.creep.moveTo(extension);
+				}
+			} else if (this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .75) {
+
+				this.state = "harvesting";
+				this.harvest();
+
+			} else {
+
+				this.creep.moveTo(activeExtension);
+			}
 		}
 	}
 
@@ -84,7 +96,7 @@ class ExtensionEnergizer extends EnergyCreep {
 			}
 
 			if (!creepsSpawnRule.canEnergyCreepsHarvest) {
-				creepMemory.bodyPartsType =  "moveCarry";
+				creepMemory.bodyPartsType = "moveCarry";
 			}
 
 			creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, room, spawn, creepsSpawnRule);

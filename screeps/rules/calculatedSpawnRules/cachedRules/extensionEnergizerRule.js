@@ -21,7 +21,7 @@ extensionEnergizerRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 
 			if (extensions.length > 0) {
 
-				var maxExtensionsPerEnergizer = room.controller.level >= 4 ? 8 : 4;
+				var maxExtensionsPerEnergizer = extensions.length >= 16 ? 8 : 4;
 				var countExtensionEnergizers = Math.floor(extensions.length / maxExtensionsPerEnergizer);
 
 				remoteRoomCreepsSpawnRules[room.name] = { remoteRooms: [] };
@@ -40,11 +40,11 @@ extensionEnergizerRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 				remoteRoomCreepsSpawnRules[room.name].remoteRooms.push({
 					roomName: room.name,
 					spawnOrderMaxSpawnedCounts: [
-						{ extensionEnergizer: 0 },
+						{ extensionEnergizer: countExtensionEnergizers },
 					],
 					canEnergyCreepsHarvest: !(hasStorage || hasDropFlagDroppedResources),
 					canEnergyCreepsPickup: !hasStorage,
-					maxExtensionsPerEnergizer: countExtensionEnergizers,
+					maxExtensionsPerEnergizer: maxExtensionsPerEnergizer,
 					partsPerMove: partsPerMove,
 				});
 			}
