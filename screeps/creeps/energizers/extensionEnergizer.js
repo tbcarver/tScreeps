@@ -13,6 +13,10 @@ class ExtensionEnergizer extends EnergyCreep {
 		return super.act();
 	}
 
+	harvestCompleteMove() {
+		this.energyAct();
+	}
+
 	energyAct() {
 
 		var energizingExtensionIDs = this.memory.extensions.map(extension => extension.id);

@@ -1,5 +1,5 @@
 
-var cachedCalculatedSpawnRules = require("./cachedCalculatedSpawnRules");
+var cachedCalculatedSpawnRules = require("./cachedRules/cachedRules");
 var roomStrategiesRules = require("./roomStrategiesRules/roomStrategiesRules");
 
 var calculatedSpawnRules = {};

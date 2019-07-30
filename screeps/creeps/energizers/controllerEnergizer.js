@@ -22,6 +22,10 @@ class ControllerEnergizer extends EnergyCreep {
 		super.harvest();
 	}
 
+	harvestCompleteMove() {
+		this.energyAct();
+	}
+
 	energyAct() {
 
 		var acted = false;

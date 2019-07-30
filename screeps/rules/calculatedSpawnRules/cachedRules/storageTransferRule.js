@@ -1,12 +1,12 @@
 
-var roomTools = require("../../tools/roomTools");
+var roomTools = require("../../../tools/roomTools");
 
-var cachedStorageTransferRule = {
+var storageTransferRule = {
 	coolOffCount: 300,
 	prepend: true,
 };
 
-cachedStorageTransferRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
+storageTransferRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 
 	var breakPointMultiplier = 50;
 	var transferringRooms;
@@ -153,4 +153,4 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 }
 
 
-module.exports = cachedStorageTransferRule;
+module.exports = storageTransferRule;

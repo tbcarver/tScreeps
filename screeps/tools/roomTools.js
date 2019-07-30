@@ -245,6 +245,11 @@ roomTools.getDroppedEnergy = function(roomName) {
 	return (this.roomsDroppedStats[roomName]) ? this.roomsDroppedStats[roomName].droppedEnergy : 0;
 }
 
+roomTools.getDropFlagDroppedEnergy = function(roomName) {
+
+	return (this.roomsDroppedStats[roomName]) ? this.roomsDroppedStats[roomName].dropFlagDroppedEnergy : 0;
+}
+
 roomTools.getTotalDroppedEnergy = function() {
 
 	return this.roomsDroppedStats.totalDroppedEnergy;

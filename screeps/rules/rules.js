@@ -30,6 +30,8 @@ function updateCreepsSpawnRules(creepsSpawnRules) {
 	buildRoomsCreepsSpawnRules(creepsSpawnRules);
 }
 
+var remoteRoomsOptionsToNotMerge = ["roomName", "spawnOrderMaxSpawnedCounts", "roomStrategy"];
+
 function mergeTopRemoteRoomsOptions(creepsSpawnRules) {
 
 	for (var creepsSpawnRule of creepsSpawnRules) {
@@ -41,7 +43,7 @@ function mergeTopRemoteRoomsOptions(creepsSpawnRules) {
 			if (topRemoteRooms[remoteRoom.roomName]) {
 
 				for (var optionName in remoteRoom) {
-					if (!(optionName === "roomName" || optionName === "spawnOrderMaxSpawnedCounts")) {
+					if (!remoteRoomsOptionsToNotMerge.includes(optionName)) {
 						topRemoteRooms[remoteRoom.roomName][optionName] = remoteRoom[optionName];
 					}
 				}

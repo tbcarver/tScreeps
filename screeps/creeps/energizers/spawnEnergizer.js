@@ -13,6 +13,10 @@ class SpawnEnergizer extends EnergyCreep {
 		return super.act();
 	}
 
+	harvestCompleteMove() {
+		this.energyAct();
+	}
+
 	energyAct() {
 
 		var targetStructures = /** @type {StructureTower[] | StructureSpawn[]} */ (this.creep.room.find(FIND_STRUCTURES, {

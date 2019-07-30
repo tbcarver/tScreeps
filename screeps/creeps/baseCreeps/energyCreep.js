@@ -40,8 +40,7 @@ class EnergyCreep extends BaseCreep {
 
 				if (this.state !== "energyActing") {
 					this.state = "energyActing";
-					this.moveIntoRoom();
-					this.memory.takeStepsIntoRoom = 1;
+					this.harvestCompleteMove();
 				} else {
 
 					this.energyAct();
@@ -85,8 +84,7 @@ class EnergyCreep extends BaseCreep {
 							pickedUpAmount = this.availableCarryCapacity;
 
 							this.state = "energyActing";
-							this.moveIntoRoom();
-							this.memory.takeStepsIntoRoom = 1;
+							this.harvestCompleteMove()
 						}
 
 						resource.writableAmount -= this.availableCarryCapacity;
@@ -105,6 +103,11 @@ class EnergyCreep extends BaseCreep {
 
 			// debug.warning(`${this.type} ${this.creep.name} energy not found`);
 		}
+	}
+
+	harvestCompleteMove() {		
+		this.moveIntoRoom();
+		this.memory.takeStepsIntoRoom = 1;
 	}
 
 	energyAct() {

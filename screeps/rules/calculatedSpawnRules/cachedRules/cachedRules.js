@@ -1,11 +1,15 @@
 
-var gameTools = require("../../tools/gameTools");
-var calculatedSpawnRulesTools = require("./calculatedSpawnRulesTools");
-var cachedStorageTransferRule = require("./cachedStorageTransferRule");
-var upgradeControllerRule = require("./cachedUpgradeControllerRule");
+var gameTools = require("../../../tools/gameTools");
+var calculatedSpawnRulesTools = require("../calculatedSpawnRulesTools");
+var extensionEnergizerRule = require("./extensionEnergizerRule");
+var spawnEnergizerRule = require("./spawnEnergizerRule");
+var storageTransferRule = require("./storageTransferRule");
+var upgradeControllerRule = require("./upgradeControllerRule");
 
 var calculatedSpawnRules = {
-	cachedStorageTransferRule: cachedStorageTransferRule,
+	extensionEnergizerRule: extensionEnergizerRule,
+	spawnEnergizerRule: spawnEnergizerRule,
+	storageTransferRule: storageTransferRule,
 	upgradeControllerRule: upgradeControllerRule,
 }
 

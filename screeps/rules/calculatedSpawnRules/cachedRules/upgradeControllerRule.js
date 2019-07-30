@@ -1,12 +1,12 @@
-var roomTools = require("../../tools/roomTools");
-var { rules } = require("../../rules/rules")
+var roomTools = require("../../../tools/roomTools");
+var { rules } = require("../../rules")
 var orderBy = require("lodash/orderBy");
 
-var cachedUpgradeControllerRule = {
+var upgradeControllerRule = {
 	coolOffCount: 300,
 };
 
-cachedUpgradeControllerRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
+upgradeControllerRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 
 	var remoteRoomCreepsSpawnRules;
 
@@ -114,15 +114,13 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 	if (!_.some(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName })) {
 
 		var partsPerMove = 2;
+		var hasStorage = roomTools.hasStorage(remoteRoomName);
+		var roads = Game.rooms[remoteRoomName].find(FIND_STRUCTURES, {
+			filter: { structureType: STRUCTURE_ROAD }
+		})
 
-		if (!roomTools.hasStorage(remoteRoomName)) {
-			var roads = Game.rooms[remoteRoomName].find(FIND_STRUCTURES, {
-				filter: { structureType: STRUCTURE_ROAD }
-			})
-
-			if (roads.length === 0) {
-				partsPerMove = 1;
-			}
+		if (roads.length === 0) {
+			partsPerMove = 1;
 		}
 
 		var creepsSpawnRule = {
@@ -131,7 +129,7 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 				{ controllerEnergizer: 0 },
 			],
 			canControllerEnergizersBuild: true,
-			canEnergyCreepsPickup: true,
+			canEnergyCreepsPickup: !hasStorage,
 			partsPerMove: partsPerMove,
 		}
 
@@ -144,4 +142,4 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 }
 
 
-module.exports = cachedUpgradeControllerRule;
+module.exports = upgradeControllerRule;
