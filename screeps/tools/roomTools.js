@@ -147,10 +147,29 @@ roomTools.buildRoomStats = function() {
 		Memory.state.roomTools = {};
 	}
 
+	this.buildControllerStats();
 	this.buildSourcesStats();
 	this.buildDroppedStats();
 	this.buildSpawnStats();
 	this.buildStorageStats();
+}
+
+roomTools.buildControllerStats = function() {
+
+	this.controllerStats = {
+		myControllersCount: 0,
+	};
+
+	for (var roomName in Game.rooms) {
+
+		if (Game.rooms[roomName].controller && Game.rooms[roomName].controller.my) {
+			this.controllerStats.myControllersCount++;
+		}
+	}
+}
+
+roomTools.getMyControllersCount = function() {
+	return this.controllerStats.myControllersCount;
 }
 
 roomTools.buildSourcesStats = function() {

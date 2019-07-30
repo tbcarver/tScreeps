@@ -9,11 +9,15 @@ calculatedSpawnRulesTools.prependRemoteRoomCreepsSpawnRules = function(creepsSpa
 	for (var spawnRoomName in spawnRoomsRemoteRoomCreepsSpawnRules) {
 
 		var spawnRoom = _.find(creepsSpawnRules, { roomName: spawnRoomName });
-		var remoteRooms = reverse(spawnRoomsRemoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms);
-		
-		for (var remoteRoom of remoteRooms) {
+		if (spawnRoom) {
 
-			spawnRoom.remoteRooms.unshift(remoteRoom);
+			var remoteRooms = reverse(spawnRoomsRemoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms);
+			for (var remoteRoom of remoteRooms) {
+
+				spawnRoom.remoteRooms.unshift(remoteRoom);
+			}
+		} else {
+			debug.warning(`A creepsSpawnRule was not found for spawn room ${spawnRoomName}`);
 		}
 	}
 }
@@ -24,10 +28,14 @@ calculatedSpawnRulesTools.appendRemoteRoomCreepsSpawnRules = function(creepsSpaw
 	for (var spawnRoomName in spawnRoomsRemoteRoomCreepsSpawnRules) {
 
 		var spawnRoom = _.find(creepsSpawnRules, { roomName: spawnRoomName });
-		
-		for (var remoteRoom of spawnRoomsRemoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms) {
+		if (spawnRoom) {
 
-			spawnRoom.remoteRooms.push(remoteRoom);
+			for (var remoteRoom of spawnRoomsRemoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms) {
+
+				spawnRoom.remoteRooms.push(remoteRoom);
+			}
+		} else {
+			debug.warning(`A creepsSpawnRule was not found for spawn room ${spawnRoomName}`);
 		}
 	}
 }

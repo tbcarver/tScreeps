@@ -58,28 +58,31 @@ observersController.tick = function() {
 		}
 	} else if (observingRooms.length > 0) {
 
-
 		for (var observingRoom of observingRooms) {
 
-			var scheduleId = "observersController" + observingRoom;
+			if (observingRoom) {
 
-			if (!Game.rooms[observingRoom]) {
+				var scheduleId = "observersController" + observingRoom;
 
-				var spawn = spawnTools.getRandomSpawn();
+				if (!Game.rooms[observingRoom]) {
 
-				if (spawn) {
+					var spawn = spawnTools.getRandomSpawn();
 
-					var remoteRoomCreepsSpawnRule = {
-						roomName: observingRoom,
-						spawnOrderMaxSpawnedCounts: [
-							{ healer: 1 },
-						],
+					if (spawn) {
+
+						var remoteRoomCreepsSpawnRule = {
+							roomName: observingRoom,
+							spawnOrderMaxSpawnedCounts: [
+								{ healer: 1 },
+							],
+							partsPerMove: 1,
+						}
+
+						creepsSpawner.scheduleOneTimeOneCreepRemoteRoomCreepsSpawnRule(spawn.room.name, remoteRoomCreepsSpawnRule, scheduleId);
 					}
-
-					creepsSpawner.scheduleOneTimeOneCreepRemoteRoomCreepsSpawnRule(spawn.room.name, remoteRoomCreepsSpawnRule, scheduleId);
+				} else {
+					creepsSpawner.unscheduleOneTimeOneCreepRemoteRoomCreepsSpawnRule(scheduleId);
 				}
-			} else {
-				creepsSpawner.unscheduleOneTimeOneCreepRemoteRoomCreepsSpawnRule(scheduleId);
 			}
 		}
 	}

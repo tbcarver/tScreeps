@@ -30,7 +30,6 @@ spawnEnergizerRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 				}
 			}
 
-			var remoteRoomCreepsSpawnRules = {};
 			remoteRoomCreepsSpawnRules[room.name] = { remoteRooms: [] };
 
 			var partsPerMove = 2;

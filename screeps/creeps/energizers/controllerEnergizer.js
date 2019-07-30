@@ -36,14 +36,11 @@ class ControllerEnergizer extends EnergyCreep {
 			target = this.creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
 
 			if (target) {
-				if (this.isInTravelDistance(target)) {
-					this.travelNearTo(target, true);
-				} else {
-					if (this.creep.build(target) == ERR_NOT_IN_RANGE) {
-						this.creep.moveTo(target);
-					}
-					acted = true;
+
+				if (this.creep.build(target) == ERR_NOT_IN_RANGE) {
+					this.creep.moveTo(target);
 				}
+				acted = true;
 			}
 		}
 

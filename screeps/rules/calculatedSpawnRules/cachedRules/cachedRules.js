@@ -6,11 +6,12 @@ var spawnEnergizerRule = require("./spawnEnergizerRule");
 var storageTransferRule = require("./storageTransferRule");
 var upgradeControllerRule = require("./upgradeControllerRule");
 
+// NOTE: Order is important. Because of prepended rules.
 var calculatedSpawnRules = {
+	upgradeControllerRule: upgradeControllerRule,
+	storageTransferRule: storageTransferRule,
 	extensionEnergizerRule: extensionEnergizerRule,
 	spawnEnergizerRule: spawnEnergizerRule,
-	storageTransferRule: storageTransferRule,
-	upgradeControllerRule: upgradeControllerRule,
 }
 
 function addCalculatedSpawnRules(creepsSpawnRules) {

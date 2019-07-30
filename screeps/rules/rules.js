@@ -14,15 +14,16 @@ var rules = {
 	maximumHealerSpawnCapacity: 700,
 	maximumRangedAttackerSpawnCapacity: 700,
 	mobAttackRoomCoolDownCount: 15,
-	observingRooms: [],
+	observingRooms: [""],
 	upgradeControllerSpawnRule: "oneToEight", // oneToEight
-	visualizeMovePaths: true,
-	visualizeTravelPaths: true,
+	visualizeMovePaths: false,
+	visualizeTravelPaths: false,
 }
 
 var creepsSpawnRules = [];
 // NOTE: Order is important
 creepsSpawnRules.push(require("./rooms/W12N16"));
+creepsSpawnRules.push(require("./rooms/W12N17"));
 
 function updateCreepsSpawnRules(creepsSpawnRules) {
 
@@ -30,7 +31,7 @@ function updateCreepsSpawnRules(creepsSpawnRules) {
 	buildRoomsCreepsSpawnRules(creepsSpawnRules);
 }
 
-var remoteRoomsOptionsToNotMerge = ["roomName", "spawnOrderMaxSpawnedCounts", "roomStrategy"];
+var remoteRoomsOptionsToNotMerge = ["roomName", "spawnOrderMaxSpawnedCounts", "roomStrategy", "measure"];
 
 function mergeTopRemoteRoomsOptions(creepsSpawnRules) {
 

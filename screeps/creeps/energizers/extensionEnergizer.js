@@ -25,7 +25,6 @@ class ExtensionEnergizer extends EnergyCreep {
 			this.travelTo(activeExtension, 3, true);
 		} else {
 
-
 			var energizingExtensionIDs = this.memory.extensions.map(extension => extension.id);
 			var extension = this.creep.pos.findClosestByPath(FIND_STRUCTURES, {
 				filter: structure => structure.structureType === STRUCTURE_EXTENSION &&
@@ -33,12 +32,7 @@ class ExtensionEnergizer extends EnergyCreep {
 			});
 
 			if (extension) {
-				
-
-				debug.temp(transferResult, this.creep.carry[RESOURCE_ENERGY]);
-				var transferResult = this.creep.transfer(extension, RESOURCE_ENERGY);
-debug.temp(transferResult, this.creep.carry[RESOURCE_ENERGY]);
-				if (transferResult == ERR_NOT_IN_RANGE) {
+				if (this.creep.transfer(extension, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 
 					this.creep.moveTo(extension);
 				}
@@ -48,7 +42,6 @@ debug.temp(transferResult, this.creep.carry[RESOURCE_ENERGY]);
 				this.harvest();
 
 			} else {
-
 				this.creep.moveTo(activeExtension);
 			}
 		}

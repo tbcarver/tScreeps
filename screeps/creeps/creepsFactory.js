@@ -12,7 +12,7 @@ creepsFactory.buildCreep = function(creep) {
 		var baseCreep = new constructor(creep);
 
 		// if (!baseCreep.isTrooper) {
-		// if (creep.memory.type === "remoteSpawnedStorageTransferer") {
+		// if (creep.memory.type === "healer") {
 		// 	if (creep.room.name === "W8N10") {
 		// 		// if (creep.memory.remoteRoomName && creep.memory.state === "movingToSpawnedRoom") {
 		// 			// creep.memory.takeStepsIntoRoom = 6

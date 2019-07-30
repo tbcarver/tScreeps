@@ -35,9 +35,16 @@ function loop() {
 		roomTools.buildRoomStats();
 		// spawnTools.buildSpawnStats();
 
+		var displayTime = Game.time.toString();
+		var availableClaims = Game.gcl.level - roomTools.getMyControllersCount();
+
+		if (availableClaims > 0) {
+			displayTime += ` <span style='color:yellow'>${availableClaims}</span>`;
+		}
+
 		if (rules.logSpawnStats) {
 
-			var spawnsStats = buildSpawnStats();
+			var spawnsStats = buildSpawnStats(displayTime);
 			debugPairsTable.primary(spawnsStats);
 
 		} else {
@@ -49,7 +56,7 @@ function loop() {
 				energyStats += " " + roomTools.getTotalDroppedEnergy().toLocaleString("en-US")
 			}
 
-			debug.primary(Game.time, energyStats);
+			debug.primary(displayTime, energyStats);
 		}
 
 		// console.log(controller.activateSafeMode())
@@ -134,7 +141,7 @@ function initialize() {
 	}
 }
 
-function buildSpawnStats() {
+function buildSpawnStats(displayTime) {
 
 	var spawnsStats = {};
 	var energyStats = roomTools.getTotalStoredEnergy().toLocaleString("en-US") + " " +
@@ -144,7 +151,7 @@ function buildSpawnStats() {
 		energyStats += " " + roomTools.getTotalDroppedEnergy().toLocaleString("en-US")
 	}
 
-	spawnsStats[Game.time] = energyStats;
+	spawnsStats[displayTime] = energyStats;
 
 	for (spawnName in Game.spawns) {
 
