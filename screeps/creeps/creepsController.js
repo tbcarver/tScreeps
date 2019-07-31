@@ -17,9 +17,9 @@ creepsController.tick = function() {
 	var creepsSpawnBufferTotal = 0;
 	var spawnedRoomNamesCreepsTotal = {};
 
-	for (var index in Game.creeps) {
+	for (var creepName in Game.creeps) {
 
-		var creep = Game.creeps[index];
+		var creep = Game.creeps[creepName];
 
 		try {
 
