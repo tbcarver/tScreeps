@@ -88,15 +88,14 @@ class DropTransferer extends BaseCreep {
 		}
 
 		if (resource) {
+			
 			var result = this.creep.pickup(resource);
-
 			if (result === OK) {
 
 				var pickedUpAmount = resource.writableAmount;
 
 				if (pickedUpAmount > this.availableCarryCapacity) {
 					pickedUpAmount = this.availableCarryCapacity;
-
 					this.state = "energizing";
 					this.transfer(transferAction);
 				}

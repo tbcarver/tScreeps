@@ -15,7 +15,8 @@ var rules = {
 	maximumRangedAttackerSpawnCapacity: 700,
 	mobAttackRoomCoolDownCount: 15,
 	observingRooms: [""],
-	upgradeControllerSpawnRule: "", // oneToEight
+	upgradeControllerSpawnRule: "oneToEight", // oneToEight
+	oneToEightTogetherMinimum: 2,
 	visualizeMovePaths: false,
 	visualizeTravelPaths: false,
 }
@@ -23,7 +24,7 @@ var rules = {
 var creepsSpawnRules = /** @type {CreepsSpawnRule[]} */ ([]);
 // NOTE: Order is important
 creepsSpawnRules.push(require("./rooms/W12N16"));
-creepsSpawnRules.push(require("./rooms/W12N17"));
+// creepsSpawnRules.push(require("./rooms/W12N17"));
 
 function updateCreepsSpawnRules(creepsSpawnRules) {
 

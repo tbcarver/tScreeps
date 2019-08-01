@@ -131,7 +131,6 @@ dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpa
 
 					maxSpawnedCount = dropStrategyTools.recalculateEnergy(creepsSpawnRule, creepType, creepsSpawnRule.measure.harvestedEnergy[source.id], maxSpawnedCount, currentSpawnedCount);
 
-
 					if (isAtStorageLimit) {
 						if (maxSpawnedCount > 1) {
 							maxSpawnedCount = 1;

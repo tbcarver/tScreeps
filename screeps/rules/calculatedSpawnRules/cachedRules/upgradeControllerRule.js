@@ -4,27 +4,27 @@ var orderBy = require("lodash/orderBy");
 
 var upgradeControllerRule = {
 	coolOffCount: 300,
+	oneToEightTogetherMinimum: rules.oneToEightTogetherMinimum || 7,
 };
 
 upgradeControllerRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 
 	var remoteRoomCreepsSpawnRules;
 
-	if (rules.upgradeControllerSpawnRule) {
+	switch (rules.upgradeControllerSpawnRule) {
+		case "oneToEight":
+			remoteRoomCreepsSpawnRules = buildOneToEightRules(creepsSpawnRules);
+			break;
 
-		if (rules.upgradeControllerSpawnRule === "oneToEight") {
-			remoteRoomCreepsSpawnRules = addOneToEightCalculatedSpawnRules(creepsSpawnRules);
-		} else if (rules.upgradeControllerSpawnRule === "togetherToEight") {
-			remoteRoomCreepsSpawnRules = addTogetherToEightCalculatedSpawnRules(creepsSpawnRules);
-		} else {
-			debug.danger(`Unknown upgradeControllerSpawnRule: ${rules.upgradeControllerSpawnRule}`)
-		}
+		default:
+			debug.danger(`Unknown upgradeControllerSpawnRule: ${rules.upgradeControllerSpawnRule}`);
+			break;
 	}
 
 	return remoteRoomCreepsSpawnRules;
 }
 
-function addOneToEightCalculatedSpawnRules(creepsSpawnRules) {
+function buildOneToEightRules(creepsSpawnRules) {
 
 	var spawningRooms = [];
 
@@ -66,7 +66,7 @@ function addOneToEightCalculatedSpawnRules(creepsSpawnRules) {
 
 	var controllerToUpgrade;
 	var controllers = _.map(Game.rooms, room => room.controller);
-	var filteredControllers = controllers.filter(controller => controller.level >= 1 && controller.level <= 4);
+	var filteredControllers = controllers.filter(controller => controller.level >= 1 && controller.level <= this.oneToEightTogetherMinimum);
 
 	if (filteredControllers.length === 0) {
 		filteredControllers = controllers.filter(controller => controller.level >= 1 && controller.level <= 7);
@@ -98,11 +98,6 @@ function addOneToEightCalculatedSpawnRules(creepsSpawnRules) {
 	}
 
 	return remoteRoomCreepsSpawnRules;
-}
-
-
-function addTogetherToEightCalculatedSpawnRules(creepsSpawnRules) {
-
 }
 
 function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoomName, remoteRoomName, controllerToUpgrade) {

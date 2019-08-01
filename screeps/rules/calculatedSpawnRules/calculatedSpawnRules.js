@@ -1,7 +1,6 @@
 
 var cachedCalculatedSpawnRules = require("./cachedRules/cachedRules");
 var roomStrategiesRules = require("./roomStrategiesRules/roomStrategiesRules");
-var controllerRule = require("./controllerRule");
 
 var calculatedSpawnRules = {};
 
@@ -11,7 +10,6 @@ calculatedSpawnRules.addCalculatedRules = function(creepsSpawnRules, roomsCurren
 
 	roomStrategiesRules(creepsSpawnRules, roomsCurrentSpawnedCounts);
 	cachedCalculatedSpawnRules(creepsSpawnRules);
-	controllerRule(creepsSpawnRules);
 }
 
 

@@ -70,7 +70,7 @@ function loop() {
 		// debug.primary("log", room.getEventLog(true));
 
 		// Game.rooms["W8N8"].createFlag(35,1, "exit-from-W8N8-to-W8N9", COLOR_GREEN, COLOR_WHITE)
-		// Game.rooms["W9N8"].createFlag(16,7, "post-W9N8", COLOR_GREY, COLOR_ORANGE)
+		// Game.rooms["W12N16"].createFlag(21,24, "post-W12N16", COLOR_GREY, COLOR_ORANGE)
 		// Game.rooms["W12N16"].createFlag(21,21, "drop-W12N16", COLOR_YELLOW)
 		// Game.rooms["W7N8"].createFlag(13,24, "wait-W7N8", COLOR_RED, COLOR_YELLOW)
 

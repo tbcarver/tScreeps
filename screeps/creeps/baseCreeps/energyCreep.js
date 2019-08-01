@@ -68,26 +68,31 @@ class EnergyCreep extends BaseCreep {
 			} else {
 				if (resource.structureType) {
 
-					if (this.creep.withdraw(resource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+					let result = this.creep.withdraw(resource, RESOURCE_ENERGY);
+					if (result === OK) {
+
+						if (resource.energyCapacity > this.availableCarryCapacity * 2) {
+							this.state = "energyActing";
+							this.harvestCompleteMove();
+						}
+
+					} else if (result == ERR_NOT_IN_RANGE) {
 						this.creep.moveTo(resource);
 					}
-
 				} else if (resource.resourceType) {
 
 					let result = this.creep.pickup(resource);
-
 					if (result === OK) {
 
 						var pickedUpAmount = resource.writableAmount;
 
 						if (pickedUpAmount > this.availableCarryCapacity) {
 							pickedUpAmount = this.availableCarryCapacity;
-
 							this.state = "energyActing";
-							this.harvestCompleteMove()
+							this.harvestCompleteMove();
 						}
 
-						resource.writableAmount -= this.availableCarryCapacity;
+						resource.writableAmount -= pickedUpAmount;
 
 					} else if (result == ERR_NOT_IN_RANGE) {
 						this.creep.moveTo(resource);
@@ -105,7 +110,7 @@ class EnergyCreep extends BaseCreep {
 		}
 	}
 
-	harvestCompleteMove() {		
+	harvestCompleteMove() {
 		this.moveIntoRoom();
 		this.memory.takeStepsIntoRoom = 1;
 	}

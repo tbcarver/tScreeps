@@ -44,7 +44,6 @@ class BaseRemoteStorageTransferer extends RemoteCreep {
 					var droppedResources = roomTools.GetDropFlagWritableDroppedResources(this.creep.room.name);
 
 					if (droppedResources.length > 0) {
-						droppedResources = orderBy(droppedResources, "writableAmount", "desc");
 						resource = droppedResources[0];
 					}
 
@@ -63,19 +62,40 @@ class BaseRemoteStorageTransferer extends RemoteCreep {
 			}
 
 			if (resource) {
-				if (resource.structureType) {
 
-					if (this.creep.withdraw(resource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-						this.creep.moveTo(resource);
-					}
-				} else if (resource.resourceType) {
+				if (this.isInTravelDistance(resource)) {
+					this.travelNearTo(resource);
+				} else {
 
-					var result = this.creep.pickup(resource);
+					if (resource.structureType) {
 
-					if (result === OK) {
-						resource.writableAmount -= this.availableCarryCapacity;
-					} else if (result == ERR_NOT_IN_RANGE) {
-						this.creep.moveTo(resource);
+						let result = this.creep.withdraw(resource, RESOURCE_ENERGY);
+						if (result === OK) {
+	
+							if (resource.energyCapacity > this.availableCarryCapacity * 2) {	
+								moveToOtherRoom();
+							}
+	
+						} else if (result == ERR_NOT_IN_RANGE) {
+							this.creep.moveTo(resource);
+						}
+					} else if (resource.resourceType) {
+
+						let result = this.creep.pickup(resource);	
+						if (result === OK) {
+	
+							var pickedUpAmount = resource.writableAmount;
+	
+							if (pickedUpAmount > this.availableCarryCapacity) {
+								pickedUpAmount = this.availableCarryCapacity;	
+								moveToOtherRoom();
+							}
+	
+							resource.writableAmount -= pickedUpAmount;
+	
+						} else if (result == ERR_NOT_IN_RANGE) {
+							this.creep.moveTo(resource);
+						}
 					}
 				}
 			} else {
@@ -93,7 +113,7 @@ class BaseRemoteStorageTransferer extends RemoteCreep {
 
 		} else if (this.state === "transferring") {
 
-			var dropFlag = Game.flags[`drop-${this.creep.room.name}`];
+			var dropFlag = roomTools.getDropFlag(this.creep.room.name);
 			if (dropFlag) {
 				if (this.isInTravelDistance(dropFlag)) {
 					this.travelNearTo(dropFlag);

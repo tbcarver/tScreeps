@@ -2,9 +2,11 @@
 var dropStrategyTools = require("./dropStrategyTools");
 var roomTools = require("../../../tools/roomTools");
 var SpawnOrderMaxSpawnedCount = require("../../spawnOrderMaxSpawnedCount");
+var sumBy = require("lodash/sumBy");
 
 var remoteSpawnedDropTransferStrategy = {
 	coolOffCount: 150,
+	energyTransferPercent: 100,
 };
 
 remoteSpawnedDropTransferStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName, spawnCreepsSpawnRule) {
@@ -86,13 +88,20 @@ remoteSpawnedDropTransferStrategy.recalculateCreepsSpawnRule = function(spawnRoo
 
 remoteSpawnedDropTransferStrategy.measureCreepsSpawnRule = function(spawnRoomName, creepsSpawnRule, currentSpawnedCounts) {
 
+	var energyTransferPercent = creepsSpawnRule.energyTransferPercent || this.energyTransferPercent;
 	var remoteRoomName = creepsSpawnRule.roomName;
 	var room = Game.rooms[remoteRoomName];
+
 	if (room) {
 		if (roomTools.hasDropFlag(remoteRoomName)) {
 
 			var resources = roomTools.GetDropFlagWritableDroppedResources(room.name);
-			dropStrategyTools.measureEnergy(creepsSpawnRule.measure.droppedEnergy, resources);
+			var measureMemory = creepsSpawnRule.measure.droppedEnergy;
+			var totalEnergy = sumBy(resources, "energy");
+
+			measureMemory.totalEnergyCount++;
+			measureMemory.totalEnergy += (totalEnergy * energyTransferPercent / 100);
+			measureMemory.averageTotalEnergy = Math.floor(measureMemory.totalEnergy / measureMemory.totalEnergyCount);
 
 		} else {
 			debug.danger(`remoteSpawnedDropTransferStrategy: drop flag not found for ${remoteRoomName}`);

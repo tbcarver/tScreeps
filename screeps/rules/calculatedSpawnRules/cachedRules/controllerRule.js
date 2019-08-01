@@ -1,9 +1,11 @@
 
-var roomTools = require("../../tools/roomTools");
+var roomTools = require("../../../tools/roomTools");
 
-var calculatedSpawnRulesTools = require("./calculatedSpawnRulesTools");
+var controllerRule = {
+	coolOffCount: 300,
+};
 
-function addCalculatedSpawnRules(creepsSpawnRules) {
+controllerRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 
 	var remoteRoomCreepsSpawnRules = {};
 
@@ -37,8 +39,8 @@ function addCalculatedSpawnRules(creepsSpawnRules) {
 		}
 	}
 
-	calculatedSpawnRulesTools.prependRemoteRoomCreepsSpawnRules(creepsSpawnRules, remoteRoomCreepsSpawnRules);
+	return remoteRoomCreepsSpawnRules;
 }
 
 
-module.exports = addCalculatedSpawnRules;
+module.exports = controllerRule;

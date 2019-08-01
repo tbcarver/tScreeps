@@ -29,6 +29,7 @@ interface RemoteRoomCreepsSpawnRule {
 	canEnergyCreepsHarvest?: boolean,
 	canEnergyCreepsPickup?: boolean,
 	canTransferersTransferToStorageOnly?: boolean,
+	energyTransferPercent?: number,
 	maxExtensionsPerEnergizer?: number,
 	partsPerMove?: number,
 	roomStrategy?: string,

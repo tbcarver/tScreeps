@@ -3,17 +3,27 @@ var roomTools = require("../../../tools/roomTools");
 var sumBy = require("lodash/sumBy");
 
 var mobDefenseStrategy = {
-	coolOffCount: 0,
+	coolOffCount: 300,
 };
 
 mobDefenseStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName) {
 
+	var attackerCount = 4;
+	var healer = 3;
+	var rangedAttacker = 2;
+
+	if (Game.rooms[spawnRoomName].energyCapacityAvailable >= 700) {
+		attackerCount = 3;
+		healer = 2;
+		rangedAttacker = 1;
+	}
+
 	var creepsSpawnRule = {
 		roomName: remoteRoomName,
 		spawnOrderMaxSpawnedCounts: [
-			{ attacker: 3 },
-			{ healer: 3 },
-			{ rangedAttacker: 1 },
+			{ attacker: attackerCount },
+			{ healer: healer },
+			{ rangedAttacker: rangedAttacker },
 		],
 		partsPerMove: 1,
 		isMobTroopers: true,
