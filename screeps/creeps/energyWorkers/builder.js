@@ -1,5 +1,5 @@
 
-
+var roomTools = require("../../tools/roomTools");
 var EnergyCreep = require("../baseCreeps/energyCreep");
 
 class Builder extends EnergyCreep {
@@ -15,7 +15,11 @@ class Builder extends EnergyCreep {
 
 	energyAct() {
 
-		const target = this.creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
+		var target;
+
+		if (roomTools.hasConstructionSites(this.creep.room.name)) {
+			target = this.creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
+		}
 
 		if (target) {
 
@@ -37,20 +41,15 @@ class Builder extends EnergyCreep {
 
 		var creepMemory;
 
-		if (room.find) {
+		if (room.find && roomTools.hasConstructionSites(room.name)) {
 
-			const targets = room.find(FIND_CONSTRUCTION_SITES);
+			creepMemory = {
+				type: "builder",
+				bodyPartsType: "moveCarryWork",
+				maximumSpawnCapacity: 700,
+			};
 
-			if (targets.length > 0) {
-
-				creepMemory = {
-					type: "builder",
-					bodyPartsType: "moveCarryWork",
-					maximumSpawnCapacity: 700,
-				}
-
-				creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, creepMemory, room, spawn);
-			}
+			creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, creepMemory, room, spawn);
 		}
 
 		return creepMemory;

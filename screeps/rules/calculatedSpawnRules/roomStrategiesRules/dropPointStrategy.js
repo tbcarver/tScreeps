@@ -16,7 +16,7 @@ dropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName,
 		if (remoteRoom) {
 			if (roomTools.hasDropFlag(remoteRoomName)) {
 
-				var remoteReserverCount = dropStrategyTools.getRemoteReserverCount(spawnRoom);
+				var remoteReserverCount = dropStrategyTools.getRemoteReserverCount(spawnRoom, remoteRoom);
 				var dropHarvesterCount = dropStrategyTools.getDropHarvesterCount(spawnRoom, remoteRoom, spawnCreepsSpawnRule);
 				var remoteSpawnedDropTransfererCount = spawnRoomName !== remoteRoomName ? 6 : 0;
 
@@ -85,7 +85,7 @@ dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpa
 
 				var creepType = "remoteReserver";
 				var spawnOrderMaxSpawnedCount = SpawnOrderMaxSpawnedCount.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, creepType);
-				spawnOrderMaxSpawnedCount[creepType] = dropStrategyTools.getRemoteReserverCount(spawnRoom);
+				spawnOrderMaxSpawnedCount[creepType] = dropStrategyTools.getRemoteReserverCount(spawnRoom, remoteRoom);
 
 				creepType = "dropHarvester";
 				spawnOrderMaxSpawnedCount = SpawnOrderMaxSpawnedCount.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, creepType);

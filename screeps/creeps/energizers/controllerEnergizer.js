@@ -1,4 +1,5 @@
 
+var roomTools = require("../../tools/roomTools");
 var EnergyCreep = require("../baseCreeps/energyCreep");
 
 class ControllerEnergizer extends EnergyCreep {
@@ -23,7 +24,7 @@ class ControllerEnergizer extends EnergyCreep {
 	}
 
 	harvestCompleteMove() {
-		this.energyAct();
+		this.moveIntoRoom();
 	}
 
 	energyAct() {
@@ -31,7 +32,7 @@ class ControllerEnergizer extends EnergyCreep {
 		var acted = false;
 		var target;
 
-		if (this.canBuild) {
+		if (this.canBuild && roomTools.hasConstructionSites(this.creep.room.name)) {
 
 			target = this.creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
 
@@ -40,6 +41,7 @@ class ControllerEnergizer extends EnergyCreep {
 				if (this.creep.build(target) == ERR_NOT_IN_RANGE) {
 					this.creep.moveTo(target);
 				}
+
 				acted = true;
 			}
 		}
@@ -50,7 +52,7 @@ class ControllerEnergizer extends EnergyCreep {
 
 			if (target) {
 
-				if (this.avoidCreeps) {
+				if (this.avoidCreepsOnTravel) {
 					this.creep.memory.upgradeControllerRange = 3;
 				}
 
@@ -81,6 +83,7 @@ class ControllerEnergizer extends EnergyCreep {
 		var creepMemory = {
 			type: "controllerEnergizer",
 			bodyPartsType: "moveCarryWork",
+			canHarvest: creepsSpawnRule.canEnergyCreepsHarvest ? true : false,
 			maximumSpawnCapacity: 850,
 		}
 

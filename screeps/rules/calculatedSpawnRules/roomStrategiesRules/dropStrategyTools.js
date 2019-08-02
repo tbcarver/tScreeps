@@ -69,9 +69,9 @@ dropStrategyTools.setCanRecalculate = function(creepsSpawnRule, currentSpawnedCo
 	}
 }
 
-dropStrategyTools.getRemoteReserverCount = function(spawnRoom) {
+dropStrategyTools.getRemoteReserverCount = function(spawnRoom, remoteRoom) {
 
-	return (!spawnRoom.controller.my && spawnRoom.energyCapacityAvailable >= 700) ? 1 : 0;
+	return (!remoteRoom.controller.my && spawnRoom.energyCapacityAvailable >= 700) ? 1 : 0;
 }
 
 dropStrategyTools.getDropHarvesterCount = function(spawnRoom, remoteRoom, creepsSpawnRule) {

@@ -47,6 +47,7 @@ class BaseCreep {
 				creepsSpawnRule = Memory.state.roomNamesCreepsSpawnRules[this.spawnedRoomName];
 			}
 		}
+		
 		return creepsSpawnRule;
 	}
 
@@ -176,7 +177,7 @@ class BaseCreep {
 					this.memory.travel.pathDestination.y, this.memory.travel.pathDestination.roomName);
 
 				if (occupied) {
-					this.avoidCreeps = true;
+					this.avoidCreepsOnTravel = true;
 					delete this.memory.travel;
 				} else {
 					var finalDestinationPos = new RoomPosition(this.memory.travel.finalDestination.x,
@@ -342,7 +343,7 @@ class BaseCreep {
 			room = Game.rooms[pos.roomName];
 		}
 
-		if (this.avoidCreeps) {
+		if (this.avoidCreepsOnTravel) {
 			avoidCreeps = true;
 		}
 

@@ -28,6 +28,7 @@ calculatedSpawnRulesTools.appendRemoteRoomCreepsSpawnRules = function(creepsSpaw
 	for (var spawnRoomName in spawnRoomsRemoteRoomCreepsSpawnRules) {
 
 		var spawnRoom = _.find(creepsSpawnRules, { roomName: spawnRoomName });
+
 		if (spawnRoom) {
 
 			for (var remoteRoom of spawnRoomsRemoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms) {

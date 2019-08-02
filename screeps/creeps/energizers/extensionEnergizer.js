@@ -14,7 +14,7 @@ class ExtensionEnergizer extends EnergyCreep {
 	}
 
 	harvestCompleteMove() {
-		this.energyAct();
+		this.moveIntoRoom();
 	}
 
 	energyAct() {

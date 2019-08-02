@@ -1,5 +1,5 @@
 
-
+var roomTools = require("../../tools/roomTools");
 var RemoteEnergyWorker = require("./remoteEnergyWorker");
 
 class RemoteBuilder extends RemoteEnergyWorker {
@@ -15,7 +15,11 @@ class RemoteBuilder extends RemoteEnergyWorker {
 
 	work() {
 
-		const target = this.creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
+		var target;
+
+		if (roomTools.hasConstructionSites(this.creep.room.name)) {
+			target = this.creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
+		}
 
 		if (target) {
 
@@ -37,18 +41,13 @@ class RemoteBuilder extends RemoteEnergyWorker {
 
 		var creepMemory;
 
-		if (room.find) {
+		if (room.find && roomTools.hasConstructionSites(room.name)) {
 
-			const targets = room.find(FIND_CONSTRUCTION_SITES);
-
-			if (targets.length > 0) {
-
-				creepMemory = {
-					type: "remoteBuilder",
-					bodyPartsType: "moveCarryWork",
-					maximumSpawnCapacity: 800,
-				}
-			}
+			creepMemory = {
+				type: "remoteBuilder",
+				bodyPartsType: "moveCarryWork",
+				maximumSpawnCapacity: 800,
+			};
 		}
 
 		return creepMemory;

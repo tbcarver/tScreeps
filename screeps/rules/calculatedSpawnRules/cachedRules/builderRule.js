@@ -2,7 +2,7 @@ var roomTools = require("../../../tools/roomTools");
 var orderBy = require("lodash/orderBy");
 
 var builderRule = {
-	coolOffCount: 25,
+	coolOffCount: 10,
 };
 
 builderRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
@@ -13,18 +13,16 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 	for (var roomName in Game.rooms) {
 
 		var room = Game.rooms[roomName];
-		if (room.controller && room.controller.my) {
+		if (room.controller && room.controller.my && roomTools.hasConstructionSites(roomName)) {
 
+			var constructionSitesStats = roomTools.getConstructionSitesStats(roomName);
 			var storageStats = roomTools.getStorageStats(roomName);
 			var droppedEnergy = roomTools.getDroppedEnergy(roomName);
 
-			var constructionCost = room.find(FIND_CONSTRUCTION_SITES).reduce((cost, constructionSite) =>
-				cost += constructionSite.progressTotal - constructionSite.progress, 0);
-
-			if (constructionCost > 0) {
+			if (constructionSitesStats.constructionCost > 0) {
 				buildingRooms.push({
 					roomName: roomName,
-					constructionCost: constructionCost,
+					constructionCost: constructionSitesStats.constructionCost,
 					storedEnergy: storageStats.storedEnergy + droppedEnergy,
 				});
 			}
@@ -34,6 +32,7 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 	if (buildingRooms.length > 0) {
 
 		var spawningRooms = [];
+		var buildingCountControllerEnergizers = getBuildingCountControllerEnergizers();
 
 		for (var roomName in Game.rooms) {
 
@@ -59,6 +58,9 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 					}
 				}
 
+				var countBuildingCountControllerEnergizers = buildingCountControllerEnergizers[roomName] || 0;
+				creepsCount = Math.abs(countBuildingCountControllerEnergizers - creepsCount);
+
 				if (creepsCount > 0) {
 
 					var spawningRoom = {
@@ -81,6 +83,10 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 
 				if (buildingRoom.storedEnergy < maxCreepsCount * 1000) {
 					maxCreepsCount = Math.floor(maxCreepsCount / 2);
+				}
+
+				if (maxCreepsCount < 4) {
+					maxCreepsCount = 4;
 				}
 
 				if (buildingRoom.storedEnergy + roomTools.getDropFlagDroppedEnergy(buildingRoom.roomName) === 0) {
@@ -138,6 +144,42 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 	var remoteRoom = /** @type {RemoteRoomCreepsSpawnRule} */(_.find(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName }));
 
 	remoteRoom.spawnOrderMaxSpawnedCounts[0][creepType]++;
+}
+
+function getBuildingCountControllerEnergizers() {
+
+	var result = _.reduce(Memory.creeps, (roomsCountControllerEnergizers, creepMemory, creepName) => {
+
+		if (creepMemory.type === "controllerEnergizer") {
+
+			var creep = Game.creeps[creepName];
+			var creepsSpawnRule;
+
+			if (Memory.state.roomNamesCreepsSpawnRules) {
+
+				if (creepMemory.remoteRoomName) {
+					creepsSpawnRule = Memory.state.roomNamesCreepsSpawnRules[creepMemory.spawnedRoomName].remoteRooms[creepMemory.remoteRoomName];
+				} else {
+					creepsSpawnRule = Memory.state.roomNamesCreepsSpawnRules[creepMemory.spawnedRoomName];
+				}
+			}
+
+			var canControllerEnergizersBuild = creepsSpawnRule ? creepsSpawnRule.canControllerEnergizersBuild : false;
+
+			if (canControllerEnergizersBuild) {
+
+				if (!roomsCountControllerEnergizers[creep.room.name]) {
+					roomsCountControllerEnergizers[creep.room.name] = 0;
+				}
+
+				roomsCountControllerEnergizers[creep.room.name]++;
+			}
+		}
+
+		return roomsCountControllerEnergizers;
+	}, {});
+
+	return result;
 }
 
 

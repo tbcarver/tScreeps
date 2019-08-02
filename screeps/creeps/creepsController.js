@@ -5,7 +5,10 @@ var creepsFactory = require("./creepsFactory");
 var creepsSpawner = require("./creepsSpawner");
 var { rules } = require("../rules/rules");
 
-var creepsController = {};
+var creepsController = {
+	// NOTE: The system must count creeps and spawn before all rules can be gathered and creeps can then act.
+	isCreepsControllerInitialized: false,
+};
 
 creepsController.tick = function() {
 
@@ -23,11 +26,9 @@ creepsController.tick = function() {
 
 		try {
 
-			var baseCreep = creepsFactory.buildCreep(creep);
+			if (!creep.spawning && this.isCreepsControllerInitialized) {
 
-			// debug.temp(`creep act: type: ${creep.memory.type} ticks: ${creep.ticksToLive}`);
-
-			if (!creep.spawning) {
+				var baseCreep = creepsFactory.buildCreep(creep);
 				baseCreep.act();
 			}
 
@@ -45,10 +46,10 @@ creepsController.tick = function() {
 
 		if (!spawnTools.isCreepInSpawnBuffer(creep)) {
 			creepsTotal++;
-			if (!spawnedRoomNamesCreepsTotal[baseCreep.spawnedRoomName]) {
-				spawnedRoomNamesCreepsTotal[baseCreep.spawnedRoomName] = 0;
+			if (!spawnedRoomNamesCreepsTotal[creep.memory.spawnedRoomName]) {
+				spawnedRoomNamesCreepsTotal[creep.memory.spawnedRoomName] = 0;
 			}
-			spawnedRoomNamesCreepsTotal[baseCreep.spawnedRoomName]++;
+			spawnedRoomNamesCreepsTotal[creep.memory.spawnedRoomName]++;
 
 
 			spawnTools.incrementSpawnedCount(roomsCurrentSpawnedCounts, creep.memory.type, creep.memory.subType, creep.memory.spawnedRoomName,
@@ -84,6 +85,8 @@ creepsController.tick = function() {
 	} else {
 		debug.muted(displayCreepsTotal);
 	}
+
+	this.isCreepsControllerInitialized = true;
 }
 
 function cleanUpTheDead() {

@@ -152,6 +152,7 @@ roomTools.buildRoomStats = function() {
 	this.buildDroppedStats();
 	this.buildSpawnStats();
 	this.buildStorageStats();
+	this.buildConstructionSitesStats();
 }
 
 roomTools.buildControllerStats = function() {
@@ -462,33 +463,64 @@ roomTools.getCountControllerUpgradePositions = function(controller) {
 
 	} else {
 
-		for (var xDifferential = -3; xDifferential <= 3; xDifferential++) {
+		for (var differentialStart = 2; differentialStart <= 3; differentialStart++) {
 
-			if (roomTools.isPlainTerrain(controller.pos.x + xDifferential, controller.pos.y - 3, controller.room.name)) {
-				countControllerUpgradePositions++;
+			for (var xDifferential = -1 * differentialStart; xDifferential <= differentialStart; xDifferential++) {
+	
+				if (roomTools.isPlainTerrain(controller.pos.x + xDifferential, controller.pos.y - differentialStart, controller.room.name)) {
+					countControllerUpgradePositions++;
+				}
+	
+				if (roomTools.isPlainTerrain(controller.pos.x + xDifferential, controller.pos.y + differentialStart, controller.room.name)) {
+					countControllerUpgradePositions++;
+				}
 			}
-
-			if (roomTools.isPlainTerrain(controller.pos.x + xDifferential, controller.pos.y + 3, controller.room.name)) {
-				countControllerUpgradePositions++;
+	
+			for (var yDifferential =  -1 * differentialStart + 1; yDifferential <= differentialStart - 1; yDifferential++) {
+	
+				if (roomTools.isPlainTerrain(controller.pos.x - differentialStart, controller.pos.y + yDifferential, controller.room.name)) {
+					countControllerUpgradePositions++;
+				}
+	
+				if (roomTools.isPlainTerrain(controller.pos.x + differentialStart, controller.pos.y + yDifferential, controller.room.name)) {
+					countControllerUpgradePositions++;
+				}
 			}
-		}
-
-		for (var yDifferential = -2; yDifferential <= 2; yDifferential++) {
-
-			if (roomTools.isPlainTerrain(controller.pos.x - 3, controller.pos.y - yDifferential, controller.room.name)) {
-				countControllerUpgradePositions++;
-			}
-
-			if (roomTools.isPlainTerrain(controller.pos.x + 3, controller.pos.y + yDifferential, controller.room.name)) {
-				countControllerUpgradePositions++;
-			}
-
 		}
 
 		Memory.state.roomTools.getCountControllerUpgradePositions[controller.id] = countControllerUpgradePositions;
 	}
 
 	return countControllerUpgradePositions;
+}
+
+roomTools.buildConstructionSitesStats = function() {
+
+	this.constructionSitesStats = {};
+
+	for (var roomName in Game.rooms) {
+
+		var room = Game.rooms[roomName];
+		if (room.controller && room.controller.my) {
+
+			var constructionCost = room.find(FIND_CONSTRUCTION_SITES).reduce((cost, constructionSite) =>
+				cost += constructionSite.progressTotal - constructionSite.progress, 0);
+
+			this.constructionSitesStats[roomName] = {
+				constructionCost: constructionCost,
+			};
+		}
+	}
+}
+
+roomTools.hasConstructionSites = function(roomName) {
+
+	return (this.constructionSitesStats[roomName] && this.constructionSitesStats[roomName].constructionCost > 0);
+}
+
+roomTools.getConstructionSitesStats = function(roomName) {
+
+	return this.constructionSitesStats[roomName];
 }
 
 roomTools.isPlainTerrain = function(x, y, roomName) {

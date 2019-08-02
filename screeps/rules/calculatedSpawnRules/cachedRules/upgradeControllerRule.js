@@ -3,7 +3,7 @@ var { rules } = require("../../rules")
 var orderBy = require("lodash/orderBy");
 
 var upgradeControllerRule = {
-	coolOffCount: 300,
+	coolOffCount: 50,
 	oneToEightTogetherMinimum: rules.oneToEightTogetherMinimum || 7,
 };
 
@@ -35,9 +35,13 @@ function buildOneToEightRules(creepsSpawnRules) {
 		var droppedEnergy = roomTools.getDroppedEnergy(roomName);
 		var percentStoredEnergyRequiredMultiplier = 5;
 
+		if (roomTools.hasDropFlag(roomName)) {
+			droppedEnergy = roomTools.getDropFlagDroppedEnergy(roomName);
+		}
+
 		if (spawnsCount > 0) {
 
-			var creepsCount = 0;
+			var creepsCount = 2;
 
 			if (storageStats.hasStorage && storageStats.percentageStoredEnergy >= percentStoredEnergyRequiredMultiplier * spawnsCount) {
 
@@ -45,7 +49,7 @@ function buildOneToEightRules(creepsSpawnRules) {
 
 			} else if (droppedEnergy > 0) {
 
-				creepsCount = 6;
+				creepsCount = 4;
 
 				if (droppedEnergy > 300) {
 					creepsCount = Math.floor(droppedEnergy / 50);

@@ -8,14 +8,14 @@ class EnergyCreep extends BaseCreep {
 	constructor(creep) {
 		super(creep);
 
-		this.canHarvest = false;
-		this.canPickup = false;
+		this.canHarvest = this.memory.canHarvest;
+		this.canPickup = this.memory.canPickup;
 
-		if (this.creepsSpawnRule && this.creepsSpawnRule.canEnergyCreepsHarvest) {
+		if (!this.canHarvest && this.creepsSpawnRule && this.creepsSpawnRule.canEnergyCreepsHarvest) {
 			this.canHarvest = true;
 		}
 
-		if (this.creepsSpawnRule && this.creepsSpawnRule.canEnergyCreepsPickup) {
+		if (!this.canPickup && this.creepsSpawnRule && this.creepsSpawnRule.canEnergyCreepsPickup) {
 			this.canPickup = true;
 		}
 

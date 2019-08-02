@@ -15,6 +15,39 @@ var DropHarvester = require("../creeps/harvesters/dropHarvester");
 
 function tick() {
 
+	// var controller = Game.rooms.W12N16.controller;
+	// var countControllerUpgradePositions = 0;
+	// for (var differentialStart = 2; differentialStart <= 3; differentialStart++) {
+
+	// 	for (var xDifferential = -1 * differentialStart; xDifferential <= differentialStart; xDifferential++) {
+
+	// 		if (roomTools.isPlainTerrain(controller.pos.x + xDifferential, controller.pos.y - differentialStart, controller.room.name)) {
+	// 			countControllerUpgradePositions++;
+	// 			Game.rooms.W12N16.visual.circle(controller.pos.x + xDifferential, controller.pos.y - differentialStart, { radius: .50, stroke: "white", fill: "white" });
+	// 		}
+
+	// 		if (roomTools.isPlainTerrain(controller.pos.x + xDifferential, controller.pos.y + differentialStart, controller.room.name)) {
+	// 			countControllerUpgradePositions++;
+	// 			Game.rooms.W12N16.visual.circle(controller.pos.x + xDifferential, controller.pos.y + differentialStart, { radius: .50, stroke: "white", fill: "white" });
+	// 		}
+	// 	}
+
+	// 	for (var yDifferential =  -1 * differentialStart + 1; yDifferential <= differentialStart - 1; yDifferential++) {
+
+	// 		if (roomTools.isPlainTerrain(controller.pos.x - differentialStart, controller.pos.y + yDifferential, controller.room.name)) {
+	// 			countControllerUpgradePositions++;
+	// 			Game.rooms.W12N16.visual.circle(controller.pos.x - differentialStart, controller.pos.y + yDifferential, { radius: .50, stroke: "white", fill: "white" });
+	// 		}
+
+	// 		if (roomTools.isPlainTerrain(controller.pos.x + differentialStart, controller.pos.y + yDifferential, controller.room.name)) {
+	// 			countControllerUpgradePositions++;
+	// 			Game.rooms.W12N16.visual.circle(controller.pos.x + differentialStart, controller.pos.y + yDifferential, { radius: .50, stroke: "white", fill: "white" });
+	// 		}
+	// 	}
+	// }
+
+	// debug.temp(countControllerUpgradePositions);
+
 	// var pos = new RoomPosition(25, 9 , "W12N16");
 	// var target = Game.spawns.Spawn1;
 
