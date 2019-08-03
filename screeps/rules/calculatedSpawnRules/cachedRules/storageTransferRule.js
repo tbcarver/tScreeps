@@ -1,4 +1,5 @@
 
+var creepsSpawnRuleTools = require("../../creepsSpawnRuleTools");
 var roomTools = require("../../../tools/roomTools");
 
 var storageTransferRule = {
@@ -6,7 +7,7 @@ var storageTransferRule = {
 	prepend: true,
 };
 
-storageTransferRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
+storageTransferRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 
 	var breakPointMultiplier = 50;
 	var transferringRooms;
@@ -85,7 +86,7 @@ storageTransferRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 				if (adjacentRoomNames.includes(receivingRoom.roomName)) {
 					if (transferringRoom.creepsCount > 0 && receivingRoom.creepsCount > 0) {
 
-						incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, transferringRoom.roomName, receivingRoom.roomName);
+						incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, transferringRoom.roomName, receivingRoom.roomName, cachedRuleName);
 						transferringRoom.creepsCount--;
 						receivingRoom.creepsCount--;
 					}
@@ -103,7 +104,7 @@ storageTransferRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 			for (let receivingRoom of receivingRooms) {
 				if (transferringRoom.creepsCount > 0 && receivingRoom.creepsCount > 0) {
 
-					incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, transferringRoom.roomName, receivingRoom.roomName);
+					incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, transferringRoom.roomName, receivingRoom.roomName, cachedRuleName);
 					transferringRoom.creepsCount--;
 					receivingRoom.creepsCount--;
 				}
@@ -120,7 +121,7 @@ storageTransferRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 			for (let receivingRoom of overflowReceivingRooms) {
 				if (transferringRoom.creepsCount > 0 && receivingRoom.creepsCount > 0) {
 
-					incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, transferringRoom.roomName, receivingRoom.roomName);
+					incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, transferringRoom.roomName, receivingRoom.roomName, cachedRuleName);
 					transferringRoom.creepsCount--;
 					receivingRoom.creepsCount--;
 				}
@@ -131,14 +132,18 @@ storageTransferRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 	return remoteRoomCreepsSpawnRules;
 }
 
-function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoomName, remoteRoomName) {
+function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoomName, remoteRoomName, cachedRuleName) {
 
 	if (!remoteRoomCreepsSpawnRules[spawnRoomName]) {
 		remoteRoomCreepsSpawnRules[spawnRoomName] = { remoteRooms: [] };
 	}
 
 	if (!_.some(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName })) {
+		
+		var creepsSpawnRuleKey = creepsSpawnRuleTools.buildCreepsSpawnRuleKey(spawnRoomName, remoteRoomName, "cached-" + cachedRuleName);
+
 		remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms.push({
+			creepsSpawnRuleKey: creepsSpawnRuleKey,
 			roomName: remoteRoomName,
 			spawnOrderMaxSpawnedCounts: [
 				{ remoteStorageTransferer: 0 },

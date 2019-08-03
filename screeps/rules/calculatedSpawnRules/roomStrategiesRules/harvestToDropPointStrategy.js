@@ -7,7 +7,7 @@ var harvestToDropPointStrategy = {
 	coolOffCount: 150,
 };
 
-harvestToDropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName, spawnCreepsSpawnRule) {
+harvestToDropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName, spawnCreepsSpawnRule, creepsSpawnRuleKey) {
 
 	var creepsSpawnRule;
 	var spawnRoom = Game.rooms[spawnRoomName];
@@ -19,6 +19,7 @@ harvestToDropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remote
 			var dropHarvesterCount = dropStrategyTools.getDropHarvesterCount(spawnRoom, remoteRoom, spawnCreepsSpawnRule);
 
 			creepsSpawnRule = {
+				creepsSpawnRuleKey: creepsSpawnRuleKey,
 				roomName: remoteRoomName,
 				spawnOrderMaxSpawnedCounts: [],
 				partsPerMove: 1,

@@ -26,79 +26,37 @@ var creepsSpawnRules = /** @type {CreepsSpawnRule[]} */ ([]);
 creepsSpawnRules.push(require("./rooms/W12N16"));
 // creepsSpawnRules.push(require("./rooms/W12N17"));
 
-function updateCreepsSpawnRules(creepsSpawnRules) {
-
-	mergeTopRemoteRoomsOptions(creepsSpawnRules);
-	buildRoomsCreepsSpawnRules(creepsSpawnRules);
-}
-
-var remoteRoomsOptionsToNotMerge = ["roomName", "spawnOrderMaxSpawnedCounts", "roomStrategy", "measure"];
-
-function mergeTopRemoteRoomsOptions(creepsSpawnRules) {
-
-	for (var creepsSpawnRule of creepsSpawnRules) {
-
-		var topRemoteRooms = {};
-
-		for (var remoteRoom of creepsSpawnRule.remoteRooms) {
-
-			if (topRemoteRooms[remoteRoom.roomName]) {
-
-				for (var optionName in remoteRoom) {
-					if (!remoteRoomsOptionsToNotMerge.includes(optionName)) {
-						topRemoteRooms[remoteRoom.roomName][optionName] = remoteRoom[optionName];
-					}
-				}
-			} else {
-				topRemoteRooms[remoteRoom.roomName] = remoteRoom;
-			}
-		}
-	}
-}
-
-function buildRoomsCreepsSpawnRules(creepsSpawnRules) {
+/** @param {CreepsSpawnRule[]} creepsSpawnRules */
+function storeCreepsSpawnRules(creepsSpawnRules) {
 
 	if (!Memory.state) {
 		Memory.state = {};
 	}
 
-	if (!Memory.state.roomNamesCreepsSpawnRules) {
-		Memory.state.roomNamesCreepsSpawnRules = {};
-	}
-
-	var roomNamesCreepsSpawnRules = {};
+	var ruleKeyCreepsSpawnRules = {};
 
 	for (var creepsSpawnRule of creepsSpawnRules) {
 
-		roomNamesCreepsSpawnRules[creepsSpawnRule.roomName] = {};
+		var spawnCreepsSpawnRule = _.clone(creepsSpawnRule);
+		delete spawnCreepsSpawnRule.remoteRooms;
 
-		for (var key in creepsSpawnRule) {
-			if (key !== "remoteRooms") {
-				roomNamesCreepsSpawnRules[creepsSpawnRule.roomName][key] = creepsSpawnRule[key];
+		ruleKeyCreepsSpawnRules[spawnCreepsSpawnRule.roomName] = spawnCreepsSpawnRule;
+
+		for (var remoteRoom of creepsSpawnRule.remoteRooms) {
+
+			if (remoteRoom.creepsSpawnRuleKey) {
+
+				ruleKeyCreepsSpawnRules[remoteRoom.creepsSpawnRuleKey] = remoteRoom;
 			}
-		}
-
-		if (creepsSpawnRule.remoteRooms) {
-
-			var remoteRooms = {};
-
-			for (var remoteCreepsSpawnRule of creepsSpawnRule.remoteRooms) {
-
-				if (!remoteRooms[remoteCreepsSpawnRule.roomName]) {
-					remoteRooms[remoteCreepsSpawnRule.roomName] = remoteCreepsSpawnRule;
-				}
-			}
-
-			roomNamesCreepsSpawnRules[creepsSpawnRule.roomName].remoteRooms = remoteRooms;
 		}
 	}
 
-	Memory.state.roomNamesCreepsSpawnRules = roomNamesCreepsSpawnRules;
+	Memory.state.ruleKeyCreepsSpawnRules = ruleKeyCreepsSpawnRules;
 
 	var creepsToSpawnTotal = 0;
 	var spawnedRoomsCreepsToSpawnTotal = {};
 
-	for (creepsSpawnRule of creepsSpawnRules) {
+	for (var creepsSpawnRule of creepsSpawnRules) {
 		spawnedRoomsCreepsToSpawnTotal[creepsSpawnRule.roomName] = 0;
 
 		if (creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
@@ -129,9 +87,8 @@ function buildRoomsCreepsSpawnRules(creepsSpawnRules) {
 }
 
 var creepsSpawnRulesCopy = _.cloneDeep(creepsSpawnRules);
-mergeTopRemoteRoomsOptions(creepsSpawnRulesCopy);
-buildRoomsCreepsSpawnRules(creepsSpawnRulesCopy);
+storeCreepsSpawnRules(creepsSpawnRulesCopy);
 
 module.exports.rules = rules;
 module.exports.creepsSpawnRules = creepsSpawnRules;
-module.exports.updateCreepsSpawnRules = updateCreepsSpawnRules;
+module.exports.storeCreepsSpawnRules = storeCreepsSpawnRules;

@@ -1,3 +1,5 @@
+
+var creepsSpawnRuleTools = require("../../creepsSpawnRuleTools");
 var roomTools = require("../../../tools/roomTools");
 var orderBy = require("lodash/orderBy");
 
@@ -5,7 +7,7 @@ var builderRule = {
 	coolOffCount: 10,
 };
 
-builderRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
+builderRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 
 	var remoteRoomCreepsSpawnRules = {};
 	var buildingRooms = [];
@@ -60,7 +62,7 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 
 				var countBuildingCountControllerEnergizers = buildingCountControllerEnergizers[roomName] || 0;
 				creepsCount = Math.abs(countBuildingCountControllerEnergizers - creepsCount);
-
+				debug.temp(creepsCount)
 				if (creepsCount > 0) {
 
 					var spawningRoom = {
@@ -98,7 +100,7 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 
 						if (spawningRoom.creepsCount > 0) {
 
-							incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawningRoom.roomName, buildingRoom.roomName, creepType);
+							incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawningRoom.roomName, buildingRoom.roomName, cachedRuleName, creepType);
 							spawningRoom.creepsCount--;
 						}
 					}
@@ -110,7 +112,7 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 	return remoteRoomCreepsSpawnRules;
 }
 
-function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoomName, remoteRoomName, creepType) {
+function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoomName, remoteRoomName, cachedRuleName, creepType) {
 
 	if (!remoteRoomCreepsSpawnRules[spawnRoomName]) {
 		remoteRoomCreepsSpawnRules[spawnRoomName] = { remoteRooms: [] };
@@ -118,6 +120,7 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 
 	if (!_.some(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName })) {
 
+		var creepsSpawnRuleKey = creepsSpawnRuleTools.buildCreepsSpawnRuleKey(spawnRoomName, remoteRoomName, "cached-" + cachedRuleName);
 		var partsPerMove = 2;
 		var roads = Game.rooms[remoteRoomName].find(FIND_STRUCTURES, {
 			filter: { structureType: STRUCTURE_ROAD }
@@ -128,6 +131,7 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 		}
 
 		var creepsSpawnRule = {
+			creepsSpawnRuleKey: creepsSpawnRuleKey,
 			roomName: remoteRoomName,
 			spawnOrderMaxSpawnedCounts: [
 				{ builder: 0 },
@@ -155,13 +159,8 @@ function getBuildingCountControllerEnergizers() {
 			var creep = Game.creeps[creepName];
 			var creepsSpawnRule;
 
-			if (Memory.state.roomNamesCreepsSpawnRules) {
-
-				if (creepMemory.remoteRoomName) {
-					creepsSpawnRule = Memory.state.roomNamesCreepsSpawnRules[creepMemory.spawnedRoomName].remoteRooms[creepMemory.remoteRoomName];
-				} else {
-					creepsSpawnRule = Memory.state.roomNamesCreepsSpawnRules[creepMemory.spawnedRoomName];
-				}
+			if (Memory.state.ruleKeyCreepsSpawnRules && creepMemory.creepsSpawnRuleKey) {
+				creepsSpawnRule = Memory.state.ruleKeyCreepsSpawnRules[creepMemory.creepsSpawnRuleKey];
 			}
 
 			var canControllerEnergizersBuild = creepsSpawnRule ? creepsSpawnRule.canControllerEnergizersBuild : false;

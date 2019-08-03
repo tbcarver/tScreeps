@@ -23,6 +23,7 @@ interface CreepsSpawnRule {
 }
 
 interface RemoteRoomCreepsSpawnRule {
+	creepsSpawnRuleKey?: string,
 	roomName: string,
 	spawnOrderMaxSpawnedCounts?: { [key: string]: any }[],
 	canControllerEnergizersBuild?: boolean,

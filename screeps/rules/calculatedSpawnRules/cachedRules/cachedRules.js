@@ -9,7 +9,7 @@ var storageTransferRule = require("./storageTransferRule");
 var upgradeControllerRule = require("./upgradeControllerRule");
 
 // NOTE: Order is important. Because of prepended rules.
-var calculatedSpawnRules = {
+var cachedRules = {
 	upgradeControllerRule: upgradeControllerRule,
 	storageTransferRule: storageTransferRule,
 	builderRule: builderRule,
@@ -24,15 +24,15 @@ function addCalculatedSpawnRules(creepsSpawnRules) {
 		Memory.state.builtCalculatedCreepsSpawnRules = {};
 	}
 
-	for (var calculatedSpawnRuleName in calculatedSpawnRules) {
+	for (var cachedRuleName in cachedRules) {
 
-		var calculatedSpawnRule = calculatedSpawnRules[calculatedSpawnRuleName];
-		var builtCalculatedCreepsSpawnRules  = Memory.state.builtCalculatedCreepsSpawnRules[calculatedSpawnRuleName];
+		var calculatedSpawnRule = cachedRules[cachedRuleName];
+		var builtCalculatedCreepsSpawnRules  = Memory.state.builtCalculatedCreepsSpawnRules[cachedRuleName];
 
-		if (!builtCalculatedCreepsSpawnRules || gameTools.hasCoolOffed(calculatedSpawnRuleName, calculatedSpawnRule.coolOffCount)) {
+		if (!builtCalculatedCreepsSpawnRules || gameTools.hasCoolOffed(cachedRuleName, calculatedSpawnRule.coolOffCount)) {
 
-			builtCalculatedCreepsSpawnRules = calculatedSpawnRule.buildCreepsSpawnRules(creepsSpawnRules);
-			Memory.state.builtCalculatedCreepsSpawnRules[calculatedSpawnRuleName] = builtCalculatedCreepsSpawnRules;
+			builtCalculatedCreepsSpawnRules = calculatedSpawnRule.buildCreepsSpawnRules(creepsSpawnRules, cachedRuleName);
+			Memory.state.builtCalculatedCreepsSpawnRules[cachedRuleName] = builtCalculatedCreepsSpawnRules;
 		}
 	
 		if (calculatedSpawnRule.prepend) {

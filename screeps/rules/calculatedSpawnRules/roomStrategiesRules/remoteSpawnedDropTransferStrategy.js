@@ -9,7 +9,7 @@ var remoteSpawnedDropTransferStrategy = {
 	energyTransferPercent: 100,
 };
 
-remoteSpawnedDropTransferStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName, spawnCreepsSpawnRule) {
+remoteSpawnedDropTransferStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName, spawnCreepsSpawnRule, creepsSpawnRuleKey) {
 
 	var creepsSpawnRule;
 	if (spawnRoomName !== remoteRoomName) {
@@ -18,6 +18,7 @@ remoteSpawnedDropTransferStrategy.buildCreepsSpawnRule = function(spawnRoomName,
 			if (roomTools.hasDropFlag(remoteRoomName)) {
 
 				creepsSpawnRule = {
+					creepsSpawnRuleKey: creepsSpawnRuleKey,
 					roomName: remoteRoomName,
 					spawnOrderMaxSpawnedCounts: [],
 					partsPerMove: 1,

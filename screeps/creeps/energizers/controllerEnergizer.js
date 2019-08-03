@@ -83,7 +83,6 @@ class ControllerEnergizer extends EnergyCreep {
 		var creepMemory = {
 			type: "controllerEnergizer",
 			bodyPartsType: "moveCarryWork",
-			canHarvest: creepsSpawnRule.canEnergyCreepsHarvest ? true : false,
 			maximumSpawnCapacity: 850,
 		}
 

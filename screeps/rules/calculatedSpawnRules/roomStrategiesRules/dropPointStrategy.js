@@ -7,7 +7,7 @@ var dropPointStrategy = {
 	coolOffCount: 150,
 };
 
-dropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName, spawnCreepsSpawnRule) {
+dropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName, spawnCreepsSpawnRule, creepsSpawnRuleKey) {
 
 	var creepsSpawnRule;
 	var spawnRoom = Game.rooms[spawnRoomName];
@@ -21,6 +21,7 @@ dropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName,
 				var remoteSpawnedDropTransfererCount = spawnRoomName !== remoteRoomName ? 6 : 0;
 
 				creepsSpawnRule = {
+					creepsSpawnRuleKey: creepsSpawnRuleKey,
 					roomName: remoteRoomName,
 					spawnOrderMaxSpawnedCounts: [],
 					partsPerMove: 1,

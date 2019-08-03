@@ -1,4 +1,5 @@
 
+var coreArray = require("../../../lib/core/extensions/coreArray");
 var enemyTools = require("../../tools/enemyTools");
 var findTools = require("../../tools/findTools");
 var spawnTools = require("../../tools/spawnTools");
@@ -15,8 +16,12 @@ class BaseCreep {
 		this.memory = creep.memory;
 		this.type = creep.memory.type;
 		this.isDying = this.creep.ticksToLive < 25;
+
 		this.spawnedRoomName = creep.memory.spawnedRoomName;
 		this.remoteRoomName = creep.memory.remoteRoomName;
+		this.creepsSpawnRule = (Memory.state.ruleKeyCreepsSpawnRules && this.memory.creepsSpawnRuleKey) ? Memory.state.ruleKeyCreepsSpawnRules[this.memory.creepsSpawnRuleKey] : undefined;
+		this.spawnedRoomCreepsSpawnRule = (Memory.state.ruleKeyCreepsSpawnRules) ? Memory.state.ruleKeyCreepsSpawnRules[this.spawnedRoomName] : undefined;
+
 		this.suppressReturnToRooms = false;
 		this.isTrooper = false;
 
@@ -34,30 +39,6 @@ class BaseCreep {
 
 	set state(state) {
 		this.memory.state = state
-	}
-
-	get creepsSpawnRule() {
-		var creepsSpawnRule;
-
-		if (Memory.state.roomNamesCreepsSpawnRules) {
-
-			if (this.remoteRoomName) {
-				creepsSpawnRule = Memory.state.roomNamesCreepsSpawnRules[this.spawnedRoomName].remoteRooms[this.remoteRoomName];
-			} else {
-				creepsSpawnRule = Memory.state.roomNamesCreepsSpawnRules[this.spawnedRoomName];
-			}
-		}
-		
-		return creepsSpawnRule;
-	}
-
-	get spawnedRoomCreepsSpawnRule() {
-
-		if (Memory.state.roomNamesCreepsSpawnRules) {
-			return Memory.state.roomNamesCreepsSpawnRules[this.spawnedRoomName];
-		} else {
-			return undefined;
-		}
 	}
 
 	act() {
@@ -301,13 +282,19 @@ class BaseCreep {
 
 	moveIntoRoom() {
 
-		var path = this.creep.pos.findPathTo(25, 25);
+		var ignoreObjects = [];
+		coreArray.pushValue(ignoreObjects, roomTools.getDropFlag(this.creep.room.name));
 
-		if (path) {
+		var path = this.creep.pos.findPathTo(25, 25, {
+			costCallback: (roomName, costMatrix) => {
+				for (var ignoreObject of ignoreObjects) {
+					costMatrix.set(ignoreObject.pos.x, ignoreObject.pos.y, 255);
+				};
+				return undefined;
+			},
+		});
 
-			this.creep.moveByPath(path);
-
-		} else {
+		if (!path) {
 
 			var target = roomTools.getSpawn(this.creep.room.name);
 
@@ -325,8 +312,19 @@ class BaseCreep {
 			}
 
 			if (target) {
-				this.creep.moveTo(target);
+				path = this.creep.pos.findPathTo(target, {
+					costCallback: (roomName, costMatrix) => {
+						for (var ignoreObject of ignoreObjects) {
+							costMatrix.set(ignoreObject.pos.x, ignoreObject.pos.y, 255);
+						};
+						return undefined;
+					},
+				});
 			}
+		}
+
+		if (path) {
+			this.creep.moveByPath(path);
 		}
 	}
 
@@ -347,12 +345,20 @@ class BaseCreep {
 			avoidCreeps = true;
 		}
 
+		var ignoreObjects = [];
+		coreArray.pushValue(ignoreObjects, roomTools.getDropFlag(this.creep.room.name));
+
 		var options = {
 			reusePath: 100,
 			ignoreCreeps: !avoidCreeps,
 			ignoreRoads: (this.memory.partsPerMove && this.memory.partsPerMove === 1) ? true : false,
 			range: 0,
 			maxRooms: 1,
+			costCallback: (roomName, costMatrix) => {
+				for (var ignoreObject of ignoreObjects) {
+					costMatrix.set(ignoreObject.pos.x, ignoreObject.pos.y, 255);
+				};
+			},
 		}
 
 		var path = room.findPath(this.creep.pos, pos, options);

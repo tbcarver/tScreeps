@@ -1,6 +1,7 @@
 
 var gameTools = require("../../../tools/gameTools");
 var calculatedSpawnRulesTools = require("../calculatedSpawnRulesTools");
+var creepsSpawnRuleTools = require("../../creepsSpawnRuleTools");
 var dropPointStrategy = require("./dropPointStrategy");
 var harvestToDropPointStrategy = require("./harvestToDropPointStrategy");
 var mobDefenseStrategy = require("./mobDefenseStrategy");
@@ -22,34 +23,34 @@ function addCalculatedSpawnRules(creepsSpawnRules, roomsCurrentSpawnedCounts) {
 	var remoteRoomCreepsSpawnRules = {};
 	var roomStrategyKeys = {};
 
-	for (var creepsSpawnRule of creepsSpawnRules) {
+	for (var spawnCreepsSpawnRule of creepsSpawnRules) {
 
-		if (creepsSpawnRule.remoteRooms) {
-			for (var remoteRoomCreepsSpawnRule of creepsSpawnRule.remoteRooms) {
+		if (spawnCreepsSpawnRule.remoteRooms) {
+			for (var remoteRoomCreepsSpawnRule of spawnCreepsSpawnRule.remoteRooms) {
 
 				if (remoteRoomCreepsSpawnRule.roomStrategy) {
 
-					var spawnRoomName = creepsSpawnRule.roomName;
+					var spawnRoomName = spawnCreepsSpawnRule.roomName;
 					var remoteRoomName = remoteRoomCreepsSpawnRule.roomName;
 					var currentSpawnedCounts = (roomsCurrentSpawnedCounts && roomsCurrentSpawnedCounts[spawnRoomName] &&
 						roomsCurrentSpawnedCounts[spawnRoomName].remoteRooms && roomsCurrentSpawnedCounts[spawnRoomName].remoteRooms[remoteRoomName]) ?
 						roomsCurrentSpawnedCounts[spawnRoomName].remoteRooms[remoteRoomName] : {};
 
 					var roomStrategyName = remoteRoomCreepsSpawnRule.roomStrategy;
-					var roomStrategyKey = `${roomStrategyName}-${spawnRoomName}-${remoteRoomName}`;
-					roomStrategyKeys[roomStrategyKey] = true;
+					var creepsSpawnRuleKey = creepsSpawnRuleTools.buildCreepsSpawnRuleKey(spawnRoomName, remoteRoomName, "room-" + roomStrategyName);
+					roomStrategyKeys[creepsSpawnRuleKey] = true;
 
 					var roomStrategy = roomStrategies[roomStrategyName];
-					var roomStrategyCreepsSpawnRule = Memory.state.roomStrategies[roomStrategyKey];
+					var roomStrategyCreepsSpawnRule = Memory.state.roomStrategies[creepsSpawnRuleKey];
 
 					if (roomStrategy.canApplyRule(spawnRoomName, remoteRoomName)) {
 
 						if (!roomStrategyCreepsSpawnRule) {
 
-							var roomStrategyCreepsSpawnRule = roomStrategy.buildCreepsSpawnRule(spawnRoomName, remoteRoomName, creepsSpawnRule);
-							Memory.state.roomStrategies[roomStrategyKey] = roomStrategyCreepsSpawnRule;
+							var roomStrategyCreepsSpawnRule = roomStrategy.buildCreepsSpawnRule(spawnRoomName, remoteRoomName, spawnCreepsSpawnRule, creepsSpawnRuleKey);
+							Memory.state.roomStrategies[creepsSpawnRuleKey] = roomStrategyCreepsSpawnRule;
 
-						} else if (gameTools.hasCoolOffed(roomStrategyKey, roomStrategy.coolOffCount)) {
+						} else if (gameTools.hasCoolOffed(creepsSpawnRuleKey, roomStrategy.coolOffCount)) {
 
 							roomStrategy.recalculateCreepsSpawnRule(spawnRoomName, roomStrategyCreepsSpawnRule, currentSpawnedCounts);
 						}
@@ -65,7 +66,7 @@ function addCalculatedSpawnRules(creepsSpawnRules, roomsCurrentSpawnedCounts) {
 							debug.warning(`roomStrategiesRule rule not built for ${spawnRoomName} remote ${remoteRoomName} strategy ${roomStrategyName}`);
 						}
 					} else if (roomStrategyCreepsSpawnRule) {
-						delete Memory.state.roomStrategies[roomStrategyKey];
+						delete Memory.state.roomStrategies[creepsSpawnRuleKey];
 					}
 				}
 			}

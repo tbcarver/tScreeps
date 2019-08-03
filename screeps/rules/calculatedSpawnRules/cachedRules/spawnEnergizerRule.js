@@ -1,4 +1,5 @@
 
+var creepsSpawnRuleTools = require("../../creepsSpawnRuleTools");
 var roomTools = require("../../../tools/roomTools");
 
 var spawnEnergizerRule = {
@@ -6,7 +7,7 @@ var spawnEnergizerRule = {
 	prepend: true,
 };
 
-spawnEnergizerRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
+spawnEnergizerRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 
 	var remoteRoomCreepsSpawnRules = {};
 
@@ -32,6 +33,7 @@ spawnEnergizerRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 
 			remoteRoomCreepsSpawnRules[room.name] = { remoteRooms: [] };
 
+			var creepsSpawnRuleKey = creepsSpawnRuleTools.buildCreepsSpawnRuleKey(room.name, room.name, "cached-" + cachedRuleName);
 			var partsPerMove = 2;
 			var hasDropFlagDroppedResources = roomTools.getDropFlagDroppedEnergy(room.name) > 200;
 			var hasStorage = roomTools.hasStorage(room.name);
@@ -44,6 +46,7 @@ spawnEnergizerRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 			}
 
 			remoteRoomCreepsSpawnRules[room.name].remoteRooms.push({
+				creepsSpawnRuleKey: creepsSpawnRuleKey,
 				roomName: room.name,
 				spawnOrderMaxSpawnedCounts: [
 					{ spawnEnergizer: countSpawnEnergizers },

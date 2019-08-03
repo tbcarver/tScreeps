@@ -6,7 +6,7 @@ var mobDefenseStrategy = {
 	coolOffCount: 300,
 };
 
-mobDefenseStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName) {
+mobDefenseStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName, spawnCreepsSpawnRule, creepsSpawnRuleKey) {
 
 	var attackerCount = 4;
 	var healer = 3;
@@ -19,6 +19,7 @@ mobDefenseStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName
 	}
 
 	var creepsSpawnRule = {
+		creepsSpawnRuleKey: creepsSpawnRuleKey,
 		roomName: remoteRoomName,
 		spawnOrderMaxSpawnedCounts: [
 			{ attacker: attackerCount },

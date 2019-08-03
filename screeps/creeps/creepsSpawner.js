@@ -4,7 +4,7 @@ var findTools = require("../tools/findTools");
 var roomTools = require("../tools/roomTools");
 var spawnTools = require("../tools/spawnTools");
 var creepConstructors = require("./creepsConstructors");
-var { rules, creepsSpawnRules, updateCreepsSpawnRules } = require("../rules/rules");
+var { rules, creepsSpawnRules, storeCreepsSpawnRules } = require("../rules/rules");
 var calculatedSpawnRules = require("../rules/calculatedSpawnRules/calculatedSpawnRules");
 var calculatedSpawnRulesTools = require("../rules/calculatedSpawnRules/calculatedSpawnRulesTools");
 var SpawnOrderMaxSpawnedCount = require("../rules/spawnOrderMaxSpawnedCount");
@@ -18,7 +18,7 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 
 	calculatedSpawnRules.addCalculatedRules(creepsSpawnRulesCopy, roomsCurrentSpawnedCounts);
 	addOneTimeOneCreepSpawnRules(creepsSpawnRulesCopy);
-	updateCreepsSpawnRules(creepsSpawnRulesCopy);
+	storeCreepsSpawnRules(creepsSpawnRulesCopy);
 	
 	for (var creepsSpawnRule of creepsSpawnRulesCopy) {
 
@@ -142,6 +142,7 @@ function trySpawnCreep(room, isRemoteRoom, spawn, creepConstructor, creepsSpawnR
 
 		if (creepMemory) {
 
+			creepMemory.creepsSpawnRuleKey = creepsSpawnRule.creepsSpawnRule;
 			creepMemory.spawnedRoomName = spawn.room.name;
 
 			if (isRemoteRoom) {

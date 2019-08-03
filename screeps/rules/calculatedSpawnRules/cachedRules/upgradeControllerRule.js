@@ -1,3 +1,5 @@
+
+var creepsSpawnRuleTools = require("../../creepsSpawnRuleTools");
 var roomTools = require("../../../tools/roomTools");
 var { rules } = require("../../rules")
 var orderBy = require("lodash/orderBy");
@@ -7,13 +9,13 @@ var upgradeControllerRule = {
 	oneToEightTogetherMinimum: rules.oneToEightTogetherMinimum || 7,
 };
 
-upgradeControllerRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
+upgradeControllerRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 
 	var remoteRoomCreepsSpawnRules;
 
 	switch (rules.upgradeControllerSpawnRule) {
 		case "oneToEight":
-			remoteRoomCreepsSpawnRules = buildOneToEightRules(creepsSpawnRules);
+			remoteRoomCreepsSpawnRules = buildOneToEightRules(creepsSpawnRules, cachedRuleName);
 			break;
 
 		default:
@@ -24,7 +26,7 @@ upgradeControllerRule.buildCreepsSpawnRules = function(creepsSpawnRules) {
 	return remoteRoomCreepsSpawnRules;
 }
 
-function buildOneToEightRules(creepsSpawnRules) {
+function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 
 	var spawningRooms = [];
 
@@ -94,7 +96,7 @@ function buildOneToEightRules(creepsSpawnRules) {
 
 				if (spawningRoom.creepsCount > 0) {
 
-					incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawningRoom.roomName, controllerToUpgrade.room.name, controllerToUpgrade);
+					incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawningRoom.roomName, controllerToUpgrade.room.name, cachedRuleName, controllerToUpgrade);
 					spawningRoom.creepsCount--;
 				}
 			}
@@ -104,7 +106,7 @@ function buildOneToEightRules(creepsSpawnRules) {
 	return remoteRoomCreepsSpawnRules;
 }
 
-function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoomName, remoteRoomName, controllerToUpgrade) {
+function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoomName, remoteRoomName, cachedRuleName, controllerToUpgrade) {
 
 	if (!remoteRoomCreepsSpawnRules[spawnRoomName]) {
 		remoteRoomCreepsSpawnRules[spawnRoomName] = { remoteRooms: [] };
@@ -112,6 +114,7 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 
 	if (!_.some(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName })) {
 
+		var creepsSpawnRuleKey = creepsSpawnRuleTools.buildCreepsSpawnRuleKey(spawnRoomName, remoteRoomName, "cached-" + cachedRuleName);
 		var partsPerMove = 2;
 		var hasStorage = roomTools.hasStorage(remoteRoomName);
 		var roads = Game.rooms[remoteRoomName].find(FIND_STRUCTURES, {
@@ -123,6 +126,7 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 		}
 
 		var creepsSpawnRule = {
+			creepsSpawnRuleKey: creepsSpawnRuleKey,
 			roomName: remoteRoomName,
 			spawnOrderMaxSpawnedCounts: [
 				{ controllerEnergizer: 0 },
