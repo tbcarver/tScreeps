@@ -4,7 +4,7 @@ var roomTools = require("../../../tools/roomTools");
 var orderBy = require("lodash/orderBy");
 
 var builderRule = {
-	coolOffCount: 10,
+	coolOffCount: 0,
 };
 
 builderRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
@@ -34,7 +34,7 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 	if (buildingRooms.length > 0) {
 
 		var spawningRooms = [];
-		var buildingCountControllerEnergizers = getBuildingCountControllerEnergizers();
+		var buildingCountControllerEnergizers = getCountBuildingControllerEnergizers();
 
 		for (var roomName in Game.rooms) {
 
@@ -61,8 +61,8 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 				}
 
 				var countBuildingCountControllerEnergizers = buildingCountControllerEnergizers[roomName] || 0;
-				creepsCount = Math.abs(countBuildingCountControllerEnergizers - creepsCount);
-				debug.temp(creepsCount)
+				creepsCount = creepsCount - countBuildingCountControllerEnergizers;
+
 				if (creepsCount > 0) {
 
 					var spawningRoom = {
@@ -150,7 +150,7 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 	remoteRoom.spawnOrderMaxSpawnedCounts[0][creepType]++;
 }
 
-function getBuildingCountControllerEnergizers() {
+function getCountBuildingControllerEnergizers() {
 
 	var result = _.reduce(Memory.creeps, (roomsCountControllerEnergizers, creepMemory, creepName) => {
 
