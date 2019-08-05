@@ -1,4 +1,5 @@
 
+var findTools = require("../../tools/findTools");
 var roomTools = require("../../tools/roomTools");
 var spawnTools = require("../../tools/spawnTools");
 var BaseCreep = require("../baseCreeps/baseCreep");
@@ -85,6 +86,15 @@ class DropHarvester extends BaseCreep {
 								type: "dropHarvester",
 								resourceId: resource.id,
 							}
+
+							// var containers = room.find(FIND_STRUCTURES, {
+							// 	filter: container => container.structureType == STRUCTURE_CONTAINER &&
+							// 		roomTools.isDropContainer(container) &&
+							// 		findTools.isInRange(resource.pos, container.pos, 2)
+							// });
+
+
+
 							found = true;
 							break;
 						};

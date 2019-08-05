@@ -77,7 +77,7 @@ class EnergyCreep extends BaseCreep {
 						}
 
 					} else if (result == ERR_NOT_IN_RANGE) {
-						this.creep.moveTo(resource);
+						this.moveToAndAvoid(resource);
 					}
 				} else if (resource.resourceType) {
 
@@ -95,12 +95,12 @@ class EnergyCreep extends BaseCreep {
 						resource.writableAmount -= pickedUpAmount;
 
 					} else if (result == ERR_NOT_IN_RANGE) {
-						this.creep.moveTo(resource);
+						this.moveToAndAvoid(resource);
 					}
 				} else {
 
 					if (this.creep.harvest(resource) == ERR_NOT_IN_RANGE) {
-						this.creep.moveTo(resource);
+						this.moveToAndAvoid(resource);
 					}
 				}
 			}

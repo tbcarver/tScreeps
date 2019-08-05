@@ -11,11 +11,6 @@ class DropTransferer extends BaseCreep {
 	constructor(creep) {
 		super(creep);
 
-		this.canPickup = false;
-		if (this.creepsSpawnRule && this.creepsSpawnRule.canDropTransferersPickup) {
-			this.canPickup = true;
-		}
-
 		this.availableCarryCapacity = this.creep.carryCapacity - this.creep.carry.energy;
 	}
 
@@ -49,7 +44,7 @@ class DropTransferer extends BaseCreep {
 		return acted;
 	}
 
-	harvest(transferAction) {
+	harvest(moveToOtherRoom) {
 
 		var resource;
 
@@ -62,7 +57,7 @@ class DropTransferer extends BaseCreep {
 
 			} else {
 
-				var resources = roomTools.GetSourceWritableDroppedResources(this.creep.room.name, this.memory.sourceId);
+				var resources = /** @type {RoomObject[]} */ (roomTools.GetSourceWritableDroppedResources(this.creep.room.name, this.memory.sourceId));
 
 				if (resources.length > 0) {
 
@@ -75,10 +70,22 @@ class DropTransferer extends BaseCreep {
 						resources = orderBy(resources, "writableAmount", "desc");
 						resource = resources[0];
 					}
+				} else {
+
+					resources = this.creep.room.find(FIND_STRUCTURES, {
+						filter: container => container.structureType === STRUCTURE_CONTAINER &&
+							findTools.isInRange(source.pos, container.pos, 2)
+					});
+
+					if (resources.length > 0) {
+
+						resources = orderBy(resources, "resources", "desc");
+						resource = resources[0];
+					}
 				}
 			}
 
-		} else if (this.canPickup) {
+		} else {
 			resource = findTools.findSourcesWritableDroppedResource(this.creep.pos, this.availableCarryCapacity);
 
 			if (this.isInTravelDistance(resource)) {
@@ -88,43 +95,46 @@ class DropTransferer extends BaseCreep {
 		}
 
 		if (resource) {
-			
-			var result = this.creep.pickup(resource);
-			if (result === OK) {
 
-				var pickedUpAmount = resource.writableAmount;
+			var result;
+			if (resource.structureType) {
 
-				if (pickedUpAmount > this.availableCarryCapacity) {
-					pickedUpAmount = this.availableCarryCapacity;
-					this.state = "energizing";
-					this.transfer(transferAction);
+				result = this.creep.withdraw(resource, RESOURCE_ENERGY);
+				if (result === OK) {
+
+					if (resource.energyCapacity > this.availableCarryCapacity * 2) {
+						moveToOtherRoom();
+					}
 				}
 
-				resource.writableAmount -= pickedUpAmount;
 
-			} else if (result == ERR_NOT_IN_RANGE) {
-				this.creep.moveTo(resource);
-			}
-		} else if (this.canPickup) {
-
-			var sources = roomTools.getSources(this.creep.room.name);
-
-			if (!roomTools.inRangeToAny(this.creep.pos, sources, 3)) {
-				resource = this.creep.pos.findClosestByRange(sources);
-				this.creep.moveTo(resource);
-			}
-		} else {
-
-			var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
-			if (waitFlag) {
-				this.travelTo(waitFlag);
 			} else {
-				// debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} can't find any resource to harvest`);
+
+				result = this.creep.pickup(resource);
+				if (result === OK) {
+
+					var pickedUpAmount = resource.writableAmount;
+
+					if (pickedUpAmount > this.availableCarryCapacity) {
+						pickedUpAmount = this.availableCarryCapacity;
+						this.state = "energizing";
+						this.transfer(moveToOtherRoom);
+					}
+
+					resource.writableAmount -= pickedUpAmount;
+				}
 			}
+			
+			if (result == ERR_NOT_IN_RANGE) {
+				this.creep.moveTo(resource);
+			}
+
+		} else {
+			this.travelToWaitFlag();
 		}
 	}
 
-	transfer(transferAction) {
+	transfer(moveToOtherRoom) {
 
 		var dropFlag = roomTools.getDropFlag(this.creep.room.name);
 		if (dropFlag) {
@@ -145,8 +155,7 @@ class DropTransferer extends BaseCreep {
 
 			var resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 				filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
-					structure.structureType === STRUCTURE_TERMINAL ||
-					structure.structureType === STRUCTURE_CONTAINER) && !roomTools.isDropContainer(structure, 2) &&
+					structure.structureType === STRUCTURE_TERMINAL) &&
 					structure.store[RESOURCE_ENERGY] / structure.storeCapacity < .95
 			});
 

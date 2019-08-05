@@ -25,14 +25,14 @@ class Builder extends EnergyCreep {
 
 			if (this.creep.build(target) == ERR_NOT_IN_RANGE) {
 
-				this.creep.moveTo(target);
+				this.moveToAndAvoid(target);
 			}
 
 		} else {
 
 			if (this.creep.transfer(this.creep.room.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 
-				this.creep.moveTo(this.creep.room.controller);
+				this.moveToAndAvoid(this.creep.room.controller);
 			}
 		}
 	}

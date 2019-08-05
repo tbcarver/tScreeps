@@ -139,7 +139,7 @@ roomTools.observeRoom = function(roomName, observerRoomName) {
 }
 
 
-roomTools.buildRoomStats = function() {
+roomTools.initialize = function() {
 
 	// NOTE: Order is important.
 
@@ -147,26 +147,37 @@ roomTools.buildRoomStats = function() {
 		Memory.state.roomTools = {};
 	}
 
-	this.buildControllerStats();
+	var myRooms = _.filter(Game.rooms, room => room.controller && room.controller.my);
+
+	this.buildControllerStats(myRooms);
 	this.buildSourcesStats();
 	this.buildDroppedStats();
 	this.buildSpawnStats();
 	this.buildStorageStats();
-	this.buildConstructionSitesStats();
-}
+	this.buildContainerStats(myRooms);
+	this.buildConstructionSitesStats(myRooms);
 
-roomTools.buildControllerStats = function() {
+	var ignoreObjects = [];
 
-	this.controllerStats = {
-		myControllersCount: 0,
-	};
+	for (var flagName in Game.flags) {
 
-	for (var roomName in Game.rooms) {
-
-		if (Game.rooms[roomName].controller && Game.rooms[roomName].controller.my) {
-			this.controllerStats.myControllersCount++;
+		if (_.startsWith(flagName, "drop")) {
+			ignoreObjects.push(Game.flags[flagName]);
 		}
 	}
+
+	this.avoidCostCallback = function(roomName, costMatrix) {
+		for (var ignoreObject of ignoreObjects) {
+			costMatrix.set(ignoreObject.pos.x, ignoreObject.pos.y, 255);
+		};
+	};
+}
+
+roomTools.buildControllerStats = function(myRooms) {
+
+	this.controllerStats = {
+		myControllersCount: myRooms.length,
+	};
 }
 
 roomTools.getMyControllersCount = function() {
@@ -340,7 +351,7 @@ roomTools.getSpawn = function(roomName) {
 	return (this.spawnStats.rooms[roomName]) ? this.spawnStats.rooms[roomName].spawn : null;
 }
 
-roomTools.buildStorageStats = function() {
+roomTools.buildStorageStats = function(myRooms) {
 
 	this.roomsStorageStats = {};
 	var totalStoredEnergy = 0;
@@ -414,6 +425,122 @@ roomTools.getTotalPercentageStoredEnergy = function() {
 	return this.roomsStorageStats.totalPercentageStoredEnergy;
 }
 
+roomTools.buildContainerStats = function(myRooms) {
+
+	this.roomsContainerStats = {};
+
+	for (var room of myRooms) {
+
+		var sources = this.getSources(room.name);
+		var containers = /** @type {StructureContainerWritable[]} */ room.find(FIND_STRUCTURES, {
+			filter: { structureType: STRUCTURE_CONTAINER }
+		});
+
+		var sourcesDropContainers = {};
+
+		for (var container of containers) {
+
+			container.writableEnergy = container.store.energy;
+
+			for (var source of sources) {
+				if (container.pos.inRangeTo(source, 1)) {
+
+					if (!sourcesDropContainers[source.id]) {
+						sourcesDropContainers[source.id] = {
+							containedEnergy: 0,
+							dropContainers: /** @type {StructureContainerWritable[]} */ ([]),
+						}
+					}
+
+					sourcesDropContainers[source.id].containedEnergy += container.writableEnergy;
+					sourcesDropContainers[source.id].dropContainers.push(container);
+				}
+			}
+		}
+
+		this.roomsContainerStats[room.name] = {
+			sourcesDropContainers: sourcesDropContainers,
+		};
+	}
+}
+
+roomTools.getSourcesDropContainers = function(roomName, sourceId) {
+
+	var dropContainers = /** @type {StructureContainerWritable[]} */ ([]);
+
+	if (this.roomsContainerStats[roomName].sourcesDropContainers[sourceId]) {
+		dropContainers = this.roomsContainerStats[roomName].sourcesDropContainers[sourceId].dropContainers;
+	}
+
+	return dropContainers;
+}
+
+roomTools.buildConstructionSitesStats = function(myRooms) {
+
+	this.constructionSitesStats = {};
+
+	for (var room of myRooms) {
+
+		var constructionCost = room.find(FIND_CONSTRUCTION_SITES).reduce((cost, constructionSite) =>
+			cost += constructionSite.progressTotal - constructionSite.progress, 0);
+
+		this.constructionSitesStats[room.name] = {
+			constructionCost: constructionCost,
+		};
+	}
+}
+
+roomTools.hasConstructionSites = function(roomName) {
+
+	return (this.constructionSitesStats[roomName] && this.constructionSitesStats[roomName].constructionCost > 0);
+}
+
+roomTools.getConstructionSitesStats = function(roomName) {
+
+	return this.constructionSitesStats[roomName];
+}
+
+roomTools.getAvoidCostCallback = function() {
+	return this.avoidCostCallback;
+}
+
+roomTools.isPlainTerrain = function(x, y, roomName) {
+
+	var isPlainTerrain = false;
+
+	var objects = Game.rooms[roomName].lookForAt(LOOK_TERRAIN, x, y);
+	if (objects.length != 1) {
+		throw new Error(`One terrain object not found in room ${roomName} at position ${x},${y}`);
+	}
+
+	if (objects[0] === "plain") {
+		isPlainTerrain = true;
+	}
+
+	return isPlainTerrain;
+}
+
+roomTools.isOccupiedByCreep = function(x, y, roomName) {
+
+	var objects = Game.rooms[roomName].lookForAt(LOOK_CREEPS, x, y);
+
+	return (objects.length > 0);
+}
+
+roomTools.inRangeToAny = function(pos, targets, range) {
+
+	var isInRangeToAny = false;
+
+	for (var target of targets) {
+		if (pos.inRangeTo(target, range)) {
+			isInRangeToAny = true;
+			break;
+		}
+	}
+
+	return isInRangeToAny;
+}
+
 roomTools.getCountResourceHarvestPositions = function(resourceId) {
 
 	if (!Memory.state.roomTools.getCountResourceHarvestPositions) {
@@ -466,22 +593,22 @@ roomTools.getCountControllerUpgradePositions = function(controller) {
 		for (var differentialStart = 2; differentialStart <= 3; differentialStart++) {
 
 			for (var xDifferential = -1 * differentialStart; xDifferential <= differentialStart; xDifferential++) {
-	
+
 				if (roomTools.isPlainTerrain(controller.pos.x + xDifferential, controller.pos.y - differentialStart, controller.room.name)) {
 					countControllerUpgradePositions++;
 				}
-	
+
 				if (roomTools.isPlainTerrain(controller.pos.x + xDifferential, controller.pos.y + differentialStart, controller.room.name)) {
 					countControllerUpgradePositions++;
 				}
 			}
-	
-			for (var yDifferential =  -1 * differentialStart + 1; yDifferential <= differentialStart - 1; yDifferential++) {
-	
+
+			for (var yDifferential = -1 * differentialStart + 1; yDifferential <= differentialStart - 1; yDifferential++) {
+
 				if (roomTools.isPlainTerrain(controller.pos.x - differentialStart, controller.pos.y + yDifferential, controller.room.name)) {
 					countControllerUpgradePositions++;
 				}
-	
+
 				if (roomTools.isPlainTerrain(controller.pos.x + differentialStart, controller.pos.y + yDifferential, controller.room.name)) {
 					countControllerUpgradePositions++;
 				}
@@ -492,72 +619,6 @@ roomTools.getCountControllerUpgradePositions = function(controller) {
 	}
 
 	return countControllerUpgradePositions;
-}
-
-roomTools.buildConstructionSitesStats = function() {
-
-	this.constructionSitesStats = {};
-
-	for (var roomName in Game.rooms) {
-
-		var room = Game.rooms[roomName];
-		if (room.controller && room.controller.my) {
-
-			var constructionCost = room.find(FIND_CONSTRUCTION_SITES).reduce((cost, constructionSite) =>
-				cost += constructionSite.progressTotal - constructionSite.progress, 0);
-
-			this.constructionSitesStats[roomName] = {
-				constructionCost: constructionCost,
-			};
-		}
-	}
-}
-
-roomTools.hasConstructionSites = function(roomName) {
-
-	return (this.constructionSitesStats[roomName] && this.constructionSitesStats[roomName].constructionCost > 0);
-}
-
-roomTools.getConstructionSitesStats = function(roomName) {
-
-	return this.constructionSitesStats[roomName];
-}
-
-roomTools.isPlainTerrain = function(x, y, roomName) {
-
-	var isPlainTerrain = false;
-
-	var objects = Game.rooms[roomName].lookForAt(LOOK_TERRAIN, x, y);
-	if (objects.length != 1) {
-		throw new Error(`One terrain object not found in room ${roomName} at position ${x},${y}`);
-	}
-
-	if (objects[0] === "plain") {
-		isPlainTerrain = true;
-	}
-
-	return isPlainTerrain;
-}
-
-roomTools.isOccupiedByCreep = function(x, y, roomName) {
-
-	var objects = Game.rooms[roomName].lookForAt(LOOK_CREEPS, x, y);
-
-	return (objects.length > 0);
-}
-
-roomTools.inRangeToAny = function(pos, targets, range) {
-
-	var isInRangeToAny = false;
-
-	for (var target of targets) {
-		if (pos.inRangeTo(target, range)) {
-			isInRangeToAny = true;
-			break;
-		}
-	}
-
-	return isInRangeToAny;
 }
 
 roomTools.getDropFlag = function(roomName) {

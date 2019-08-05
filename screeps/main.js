@@ -32,7 +32,7 @@ function loop() {
 		// profiler.wrap(function(){
 
 		initialize();
-		roomTools.buildRoomStats();
+		roomTools.initialize();
 		// spawnTools.buildSpawnStats();
 
 		var displayTime = Game.time.toString();

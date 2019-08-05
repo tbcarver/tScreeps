@@ -282,16 +282,8 @@ class BaseCreep {
 
 	moveIntoRoom() {
 
-		var ignoreObjects = [];
-		coreArray.pushValue(ignoreObjects, roomTools.getDropFlag(this.creep.room.name));
-
 		var path = this.creep.pos.findPathTo(25, 25, {
-			costCallback: (roomName, costMatrix) => {
-				for (var ignoreObject of ignoreObjects) {
-					costMatrix.set(ignoreObject.pos.x, ignoreObject.pos.y, 255);
-				};
-				return undefined;
-			},
+			costCallback: roomTools.getAvoidCostCallback(),
 		});
 
 		if (!path) {
@@ -313,12 +305,7 @@ class BaseCreep {
 
 			if (target) {
 				path = this.creep.pos.findPathTo(target, {
-					costCallback: (roomName, costMatrix) => {
-						for (var ignoreObject of ignoreObjects) {
-							costMatrix.set(ignoreObject.pos.x, ignoreObject.pos.y, 255);
-						};
-						return undefined;
-					},
+					costCallback: roomTools.getAvoidCostCallback(),
 				});
 			}
 		}
@@ -345,20 +332,13 @@ class BaseCreep {
 			avoidCreeps = true;
 		}
 
-		var ignoreObjects = [];
-		coreArray.pushValue(ignoreObjects, roomTools.getDropFlag(this.creep.room.name));
-
 		var options = {
 			reusePath: 100,
 			ignoreCreeps: !avoidCreeps,
 			ignoreRoads: (this.memory.partsPerMove && this.memory.partsPerMove === 1) ? true : false,
 			range: 0,
 			maxRooms: 1,
-			costCallback: (roomName, costMatrix) => {
-				for (var ignoreObject of ignoreObjects) {
-					costMatrix.set(ignoreObject.pos.x, ignoreObject.pos.y, 255);
-				};
-			},
+			costCallback: roomTools.getAvoidCostCallback(),
 		}
 
 		var path = room.findPath(this.creep.pos, pos, options);
@@ -417,6 +397,25 @@ class BaseCreep {
 
 	isInTravelDistance(target) {
 		return !this.creep.pos.inRangeTo(target, 3);
+	}
+
+	travelToWaitFlag(){
+
+		var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
+		if (waitFlag) {
+			this.travelTo(waitFlag, 1, true);
+		} else {
+			// debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} can't find any resource to harvest`);
+		}
+	}
+
+	moveToAndAvoid(target) {
+
+		var path = this.creep.pos.findPathTo(target, {
+			costCallback: roomTools.getAvoidCostCallback(),
+		});
+
+		return this.creep.moveByPath(path);
 	}
 
 	// creepTo(target) {

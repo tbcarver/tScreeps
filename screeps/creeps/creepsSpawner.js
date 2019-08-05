@@ -142,7 +142,7 @@ function trySpawnCreep(room, isRemoteRoom, spawn, creepConstructor, creepsSpawnR
 
 		if (creepMemory) {
 
-			creepMemory.creepsSpawnRuleKey = creepsSpawnRule.creepsSpawnRule;
+			creepMemory.creepsSpawnRuleKey = creepsSpawnRule.creepsSpawnRuleKey;
 			creepMemory.spawnedRoomName = spawn.room.name;
 
 			if (isRemoteRoom) {

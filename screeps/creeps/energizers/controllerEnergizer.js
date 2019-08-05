@@ -39,7 +39,7 @@ class ControllerEnergizer extends EnergyCreep {
 			if (target) {
 
 				if (this.creep.build(target) == ERR_NOT_IN_RANGE) {
-					this.creep.moveTo(target);
+					this.moveToAndAvoid(target);
 				}
 
 				acted = true;
@@ -66,7 +66,7 @@ class ControllerEnergizer extends EnergyCreep {
 
 					if (transferResult == ERR_NOT_IN_RANGE) {
 
-						this.creep.moveTo(this.creep.room.controller);
+						this.moveToAndAvoid(this.creep.room.controller);
 
 					} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
 

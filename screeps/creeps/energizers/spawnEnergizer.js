@@ -60,7 +60,7 @@ class SpawnEnergizer extends EnergyCreep {
 
 				} else if (transferResult == ERR_NOT_IN_RANGE) {
 
-					this.creep.moveTo(targetStructure);
+					this.moveToAndAvoid(targetStructure);
 
 				} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
 

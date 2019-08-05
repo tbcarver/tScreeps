@@ -34,7 +34,7 @@ class ExtensionEnergizer extends EnergyCreep {
 			if (extension) {
 				if (this.creep.transfer(extension, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 
-					this.creep.moveTo(extension);
+					this.moveToAndAvoid(extension);
 				}
 			} else if (this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .75) {
 
@@ -42,7 +42,7 @@ class ExtensionEnergizer extends EnergyCreep {
 				this.harvest();
 
 			} else {
-				this.creep.moveTo(activeExtension);
+				this.moveToAndAvoid(activeExtension);
 			}
 		}
 	}
