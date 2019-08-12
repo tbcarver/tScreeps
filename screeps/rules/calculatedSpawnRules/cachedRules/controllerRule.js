@@ -4,6 +4,7 @@ var roomTools = require("../../../tools/roomTools");
 
 var controllerRule = {
 	coolOffCount: 300,
+	prepend: true,
 };
 
 controllerRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {

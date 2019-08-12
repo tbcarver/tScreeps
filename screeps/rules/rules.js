@@ -16,6 +16,7 @@ var rules = {
 	mobAttackRoomCoolDownCount: 15,
 	observingRooms: [""],
 	upgradeControllerSpawnRule: "oneToEight", // oneToEight
+	upgradeControllerEnergyTransferPercent: 20,
 	oneToEightTogetherMinimum: 2,
 	visualizeMovePaths: false,
 	visualizeTravelPaths: false,

@@ -23,7 +23,7 @@ dropStrategyTools.recalculateEnergy = function(creepsSpawnRule, creepType, measu
 		var averageEnergy = (measureMemory.totalEnergyCount > 0) ? Math.floor(measureMemory.totalEnergy / measureMemory.totalEnergyCount) : 0;
 		var energyToCapacityPercent = (averageCarryCapacity > 0) ? Math.floor(averageEnergy / averageCarryCapacity * 100) : 0;
 
-		if (energyToCapacityPercent > averageCarryCapacity * 2.3) {
+		if (energyToCapacityPercent > 80) {
 
 			var additionalCreepsCount = (averageCarryCapacity > 0) ? Math.floor(energyToCapacityPercent / averageCarryCapacity) : 0;
 
@@ -39,7 +39,7 @@ dropStrategyTools.recalculateEnergy = function(creepsSpawnRule, creepType, measu
 			}
 		}
 	}
-
+	
 	measureMemory.totalEnergyCount = 0;
 	measureMemory.totalEnergy = 0;
 

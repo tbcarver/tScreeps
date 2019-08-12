@@ -119,7 +119,7 @@ class DropHarvester extends BaseCreep {
 							containers = containers.filter(container => countDropHarvestersAssignedToContainer(container) < 1);
 
 							if (containers.length > 0) {
-								creepMemory.containerId = containers[0];
+								creepMemory.containerId = containers[0].id;
 							}
 
 							found = true;

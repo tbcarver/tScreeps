@@ -9,7 +9,7 @@ calculatedSpawnRules.addCalculatedRules = function(creepsSpawnRules, roomsCurren
 	// NOTE: Order is important. Because of prepended rules.
 
 	roomStrategiesRules(creepsSpawnRules, roomsCurrentSpawnedCounts);
-	cachedCalculatedSpawnRules(creepsSpawnRules);
+	cachedCalculatedSpawnRules(creepsSpawnRules, roomsCurrentSpawnedCounts);
 }
 
 

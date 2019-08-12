@@ -13,14 +13,17 @@ upgradeControllerRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedR
 
 	var remoteRoomCreepsSpawnRules;
 
-	switch (rules.upgradeControllerSpawnRule) {
-		case "oneToEight":
-			remoteRoomCreepsSpawnRules = buildOneToEightRules(creepsSpawnRules, cachedRuleName);
-			break;
+	if (rules.upgradeControllerSpawnRule) {
 
-		default:
-			debug.danger(`Unknown upgradeControllerSpawnRule: ${rules.upgradeControllerSpawnRule}`);
-			break;
+		switch (rules.upgradeControllerSpawnRule) {
+			case "oneToEight":
+				remoteRoomCreepsSpawnRules = buildOneToEightRules(creepsSpawnRules, cachedRuleName);
+				break;
+
+			default:
+				debug.danger(`Unknown upgradeControllerSpawnRule: ${rules.upgradeControllerSpawnRule}`);
+				break;
+		}
 	}
 
 	return remoteRoomCreepsSpawnRules;
@@ -28,6 +31,7 @@ upgradeControllerRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedR
 
 function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 
+	var energyTransferPercent = rules.upgradeControllerEnergyTransferPercent || 100;
 	var spawningRooms = [];
 
 	for (var roomName in Game.rooms) {
@@ -59,6 +63,8 @@ function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 			}
 
 			if (creepsCount > 0) {
+
+				creepsCount = Math.floor(creepsCount * energyTransferPercent / 100);
 
 				var spawningRoom = {
 					roomName: roomName,
