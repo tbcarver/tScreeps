@@ -48,7 +48,7 @@ dropStrategyTools.recalculateEnergy = function(creepsSpawnRule, creepType, measu
 
 dropStrategyTools.measureEnergy = function(measureMemory, resources) {
 
-	var totalEnergy = sumBy(resources, "energy");
+	var totalEnergy = sumBy(resources, "writableAmount");
 
 	measureMemory.totalEnergyCount++;
 	measureMemory.totalEnergy += totalEnergy;

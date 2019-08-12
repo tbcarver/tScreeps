@@ -1,5 +1,4 @@
 
-var findTools = require("../../tools/findTools");
 var roomTools = require("../../tools/roomTools");
 var spawnTools = require("../../tools/spawnTools");
 var BaseCreep = require("../baseCreeps/baseCreep");
@@ -20,23 +19,52 @@ class DropHarvester extends BaseCreep {
 
 			if (this.state === "harvesting") {
 
-				if (this.memory.resourceId) {
-					resource = Game.getObjectById(this.memory.resourceId);
+				if (this.memory.containerId) {
+					var container = Game.getObjectById(this.memory.containerId);
 
-				} else {
-					resource = this.creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+					if (!this.creep.pos.isEqualTo(container)) {
+						this.travelTo(container, 0, true);
+						acted = true;
+					}
 				}
 
-				if (resource) {
-					if (this.isInTravelDistance(resource)) {
-						this.travelNearTo(resource);
-					} else if (this.creep.harvest(resource) == ERR_NOT_IN_RANGE) {
-						this.creep.moveTo(resource);
-					}
-				} else {
+				if (!acted) {
 
 					if (this.memory.resourceId) {
-						debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} no resource found, resourceId: ${this.memory.resourceId}`);
+						resource = Game.getObjectById(this.memory.resourceId);
+
+					} else {
+						resource = this.creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+					}
+
+					if (resource) {
+						if (this.isInTravelDistance(resource)) {
+							this.travelNearTo(resource);
+						} else if (this.creep.harvest(resource) == ERR_NOT_IN_RANGE) {
+
+							var containers = roomTools.getSourcesWritableDropContainers(this.creep.room.name, resource.id);
+							if (containers) {
+
+								var path = this.creep.pos.findPathTo(resource, {
+									costCallback: function(roomName, costMatrix) {
+										for (var container of containers) {
+											costMatrix.set(container.pos.x, container.pos.y, 255);
+										};
+										return undefined;
+									},
+								});
+					
+								this.creep.moveByPath(path);
+	
+							} else {
+								this.creep.moveTo(resource);
+							}
+						}
+					} else {
+
+						if (this.memory.resourceId) {
+							debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} no resource found, resourceId: ${this.memory.resourceId}`);
+						}
 					}
 				}
 			}
@@ -87,13 +115,12 @@ class DropHarvester extends BaseCreep {
 								resourceId: resource.id,
 							}
 
-							// var containers = room.find(FIND_STRUCTURES, {
-							// 	filter: container => container.structureType == STRUCTURE_CONTAINER &&
-							// 		roomTools.isDropContainer(container) &&
-							// 		findTools.isInRange(resource.pos, container.pos, 2)
-							// });
+							var containers = roomTools.getSourcesWritableDropContainers(room.name, resource.id);
+							containers = containers.filter(container => countDropHarvestersAssignedToContainer(container) < 1);
 
-
+							if (containers.length > 0) {
+								creepMemory.containerId = containers[0];
+							}
 
 							found = true;
 							break;
@@ -112,7 +139,7 @@ class DropHarvester extends BaseCreep {
 		}
 
 		if (creepMemory) {
-			creepMemory.bodyPartsType =  "moveWork";
+			creepMemory.bodyPartsType = "moveWork";
 			creepMemory.state = "harvesting";
 			creepMemory.maximumSpawnCapacity = 500;
 		}
@@ -131,6 +158,23 @@ function getCountDropHarvestersAtResource(resourceId) {
 				countCreeps++;
 			}
 		}
+
+		return countCreeps;
+	}, 0);
+
+	return countCreeps;
+}
+
+function countDropHarvestersAssignedToContainer(container) {
+
+	var countCreeps = _.reduce(Memory.creeps, (countCreeps, creepMemory, creepName) => {
+
+		if (creepMemory.type === "dropHarvester" && !spawnTools.isCreepInSpawnBuffer(Game.creeps[creepName])) {
+
+			if (creepMemory.containerId === container.id) {
+				countCreeps++;
+			};
+		};
 
 		return countCreeps;
 	}, 0);

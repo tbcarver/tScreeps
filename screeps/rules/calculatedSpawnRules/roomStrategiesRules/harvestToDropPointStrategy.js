@@ -126,9 +126,13 @@ harvestToDropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, cree
 		if (room) {
 
 			var sources = roomTools.getSources(room.name);
+			var resources;
 
 			for (var source of sources) {
-				var resources = roomTools.GetSourceWritableDroppedResources(room.name, source.id);
+				resources = roomTools.GetSourceWritableDroppedResources(room.name, source.id);
+				dropStrategyTools.measureEnergy(creepsSpawnRule.measure.harvestedEnergy[source.id], resources);
+					
+				resources = roomTools.getSourcesWritableDropContainers(remoteRoomName, source.id);
 				dropStrategyTools.measureEnergy(creepsSpawnRule.measure.harvestedEnergy[source.id], resources);
 			}
 

@@ -72,14 +72,11 @@ class DropTransferer extends BaseCreep {
 					}
 				} else {
 
-					resources = this.creep.room.find(FIND_STRUCTURES, {
-						filter: container => container.structureType === STRUCTURE_CONTAINER &&
-							findTools.isInRange(source.pos, container.pos, 2)
-					});
+					resources = roomTools.getSourcesWritableDropContainers(this.creep.room.name, this.memory.sourceId);
 
 					if (resources.length > 0) {
 
-						resources = orderBy(resources, "resources", "desc");
+						resources = orderBy(resources, "writableAmount", "desc");
 						resource = resources[0];
 					}
 				}
@@ -102,11 +99,16 @@ class DropTransferer extends BaseCreep {
 				result = this.creep.withdraw(resource, RESOURCE_ENERGY);
 				if (result === OK) {
 
-					if (resource.energyCapacity > this.availableCarryCapacity * 2) {
-						moveToOtherRoom();
-					}
-				}
+					var withdrawnEnergy = resource.writableAmount;
 
+					if (resource.energyCapacity > this.availableCarryCapacity) {
+						withdrawnEnergy = this.availableCarryCapacity;
+						this.state = "energizing";
+						this.transfer(moveToOtherRoom);
+					}
+
+					resource.writableAmount -= withdrawnEnergy;
+				}
 
 			} else {
 

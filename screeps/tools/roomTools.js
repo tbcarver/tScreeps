@@ -440,7 +440,7 @@ roomTools.buildContainerStats = function(myRooms) {
 
 		for (var container of containers) {
 
-			container.writableEnergy = container.store.energy;
+			container.writableAmount = container.store.energy;
 
 			for (var source of sources) {
 				if (container.pos.inRangeTo(source, 1)) {
@@ -452,7 +452,7 @@ roomTools.buildContainerStats = function(myRooms) {
 						}
 					}
 
-					sourcesDropContainers[source.id].containedEnergy += container.writableEnergy;
+					sourcesDropContainers[source.id].containedEnergy += container.writableAmount;
 					sourcesDropContainers[source.id].dropContainers.push(container);
 				}
 			}
@@ -464,11 +464,11 @@ roomTools.buildContainerStats = function(myRooms) {
 	}
 }
 
-roomTools.getSourcesDropContainers = function(roomName, sourceId) {
+roomTools.getSourcesWritableDropContainers = function(roomName, sourceId) {
 
 	var dropContainers = /** @type {StructureContainerWritable[]} */ ([]);
 
-	if (this.roomsContainerStats[roomName].sourcesDropContainers[sourceId]) {
+	if (this.roomsContainerStats[roomName] && this.roomsContainerStats[roomName].sourcesDropContainers[sourceId]) {
 		dropContainers = this.roomsContainerStats[roomName].sourcesDropContainers[sourceId].dropContainers;
 	}
 

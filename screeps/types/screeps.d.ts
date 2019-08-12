@@ -13,7 +13,10 @@ interface ResourceWritable<T extends ResourceConstant = ResourceConstant> extend
 interface StructureContainerWritable extends StructureContainer {
     readonly prototype: StructureContainerWritable;
 
-	writableEnergy: number;
+    /**
+     * The writable amount of resource units containing.
+     */
+	writableAmount: number;
 }
 
 interface CreepsSpawnRule {
