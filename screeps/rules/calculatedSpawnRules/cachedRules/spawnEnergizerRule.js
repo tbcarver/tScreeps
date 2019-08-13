@@ -36,7 +36,7 @@ spawnEnergizerRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRule
 			var creepsSpawnRuleKey = creepsSpawnRuleTools.buildCreepsSpawnRuleKey(room.name, room.name, "cached-" + cachedRuleName);
 			var partsPerMove = 2;
 			var hasDropFlagDroppedResources = roomTools.getDropFlagDroppedEnergy(room.name) > 200;
-			var hasStorage = roomTools.hasStorage(room.name);
+			var hasStoredEnergy = roomTools.hasMinimumStoredEnergy(room.name);
 			var roads = Game.rooms[room.name].find(FIND_STRUCTURES, {
 				filter: { structureType: STRUCTURE_ROAD }
 			})
@@ -51,8 +51,8 @@ spawnEnergizerRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRule
 				spawnOrderMaxSpawnedCounts: [
 					{ spawnEnergizer: countSpawnEnergizers },
 				],
-				canEnergyCreepsHarvest: !(hasStorage || hasDropFlagDroppedResources),
-				canEnergyCreepsPickup: !hasStorage,
+				canEnergyCreepsHarvest: !(hasStoredEnergy || hasDropFlagDroppedResources),
+				canEnergyCreepsPickup: !hasStoredEnergy,
 				partsPerMove: partsPerMove,
 			});
 		}

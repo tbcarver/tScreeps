@@ -122,7 +122,7 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 
 		var creepsSpawnRuleKey = creepsSpawnRuleTools.buildCreepsSpawnRuleKey(spawnRoomName, remoteRoomName, "cached-" + cachedRuleName);
 		var partsPerMove = 2;
-		var hasStorage = roomTools.hasStorage(remoteRoomName);
+		var hasStoredEnergy = roomTools.hasMinimumStoredEnergy(remoteRoomName);
 		var roads = Game.rooms[remoteRoomName].find(FIND_STRUCTURES, {
 			filter: { structureType: STRUCTURE_ROAD }
 		})
@@ -138,7 +138,7 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 				{ controllerEnergizer: 0 },
 			],
 			canControllerEnergizersBuild: true,
-			canEnergyCreepsPickup: !hasStorage,
+			canEnergyCreepsPickup: !hasStoredEnergy,
 			partsPerMove: partsPerMove,
 		}
 

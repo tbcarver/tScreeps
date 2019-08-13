@@ -194,11 +194,11 @@ dropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, creepsSpawnRu
 
 dropPointStrategy.canApplyRule = function(spawnRoomName, remoteRoomName) {
 
-	var canApplyRule = false;
+	var canApplyRule = true;
 	var storageStats = roomTools.getStorageStats(spawnRoomName);
 
-	if (!storageStats.hasStorage || storageStats.percentageStoredEnergy < 99) {
-		canApplyRule = true;
+	if (storageStats.hasStorage && storageStats.percentageStoredEnergy < 99) {
+		canApplyRule = false;
 	}
 
 	return canApplyRule;

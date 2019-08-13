@@ -405,6 +405,12 @@ roomTools.hasStorage = function(roomName) {
 	return (this.roomsStorageStats[roomName]) ? this.roomsStorageStats[roomName].hasStorage : false;
 }
 
+roomTools.hasMinimumStoredEnergy = function(roomName) {
+
+	return (this.roomsStorageStats[roomName] && this.roomsStorageStats[roomName].percentageStoredEnergy &&
+		this.roomsStorageStats[roomName].percentageStoredEnergy > 5);
+}
+
 roomTools.getStoredEnergy = function(roomName) {
 
 	return (this.roomsStorageStats[roomName]) ? this.roomsStorageStats[roomName].storedEnergy : 0;
