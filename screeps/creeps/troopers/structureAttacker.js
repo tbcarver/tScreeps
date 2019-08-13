@@ -40,6 +40,7 @@ class StructureAttacker extends TrooperCreep {
 		if (creepMemory) {
 			creepMemory.type = "structureAttacker";
 			creepMemory.bodyPartsType =  "rangedAttacker";
+			creepMemory.isAttackTrooper = true;
 			creepMemory.maximumSpawnCapacity = rules.maximumRangedAttackerSpawnCapacity || 800;
 		}
 

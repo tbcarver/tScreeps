@@ -19,7 +19,7 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 	calculatedSpawnRules.addCalculatedRules(creepsSpawnRulesCopy, roomsCurrentSpawnedCounts);
 	addOneTimeOneCreepSpawnRules(creepsSpawnRulesCopy);
 	storeCreepsSpawnRules(creepsSpawnRulesCopy);
-
+	
 	for (var creepsSpawnRule of creepsSpawnRulesCopy) {
 
 		var room = Game.rooms[creepsSpawnRule.roomName];

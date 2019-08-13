@@ -104,6 +104,10 @@ harvestToDropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, 
 						maxSpawnedCount = roomTools.getSpawnsCount(spawnRoomName) * 5;
 					}
 
+					if (maxSpawnedCount < 1) {
+						maxSpawnedCount = 1;
+					}
+
 					spawnOrderMaxSpawnedCount[creepType] = maxSpawnedCount;
 				}
 			} else {
@@ -149,7 +153,7 @@ harvestToDropPointStrategy.canApplyRule = function(spawnRoomName, remoteRoomName
 	var canApplyRule = true;
 	var storageStats = roomTools.getStorageStats(spawnRoomName);
 
-	if (storageStats.hasStorage && storageStats.percentageStoredEnergy < 99) {
+	if (storageStats.hasStorage && storageStats.percentageStoredEnergy > 100) {
 		canApplyRule = false;
 	}
 

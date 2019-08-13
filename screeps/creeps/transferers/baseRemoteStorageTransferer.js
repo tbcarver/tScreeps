@@ -71,28 +71,28 @@ class BaseRemoteStorageTransferer extends RemoteCreep {
 
 						let result = this.creep.withdraw(resource, RESOURCE_ENERGY);
 						if (result === OK) {
-	
-							if (resource.energyCapacity > this.availableCarryCapacity * 2) {	
+
+							if (resource.energyCapacity > this.availableCarryCapacity * 2) {
 								moveToOtherRoom();
 							}
-	
+
 						} else if (result == ERR_NOT_IN_RANGE) {
 							this.creep.moveTo(resource);
 						}
 					} else if (resource.resourceType) {
 
-						let result = this.creep.pickup(resource);	
+						let result = this.creep.pickup(resource);
 						if (result === OK) {
-	
+
 							var pickedUpAmount = resource.writableAmount;
-	
+
 							if (pickedUpAmount > this.availableCarryCapacity) {
-								pickedUpAmount = this.availableCarryCapacity;	
+								pickedUpAmount = this.availableCarryCapacity;
 								moveToOtherRoom();
 							}
-	
+
 							resource.writableAmount -= pickedUpAmount;
-	
+
 						} else if (result == ERR_NOT_IN_RANGE) {
 							this.creep.moveTo(resource);
 						}
@@ -113,56 +113,31 @@ class BaseRemoteStorageTransferer extends RemoteCreep {
 
 		} else if (this.state === "transferring") {
 
-			var dropFlag = roomTools.getDropFlag(this.creep.room.name);
-			if (dropFlag) {
-				if (this.isInTravelDistance(dropFlag)) {
-					this.travelNearTo(dropFlag);
-
-				} else if (this.creep.pos.inRangeTo(dropFlag, 0)) {
-
-					this.creep.drop(RESOURCE_ENERGY);
-					moveToOtherRoom();
-
-				} else {
-					this.creep.moveTo(dropFlag);
-				}
-			} else {
-
-				var resource;
-
-				if (this.canTransferToStorageOnly) {
-
-					resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-						filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
-							structure.structureType === STRUCTURE_TERMINAL) &&
-							structure.storeCapacity - structure.store[RESOURCE_ENERGY] > this.creep.carry[RESOURCE_ENERGY]
-					});
-
-				} else {
-
-					resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-						filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
-							structure.structureType === STRUCTURE_TERMINAL ||
-							structure.structureType === STRUCTURE_CONTAINER) &&
-							((roomTools.isDropContainer(structure, 2) && structure.store[RESOURCE_ENERGY] / structure.storeCapacity < .65) ||
-								(!roomTools.isDropContainer(structure, 2) && structure.store[RESOURCE_ENERGY] / structure.storeCapacity < .95))
-					});
-				}
+			if (roomTools.hasMinimumStorageCapacity(this.creep.room.name)) {
+			
+				var resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+					filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
+						structure.structureType === STRUCTURE_TERMINAL) &&
+						structure.store[RESOURCE_ENERGY] / structure.storeCapacity < .95
+				});
 
 				if (resource) {
 
 					if (this.isInTravelDistance(resource)) {
 						this.travelNearTo(resource);
 					} else {
-						var transferResult = this.creep.transfer(resource, RESOURCE_ENERGY);
 
-						if (transferResult == ERR_NOT_IN_RANGE) {
+						var transferResult = this.creep.transfer(resource, RESOURCE_ENERGY);
+						if (transferResult === ERR_NOT_IN_RANGE) {
 
 							this.creep.moveTo(resource);
 
-						} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+						} else if (transferResult === OK) {
 
 							moveToOtherRoom();
+
+						} else {
+							debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} couldn't transfer energy ${transferResult}`);
 						}
 					}
 				} else {
@@ -176,6 +151,22 @@ class BaseRemoteStorageTransferer extends RemoteCreep {
 						}
 					} else {
 						debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} can't find any resource`);
+					}
+				}
+			}
+			else {
+				var dropFlag = roomTools.getDropFlag(this.creep.room.name);
+				if (dropFlag) {
+					if (this.isInTravelDistance(dropFlag)) {
+						this.travelNearTo(dropFlag);
+
+					} else if (this.creep.pos.inRangeTo(dropFlag, 0)) {
+
+						this.creep.drop(RESOURCE_ENERGY);
+						moveToOtherRoom();
+
+					} else {
+						this.creep.moveTo(dropFlag);
 					}
 				}
 			}

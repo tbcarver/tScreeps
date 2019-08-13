@@ -1,11 +1,11 @@
 
 // TODO: error handling for bad creep type
 var SpawnOrderMaxSpawnedCount = require("./spawnOrderMaxSpawnedCount");
+var creepsSpawnRuleTools = require("./creepsSpawnRuleTools");
 
 var rules = {
 	creepsTickToLiveSpawnBuffer: 50,
 	evacuateRooms: true,
-	logDroppedStats: true,
 	logRoomsCurrentSpawnedCounts: "collapsed", // true, "collapsed" or false
 	logSpawnStats: true,
 	routeRoomsPriority: { W10N9: 3, W9N8: 2, W7N12: 2, W10N6: 2, W6N10: 2, W9N12: 2 },
@@ -16,7 +16,7 @@ var rules = {
 	mobAttackRoomCoolDownCount: 15,
 	observingRooms: [""],
 	upgradeControllerSpawnRule: "oneToEight", // oneToEight
-	upgradeControllerEnergyTransferPercent: 20,
+	upgradeControllerEnergyTransferPercent: 100,
 	oneToEightTogetherMinimum: 2,
 	visualizeMovePaths: false,
 	visualizeTravelPaths: false,
@@ -25,7 +25,7 @@ var rules = {
 var creepsSpawnRules = /** @type {CreepsSpawnRule[]} */ ([]);
 // NOTE: Order is important
 creepsSpawnRules.push(require("./rooms/W12N16"));
-// creepsSpawnRules.push(require("./rooms/W12N17"));
+creepsSpawnRules.push(require("./rooms/W12N17"));
 
 /** @param {CreepsSpawnRule[]} creepsSpawnRules */
 function storeCreepsSpawnRules(creepsSpawnRules) {
@@ -48,6 +48,11 @@ function storeCreepsSpawnRules(creepsSpawnRules) {
 			if (remoteRoom.creepsSpawnRuleKey) {
 
 				ruleKeyCreepsSpawnRules[remoteRoom.creepsSpawnRuleKey] = remoteRoom;
+
+			} else {
+
+				var creepsSpawnRuleKey = creepsSpawnRuleTools.buildCreepsSpawnRuleKey(spawnCreepsSpawnRule.roomName, remoteRoom.roomName, "remote-room");
+				ruleKeyCreepsSpawnRules[creepsSpawnRuleKey] = remoteRoom;
 			}
 		}
 	}

@@ -71,7 +71,7 @@ class EnergyCreep extends BaseCreep {
 					let result = this.creep.withdraw(resource, RESOURCE_ENERGY);
 					if (result === OK) {
 
-						if (resource.energyCapacity > this.availableCarryCapacity * 2) {
+						if (resource.store.energy > this.availableCarryCapacity * 2) {
 							this.state = "energyActing";
 							this.harvestCompleteMove();
 						}

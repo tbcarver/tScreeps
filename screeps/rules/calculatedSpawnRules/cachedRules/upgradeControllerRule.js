@@ -37,34 +37,31 @@ function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 	for (var roomName in Game.rooms) {
 
 		var spawnsCount = roomTools.getSpawnsCount(roomName);
-		var storageStats = roomTools.getStorageStats(roomName);
-		var droppedEnergy = roomTools.getDroppedEnergy(roomName);
-		var percentStoredEnergyRequiredMultiplier = 5;
-
-		if (roomTools.hasDropFlag(roomName)) {
-			droppedEnergy = roomTools.getDropFlagDroppedEnergy(roomName);
-		}
 
 		if (spawnsCount > 0) {
 
 			var creepsCount = 2;
+			var availableEnergy = 0;
 
-			if (storageStats.hasStorage && storageStats.percentageStoredEnergy >= percentStoredEnergyRequiredMultiplier * spawnsCount) {
+			if (roomTools.hasMinimumStoredEnergy(roomName)) {
 
-				creepsCount = Math.floor(Math.ceil(storageStats.percentageStoredEnergy / 20) * spawnsCount);
+				availableEnergy = roomTools.getStoredEnergy(roomName);
 
-			} else if (droppedEnergy > 0) {
+			} else if (roomTools.hasMinimumDropFlagDroppedEnergy(roomName)) {
 
-				creepsCount = 4;
+				availableEnergy = roomTools.getDropFlagDroppedEnergy(roomName);
+			}
 
-				if (droppedEnergy > 300) {
-					creepsCount = Math.floor(droppedEnergy / 50);
-				}
+			availableEnergy = Math.floor(availableEnergy * energyTransferPercent / 100);
+
+			// TODO: Need to calculate the the average growth of stored energy over time and subtract operating energy need and calculate from there
+			creepsCount = Math.floor(availableEnergy / 50);
+
+			if (creepsCount > 25 * spawnsCount) {
+				creepsCount = 25 * spawnsCount;
 			}
 
 			if (creepsCount > 0) {
-
-				creepsCount = Math.floor(creepsCount * energyTransferPercent / 100);
 
 				var spawningRoom = {
 					roomName: roomName,

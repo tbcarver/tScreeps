@@ -19,12 +19,20 @@ dropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName,
 				var remoteReserverCount = dropStrategyTools.getRemoteReserverCount(spawnRoom, remoteRoom);
 				var dropHarvesterCount = dropStrategyTools.getDropHarvesterCount(spawnRoom, remoteRoom, spawnCreepsSpawnRule);
 				var remoteSpawnedDropTransfererCount = spawnRoomName !== remoteRoomName ? 6 : 0;
+				var partsPerMove = 2;
+				var roads = remoteRoom.find(FIND_STRUCTURES, {
+					filter: { structureType: STRUCTURE_ROAD }
+				})
+
+				if (roads.length === 0) {
+					partsPerMove = 1;
+				}
 
 				creepsSpawnRule = {
 					creepsSpawnRuleKey: creepsSpawnRuleKey,
 					roomName: remoteRoomName,
 					spawnOrderMaxSpawnedCounts: [],
-					partsPerMove: 1,
+					partsPerMove: partsPerMove,
 					canRemoteStorageTransferersPickup: true,
 					canStorageTransferersPickup: true,
 					measure: {
@@ -84,6 +92,17 @@ dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpa
 			var remoteRoom = Game.rooms[remoteRoomName];
 			if (remoteRoom) {
 
+				var partsPerMove = 2;
+				var roads = remoteRoom.find(FIND_STRUCTURES, {
+					filter: { structureType: STRUCTURE_ROAD }
+				})
+
+				if (roads.length === 0) {
+					partsPerMove = 1;
+				}
+
+				creepsSpawnRule.partsPerMove = partsPerMove;
+
 				var creepType = "remoteReserver";
 				var spawnOrderMaxSpawnedCount = SpawnOrderMaxSpawnedCount.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, creepType);
 				spawnOrderMaxSpawnedCount[creepType] = dropStrategyTools.getRemoteReserverCount(spawnRoom, remoteRoom);
@@ -106,7 +125,6 @@ dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpa
 
 					maxSpawnedCount = dropStrategyTools.recalculateEnergy(creepsSpawnRule, creepType, creepsSpawnRule.measure.droppedEnergy, maxSpawnedCount, currentSpawnedCount);
 
-
 					if (isAtStorageLimit) {
 						if (maxSpawnedCount > 5) {
 							maxSpawnedCount = 5;
@@ -115,6 +133,10 @@ dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpa
 
 					if (maxSpawnedCount > roomTools.getSpawnsCount(spawnRoomName) * 10) {
 						maxSpawnedCount = roomTools.getSpawnsCount(spawnRoomName) * 10;
+					}
+
+					if (maxSpawnedCount < 1) {
+						maxSpawnedCount = 1;
 					}
 
 					spawnOrderMaxSpawnedCount[creepType] = maxSpawnedCount;
@@ -140,6 +162,10 @@ dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpa
 
 					if (maxSpawnedCount > roomTools.getSpawnsCount(spawnRoomName) * 5) {
 						maxSpawnedCount = roomTools.getSpawnsCount(spawnRoomName) * 5;
+					}
+
+					if (maxSpawnedCount < 1) {
+						maxSpawnedCount = 1;
 					}
 
 					spawnOrderMaxSpawnedCount[creepType] = maxSpawnedCount;
@@ -197,7 +223,7 @@ dropPointStrategy.canApplyRule = function(spawnRoomName, remoteRoomName) {
 	var canApplyRule = true;
 	var storageStats = roomTools.getStorageStats(spawnRoomName);
 
-	if (storageStats.hasStorage && storageStats.percentageStoredEnergy < 99) {
+	if (storageStats.hasStorage && storageStats.percentageStoredEnergy > 100) {
 		canApplyRule = false;
 	}
 

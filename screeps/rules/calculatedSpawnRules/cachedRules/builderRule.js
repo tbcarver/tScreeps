@@ -1,5 +1,6 @@
 
 var creepsSpawnRuleTools = require("../../creepsSpawnRuleTools");
+var SpawnOrderMaxSpawnedCount = require("../../spawnOrderMaxSpawnedCount");
 var roomTools = require("../../../tools/roomTools");
 var orderBy = require("lodash/orderBy");
 
@@ -41,25 +42,24 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 			var storageStats = roomTools.getStorageStats(roomName);
 			var droppedEnergy = roomTools.getDroppedEnergy(roomName);
 			var spawnsCount = roomTools.getSpawnsCount(roomName);
-			var percentStoredEnergyRequiredMultiplier = 5;
 
 			if (spawnsCount > 0) {
 
 				var creepsCount = 0;
+				var availableEnergy = 0;
 
-				if (storageStats.hasStorage && storageStats.percentageStoredEnergy >= percentStoredEnergyRequiredMultiplier * spawnsCount) {
+				if (roomTools.hasMinimumStoredEnergy(roomName)) {
 
-					creepsCount = Math.floor(Math.ceil(storageStats.percentageStoredEnergy / 20) * spawnsCount);
+					availableEnergy = roomTools.getStoredEnergy(roomName);
 
-				} else if (droppedEnergy > 0) {
+				} else if (roomTools.hasMinimumDropFlagDroppedEnergy(roomName)) {
 
-					creepsCount = 6;
-
-					if (droppedEnergy > 300) {
-						creepsCount = Math.floor(droppedEnergy / 50);
-					}
+					availableEnergy = roomTools.getDropFlagDroppedEnergy(roomName);
 				}
 
+				creepsCount = Math.floor(availableEnergy / 50);
+
+				var remoteCreepsCount = creepsCount;
 				var countBuildingCountControllerEnergizers = buildingCountControllerEnergizers[roomName] || 0;
 				creepsCount = creepsCount - countBuildingCountControllerEnergizers;
 
@@ -67,7 +67,10 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 
 					var spawningRoom = {
 						roomName: roomName,
-						creepsCount: creepsCount,
+						creepsCount: {
+							builder: creepsCount,
+							remoteBuilder: remoteCreepsCount,
+						},
 					};
 
 					spawningRooms.push(spawningRoom);
@@ -83,7 +86,9 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 				var creepType = "builder";
 				var maxCreepsCount = Math.floor(buildingRoom.constructionCost / 5000);
 
-				if (buildingRoom.storedEnergy < maxCreepsCount * 1000) {
+				if (buildingRoom.storedEnergy + roomTools.getDropFlagDroppedEnergy(buildingRoom.roomName) === 0) {
+					creepType = "remoteBuilder";
+				} else if (buildingRoom.storedEnergy < maxCreepsCount * 1000) {
 					maxCreepsCount = Math.floor(maxCreepsCount / 2);
 				}
 
@@ -91,17 +96,13 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 					maxCreepsCount = 4;
 				}
 
-				if (buildingRoom.storedEnergy + roomTools.getDropFlagDroppedEnergy(buildingRoom.roomName) === 0) {
-					creepType = "remoteBuilder";
-				}
-
 				for (var count = 1; count <= maxCreepsCount; count++) {
 					for (var spawningRoom of spawningRooms) {
 
-						if (spawningRoom.creepsCount > 0) {
+						if (spawningRoom.creepsCount[creepType] > 0) {
 
 							incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawningRoom.roomName, buildingRoom.roomName, cachedRuleName, creepType);
-							spawningRoom.creepsCount--;
+							spawningRoom.creepsCount[creepType]--;
 						}
 					}
 				}
@@ -135,7 +136,7 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 			roomName: remoteRoomName,
 			spawnOrderMaxSpawnedCounts: [
 				{ builder: 0 },
-				{ removeBuilder: 0 },
+				{ remoteBuilder: 0 },
 			],
 			canEnergyCreepsHarvest: true,
 			canEnergyCreepsPickup: true,
@@ -143,11 +144,13 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 		}
 
 		remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms.push(creepsSpawnRule);
+		
 	}
 
 	var remoteRoom = /** @type {RemoteRoomCreepsSpawnRule} */(_.find(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName }));
+	var spawnOrderMaxSpawnedCount = SpawnOrderMaxSpawnedCount.find(remoteRoom.spawnOrderMaxSpawnedCounts, creepType);
 
-	remoteRoom.spawnOrderMaxSpawnedCounts[0][creepType]++;
+	spawnOrderMaxSpawnedCount[creepType]++;
 }
 
 function getCountBuildingControllerEnergizers() {

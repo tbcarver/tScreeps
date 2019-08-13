@@ -126,7 +126,7 @@ class DropTransferer extends BaseCreep {
 					resource.writableAmount -= pickedUpAmount;
 				}
 			}
-			
+
 			if (result == ERR_NOT_IN_RANGE) {
 				this.creep.moveTo(resource);
 			}
@@ -138,22 +138,7 @@ class DropTransferer extends BaseCreep {
 
 	transfer(moveToOtherRoom) {
 
-		var dropFlag = roomTools.getDropFlag(this.creep.room.name);
-		if (dropFlag) {
-
-			if (this.isInTravelDistance(dropFlag)) {
-				this.travelNearTo(dropFlag);
-
-			} else if (this.creep.pos.inRangeTo(dropFlag, 0)) {
-
-				this.creep.drop(RESOURCE_ENERGY);
-				this.state = "harvesting";
-				this.harvest();
-
-			} else {
-				this.creep.moveTo(dropFlag);
-			}
-		} else {
+		if (roomTools.hasMinimumStorageCapacity(this.creep.room.name)) {
 
 			var resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 				filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
@@ -161,30 +146,53 @@ class DropTransferer extends BaseCreep {
 					structure.store[RESOURCE_ENERGY] / structure.storeCapacity < .95
 			});
 
-			if (this.isInTravelDistance(resource)) {
-				this.travelNearTo(resource);
+			if (resource) {
 
+				if (this.isInTravelDistance(resource)) {
+					this.travelNearTo(resource);
+
+				} else {
+
+					var transferResult = this.creep.transfer(resource, RESOURCE_ENERGY);
+
+					if (transferResult === ERR_NOT_IN_RANGE) {
+
+						this.creep.moveTo(resource);
+
+					} else if (transferResult === OK) {
+
+						this.state = "harvesting";
+						this.harvest();
+
+					} else {
+						debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} couldn't transfer energy ${transferResult}`);
+					}
+				}
 			} else {
 
-				var transferResult = this.creep.transfer(resource, RESOURCE_ENERGY);
+				var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
+				if (waitFlag) {
+					this.creep.moveTo(waitFlag);
+				} else {
+					debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} can't find any resource`);
+				}
+			}
+		} else {
 
-				if (transferResult == ERR_NOT_IN_RANGE) {
+			var dropFlag = roomTools.getDropFlag(this.creep.room.name);
+			if (dropFlag) {
 
-					this.creep.moveTo(resource);
+				if (this.isInTravelDistance(dropFlag)) {
+					this.travelNearTo(dropFlag);
 
-				} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+				} else if (this.creep.pos.inRangeTo(dropFlag, 0)) {
 
+					this.creep.drop(RESOURCE_ENERGY);
 					this.state = "harvesting";
 					this.harvest();
 
-				} else if (transferResult !== OK) {
-
-					var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
-					if (waitFlag) {
-						this.creep.moveTo(waitFlag);
-					} else {
-						debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} can't find any resource`);
-					}
+				} else {
+					this.creep.moveTo(dropFlag);
 				}
 			}
 		}

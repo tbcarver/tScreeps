@@ -35,30 +35,6 @@ function loop() {
 		roomTools.initialize();
 		// spawnTools.buildSpawnStats();
 
-		var displayTime = Game.time.toString();
-		var availableClaims = Game.gcl.level - roomTools.getMyControllersCount();
-
-		if (availableClaims > 0) {
-			displayTime += ` <span style='color:yellow'>${availableClaims}</span>`;
-		}
-
-		if (rules.logSpawnStats) {
-
-			var spawnsStats = buildSpawnStats(displayTime);
-			debugPairsTable.primary(spawnsStats);
-
-		} else {
-
-			var energyStats = roomTools.getTotalStoredEnergy().toLocaleString("en-US") + " " +
-			roomTools.getTotalPercentageStoredEnergy() + "%";
-		
-			if (rules.logDroppedStats) {
-				energyStats += " " + roomTools.getTotalDroppedEnergy().toLocaleString("en-US")
-			}
-
-			debug.primary(displayTime, energyStats);
-		}
-
 		// console.log(controller.activateSafeMode())
 
 		//  constructionTools.createConstructionRoad();
@@ -94,6 +70,8 @@ function loop() {
 			var room = Game.rooms[roomName];
 			Memory.state.rooms[roomName].lastRoomEnergyAvailable = room.energyAvailable;
 		}
+
+		logStats();
 
 		// console.log(JSON.stringify(Game.spawns["spawn1"].room.lookAt(29, 25)))
 		test();
@@ -141,15 +119,38 @@ function initialize() {
 	}
 }
 
+function logStats() {
+
+	var displayTime = Game.time.toString();
+	var availableClaims = Game.gcl.level - roomTools.getMyControllersCount();
+
+	if (availableClaims > 0) {
+		displayTime += ` <span style='color:yellow'>${availableClaims}</span>`;
+	}
+
+	if (rules.logSpawnStats) {
+		var spawnsStats = buildSpawnStats(displayTime);
+		debugPairsTable.primary(spawnsStats);
+	}
+	else {
+		var energyStats = roomTools.getTotalStoredEnergy().toLocaleString("en-US") + " " +
+			roomTools.getTotalPercentageStoredEnergy() + "%";
+
+		energyStats += " " + roomTools.getTotalContainedEnergy().toLocaleString("en-US");
+		energyStats += " " + roomTools.getTotalDroppedEnergy().toLocaleString("en-US");
+
+		debug.primary(displayTime, energyStats);
+	}
+}
+
 function buildSpawnStats(displayTime) {
 
 	var spawnsStats = {};
 	var energyStats = roomTools.getTotalStoredEnergy().toLocaleString("en-US") + " " +
-	roomTools.getTotalPercentageStoredEnergy() + "%";
+		roomTools.getTotalPercentageStoredEnergy() + "%";
 
-	if (rules.logDroppedStats) {
-		energyStats += " " + roomTools.getTotalDroppedEnergy().toLocaleString("en-US")
-	}
+	energyStats += " " + roomTools.getTotalContainedEnergy().toLocaleString("en-US");
+	energyStats += " " + roomTools.getTotalDroppedEnergy().toLocaleString("en-US");
 
 	spawnsStats[displayTime] = energyStats;
 

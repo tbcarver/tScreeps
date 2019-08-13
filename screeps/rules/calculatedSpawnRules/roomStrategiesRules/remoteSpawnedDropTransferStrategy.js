@@ -78,6 +78,10 @@ remoteSpawnedDropTransferStrategy.recalculateCreepsSpawnRule = function(spawnRoo
 				maxSpawnedCount = roomTools.getSpawnsCount(spawnRoomName) * 10;
 			}
 
+			if (maxSpawnedCount < 1) {
+				maxSpawnedCount = 1;
+			}
+
 			spawnOrderMaxSpawnedCount[creepType] = maxSpawnedCount;
 
 		} else {

@@ -276,6 +276,11 @@ roomTools.getDroppedEnergy = function(roomName) {
 	return (this.roomsDroppedStats[roomName]) ? this.roomsDroppedStats[roomName].droppedEnergy : 0;
 }
 
+roomTools.hasMinimumDropFlagDroppedEnergy = function(roomName) {
+
+	return (this.roomsDroppedStats[roomName] && this.roomsDroppedStats[roomName].dropFlagDroppedEnergy > 1000);
+}
+
 roomTools.getDropFlagDroppedEnergy = function(roomName) {
 
 	return (this.roomsDroppedStats[roomName]) ? this.roomsDroppedStats[roomName].dropFlagDroppedEnergy : 0;
@@ -375,7 +380,7 @@ roomTools.buildStorageStats = function(myRooms) {
 				storageCapacity += storage.storeCapacity;
 			}
 
-			percentageStoredEnergy = Math.floor(storedEnergy / storageCapacity * 100);
+			percentageStoredEnergy = storedEnergy / storageCapacity * 100;
 			hasStorage = true;
 		}
 
@@ -390,7 +395,7 @@ roomTools.buildStorageStats = function(myRooms) {
 	}
 
 	this.roomsStorageStats.totalStoredEnergy = totalStoredEnergy;
-	this.roomsStorageStats.totalPercentageStoredEnergy = Math.floor(totalStoredEnergy / totalStorageCapacity * 100) || 0;
+	this.roomsStorageStats.totalPercentageStoredEnergy = totalStoredEnergy / totalStorageCapacity * 100 || 0;
 
 	return percentageStoredEnergy;
 }
@@ -407,8 +412,12 @@ roomTools.hasStorage = function(roomName) {
 
 roomTools.hasMinimumStoredEnergy = function(roomName) {
 
-	return (this.roomsStorageStats[roomName] && this.roomsStorageStats[roomName].percentageStoredEnergy &&
-		this.roomsStorageStats[roomName].percentageStoredEnergy > 5);
+	return (this.roomsStorageStats[roomName] && this.roomsStorageStats[roomName].percentageStoredEnergy > .5);
+}
+
+roomTools.hasMinimumStorageCapacity = function(roomName) {
+
+	return (this.roomsStorageStats[roomName] && this.roomsStorageStats[roomName].percentageStoredEnergy < 98);
 }
 
 roomTools.getStoredEnergy = function(roomName) {
@@ -434,6 +443,7 @@ roomTools.getTotalPercentageStoredEnergy = function() {
 roomTools.buildContainerStats = function(myRooms) {
 
 	this.roomsContainerStats = {};
+	var totalContainedEnergy = 0;
 
 	for (var room of myRooms) {
 
@@ -462,12 +472,21 @@ roomTools.buildContainerStats = function(myRooms) {
 					sourcesDropContainers[source.id].dropContainers.push(container);
 				}
 			}
+
+			totalContainedEnergy += container.store.energy;
 		}
 
 		this.roomsContainerStats[room.name] = {
 			sourcesDropContainers: sourcesDropContainers,
 		};
 	}
+
+	this.roomsContainerStats.totalContainedEnergy = totalContainedEnergy;
+}
+
+roomTools.getTotalContainedEnergy = function(roomName, sourceId) {
+
+	return this.roomsContainerStats.totalContainedEnergy;
 }
 
 roomTools.getSourcesWritableDropContainers = function(roomName, sourceId) {

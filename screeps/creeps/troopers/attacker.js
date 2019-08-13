@@ -42,6 +42,7 @@ class Attacker extends TrooperCreep {
 		if (creepMemory) {
 			creepMemory.type = "attacker";
 			creepMemory.bodyPartsType =  "attacker";
+			creepMemory.isAttackTrooper = true;
 			creepMemory.maximumSpawnCapacity = rules.maximumAttackerSpawnCapacity || 800;
 		}
 

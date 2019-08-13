@@ -45,7 +45,7 @@ class Healer extends TrooperCreep {
 
 		} else {
 
-			var creep = this.creep.pos.findClosestByRange(FIND_MY_CREEPS, {
+			var creep = this.creep.pos.findClosestByPath(FIND_MY_CREEPS, {
 				filter: creep => creep.hits < creep.hitsMax && creep.name !== this.creep.name
 			});
 		}
@@ -60,6 +60,15 @@ class Healer extends TrooperCreep {
 		} else if (this.creep.hits < this.creep.hitsMax) {
 			this.creep.heal(creep);
 			healed = true;
+		} else {
+
+			creep = this.creep.pos.findClosestByPath(FIND_MY_CREEPS, {
+				filter: creep => creep.memory.isAttackTrooper && creep.name !== this.creep.name
+			});
+
+			if (creep) {
+				this.creep.moveTo(creep);
+			}
 		}
 
 		return healed;

@@ -15,6 +15,9 @@ var DropHarvester = require("../creeps/harvesters/dropHarvester");
 
 function tick() {
 
+	// debug.temp(roomTools.hasMinimumStoredEnergy(Game.rooms.W12N16.name))
+	// debug.temp(roomTools.hasMinimumStorageCapacity(Game.rooms.W12N16.name))
+
 	// var controller = Game.rooms.W12N16.controller;
 	// var countControllerUpgradePositions = 0;
 	// for (var differentialStart = 2; differentialStart <= 3; differentialStart++) {

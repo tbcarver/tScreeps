@@ -1,5 +1,6 @@
 
 var coreArray = require("../../../lib/core/extensions/coreArray");
+var creepsSpawnRuleTools = require("../../rules/creepsSpawnRuleTools");
 var enemyTools = require("../../tools/enemyTools");
 var findTools = require("../../tools/findTools");
 var spawnTools = require("../../tools/spawnTools");
@@ -19,7 +20,13 @@ class BaseCreep {
 
 		this.spawnedRoomName = creep.memory.spawnedRoomName;
 		this.remoteRoomName = creep.memory.remoteRoomName;
-		this.creepsSpawnRule = (Memory.state.ruleKeyCreepsSpawnRules && this.memory.creepsSpawnRuleKey) ? Memory.state.ruleKeyCreepsSpawnRules[this.memory.creepsSpawnRuleKey] : undefined;
+
+		var creepsSpawnRuleKey = this.memory.creepsSpawnRuleKey;
+		if (!creepsSpawnRuleKey) {
+			creepsSpawnRuleKey = creepsSpawnRuleTools.buildCreepsSpawnRuleKey(this.spawnedRoomName, this.remoteRoomName, "remote-room");
+		}
+
+		this.creepsSpawnRule = (Memory.state.ruleKeyCreepsSpawnRules && creepsSpawnRuleKey) ? Memory.state.ruleKeyCreepsSpawnRules[creepsSpawnRuleKey] : undefined;
 		this.spawnedRoomCreepsSpawnRule = (Memory.state.ruleKeyCreepsSpawnRules) ? Memory.state.ruleKeyCreepsSpawnRules[this.spawnedRoomName] : undefined;
 
 		this.suppressReturnToRooms = false;
@@ -399,7 +406,7 @@ class BaseCreep {
 		return !this.creep.pos.inRangeTo(target, 3);
 	}
 
-	travelToWaitFlag(){
+	travelToWaitFlag() {
 
 		var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
 		if (waitFlag) {
@@ -429,36 +436,49 @@ class BaseCreep {
 
 	transferEnergy() {
 
-		var dropFlag = roomTools.getDropFlag(this.creep.room.name);
-		if (dropFlag) {
-			if (this.isInTravelDistance(dropFlag)) {
-				this.travelNearTo(dropFlag);
-			} else if (this.creep.pos.inRangeTo(dropFlag, 0)) {
-				this.creep.drop(RESOURCE_ENERGY);
-				this.creep.moveTo(this.creep.room.controller);
-			} else {
-				this.creep.moveTo(dropFlag);
-			}
-		} else {
+		if (roomTools.hasMinimumStorageCapacity(this.creep.room.name)) {
 
-			var target = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+			var resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 				filter: structure => (structure.structureType == STRUCTURE_STORAGE ||
 					structure.structureType == STRUCTURE_TERMINAL) &&
 					structure.storeCapacity - structure.store[RESOURCE_ENERGY] > this.creep.carry.energy
 			});
 
-			if (!target) {
-				target = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-					filter: structure => structure.structureType == STRUCTURE_CONTAINER &&
-						structure.storeCapacity - structure.store[RESOURCE_ENERGY] > this.creep.carry.energy
-				});
+			if (resource) {
+				if (this.isInTravelDistance(resource)) {
+					this.travelNearTo(resource);
+
+				} else {
+
+					var transferResult = this.creep.transfer(resource, RESOURCE_ENERGY);
+
+					if (transferResult === ERR_NOT_IN_RANGE) {
+
+						this.creep.moveTo(resource);
+
+					} else if (transferResult === OK) {
+
+						this.creep.moveTo(this.creep.room.controller);
+
+					} else {
+						debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} couldn't transfer energy ${transferResult}`);
+					}
+				}
+			} else {
+				this.creep.drop(RESOURCE_ENERGY);
 			}
 
-			if (target) {
-				if (this.isInTravelDistance(target)) {
-					this.travelNearTo(target);
-				} else if (this.creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-					this.creep.moveTo(target);
+		} else {
+
+			var dropFlag = roomTools.getDropFlag(this.creep.room.name);
+			if (dropFlag) {
+				if (this.isInTravelDistance(dropFlag)) {
+					this.travelNearTo(dropFlag);
+				} else if (this.creep.pos.inRangeTo(dropFlag, 0)) {
+					this.creep.drop(RESOURCE_ENERGY);
+					this.creep.moveTo(this.creep.room.controller);
+				} else {
+					this.creep.moveTo(dropFlag);
 				}
 			} else {
 				this.creep.drop(RESOURCE_ENERGY);
