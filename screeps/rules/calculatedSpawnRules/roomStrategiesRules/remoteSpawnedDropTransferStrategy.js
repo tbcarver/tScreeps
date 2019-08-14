@@ -119,11 +119,11 @@ remoteSpawnedDropTransferStrategy.measureCreepsSpawnRule = function(spawnRoomNam
 
 remoteSpawnedDropTransferStrategy.canApplyRule = function(spawnRoomName, remoteRoomName) {
 
-	var canApplyRule = false;
+	var canApplyRule = true;
 	var storageStats = roomTools.getStorageStats(spawnRoomName);
 
 	if (storageStats && storageStats.hasStorage && storageStats.percentageStoredEnergy >= 100) {
-		canApplyRule = true;
+		canApplyRule = false;
 	}
 
 	return canApplyRule;

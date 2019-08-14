@@ -72,8 +72,8 @@ class TrooperCreep extends BaseCreep {
 						pos = new RoomPosition(25, 25, this.roomName);
 					}
 
-					if (this.isInTravelDistance(pos)) {
-						this.travelNearTo(pos, true);
+					if (this.isInTravelDistance(pos, 2)) {
+						this.travelNearTo(pos, true, 2);
 					}
 				}
 			}
