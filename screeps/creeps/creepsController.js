@@ -71,7 +71,7 @@ creepsController.tick = function() {
 	var displayCreepsTotal = `${roomsCount}, ${creepsTotal}/${Memory.state.creepsToSpawnTotal} (${creepsSpawnBufferTotal})`;
 	for (var spawnedRoomName in Memory.state.spawnedRoomsCreepsToSpawnTotal) {
 		displayCreepsTotal += `, ${spawnedRoomName}: ${spawnedRoomNamesCreepsTotal[spawnedRoomName] || 0}/${Memory.state.spawnedRoomsCreepsToSpawnTotal[spawnedRoomName]}
-			${roomTools.getPercentageStoredEnergy(spawnedRoomName)}%`;
+			${Math.floor(roomTools.getPercentageStoredEnergy(spawnedRoomName))}%`;
 	}
 
 	if (rules.logRoomsCurrentSpawnedCounts) {

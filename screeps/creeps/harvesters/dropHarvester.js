@@ -42,7 +42,7 @@ class DropHarvester extends BaseCreep {
 							this.travelNearTo(resource);
 						} else if (this.creep.harvest(resource) == ERR_NOT_IN_RANGE) {
 
-							var containers = roomTools.getSourcesWritableDropContainers(this.creep.room.name, resource.id);
+							var containers = roomTools.getSourcesWritableDropContainers(this.roomName, resource.id);
 							if (containers) {
 
 								var path = this.creep.pos.findPathTo(resource, {
@@ -63,7 +63,7 @@ class DropHarvester extends BaseCreep {
 					} else {
 
 						if (this.memory.resourceId) {
-							debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} no resource found, resourceId: ${this.memory.resourceId}`);
+							debug.warning(`${this.type} ${this.creep.name} ${this.roomName} no resource found, resourceId: ${this.memory.resourceId}`);
 						}
 					}
 				}

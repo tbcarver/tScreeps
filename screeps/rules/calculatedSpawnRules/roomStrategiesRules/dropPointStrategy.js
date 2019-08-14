@@ -223,7 +223,7 @@ dropPointStrategy.canApplyRule = function(spawnRoomName, remoteRoomName) {
 	var canApplyRule = true;
 	var storageStats = roomTools.getStorageStats(spawnRoomName);
 
-	if (storageStats.hasStorage && storageStats.percentageStoredEnergy > 100) {
+	if (storageStats && storageStats.hasStorage && storageStats.percentageStoredEnergy >= 100) {
 		canApplyRule = false;
 	}
 

@@ -37,12 +37,12 @@ class RemoteControllerAttacker extends RemoteCreep {
 
 				} else if (!(result === OK || result === ERR_TIRED)) {
 
-					debug.warning(`${this.type} ${this.creep.name} can't attackController ${this.creep.room.name} ${result}`);
+					debug.warning(`${this.type} ${this.creep.name} can't attackController ${this.roomName} ${result}`);
 				}
 			}
 		} else {
 
-			debug.warning(`${this.type} ${this.creep.name} can't find controller ${this.creep.room.name}`);
+			debug.warning(`${this.type} ${this.creep.name} can't find controller ${this.roomName}`);
 		}
 	}
 

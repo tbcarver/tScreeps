@@ -25,7 +25,7 @@ var rules = {
 var creepsSpawnRules = /** @type {CreepsSpawnRule[]} */ ([]);
 // NOTE: Order is important
 creepsSpawnRules.push(require("./rooms/W12N16"));
-creepsSpawnRules.push(require("./rooms/W12N17"));
+// creepsSpawnRules.push(require("./rooms/W12N17"));
 
 /** @param {CreepsSpawnRule[]} creepsSpawnRules */
 function storeCreepsSpawnRules(creepsSpawnRules) {

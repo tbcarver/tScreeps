@@ -18,6 +18,7 @@ class BaseCreep {
 		this.type = creep.memory.type;
 		this.isDying = this.creep.ticksToLive < 25;
 
+		this.roomName = this.creep.room.name;
 		this.spawnedRoomName = creep.memory.spawnedRoomName;
 		this.remoteRoomName = creep.memory.remoteRoomName;
 
@@ -33,7 +34,7 @@ class BaseCreep {
 		this.isTrooper = false;
 
 		if (this.memory.travel && (this.memory._move ||
-			(this.memory.travel.pathDestination.roomName !== this.creep.room.name) ||
+			(this.memory.travel.pathDestination.roomName !== this.roomName) ||
 			(this.memory.travel.pathDestination.x === this.creep.pos.x &&
 				this.memory.travel.pathDestination.y === this.creep.pos.y))) {
 			delete this.memory.travel;
@@ -81,9 +82,9 @@ class BaseCreep {
 
 			if (hasCarry) {
 
-				if (this.creep.carry[RESOURCE_ENERGY] === 0) {
+				if (this.creep.carry.energy === 0) {
 
-					var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
+					var waitFlag = Game.flags[`wait-${this.roomName}`];
 					if (waitFlag) {
 						this.creep.moveTo(waitFlag);
 					} else {
@@ -113,7 +114,7 @@ class BaseCreep {
 
 		} else if (this.memory.evacuateToRoom) {
 
-			if (this.creep.room.name === this.memory.evacuateToRoom) {
+			if (this.roomName === this.memory.evacuateToRoom) {
 
 				// NOTE: Creep must step off the exit edge of the room immediately
 				//  or will be sent back to the other room
@@ -130,9 +131,9 @@ class BaseCreep {
 				this.moveToExit(this.memory.evacuateToRoom);
 				acted = true;
 			}
-		} else if (this.shouldEvacuateRoom(this.creep.room.name)) {
+		} else if (this.shouldEvacuateRoom(this.roomName)) {
 
-			var routes = findTools.findRoute(this.creep.room.name, this.spawnedRoomName);
+			var routes = findTools.findRoute(this.roomName, this.spawnedRoomName);
 
 			if (routes !== ERR_NO_PATH && routes.length > 0 && routes[0].exit >= OK) {
 
@@ -177,7 +178,7 @@ class BaseCreep {
 			}
 		} else if (this.state === "movingToSpawnedRoom") {
 
-			if (this.creep.room.name === this.spawnedRoomName) {
+			if (this.roomName === this.spawnedRoomName) {
 
 				// NOTE: Creep must step off the exit edge of the room immediately
 				//  or will be sent back to the other room
@@ -193,7 +194,7 @@ class BaseCreep {
 		} else if (this.state === "movingToRemoteRoom") {
 
 
-			if (this.creep.room.name === this.remoteRoomName) {
+			if (this.roomName === this.remoteRoomName) {
 
 				// NOTE: Creep must step off the exit edge of the room immediately
 				//  or will be sent back to the other room
@@ -210,11 +211,11 @@ class BaseCreep {
 
 				acted = true;
 			}
-		} else if (!this.suppressReturnToRooms && this.remoteRoomName && this.creep.room.name !== this.remoteRoomName) {
+		} else if (!this.suppressReturnToRooms && this.remoteRoomName && this.roomName !== this.remoteRoomName) {
 			this.state = "movingToRemoteRoom";
 			acted = true;
 
-		} else if (!this.suppressReturnToRooms && !this.remoteRoomName && this.creep.room.name !== this.spawnedRoomName) {
+		} else if (!this.suppressReturnToRooms && !this.remoteRoomName && this.roomName !== this.spawnedRoomName) {
 			this.state = "movingToSpawnedRoom";
 			acted = true;
 		}
@@ -236,7 +237,7 @@ class BaseCreep {
 
 	moveToExit(exitRoomName) {
 
-		var routes = findTools.findRoute(this.creep.room.name, exitRoomName);
+		var routes = findTools.findRoute(this.roomName, exitRoomName);
 		if (routes !== ERR_NO_PATH && routes.length > 0 && routes[0].exit >= OK) {
 
 			var routeRoomName = routes[0].room;
@@ -245,7 +246,7 @@ class BaseCreep {
 
 			if (!this.shouldEvacuateRoom(routeRoomName)) {
 
-				var exitFlag = Game.flags[`exit-from-${this.creep.room.name}-to-${routeRoomName}`];
+				var exitFlag = Game.flags[`exit-from-${this.roomName}-to-${routeRoomName}`];
 				var findPathAndExit = false;
 
 				if (exitFlag) {
@@ -278,12 +279,12 @@ class BaseCreep {
 						this.creep.moveTo(exit);
 
 					} else {
-						debug.warning(`${this.type} ${this.creep.name} can't find a path from ${this.creep.room.name} to the exit to ${routeRoomName} with exit ${routeExit}`);
+						debug.warning(`${this.type} ${this.creep.name} can't find a path from ${this.roomName} to the exit to ${routeRoomName} with exit ${routeExit}`);
 					}
 				}
 			}
 		} else {
-			debug.warning(`${this.type} ${this.creep.name} can't find a rout from ${this.creep.room.name} to ${exitRoomName}`);
+			debug.warning(`${this.type} ${this.creep.name} can't find a rout from ${this.roomName} to ${exitRoomName}`);
 		}
 	}
 
@@ -295,14 +296,14 @@ class BaseCreep {
 
 		if (!path) {
 
-			var target = roomTools.getSpawn(this.creep.room.name);
+			var target = roomTools.getSpawn(this.roomName);
 
 			if (!target) {
 				target = this.creep.room.controller;
 			}
 
 			if (!target) {
-				var targets = roomTools.getSources(this.creep.room.name);
+				var targets = roomTools.getSources(this.roomName);
 				target = targets.length > 0 ? targets[0] : null;
 			}
 
@@ -408,11 +409,11 @@ class BaseCreep {
 
 	travelToWaitFlag() {
 
-		var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
+		var waitFlag = Game.flags[`wait-${this.roomName}`];
 		if (waitFlag) {
 			this.travelTo(waitFlag, 1, true);
 		} else {
-			// debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} can't find any resource to harvest`);
+			// debug.warning(`${this.type} ${this.creep.name} ${this.roomName} can't find any resource to harvest`);
 		}
 	}
 
@@ -436,7 +437,7 @@ class BaseCreep {
 
 	transferEnergy() {
 
-		if (roomTools.hasMinimumStorageCapacity(this.creep.room.name)) {
+		if (roomTools.hasMinimumStorageCapacity(this.roomName)) {
 
 			var resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 				filter: structure => (structure.structureType == STRUCTURE_STORAGE ||
@@ -461,7 +462,7 @@ class BaseCreep {
 						this.creep.moveTo(this.creep.room.controller);
 
 					} else {
-						debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} couldn't transfer energy ${transferResult}`);
+						debug.warning(`${this.type} ${this.creep.name} ${this.roomName} couldn't transfer energy ${transferResult}`);
 					}
 				}
 			} else {
@@ -470,7 +471,7 @@ class BaseCreep {
 
 		} else {
 
-			var dropFlag = roomTools.getDropFlag(this.creep.room.name);
+			var dropFlag = roomTools.getDropFlag(this.roomName);
 			if (dropFlag) {
 				if (this.isInTravelDistance(dropFlag)) {
 					this.travelNearTo(dropFlag);
@@ -488,7 +489,7 @@ class BaseCreep {
 
 	shouldEvacuateRoom(roomName) {
 
-		return rules.evacuateRooms && !this.isTrooper && this.creep.room.name !== this.spawnedRoomName && enemyTools.hasRoomEnemiesAndNoTower(roomName);
+		return rules.evacuateRooms && !this.isTrooper && this.roomName !== this.spawnedRoomName && enemyTools.hasRoomEnemiesAndNoTower(roomName);
 	}
 }
 

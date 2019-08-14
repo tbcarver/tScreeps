@@ -33,7 +33,7 @@ class RemoteClaimer extends RemoteCreep {
 
 				if (result === OK) {
 
-					debug.highlight(`${this.type} claimed controller ${this.creep.room.name}`);
+					debug.highlight(`${this.type} claimed controller ${this.roomName}`);
 
 				} else if (result === ERR_NOT_IN_RANGE) {
 
@@ -41,12 +41,12 @@ class RemoteClaimer extends RemoteCreep {
 
 				} else {
 
-					debug.warning(`${this.type} ${this.creep.name} can't claim ${this.creep.room.name} ${result}`);
+					debug.warning(`${this.type} ${this.creep.name} can't claim ${this.roomName} ${result}`);
 				}
 			}
 		} else {
 
-			debug.warning(`${this.type} ${this.creep.name} can't find remote controller ${this.creep.room.name}`);
+			debug.warning(`${this.type} ${this.creep.name} can't find remote controller ${this.roomName}`);
 		}
 	}
 

@@ -17,7 +17,7 @@ class Builder extends EnergyCreep {
 
 		var target;
 
-		if (roomTools.hasConstructionSites(this.creep.room.name)) {
+		if (roomTools.hasConstructionSites(this.roomName)) {
 			target = this.creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
 		}
 

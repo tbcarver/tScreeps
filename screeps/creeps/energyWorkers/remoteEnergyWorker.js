@@ -24,7 +24,7 @@ class RemoteEnergyWorker extends RemoteCreep {
 
 	spawnedRoomAct() {
 
-		if (this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
+		if (this.creep.carry.energy === this.creep.carryCapacity) {
 
 			this.moveToRemoteRoom();
 
@@ -36,7 +36,7 @@ class RemoteEnergyWorker extends RemoteCreep {
 
 	remoteRoomAct() {
 
-		if (this.creep.carry[RESOURCE_ENERGY] === 0) {
+		if (this.creep.carry.energy === 0) {
 
 			this.moveToSpawnedRoom();
 

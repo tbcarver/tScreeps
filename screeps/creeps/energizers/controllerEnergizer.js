@@ -32,7 +32,7 @@ class ControllerEnergizer extends EnergyCreep {
 		var acted = false;
 		var target;
 
-		if (this.canBuild && roomTools.hasConstructionSites(this.creep.room.name)) {
+		if (this.canBuild && roomTools.hasConstructionSites(this.roomName)) {
 
 			target = this.creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
 
@@ -68,7 +68,7 @@ class ControllerEnergizer extends EnergyCreep {
 
 						this.moveToAndAvoid(this.creep.room.controller);
 
-					} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+					} else if (transferResult == ERR_FULL && this.creep.carry.energy / this.creep.carryCapacity < .30) {
 
 						this.state = "harvesting";
 						this.harvest();

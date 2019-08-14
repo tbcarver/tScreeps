@@ -23,7 +23,7 @@ class StorageTransferer extends BaseCreep {
 
 		if (!acted) {
 
-			if (this.state === "harvesting" || this.creep.carry[RESOURCE_ENERGY] === 0) {
+			if (this.state === "harvesting" || this.creep.carry.energy === 0) {
 
 				if (this.state !== "harvesting") {
 					this.state = "harvesting";
@@ -32,7 +32,7 @@ class StorageTransferer extends BaseCreep {
 				this.harvest();
 			}
 
-			if (this.state === "energizing" || this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
+			if (this.state === "energizing" || this.creep.carry.energy === this.creep.carryCapacity) {
 
 				if (this.state !== "energizing") {
 					this.state = "energizing";
@@ -81,7 +81,7 @@ class StorageTransferer extends BaseCreep {
 			}
 		} else if (this.canPickup) {
 
-			var sources = roomTools.getSources(this.creep.room.name);
+			var sources = roomTools.getSources(this.roomName);
 
 			if (!roomTools.inRangeToAny(this.creep.pos, sources, 3)) {
 				resource = this.creep.pos.findClosestByRange(sources);
@@ -91,18 +91,18 @@ class StorageTransferer extends BaseCreep {
 			}
 		} else {
 
-			var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
+			var waitFlag = Game.flags[`wait-${this.roomName}`];
 			if (waitFlag) {
 				this.creep.moveTo(waitFlag);
 			} else {
-				// debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} can't find any resource to harvest`);
+				// debug.warning(`${this.type} ${this.creep.name} ${this.roomName} can't find any resource to harvest`);
 			}
 		}
 	}
 
 	energize() {
 
-		var dropFlag = Game.flags[`drop-${this.creep.room.name}`];
+		var dropFlag = Game.flags[`drop-${this.roomName}`];
 		if (dropFlag) {
 			if (this.creep.pos.inRangeTo(dropFlag, 1)) {
 				this.creep.drop(RESOURCE_ENERGY);
@@ -125,17 +125,17 @@ class StorageTransferer extends BaseCreep {
 
 				this.creep.moveTo(resource);
 
-			} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+			} else if (transferResult == ERR_FULL && this.creep.carry.energy / this.creep.carryCapacity < .30) {
 
 				this.state = "harvesting";
 
 			} else if (transferResult !== OK) {
 
-				var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
+				var waitFlag = Game.flags[`wait-${this.roomName}`];
 				if (waitFlag) {
 					this.creep.moveTo(waitFlag);
 				} else {
-					debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} can't find any resource`);
+					debug.warning(`${this.type} ${this.creep.name} ${this.roomName} can't find any resource`);
 				}
 			}
 		}

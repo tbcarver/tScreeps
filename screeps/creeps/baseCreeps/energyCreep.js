@@ -26,8 +26,8 @@ class EnergyCreep extends BaseCreep {
 
 		if (!super.act()) {
 
-			if ((this.state === "harvesting" && this.creep.carry[RESOURCE_ENERGY] !== this.creep.carryCapacity) ||
-				this.creep.carry[RESOURCE_ENERGY] === 0) {
+			if ((this.state === "harvesting" && this.creep.carry.energy !== this.creep.carryCapacity) ||
+				this.creep.carry.energy === 0) {
 
 				if (this.state !== "harvesting") {
 					this.state = "harvesting";
@@ -36,7 +36,7 @@ class EnergyCreep extends BaseCreep {
 				this.harvest();
 			}
 
-			if (this.state === "energyActing" || this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
+			if (this.state === "energyActing" || this.creep.carry.energy === this.creep.carryCapacity) {
 
 				if (this.state !== "energyActing") {
 					this.state = "energyActing";
@@ -71,7 +71,7 @@ class EnergyCreep extends BaseCreep {
 					let result = this.creep.withdraw(resource, RESOURCE_ENERGY);
 					if (result === OK) {
 
-						if (resource.store.energy > this.availableCarryCapacity * 2) {
+						if (resource.store.energy >= this.availableCarryCapacity * 2) {
 							this.state = "energyActing";
 							this.harvestCompleteMove();
 						}
@@ -86,7 +86,7 @@ class EnergyCreep extends BaseCreep {
 
 						var pickedUpAmount = resource.writableAmount;
 
-						if (pickedUpAmount > this.availableCarryCapacity) {
+						if (pickedUpAmount >= this.availableCarryCapacity) {
 							pickedUpAmount = this.availableCarryCapacity;
 							this.state = "energyActing";
 							this.harvestCompleteMove();

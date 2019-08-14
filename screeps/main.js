@@ -134,7 +134,7 @@ function logStats() {
 	}
 	else {
 		var energyStats = roomTools.getTotalStoredEnergy().toLocaleString("en-US") + " " +
-			roomTools.getTotalPercentageStoredEnergy() + "%";
+			Math.floor(roomTools.getTotalPercentageStoredEnergy()) + "%";
 
 		energyStats += " " + roomTools.getTotalContainedEnergy().toLocaleString("en-US");
 		energyStats += " " + roomTools.getTotalDroppedEnergy().toLocaleString("en-US");
@@ -147,7 +147,7 @@ function buildSpawnStats(displayTime) {
 
 	var spawnsStats = {};
 	var energyStats = roomTools.getTotalStoredEnergy().toLocaleString("en-US") + " " +
-		roomTools.getTotalPercentageStoredEnergy() + "%";
+		Math.floor(roomTools.getTotalPercentageStoredEnergy()) + "%";
 
 	energyStats += " " + roomTools.getTotalContainedEnergy().toLocaleString("en-US");
 	energyStats += " " + roomTools.getTotalDroppedEnergy().toLocaleString("en-US");

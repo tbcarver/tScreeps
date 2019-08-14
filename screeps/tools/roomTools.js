@@ -153,6 +153,7 @@ roomTools.initialize = function() {
 	this.buildSourcesStats();
 	this.buildDroppedStats();
 	this.buildSpawnStats();
+	this.buildTowerStats(myRooms);
 	this.buildStorageStats();
 	this.buildContainerStats(myRooms);
 	this.buildConstructionSitesStats(myRooms);
@@ -332,12 +333,17 @@ roomTools.buildSpawnStats = function() {
 				spawnsCount: 0,
 				spawns: [],
 				spawn: null,
+				areSpawnsFullEnergy: true,
 			};
 		}
 
 		this.spawnStats.rooms[spawn.room.name].spawnsCount++;
 		this.spawnStats.rooms[spawn.room.name].spawns.push(spawn);
 		this.spawnStats.rooms[spawn.room.name].spawn = spawn;
+
+		if (spawn.energy < spawn.energyCapacity) {
+			this.spawnStats.rooms[spawn.room.name].areSpawnsFullEnergy = false;
+		}
 	}
 }
 
@@ -354,6 +360,68 @@ roomTools.getSpawns = function(roomName) {
 roomTools.getSpawn = function(roomName) {
 
 	return (this.spawnStats.rooms[roomName]) ? this.spawnStats.rooms[roomName].spawn : null;
+}
+
+roomTools.areSpawnsFullEnergy = function(roomName) {
+
+	return (this.spawnStats.rooms[roomName]) ? this.spawnStats.rooms[roomName].areSpawnsFullEnergy : false;
+}
+
+roomTools.buildTowerStats = function(myRooms) {
+
+	this.towerStats = {
+		rooms: {},
+	};
+
+	for (var roomName in Game.rooms) {
+
+		if (!this.towerStats.rooms[roomName]) {
+			this.towerStats.rooms[roomName] = {
+				towersCount: 0,
+				towers: [],
+				areTowersFullEnergy: true,
+				areTowersLowEnergy: false,
+			};
+		}
+
+		var towers = /** @type {StructureTower[]} */ (Game.rooms[roomName].find(FIND_STRUCTURES, {
+			filter: structure => structure.structureType === STRUCTURE_TOWER
+		}));
+
+		for (var tower of towers){
+
+			this.towerStats.rooms[roomName].towersCount++;
+			this.towerStats.rooms[roomName].towers.push(tower);
+	
+			if (tower.energy < tower.energyCapacity) {
+				this.towerStats.rooms[roomName].areTowersFullEnergy = false;
+
+				if (tower.energyCapacity / tower.energy < .80) {
+					this.towerStats.rooms[roomName].areTowersLowEnergy = true;
+				}
+			}
+		}
+	}
+}
+
+roomTools.getTowersCount = function(roomName) {
+
+	return (this.towerStats.rooms[roomName]) ? this.towerStats.rooms[roomName].towersCount : 0;
+}
+
+roomTools.getTowers = function(roomName) {
+
+	return (this.towerStats.rooms[roomName]) ? this.towerStats.rooms[roomName].towers : [];
+}
+
+roomTools.areTowersFullEnergy = function(roomName) {
+
+	return (this.towerStats.rooms[roomName]) ? this.towerStats.rooms[roomName].areTowersFullEnergy : false;
+}
+
+roomTools.areTowersLowEnergy = function(roomName) {
+
+	return (this.towerStats.rooms[roomName]) ? this.towerStats.rooms[roomName].areTowersLowEnergy : false;
 }
 
 roomTools.buildStorageStats = function(myRooms) {

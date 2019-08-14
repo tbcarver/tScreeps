@@ -122,7 +122,7 @@ remoteSpawnedDropTransferStrategy.canApplyRule = function(spawnRoomName, remoteR
 	var canApplyRule = false;
 	var storageStats = roomTools.getStorageStats(spawnRoomName);
 
-	if (!storageStats.hasStorage || storageStats.percentageStoredEnergy < 99) {
+	if (storageStats && storageStats.hasStorage && storageStats.percentageStoredEnergy >= 100) {
 		canApplyRule = true;
 	}
 

@@ -20,7 +20,7 @@ class ContainerHarvester extends BaseCreep {
 				this.state = "harvesting";
 			}
 
-			if (this.state === "harvesting" || this.creep.carry[RESOURCE_ENERGY] === 0) {
+			if (this.state === "harvesting" || this.creep.carry.energy === 0) {
 
 				if (this.state !== "harvesting") {
 
@@ -42,7 +42,7 @@ class ContainerHarvester extends BaseCreep {
 					}
 
 				} else {
-					debug.danger(`${this.type} ${this.creep.name} ${this.creep.room.name} no resource found, resourceId: ${this.memory.resourceId}`);
+					debug.danger(`${this.type} ${this.creep.name} ${this.roomName} no resource found, resourceId: ${this.memory.resourceId}`);
 				}
 			}
 
@@ -60,7 +60,7 @@ class ContainerHarvester extends BaseCreep {
 					this.creep.moveTo(container);
 				}
 
-			} else if (this.state === "transferring" || this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
+			} else if (this.state === "transferring" || this.creep.carry.energy === this.creep.carryCapacity) {
 
 				if (this.state !== "transferring") {
 
@@ -77,7 +77,7 @@ class ContainerHarvester extends BaseCreep {
 
 						this.creep.moveTo(container);
 
-					} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+					} else if (transferResult == ERR_FULL && this.creep.carry.energy / this.creep.carryCapacity < .30) {
 
 
 						this.state = "harvesting";

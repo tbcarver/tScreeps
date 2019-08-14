@@ -32,7 +32,7 @@ class RemoteReserver extends RemoteCreep {
 
 			if (result === OK) {
 
-				// debug.highlight(`${this.type} reserved controller ${this.creep.room.name}`);
+				// debug.highlight(`${this.type} reserved controller ${this.roomName}`);
 
 			} else if (result === ERR_NOT_IN_RANGE) {
 
@@ -40,11 +40,11 @@ class RemoteReserver extends RemoteCreep {
 
 			} else {
 
-				debug.warning(`${this.type} ${this.creep.name} can't reserve ${this.creep.room.name} ${result}`);
+				debug.warning(`${this.type} ${this.creep.name} can't reserve ${this.roomName} ${result}`);
 			}
 		} else {
 
-			debug.warning(`${this.type} ${this.creep.name} can't find remote controller ${this.creep.room.name}`);
+			debug.warning(`${this.type} ${this.creep.name} can't find remote controller ${this.roomName}`);
 		}
 	}
 

@@ -19,11 +19,11 @@ class RemoteCreep extends BaseCreep {
 				this.state = "movingToSpawnedRoom";
 			}
 
-			if (this.creep.room.name === this.spawnedRoomName) {
+			if (this.roomName === this.spawnedRoomName) {
 
 				this.spawnedRoomAct();
 
-			} else if (this.creep.room.name === this.remoteRoomName) {
+			} else if (this.roomName === this.remoteRoomName) {
 
 				this.remoteRoomAct();
 

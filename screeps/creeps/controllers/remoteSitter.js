@@ -32,7 +32,7 @@ class RemoteSitter extends RemoteCreep {
 
 		} else {
 
-			debug.warning(`${this.type} ${this.creep.name} can't find remote controller ${this.creep.room.name}`);
+			debug.warning(`${this.type} ${this.creep.name} can't find remote controller ${this.roomName}`);
 		}
 	}
 

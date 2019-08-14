@@ -36,7 +36,7 @@ class ExtensionEnergizer extends EnergyCreep {
 
 					this.moveToAndAvoid(extension);
 				}
-			} else if (this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .75) {
+			} else if (this.creep.carry.energy / this.creep.carryCapacity < .75) {
 
 				this.state = "harvesting";
 				this.harvest();

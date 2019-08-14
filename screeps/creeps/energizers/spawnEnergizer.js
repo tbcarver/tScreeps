@@ -1,5 +1,5 @@
 
-var BaseCreep = require("../baseCreeps/baseCreep");
+var roomTools = require("../../tools/roomTools");
 var EnergyCreep = require("../baseCreeps/energyCreep");
 
 class SpawnEnergizer extends EnergyCreep {
@@ -19,58 +19,63 @@ class SpawnEnergizer extends EnergyCreep {
 
 	energyAct() {
 
-		var targetStructures = /** @type {StructureTower[] | StructureSpawn[]} */ (this.creep.room.find(FIND_STRUCTURES, {
-			filter: structure => structure.structureType === STRUCTURE_TOWER &&
-				structure.energy < structure.energyCapacity
-		}));
+		var targets = /** @type {StructureTower[] | StructureSpawn[]} */ ([]);
 
-		if (targetStructures.length > 0) {
+		if (roomTools.areTowersLowEnergy(this.roomName)){
+			targets = roomTools.getTowers(this.roomName);
+		}
+
+		if (_.isEmpty(targets) && !roomTools.areSpawnsFullEnergy(this.roomName)) {
+			targets = roomTools.getSpawns(this.roomName);
+		}
+
+		if (_.isEmpty(targets) && !roomTools.areTowersFullEnergy(this.roomName)) {
+			targets = roomTools.getTowers(this.roomName);
+		}
+
+		if (!_.isEmpty(targets)) {
 
 			// Sort for the lowest energy first
-			targetStructures.sort((targetStructureA, targetStructureB) => targetStructureA.energy - targetStructureB.energy);
-			var targetStructure = targetStructures[0];
+			targets.sort((targetA, targetB) => targetA.energy - targetB.energy);
+			var target = targets[0];
 		}
 
-		if (!targetStructure) {
+		if (target) {
 
-			targetStructure = /** @type {StructureSpawn} */ (this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-				filter: structure => structure.structureType === STRUCTURE_SPAWN &&
-					structure.energy < structure.energyCapacity
-			}));
-		}
-
-		if (!targetStructure) {
-
-			targetStructure = /** @type {StructureSpawn} */ (this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-				filter: structure => structure.structureType === STRUCTURE_SPAWN
-			}));
-		}
-
-		if (targetStructure) {
-
-			if (this.isInTravelDistance(targetStructure)) {
-				this.travelNearTo(targetStructure, true);
+			if (this.isInTravelDistance(target)) {
+				this.travelNearTo(target, true);
 			} else {
 
-				var transferResult = this.creep.transfer(targetStructure, RESOURCE_ENERGY);
+				var transferResult = this.creep.transfer(target, RESOURCE_ENERGY);
 				if (transferResult == OK) {
+					if (target.energyCapacity - target.energy >= this.creep.carry.energy ||
+						this.creep.carry.energy / this.creep.carryCapacity < .30) {
 
-					this.state = "harvesting";
-					this.harvest();
-
+						this.state = "harvesting";
+						this.harvest();
+					}
 				} else if (transferResult == ERR_NOT_IN_RANGE) {
 
-					this.moveToAndAvoid(targetStructure);
+					this.moveToAndAvoid(target);
 
-				} else if (transferResult == ERR_FULL && this.creep.carry[RESOURCE_ENERGY] / this.creep.carryCapacity < .30) {
+				} else if (transferResult == ERR_FULL && this.creep.carry.energy / this.creep.carryCapacity < .30) {
 
 					this.state = "harvesting";
 					this.harvest();
 				}
 			}
-
 		} else {
-			BaseCreep.prototype.moveIntoRoom();
+
+			target = roomTools.getSpawn(this.roomName);
+
+			if (target) {
+				if (this.isInTravelDistance(target)) {
+					this.travelNearTo(target, true);
+				}
+			} else {
+
+				this.moveIntoRoom();
+			}
 		}
 	}
 

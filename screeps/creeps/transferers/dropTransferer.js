@@ -20,7 +20,7 @@ class DropTransferer extends BaseCreep {
 
 		if (!acted) {
 
-			if (this.state === "harvesting" || this.creep.carry[RESOURCE_ENERGY] === 0) {
+			if (this.state === "harvesting" || this.creep.carry.energy === 0) {
 
 				if (this.state !== "harvesting") {
 					this.state = "harvesting";
@@ -29,7 +29,7 @@ class DropTransferer extends BaseCreep {
 				this.harvest();
 			}
 
-			if (this.state === "energizing" || this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
+			if (this.state === "energizing" || this.creep.carry.energy === this.creep.carryCapacity) {
 
 				if (this.state !== "energizing") {
 					this.state = "energizing";
@@ -57,7 +57,7 @@ class DropTransferer extends BaseCreep {
 
 			} else {
 
-				var resources = /** @type {RoomObject[]} */ (roomTools.GetSourceWritableDroppedResources(this.creep.room.name, this.memory.sourceId));
+				var resources = /** @type {RoomObject[]} */ (roomTools.GetSourceWritableDroppedResources(this.roomName, this.memory.sourceId));
 
 				if (resources.length > 0) {
 
@@ -72,7 +72,7 @@ class DropTransferer extends BaseCreep {
 					}
 				} else {
 
-					resources = roomTools.getSourcesWritableDropContainers(this.creep.room.name, this.memory.sourceId);
+					resources = roomTools.getSourcesWritableDropContainers(this.roomName, this.memory.sourceId);
 
 					if (resources.length > 0) {
 
@@ -101,7 +101,7 @@ class DropTransferer extends BaseCreep {
 
 					var withdrawnEnergy = resource.writableAmount;
 
-					if (resource.energyCapacity > this.availableCarryCapacity) {
+					if (withdrawnEnergy >= this.availableCarryCapacity) {
 						withdrawnEnergy = this.availableCarryCapacity;
 						this.state = "energizing";
 						this.transfer(moveToOtherRoom);
@@ -117,7 +117,7 @@ class DropTransferer extends BaseCreep {
 
 					var pickedUpAmount = resource.writableAmount;
 
-					if (pickedUpAmount > this.availableCarryCapacity) {
+					if (pickedUpAmount >= this.availableCarryCapacity) {
 						pickedUpAmount = this.availableCarryCapacity;
 						this.state = "energizing";
 						this.transfer(moveToOtherRoom);
@@ -138,7 +138,7 @@ class DropTransferer extends BaseCreep {
 
 	transfer(moveToOtherRoom) {
 
-		if (roomTools.hasMinimumStorageCapacity(this.creep.room.name)) {
+		if (roomTools.hasMinimumStorageCapacity(this.roomName)) {
 
 			var resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 				filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
@@ -165,21 +165,21 @@ class DropTransferer extends BaseCreep {
 						this.harvest();
 
 					} else {
-						debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} couldn't transfer energy ${transferResult}`);
+						debug.warning(`${this.type} ${this.creep.name} ${this.roomName} couldn't transfer energy ${transferResult}`);
 					}
 				}
 			} else {
 
-				var waitFlag = Game.flags[`wait-${this.creep.room.name}`];
+				var waitFlag = Game.flags[`wait-${this.roomName}`];
 				if (waitFlag) {
 					this.creep.moveTo(waitFlag);
 				} else {
-					debug.warning(`${this.type} ${this.creep.name} ${this.creep.room.name} can't find any resource`);
+					debug.warning(`${this.type} ${this.creep.name} ${this.roomName} can't find any resource`);
 				}
 			}
 		} else {
 
-			var dropFlag = roomTools.getDropFlag(this.creep.room.name);
+			var dropFlag = roomTools.getDropFlag(this.roomName);
 			if (dropFlag) {
 
 				if (this.isInTravelDistance(dropFlag)) {
