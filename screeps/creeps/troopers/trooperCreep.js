@@ -66,7 +66,7 @@ class TrooperCreep extends BaseCreep {
 
 				} else {
 
-					var pos = Game.flags["post-" + this.roomName].pos;
+					var pos = Game.flags["post-" + this.roomName] ? Game.flags["post-" + this.roomName].pos : undefined;
 
 					if (!pos) {
 						pos = new RoomPosition(25, 25, this.roomName);

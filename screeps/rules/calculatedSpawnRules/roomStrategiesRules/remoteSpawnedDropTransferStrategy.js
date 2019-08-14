@@ -28,6 +28,7 @@ remoteSpawnedDropTransferStrategy.buildCreepsSpawnRule = function(spawnRoomName,
 							totalEnergyCount: 0,
 							totalEnergy: 0
 						},
+						canRecalculate: true,
 					},
 				}
 
