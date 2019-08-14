@@ -364,7 +364,7 @@ class BaseCreep {
 
 			var result = this.creep.moveByPath(path);
 
-			if (result === OK) {
+			if (result === OK || result === ERR_TIRED) {
 
 				if (rules.visualizeTravelPaths) {
 					visualizeTools.visualizePath(this.creep.room, path, pathColor);
@@ -399,12 +399,12 @@ class BaseCreep {
 		return result;
 	}
 
-	travelNearTo(target, avoidCreeps) {
-		this.travelTo(target, 3, avoidCreeps);
+	travelNearTo(target, avoidCreeps, range = 3) {
+		this.travelTo(target, range, avoidCreeps);
 	}
 
-	isInTravelDistance(target) {
-		return !this.creep.pos.inRangeTo(target, 3);
+	isInTravelDistance(target, range = 3) {
+		return !this.creep.pos.inRangeTo(target, range);
 	}
 
 	travelToWaitFlag() {

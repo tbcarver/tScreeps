@@ -6,7 +6,7 @@ var moveCarryWorkStrategy = {};
 moveCarryWorkStrategy.getBodyPartsObject = function(spawnCapacity, partsPerMove) {
 	
 	var bodyPartsObject = {
-		move: 1,
+		move: 2,
 		work: 1,
 		carry: 2,
 	};

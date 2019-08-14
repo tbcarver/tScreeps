@@ -69,8 +69,8 @@ class SpawnEnergizer extends EnergyCreep {
 			target = roomTools.getSpawn(this.roomName);
 
 			if (target) {
-				if (this.isInTravelDistance(target)) {
-					this.travelNearTo(target, true);
+				if (this.isInTravelDistance(target, 2)) {
+					this.travelNearTo(target, true, 2);
 				}
 			} else {
 
