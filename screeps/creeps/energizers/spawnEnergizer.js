@@ -14,7 +14,13 @@ class SpawnEnergizer extends EnergyCreep {
 	}
 
 	harvestCompleteMove() {
-		this.moveIntoRoom();
+
+		var target = roomTools.getSpawn(this.roomName);
+		if (target) {
+			this.moveToAndAvoid(target);
+		} else {
+			this.moveIntoRoom();
+		}
 	}
 
 	energyAct() {

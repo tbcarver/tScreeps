@@ -5,7 +5,7 @@ var { rules } = require("../../rules")
 var orderBy = require("lodash/orderBy");
 
 var upgradeControllerRule = {
-	coolOffCount: 5,
+	coolOffCount: 50,
 };
 
 upgradeControllerRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
@@ -33,7 +33,7 @@ function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 	var controllerToUpgrade;
 	var controllers = _.map(Game.rooms, room => room.controller);	
 	var oneToEightTogetherMinimum = rules.oneToEightTogetherMinimum || 7;
-	var filteredControllers = controllers.filter(controller => controller.level >= 1 && controller.level <= oneToEightTogetherMinimum);
+	var filteredControllers = controllers.filter(controller => controller.level >= 1 && controller.level < oneToEightTogetherMinimum);
 
 	if (filteredControllers.length === 0) {
 		filteredControllers = controllers.filter(controller => controller.level >= 1 && controller.level <= 7);
@@ -77,6 +77,7 @@ function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 		if (upgradeRoomMaxCreepsCount > maxCreepsCount) {
 			upgradeRoomMaxCreepsCount = maxCreepsCount;
 		}
+
 
 		var spawningRooms = [];
 

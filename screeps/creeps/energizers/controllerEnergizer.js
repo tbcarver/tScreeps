@@ -24,7 +24,12 @@ class ControllerEnergizer extends EnergyCreep {
 	}
 
 	harvestCompleteMove() {
-		this.moveIntoRoom();
+
+		if (this.creep.room.controller) {
+			this.moveToAndAvoid(this.creep.room.controller);
+		} else {
+			this.moveIntoRoom();
+		}
 	}
 
 	energyAct() {

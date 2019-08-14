@@ -66,10 +66,14 @@ class TrooperCreep extends BaseCreep {
 
 				} else {
 
-					if (Game.flags["post-" + this.roomName]) {
-						this.creep.moveTo(Game.flags["post-" + this.roomName].pos);
-					} else {
-						this.creep.moveTo(this.creep.room.controller);
+					var pos = Game.flags["post-" + this.roomName].pos;
+
+					if (!pos) {
+						pos = new RoomPosition(25, 25, this.roomName);
+					}
+
+					if (this.isInTravelDistance(pos)) {
+						this.travelNearTo(pos, true);
 					}
 				}
 			}

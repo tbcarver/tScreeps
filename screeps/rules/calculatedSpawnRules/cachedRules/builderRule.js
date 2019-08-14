@@ -34,7 +34,7 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 
 	if (buildingRooms.length > 0) {
 
-		var spawningRooms = [];
+		var spawningRooms = {};
 		var buildingCountControllerEnergizers = getCountBuildingControllerEnergizers();
 
 		for (var roomName in Game.rooms) {
@@ -63,16 +63,17 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 				var countBuildingCountControllerEnergizers = buildingCountControllerEnergizers[roomName] || 0;
 				creepsCount = creepsCount - countBuildingCountControllerEnergizers;
 
-				var spawningRoom = {
+				let spawningRoom = {
 					roomName: roomName,
 					creepsCount: {
+						controllerEnergizer: countBuildingCountControllerEnergizers,
 						builderWithEnergy: creepsCount,
 						builderWithHarvesting: 12,
 						remoteBuilder: remoteCreepsCount,
 					},
 				};
 
-				spawningRooms.push(spawningRoom);
+				spawningRooms[spawningRoom.roomName] = spawningRoom;
 			}
 		}
 
@@ -91,11 +92,16 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 					maxCreepsCount = 3;
 				}
 
+				if (spawningRooms[buildingRoom.roomName]) {
+					maxCreepsCount = maxCreepsCount - spawningRooms[buildingRoom.roomName].controllerEnergizer;
+				}
+
 				var lastCreepType = "builder";
 				var remainingCreepsCount = maxCreepsCount;
 
 				for (var count = 1; count <= maxCreepsCount; count++) {
-					for (var spawningRoom of spawningRooms) {
+					for (var spawningRoomName in spawningRooms) {
+						var spawningRoom = spawningRooms[spawningRoomName];
 
 						if (spawningRoom.roomName === buildingRoom.roomName) {
 

@@ -94,8 +94,7 @@ findTools.findClosestStoredEnergy = function(pos, minimum) {
 
 	var energy = pos.findClosestByRange(FIND_STRUCTURES, {
 		filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
-			structure.structureType === STRUCTURE_TERMINAL ||
-			structure.structureType === STRUCTURE_CONTAINER) &&
+			structure.structureType === STRUCTURE_TERMINAL) &&
 			structure.store[RESOURCE_ENERGY] > minimum && this.isInRange(pos, structure.pos, 10)
 	});
 
@@ -103,8 +102,7 @@ findTools.findClosestStoredEnergy = function(pos, minimum) {
 
 		energy = pos.findClosestByRange(FIND_STRUCTURES, {
 			filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
-				structure.structureType === STRUCTURE_TERMINAL ||
-				structure.structureType === STRUCTURE_CONTAINER) &&
+				structure.structureType === STRUCTURE_TERMINAL) &&
 				structure.store[RESOURCE_ENERGY] > minimum && this.isInRange(pos, structure.pos, 20)
 		});
 	}
@@ -113,9 +111,8 @@ findTools.findClosestStoredEnergy = function(pos, minimum) {
 
 		energy = pos.findClosestByRange(FIND_STRUCTURES, {
 			filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
-				structure.structureType === STRUCTURE_TERMINAL ||
-				structure.structureType === STRUCTURE_CONTAINER) &&
-				structure.store[RESOURCE_ENERGY] > minimum * minimum
+				structure.structureType === STRUCTURE_TERMINAL) &&
+				structure.store[RESOURCE_ENERGY] > minimum * 2
 		});
 	}
 
@@ -172,7 +169,7 @@ findTools.findClosestEnergy = function(pos, minimum) {
 	if (!energy) {
 
 		energy = pos.findClosestByPath(droppedResources, {
-			filter: resource => resource.amount >= minimum * minimum
+			filter: resource => resource.amount >= minimum * 2
 		});
 	}
 
@@ -182,7 +179,7 @@ findTools.findClosestEnergy = function(pos, minimum) {
 			filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
 				structure.structureType === STRUCTURE_TERMINAL ||
 				structure.structureType === STRUCTURE_CONTAINER) &&
-				structure.store[RESOURCE_ENERGY] > minimum * minimum
+				structure.store[RESOURCE_ENERGY] > minimum * 2
 		});
 	}
 
