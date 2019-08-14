@@ -18,7 +18,7 @@ calculatedSpawnRulesTools.prependRemoteRoomCreepsSpawnRules = function(creepsSpa
 				spawnRoom.remoteRooms.unshift(remoteRoom);
 			}
 		} else {
-			debug.warning(`A creepsSpawnRule was not found for spawn room ${spawnRoomName}`);
+			debug.warning(`A creepsSpawnRule was not found for spawn room ${spawnRoomName}`, spawnRoomsRemoteRoomCreepsSpawnRules[spawnRoomName]);
 		}
 	}
 }
@@ -37,7 +37,7 @@ calculatedSpawnRulesTools.appendRemoteRoomCreepsSpawnRules = function(creepsSpaw
 				spawnRoom.remoteRooms.push(remoteRoom);
 			}
 		} else {
-			debug.warning(`A creepsSpawnRule was not found for spawn room ${spawnRoomName}`);
+			debug.warning(`A creepsSpawnRule was not found for spawn room ${spawnRoomName}`, spawnRoomsRemoteRoomCreepsSpawnRules[spawnRoomName]);
 		}
 	}
 }

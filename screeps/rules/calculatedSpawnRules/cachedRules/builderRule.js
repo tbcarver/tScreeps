@@ -63,18 +63,16 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 				var countBuildingCountControllerEnergizers = buildingCountControllerEnergizers[roomName] || 0;
 				creepsCount = creepsCount - countBuildingCountControllerEnergizers;
 
-				if (creepsCount > 0) {
+				var spawningRoom = {
+					roomName: roomName,
+					creepsCount: {
+						builderWithEnergy: creepsCount,
+						builderWithHarvesting: 12,
+						remoteBuilder: remoteCreepsCount,
+					},
+				};
 
-					var spawningRoom = {
-						roomName: roomName,
-						creepsCount: {
-							builder: creepsCount,
-							remoteBuilder: remoteCreepsCount,
-						},
-					};
-
-					spawningRooms.push(spawningRoom);
-				}
+				spawningRooms.push(spawningRoom);
 			}
 		}
 
@@ -83,26 +81,66 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 		for (var buildingRoom of buildingRooms) {
 			if (spawningRooms.length > 0) {
 
-				var creepType = "builder";
 				var maxCreepsCount = Math.floor(buildingRoom.constructionCost / 5000);
 
-				if (buildingRoom.storedEnergy + roomTools.getDropFlagDroppedEnergy(buildingRoom.roomName) === 0) {
-					creepType = "remoteBuilder";
-				} else if (buildingRoom.storedEnergy < maxCreepsCount * 1000) {
-					maxCreepsCount = Math.floor(maxCreepsCount / 2);
+				if (maxCreepsCount < 6) {
+					maxCreepsCount = 6;
 				}
 
-				if (maxCreepsCount < 4) {
-					maxCreepsCount = 4;
+				if (buildingRoom.constructionCost < 5000) {
+					maxCreepsCount = 3;
 				}
+
+				var lastCreepType = "builder";
 
 				for (var count = 1; count <= maxCreepsCount; count++) {
 					for (var spawningRoom of spawningRooms) {
 
-						if (spawningRoom.creepsCount[creepType] > 0) {
+						if (spawningRoom.roomName === buildingRoom.roomName) {
 
-							incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawningRoom.roomName, buildingRoom.roomName, cachedRuleName, creepType);
-							spawningRoom.creepsCount[creepType]--;
+							if (spawningRoom.creepsCount["builderWithEnergy"] > 0) {
+
+								incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawningRoom.roomName, buildingRoom.roomName, cachedRuleName, "builder");
+								spawningRoom.creepsCount["builderWithEnergy"]--;
+							}
+						} else {
+
+							var incremented = false;
+
+							if (lastCreepType === "builder") {
+
+								if (spawningRoom.creepsCount["remoteBuilder"] > 0) {
+
+									incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawningRoom.roomName, buildingRoom.roomName, cachedRuleName, "remoteBuilder");
+									spawningRoom.creepsCount["remoteBuilder"]--;
+									lastCreepType = "remoteBuilder";
+									incremented = true;
+								}
+							} else {
+
+								if (spawningRoom.creepsCount["builderWithHarvesting"] > 0) {
+
+									incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawningRoom.roomName, buildingRoom.roomName, cachedRuleName, "builder");
+									spawningRoom.creepsCount["builderWithHarvesting"]--;
+									lastCreepType = "builder";
+									incremented = true;
+								}
+							}
+
+							if (!incremented) {
+
+								if (spawningRoom.creepsCount["remoteBuilder"] > 0) {
+
+									incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawningRoom.roomName, buildingRoom.roomName, cachedRuleName, "remoteBuilder");
+									spawningRoom.creepsCount["remoteBuilder"]--;
+								}
+
+								if (spawningRoom.creepsCount["builderWithHarvesting"] > 0) {
+
+									incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawningRoom.roomName, buildingRoom.roomName, cachedRuleName, "builder");
+									spawningRoom.creepsCount["builderWithHarvesting"]--;
+								}
+							}
 						}
 					}
 				}
@@ -144,7 +182,7 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 		}
 
 		remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms.push(creepsSpawnRule);
-		
+
 	}
 
 	var remoteRoom = /** @type {RemoteRoomCreepsSpawnRule} */(_.find(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName }));

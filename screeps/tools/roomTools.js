@@ -357,6 +357,11 @@ roomTools.getSpawns = function(roomName) {
 	return (this.spawnStats.rooms[roomName]) ? this.spawnStats.rooms[roomName].spawns : [];
 }
 
+roomTools.hasSpawns = function(roomName) {
+
+	return (this.spawnStats.rooms[roomName]) ? !_.isEmpty(this.spawnStats.rooms[roomName].spawns) : false;
+}
+
 roomTools.getSpawn = function(roomName) {
 
 	return (this.spawnStats.rooms[roomName]) ? this.spawnStats.rooms[roomName].spawn : null;

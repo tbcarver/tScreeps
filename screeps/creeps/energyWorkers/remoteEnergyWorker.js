@@ -30,7 +30,7 @@ class RemoteEnergyWorker extends RemoteCreep {
 
 		} else if (this.state === "harvesting") {
 
-			EnergyCreep.prototype.harvest();
+			EnergyCreep.prototype.harvest.call(this);
 		}
 	}
 

@@ -20,34 +20,34 @@ var cachedRules = {
 
 function addCalculatedSpawnRules(creepsSpawnRules, roomsCurrentSpawnedCounts) {
 
-	if (!Memory.state.builtCalculatedCreepsSpawnRules) {
-		Memory.state.builtCalculatedCreepsSpawnRules = {};
+	if (!Memory.state.cachedCalculatedCreepsSpawnRules) {
+		Memory.state.cachedCalculatedCreepsSpawnRules = {};
 	}
 
 	for (var cachedRuleName in cachedRules) {
 
 		var calculatedSpawnRule = cachedRules[cachedRuleName];
-		var cachedBuiltCalculatedCreepsSpawnRules = Memory.state.builtCalculatedCreepsSpawnRules[cachedRuleName];
+		var cachedBuiltCalculatedCreepsSpawnRules = Memory.state.cachedCalculatedCreepsSpawnRules[cachedRuleName];
 
 		if (!cachedBuiltCalculatedCreepsSpawnRules || gameTools.hasCoolOffed(cachedRuleName, calculatedSpawnRule.coolOffCount)) {
 
-			Memory.state.builtCalculatedCreepsSpawnRules[cachedRuleName] = undefined;
-			var builtCalculatedCreepsSpawnRules = calculatedSpawnRule.buildCreepsSpawnRules(creepsSpawnRules, cachedRuleName);
+			Memory.state.cachedCalculatedCreepsSpawnRules[cachedRuleName] = undefined;
+			var builtCreepsSpawnRules = calculatedSpawnRule.buildCreepsSpawnRules(creepsSpawnRules, cachedRuleName);
 
-			if (!_.isEmpty(builtCalculatedCreepsSpawnRules)) {
+			if (!_.isEmpty(builtCreepsSpawnRules)) {
 
-				Memory.state.builtCalculatedCreepsSpawnRules[cachedRuleName] = builtCalculatedCreepsSpawnRules;
+				Memory.state.cachedCalculatedCreepsSpawnRules[cachedRuleName] = builtCreepsSpawnRules;
 
 			} else if (cachedBuiltCalculatedCreepsSpawnRules) {
 
 				if (calculatedSpawnRulesTools.hasRemoteRoomCurrentSpawnedCounts(cachedBuiltCalculatedCreepsSpawnRules, roomsCurrentSpawnedCounts)) {
 
 					calculatedSpawnRulesTools.zeroRemoteRoomSpawnOrderMaxSpawnedCounts(cachedBuiltCalculatedCreepsSpawnRules);
-					Memory.state.builtCalculatedCreepsSpawnRules[cachedRuleName] = cachedBuiltCalculatedCreepsSpawnRules;
+					Memory.state.cachedCalculatedCreepsSpawnRules[cachedRuleName] = cachedBuiltCalculatedCreepsSpawnRules;
 				}
 			}
 
-			cachedBuiltCalculatedCreepsSpawnRules = Memory.state.builtCalculatedCreepsSpawnRules[cachedRuleName];
+			cachedBuiltCalculatedCreepsSpawnRules = Memory.state.cachedCalculatedCreepsSpawnRules[cachedRuleName];
 		}
 
 		if (calculatedSpawnRule.prepend) {
