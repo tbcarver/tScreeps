@@ -35,6 +35,8 @@ function loop() {
 		roomTools.initialize();
 		// spawnTools.buildSpawnStats();
 
+		logStats();
+
 		// console.log(controller.activateSafeMode())
 
 		//  constructionTools.createConstructionRoad();
@@ -52,7 +54,7 @@ function loop() {
 
 		// Game.flags["post-W12N16"].setPosition(7,12)
 
-		COLOR_ORANGE
+		// COLOR_ORANGE
 		// roomTools.consoleEnemies();
 		visualizeTools.visualizeStructureHealth();
 		// roomTools.visualizeCreepByType("defender", "blue");
@@ -70,8 +72,6 @@ function loop() {
 			var room = Game.rooms[roomName];
 			Memory.state.rooms[roomName].lastRoomEnergyAvailable = room.energyAvailable;
 		}
-
-		logStats();
 
 		// console.log(JSON.stringify(Game.spawns["spawn1"].room.lookAt(29, 25)))
 		test();

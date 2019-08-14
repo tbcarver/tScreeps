@@ -393,11 +393,11 @@ roomTools.buildTowerStats = function(myRooms) {
 			filter: structure => structure.structureType === STRUCTURE_TOWER
 		}));
 
-		for (var tower of towers){
+		for (var tower of towers) {
 
 			this.towerStats.rooms[roomName].towersCount++;
 			this.towerStats.rooms[roomName].towers.push(tower);
-	
+
 			if (tower.energy < tower.energyCapacity) {
 				this.towerStats.rooms[roomName].areTowersFullEnergy = false;
 
@@ -490,7 +490,7 @@ roomTools.hasMinimumStoredEnergy = function(roomName) {
 
 roomTools.hasMinimumStorageCapacity = function(roomName) {
 
-	return (this.roomsStorageStats[roomName] && this.roomsStorageStats[roomName].percentageStoredEnergy < 98);
+	return (this.roomsStorageStats[roomName] && this.roomsStorageStats[roomName].hasStorage && this.roomsStorageStats[roomName].percentageStoredEnergy < 98);
 }
 
 roomTools.getStoredEnergy = function(roomName) {

@@ -92,6 +92,7 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 				}
 
 				var lastCreepType = "builder";
+				var remainingCreepsCount = maxCreepsCount;
 
 				for (var count = 1; count <= maxCreepsCount; count++) {
 					for (var spawningRoom of spawningRooms) {
@@ -102,6 +103,7 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 
 								incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawningRoom.roomName, buildingRoom.roomName, cachedRuleName, "builder");
 								spawningRoom.creepsCount["builderWithEnergy"]--;
+								remainingCreepsCount--;
 							}
 						} else {
 
@@ -113,6 +115,7 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 
 									incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawningRoom.roomName, buildingRoom.roomName, cachedRuleName, "remoteBuilder");
 									spawningRoom.creepsCount["remoteBuilder"]--;
+									remainingCreepsCount--;
 									lastCreepType = "remoteBuilder";
 									incremented = true;
 								}
@@ -122,6 +125,7 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 
 									incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawningRoom.roomName, buildingRoom.roomName, cachedRuleName, "builder");
 									spawningRoom.creepsCount["builderWithHarvesting"]--;
+									remainingCreepsCount--;
 									lastCreepType = "builder";
 									incremented = true;
 								}
@@ -133,15 +137,21 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 
 									incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawningRoom.roomName, buildingRoom.roomName, cachedRuleName, "remoteBuilder");
 									spawningRoom.creepsCount["remoteBuilder"]--;
+									remainingCreepsCount--;
 								}
 
 								if (spawningRoom.creepsCount["builderWithHarvesting"] > 0) {
 
 									incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawningRoom.roomName, buildingRoom.roomName, cachedRuleName, "builder");
 									spawningRoom.creepsCount["builderWithHarvesting"]--;
+									remainingCreepsCount--;
 								}
 							}
 						}
+					}
+
+					if (remainingCreepsCount <= 0) {
+						break;
 					}
 				}
 			}

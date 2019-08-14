@@ -48,8 +48,8 @@ class SpawnEnergizer extends EnergyCreep {
 
 				var transferResult = this.creep.transfer(target, RESOURCE_ENERGY);
 				if (transferResult == OK) {
-					if (target.energyCapacity - target.energy >= this.creep.carry.energy ||
-						this.creep.carry.energy / this.creep.carryCapacity < .30) {
+					
+					if (target.energyCapacity - target.energy >= this.creep.carry.energy) {
 
 						this.state = "harvesting";
 						this.harvest();
@@ -57,24 +57,24 @@ class SpawnEnergizer extends EnergyCreep {
 				} else if (transferResult == ERR_NOT_IN_RANGE) {
 
 					this.moveToAndAvoid(target);
-
-				} else if (transferResult == ERR_FULL && this.creep.carry.energy / this.creep.carryCapacity < .30) {
-
-					this.state = "harvesting";
-					this.harvest();
 				}
 			}
 		} else {
 
-			target = roomTools.getSpawn(this.roomName);
-
-			if (target) {
-				if (this.isInTravelDistance(target, 2)) {
-					this.travelNearTo(target, true, 2);
-				}
+			if (this.creep.carry.energy / this.creep.carryCapacity < .30) {				
+				this.state = "harvesting";
+				this.harvest();
 			} else {
 
-				this.moveIntoRoom();
+				target = roomTools.getSpawn(this.roomName);
+				if (target) {
+					if (this.isInTravelDistance(target, 2)) {
+						this.travelNearTo(target, true, 2);
+					}
+				} else {
+	
+					this.moveIntoRoom();
+				}
 			}
 		}
 	}

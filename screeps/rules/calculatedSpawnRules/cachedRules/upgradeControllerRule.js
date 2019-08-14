@@ -5,8 +5,7 @@ var { rules } = require("../../rules")
 var orderBy = require("lodash/orderBy");
 
 var upgradeControllerRule = {
-	coolOffCount: 50,
-	oneToEightTogetherMinimum: rules.oneToEightTogetherMinimum || 7,
+	coolOffCount: 5,
 };
 
 upgradeControllerRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
@@ -31,51 +30,10 @@ upgradeControllerRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedR
 
 function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 
-	var energyTransferPercent = rules.upgradeControllerEnergyTransferPercent || 100;
-	var spawningRooms = [];
-
-	for (var roomName in Game.rooms) {
-
-		var spawnsCount = roomTools.getSpawnsCount(roomName);
-
-		if (spawnsCount > 0) {
-
-			var creepsCount = 2;
-			var availableEnergy = 0;
-
-			if (roomTools.hasMinimumStoredEnergy(roomName)) {
-
-				availableEnergy = roomTools.getStoredEnergy(roomName);
-
-			} else if (roomTools.hasMinimumDropFlagDroppedEnergy(roomName)) {
-
-				availableEnergy = roomTools.getDropFlagDroppedEnergy(roomName);
-			}
-
-			availableEnergy = Math.floor(availableEnergy * energyTransferPercent / 100);
-
-			// TODO: Need to calculate the the average growth of stored energy over time and subtract operating energy need and calculate from there
-			creepsCount = Math.floor(availableEnergy / 50);
-
-			if (creepsCount > 25 * spawnsCount) {
-				creepsCount = 25 * spawnsCount;
-			}
-
-			if (creepsCount > 0) {
-
-				var spawningRoom = {
-					roomName: roomName,
-					creepsCount: creepsCount,
-				};
-
-				spawningRooms.push(spawningRoom);
-			}
-		}
-	}
-
 	var controllerToUpgrade;
-	var controllers = _.map(Game.rooms, room => room.controller);
-	var filteredControllers = controllers.filter(controller => controller.level >= 1 && controller.level <= this.oneToEightTogetherMinimum);
+	var controllers = _.map(Game.rooms, room => room.controller);	
+	var oneToEightTogetherMinimum = rules.oneToEightTogetherMinimum || 7;
+	var filteredControllers = controllers.filter(controller => controller.level >= 1 && controller.level <= oneToEightTogetherMinimum);
 
 	if (filteredControllers.length === 0) {
 		filteredControllers = controllers.filter(controller => controller.level >= 1 && controller.level <= 7);
@@ -89,18 +47,71 @@ function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 
 	var remoteRoomCreepsSpawnRules = {};
 
-	if (spawningRooms.length > 0 && controllerToUpgrade) {
+	if (controllerToUpgrade) {
+
+		var roomName = controllerToUpgrade.room.name;
+		var energyTransferPercent = rules.upgradeControllerEnergyTransferPercent || 100;
+		var availableEnergy = 0;
+
+		if (roomTools.hasMinimumStoredEnergy(roomName)) {
+
+			availableEnergy = roomTools.getStoredEnergy(roomName);
+
+		} else if (roomTools.hasMinimumDropFlagDroppedEnergy(roomName)) {
+
+			availableEnergy = roomTools.getDropFlagDroppedEnergy(roomName);
+		}
+
+		availableEnergy = Math.floor(availableEnergy * energyTransferPercent / 100);
+
+		// TODO: Need to calculate the the average growth of stored energy over time and subtract operating energy need and calculate from there
+		var upgradeRoomMaxCreepsCount = Math.floor(availableEnergy / 100);
+
+		if (upgradeRoomMaxCreepsCount < 4) {
+			upgradeRoomMaxCreepsCount = 4;
+		}
 
 		var maxCreepsCount = roomTools.getCountControllerUpgradePositions(controllerToUpgrade);
 		maxCreepsCount += Math.floor(maxCreepsCount * .25);
 
-		for (var count = 1; count <= maxCreepsCount; count++) {
-			for (var spawningRoom of spawningRooms) {
+		if (upgradeRoomMaxCreepsCount > maxCreepsCount) {
+			upgradeRoomMaxCreepsCount = maxCreepsCount;
+		}
 
-				if (spawningRoom.creepsCount > 0) {
+		var spawningRooms = [];
 
-					incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawningRoom.roomName, controllerToUpgrade.room.name, cachedRuleName, controllerToUpgrade);
-					spawningRoom.creepsCount--;
+		for (var roomName in Game.rooms) {
+
+			var spawnsCount = roomTools.getSpawnsCount(roomName);
+
+			if (spawnsCount > 0) {
+
+				var spawningRoom = {
+					roomName: roomName,
+					creepsCount: 18 * spawnsCount,
+				};
+
+				spawningRooms.push(spawningRoom);
+			}
+		}
+
+		if (!_.isEmpty(spawningRooms)) {
+
+			var remainingCreepsCount = upgradeRoomMaxCreepsCount;
+
+			for (var count = 1; count <= upgradeRoomMaxCreepsCount; count++) {
+				for (var spawningRoom of spawningRooms) {
+
+					if (spawningRoom.creepsCount > 0) {
+
+						incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawningRoom.roomName, controllerToUpgrade.room.name, cachedRuleName, controllerToUpgrade);
+						spawningRoom.creepsCount--;
+						remainingCreepsCount--;
+					}
+				}
+
+				if (remainingCreepsCount <= 0) {
+					break;
 				}
 			}
 		}
