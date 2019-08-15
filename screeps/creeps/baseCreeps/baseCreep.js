@@ -399,7 +399,7 @@ class BaseCreep {
 		return result;
 	}
 
-	travelNearTo(target, avoidCreeps, range = 3) {
+	travelNearTo(target, avoidCreeps = false, range = 3) {
 		this.travelTo(target, range, avoidCreeps);
 	}
 

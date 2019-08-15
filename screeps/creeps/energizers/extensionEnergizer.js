@@ -27,8 +27,8 @@ class ExtensionEnergizer extends EnergyCreep {
 
 		var activeExtension = Game.getObjectById(this.memory.extensions[this.memory.activeExtensionIndex].id);
 
-		if (!this.creep.pos.inRangeTo(activeExtension, 4)) {
-			this.travelTo(activeExtension, 3, true);
+		if (this.isInTravelDistance(activeExtension)) {
+			this.travelNearTo(activeExtension, true);
 		} else {
 
 			var energizingExtensionIDs = this.memory.extensions.map(extension => extension.id);
@@ -42,12 +42,12 @@ class ExtensionEnergizer extends EnergyCreep {
 
 					this.moveToAndAvoid(extension);
 				}
-			} else if (this.creep.carry.energy / this.creep.carryCapacity < .75) {
+			} else if (this.creep.carry.energy / this.creep.carryCapacity < .30) {
 
 				this.state = "harvesting";
 				this.harvest();
 
-			} else {
+			} else if (this.isInTravelDistance(activeExtension, 0)) {
 				this.moveToAndAvoid(activeExtension);
 			}
 		}
