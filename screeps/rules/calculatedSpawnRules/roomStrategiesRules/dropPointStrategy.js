@@ -79,7 +79,7 @@ dropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName,
 	return creepsSpawnRule;
 }
 
-dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpawnRule, currentSpawnedCounts) {
+dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, remoteRoomCreepsSpawnRule, creepsSpawnRule, currentSpawnedCounts) {
 
 	var remoteRoomName = creepsSpawnRule.roomName;
 
@@ -180,7 +180,7 @@ dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpa
 	}
 }
 
-dropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, creepsSpawnRule, currentSpawnedCounts) {
+dropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, remoteRoomCreepsSpawnRule, creepsSpawnRule, currentSpawnedCounts) {
 
 	var remoteRoomName = creepsSpawnRule.roomName;
 
@@ -201,7 +201,7 @@ dropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, creepsSpawnRu
 				for (var source of sources) {
 					resources = roomTools.GetSourceWritableDroppedResources(remoteRoomName, source.id);
 					dropStrategyTools.measureEnergy(creepsSpawnRule.measure.harvestedEnergy[source.id], resources);
-					
+
 					resources = roomTools.getSourcesWritableDropContainers(remoteRoomName, source.id);
 					dropStrategyTools.measureEnergy(creepsSpawnRule.measure.harvestedEnergy[source.id], resources);
 				}

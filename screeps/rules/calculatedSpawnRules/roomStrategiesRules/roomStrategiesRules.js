@@ -52,7 +52,7 @@ function addCalculatedSpawnRules(creepsSpawnRules, roomsCurrentSpawnedCounts) {
 
 						} else if (gameTools.hasCoolOffed(creepsSpawnRuleKey, roomStrategy.coolOffCount)) {
 
-							roomStrategy.recalculateCreepsSpawnRule(spawnRoomName, roomStrategyCreepsSpawnRule, currentSpawnedCounts);
+							roomStrategy.recalculateCreepsSpawnRule(spawnRoomName, remoteRoomCreepsSpawnRule, roomStrategyCreepsSpawnRule, currentSpawnedCounts);
 						}
 
 						if (roomStrategyCreepsSpawnRule) {
@@ -62,7 +62,7 @@ function addCalculatedSpawnRules(creepsSpawnRules, roomsCurrentSpawnedCounts) {
 							}
 
 							remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms.push(roomStrategyCreepsSpawnRule);
-							roomStrategy.measureCreepsSpawnRule(spawnRoomName, roomStrategyCreepsSpawnRule, currentSpawnedCounts);
+							roomStrategy.measureCreepsSpawnRule(spawnRoomName, remoteRoomCreepsSpawnRule, roomStrategyCreepsSpawnRule, currentSpawnedCounts);
 						} else {
 							debug.warning(`roomStrategiesRule rule not built for ${spawnRoomName} remote ${remoteRoomName} strategy ${roomStrategyName}`);
 						}

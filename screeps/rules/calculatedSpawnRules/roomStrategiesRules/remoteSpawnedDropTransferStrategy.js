@@ -48,7 +48,7 @@ remoteSpawnedDropTransferStrategy.buildCreepsSpawnRule = function(spawnRoomName,
 	return creepsSpawnRule;
 }
 
-remoteSpawnedDropTransferStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpawnRule, currentSpawnedCounts) {
+remoteSpawnedDropTransferStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, remoteRoomCreepsSpawnRule, creepsSpawnRule, currentSpawnedCounts) {
 
 	var remoteRoomName = creepsSpawnRule.roomName;
 
@@ -92,9 +92,9 @@ remoteSpawnedDropTransferStrategy.recalculateCreepsSpawnRule = function(spawnRoo
 	}
 }
 
-remoteSpawnedDropTransferStrategy.measureCreepsSpawnRule = function(spawnRoomName, creepsSpawnRule, currentSpawnedCounts) {
+remoteSpawnedDropTransferStrategy.measureCreepsSpawnRule = function(spawnRoomName, remoteRoomCreepsSpawnRule, creepsSpawnRule, currentSpawnedCounts) {
 
-	var energyTransferPercent = creepsSpawnRule.energyTransferPercent || this.energyTransferPercent;
+	var energyTransferPercent = remoteRoomCreepsSpawnRule.energyTransferPercent || this.energyTransferPercent;
 	var remoteRoomName = creepsSpawnRule.roomName;
 	var room = Game.rooms[remoteRoomName];
 

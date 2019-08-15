@@ -33,10 +33,10 @@ mobDefenseStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName
 	return creepsSpawnRule;
 }
 
-mobDefenseStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpawnRule) {
+mobDefenseStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, remoteRoomCreepsSpawnRule, creepsSpawnRule) {
 }
 
-mobDefenseStrategy.measureCreepsSpawnRule = function(spawnRoomName, creepsSpawnRule) {
+mobDefenseStrategy.measureCreepsSpawnRule = function(spawnRoomName, remoteRoomCreepsSpawnRule, creepsSpawnRule) {
 }
 
 mobDefenseStrategy.canApplyRule = function() {

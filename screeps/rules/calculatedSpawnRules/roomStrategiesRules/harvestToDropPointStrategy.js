@@ -58,7 +58,7 @@ harvestToDropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remote
 	return creepsSpawnRule;
 }
 
-harvestToDropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, creepsSpawnRule, currentSpawnedCounts) {
+harvestToDropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, remoteRoomCreepsSpawnRule, creepsSpawnRule, currentSpawnedCounts) {
 
 	var remoteRoomName = creepsSpawnRule.roomName;
 
@@ -120,7 +120,7 @@ harvestToDropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, 
 	}
 }
 
-harvestToDropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, creepsSpawnRule, currentSpawnedCounts) {
+harvestToDropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, remoteRoomCreepsSpawnRule, creepsSpawnRule, currentSpawnedCounts) {
 
 	var remoteRoomName = creepsSpawnRule.roomName;
 
