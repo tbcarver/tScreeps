@@ -47,8 +47,8 @@ class ExtensionEnergizer extends EnergyCreep {
 				this.state = "harvesting";
 				this.harvest();
 
-			} else if (this.isInTravelDistance(activeExtension, 0)) {
-				this.moveToAndAvoid(activeExtension);
+			} else if (this.isInTravelDistance(activeExtension, 1)) {
+				debug.temp(this.moveToAndAvoid(activeExtension));
 			}
 		}
 	}
