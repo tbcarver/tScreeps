@@ -125,7 +125,7 @@ class StorageTransferer extends BaseCreep {
 
 				this.creep.moveTo(resource);
 
-			} else if (transferResult == ERR_FULL && this.creep.carry.energy / this.creep.carryCapacity < .30) {
+			} else if (transferResult == ERR_FULL && this.creep.carry.energy / this.creep.carryCapacity < .33) {
 
 				this.state = "harvesting";
 

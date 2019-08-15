@@ -1,40 +1,15 @@
 
 var roomTools = require("../../tools/roomTools");
+var ControllerEnergizer = require("../energizers/controllerEnergizer");
 var EnergyCreep = require("../baseCreeps/energyCreep");
 
-class Builder extends EnergyCreep {
+class Builder extends ControllerEnergizer {
 
 	/** @param {Creep} creep */
 	constructor(creep) {
 		super(creep);
-	}
 
-	act() {
-		return super.act();
-	}
-
-	energyAct() {
-
-		var target;
-
-		if (roomTools.hasConstructionSites(this.roomName)) {
-			target = this.creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
-		}
-
-		if (target) {
-
-			if (this.creep.build(target) == ERR_NOT_IN_RANGE) {
-
-				this.moveToAndAvoid(target);
-			}
-
-		} else {
-
-			if (this.creep.transfer(this.creep.room.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-
-				this.moveToAndAvoid(this.creep.room.controller);
-			}
-		}
+		this.canBuild = true;
 	}
 
 	static initializeSpawnCreepMemory(room, spawn, creepsSpawnRule) {

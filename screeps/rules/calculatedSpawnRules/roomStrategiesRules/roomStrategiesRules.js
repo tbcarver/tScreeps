@@ -62,7 +62,7 @@ function addCalculatedSpawnRules(creepsSpawnRules, roomsCurrentSpawnedCounts) {
 							}
 
 							remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms.push(roomStrategyCreepsSpawnRule);
-							roomStrategy.measureCreepsSpawnRule(spawnRoomName, remoteRoomCreepsSpawnRule, roomStrategyCreepsSpawnRule, currentSpawnedCounts);
+							roomStrategy.measureCreepsSpawnRule(spawnRoomName, remoteRoomCreepsSpawnRule, roomStrategyCreepsSpawnRule, currentSpawnedCounts, creepsSpawnRuleKey);
 						} else {
 							debug.warning(`roomStrategiesRule rule not built for ${spawnRoomName} remote ${remoteRoomName} strategy ${roomStrategyName}`);
 						}

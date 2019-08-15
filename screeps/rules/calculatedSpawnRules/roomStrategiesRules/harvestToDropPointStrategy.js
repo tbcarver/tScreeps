@@ -120,7 +120,7 @@ harvestToDropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, 
 	}
 }
 
-harvestToDropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, remoteRoomCreepsSpawnRule, creepsSpawnRule, currentSpawnedCounts) {
+harvestToDropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, remoteRoomCreepsSpawnRule, creepsSpawnRule, currentSpawnedCounts, creepsSpawnRuleKey) {
 
 	var remoteRoomName = creepsSpawnRule.roomName;
 
@@ -144,7 +144,7 @@ harvestToDropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, remo
 			debug.warning(`harvestToDropPointStrategy: room not found for ${remoteRoomName}`);
 		}
 	} else {
-		dropStrategyTools.setCanRecalculate(creepsSpawnRule, currentSpawnedCounts);
+		dropStrategyTools.setCanRecalculate(creepsSpawnRule, currentSpawnedCounts, creepsSpawnRuleKey);
 	}
 }
 

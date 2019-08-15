@@ -28,19 +28,22 @@ class RemoteReserver extends RemoteCreep {
 
 		if (controller) {
 
-			var result = this.creep.reserveController(controller);
-
-			if (result === OK) {
-
-				// debug.highlight(`${this.type} reserved controller ${this.roomName}`);
-
-			} else if (result === ERR_NOT_IN_RANGE) {
-
-				this.creep.moveTo(controller);
-
+			if (this.isInTravelDistance(controller)) {
+				this.travelNearTo(controller);
 			} else {
 
-				debug.warning(`${this.type} ${this.creep.name} can't reserve ${this.roomName} ${result}`);
+				var result = this.creep.reserveController(controller);
+				if (result === OK) {
+	
+					// debug.highlight(`${this.type} reserved controller ${this.roomName}`);
+	
+				} else if (result === ERR_NOT_IN_RANGE) {
+	
+					this.creep.moveTo(controller);
+	
+				} else {	
+					debug.warning(`${this.type} ${this.creep.name} can't reserve ${this.roomName} ${result}`);
+				}
 			}
 		} else {
 

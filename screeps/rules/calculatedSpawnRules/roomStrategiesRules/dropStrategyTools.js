@@ -55,7 +55,7 @@ dropStrategyTools.measureEnergy = function(measureMemory, resources) {
 	measureMemory.averageTotalEnergy = Math.floor(measureMemory.totalEnergy / measureMemory.totalEnergyCount);
 }
 
-dropStrategyTools.setCanRecalculate = function(creepsSpawnRule, currentSpawnedCounts) {
+dropStrategyTools.setCanRecalculate = function(creepsSpawnRule, currentSpawnedCounts, creepsSpawnRuleKey) {
 
 	var currentDropHarvesterCount = currentSpawnedCounts["dropHarvester"] || 0;
 	var spawnOrderMaxSpawnedCount = SpawnOrderMaxSpawnedCount.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, "dropHarvester");
@@ -66,6 +66,8 @@ dropStrategyTools.setCanRecalculate = function(creepsSpawnRule, currentSpawnedCo
 		creepsSpawnRule.spawnOrderMaxSpawnedCounts.pop();
 		creepsSpawnRule.spawnOrderMaxSpawnedCounts.splice(1, 0, spawnOrderMaxSpawnedCount);
 		creepsSpawnRule.measure.canRecalculate = true;
+
+		debug.highlight(`${creepsSpawnRuleKey} can recalculate.`);
 	}
 }
 

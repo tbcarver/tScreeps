@@ -25,8 +25,18 @@ class ControllerEnergizer extends EnergyCreep {
 
 	harvestCompleteMove() {
 
-		if (this.creep.room.controller) {
-			this.moveToAndAvoid(this.creep.room.controller);
+		var target;
+
+		if (this.canBuild && roomTools.hasConstructionSites(this.roomName)) {
+			target = this.creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
+		}
+
+		if (!target) {
+			target = this.creep.room.controller;
+		}
+		
+		if (target) {
+			this.moveToAndAvoid(target);
 		} else {
 			this.moveIntoRoom();
 		}
@@ -43,8 +53,19 @@ class ControllerEnergizer extends EnergyCreep {
 
 			if (target) {
 
-				if (this.creep.build(target) == ERR_NOT_IN_RANGE) {
-					this.moveToAndAvoid(target);
+				if (this.avoidCreepsOnTravel) {
+					this.creep.memory.upgradeControllerRange = 3;
+				}
+
+				var range = this.creep.memory.upgradeControllerRange || 2;
+
+				if (this.isInTravelDistance(target)) {
+					this.travelTo(target, range, true);
+				} else {
+	
+					if (this.creep.build(target) == ERR_NOT_IN_RANGE) {
+						this.moveToAndAvoid(target);
+					}
 				}
 
 				acted = true;
@@ -63,7 +84,7 @@ class ControllerEnergizer extends EnergyCreep {
 
 				var range = this.creep.memory.upgradeControllerRange || 2;
 
-				if (!this.creep.pos.inRangeTo(target, range)) {
+				if (this.isInTravelDistance(target, range)) {
 					this.travelTo(target, range, true);
 				} else {
 
@@ -73,7 +94,7 @@ class ControllerEnergizer extends EnergyCreep {
 
 						this.moveToAndAvoid(this.creep.room.controller);
 
-					} else if (transferResult == ERR_FULL && this.creep.carry.energy / this.creep.carryCapacity < .30) {
+					} else if (transferResult == ERR_FULL && this.creep.carry.energy / this.creep.carryCapacity < .33) {
 
 						this.state = "harvesting";
 						this.harvest();

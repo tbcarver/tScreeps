@@ -1,5 +1,6 @@
 
 var roomTools = require("../../tools/roomTools");
+var Builder = require("./builder");
 var RemoteEnergyWorker = require("./remoteEnergyWorker");
 
 class RemoteBuilder extends RemoteEnergyWorker {
@@ -13,28 +14,9 @@ class RemoteBuilder extends RemoteEnergyWorker {
 		return super.act();
 	}
 
-	work() {
+	energyAct() {
 
-		var target;
-
-		if (roomTools.hasConstructionSites(this.roomName)) {
-			target = this.creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
-		}
-
-		if (target) {
-
-			if (this.creep.build(target) == ERR_NOT_IN_RANGE) {
-
-				this.moveToAndAvoid(target);
-			}
-
-		} else {
-
-			if (this.creep.transfer(this.creep.room.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-
-				this.moveToAndAvoid(this.creep.room.controller);
-			}
-		}
+		Builder.prototype.energyAct.call(this);
 	}
 
 	static initializeSpawnCreepMemory(room) {

@@ -80,7 +80,7 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 		buildingRooms = orderBy(buildingRooms, "constructionCost", "desc");
 
 		for (var buildingRoom of buildingRooms) {
-			if (spawningRooms.length > 0) {
+			if (!_.isEmpty(spawningRooms)) {
 
 				var maxCreepsCount = Math.floor(buildingRoom.constructionCost / 5000);
 
@@ -93,7 +93,7 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 				}
 
 				if (spawningRooms[buildingRoom.roomName]) {
-					maxCreepsCount = maxCreepsCount - spawningRooms[buildingRoom.roomName].controllerEnergizer;
+					maxCreepsCount = maxCreepsCount - spawningRooms[buildingRoom.roomName].creepsCount.controllerEnergizer;
 				}
 
 				var lastCreepType = "builder";
@@ -109,6 +109,12 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 
 								incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawningRoom.roomName, buildingRoom.roomName, cachedRuleName, "builder");
 								spawningRoom.creepsCount["builderWithEnergy"]--;
+								remainingCreepsCount--;
+
+							} else if (spawningRoom.creepsCount["builderWithHarvesting"] > 0) {
+
+								incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawningRoom.roomName, buildingRoom.roomName, cachedRuleName, "builder");
+								spawningRoom.creepsCount["builderWithHarvesting"]--;
 								remainingCreepsCount--;
 							}
 						} else {

@@ -31,7 +31,7 @@ upgradeControllerRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedR
 function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 
 	var controllerToUpgrade;
-	var controllers = _.map(Game.rooms, room => room.controller);	
+	var controllers = roomTools.getControllers();
 	var oneToEightTogetherMinimum = rules.oneToEightTogetherMinimum || 7;
 	var filteredControllers = controllers.filter(controller => controller.level >= 1 && controller.level < oneToEightTogetherMinimum);
 
@@ -81,7 +81,7 @@ function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 
 		var spawningRooms = [];
 
-		for (var roomName in Game.rooms) {
+		for (roomName in Game.rooms) {
 
 			var spawnsCount = roomTools.getSpawnsCount(roomName);
 

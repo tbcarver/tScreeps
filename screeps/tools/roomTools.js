@@ -177,12 +177,46 @@ roomTools.initialize = function() {
 roomTools.buildControllerStats = function(myRooms) {
 
 	this.controllerStats = {
-		myControllersCount: myRooms.length,
+		controllersCount: myRooms.length,
+		controllers: [],
+		highestProgressPercentage: 0,
 	};
+
+	if (!_.isEmpty(myRooms)) {
+
+		var highestController = myRooms[0].controller;
+
+		for (var room of myRooms) {
+
+			this.controllerStats.controllers.push(room.controller);
+
+			if (room.controller.level <= 7 && room.controller.level >= highestController.level) {
+
+				if (room.controller.level === highestController.level) {
+
+					if (room.controller.progress > highestController.progress) {
+						highestController = room.controller;
+					}
+				} else {
+					highestController = room.controller;
+				}
+			}
+		}
+
+		this.controllerStats.highestProgressPercentage = Math.floor(highestController.progress / highestController.progressTotal * 100);
+	}
 }
 
-roomTools.getMyControllersCount = function() {
-	return this.controllerStats.myControllersCount;
+roomTools.getControllersCount = function() {
+	return this.controllerStats.controllersCount;
+}
+
+roomTools.getControllers = function() {
+	return this.controllerStats.controllers;
+}
+
+roomTools.getHighestProgressPercentage = function() {
+	return this.controllerStats.highestProgressPercentage;
 }
 
 roomTools.buildSourcesStats = function() {
@@ -378,8 +412,9 @@ roomTools.buildTowerStats = function(myRooms) {
 		rooms: {},
 	};
 
-	for (var roomName in Game.rooms) {
+	for (var room of myRooms) {
 
+		var roomName = room.name;
 		if (!this.towerStats.rooms[roomName]) {
 			this.towerStats.rooms[roomName] = {
 				towersCount: 0,
@@ -389,7 +424,7 @@ roomTools.buildTowerStats = function(myRooms) {
 			};
 		}
 
-		var towers = /** @type {StructureTower[]} */ (Game.rooms[roomName].find(FIND_STRUCTURES, {
+		var towers = /** @type {StructureTower[]} */ (room.find(FIND_STRUCTURES, {
 			filter: structure => structure.structureType === STRUCTURE_TOWER
 		}));
 

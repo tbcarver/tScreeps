@@ -146,7 +146,7 @@ class BaseRemoteStorageTransferer extends RemoteCreep {
 					if (waitFlag) {
 						if (this.isInTravelDistance(waitFlag)) {
 							this.travelTo(waitFlag);
-						} else if (!this.creep.pos.inRangeTo(waitFlag, 2)) {
+						} else if (this.isInTravelDistance(waitFlag, 2)) {
 							this.creep.moveTo(waitFlag);
 						}
 					} else {

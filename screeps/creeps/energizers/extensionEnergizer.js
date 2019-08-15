@@ -42,13 +42,13 @@ class ExtensionEnergizer extends EnergyCreep {
 
 					this.moveToAndAvoid(extension);
 				}
-			} else if (this.creep.carry.energy / this.creep.carryCapacity < .30) {
+			} else if (this.creep.carry.energy / this.creep.carryCapacity < .33) {
 
 				this.state = "harvesting";
 				this.harvest();
 
 			} else if (this.isInTravelDistance(activeExtension, 1)) {
-				debug.temp(this.moveToAndAvoid(activeExtension));
+				this.moveToAndAvoid(activeExtension);
 			}
 		}
 	}

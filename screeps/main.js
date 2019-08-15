@@ -122,7 +122,9 @@ function initialize() {
 function logStats() {
 
 	var displayTime = Game.time.toString();
-	var availableClaims = Game.gcl.level - roomTools.getMyControllersCount();
+	var availableClaims = Game.gcl.level - roomTools.getControllersCount();
+
+	displayTime += ` ${roomTools.getHighestProgressPercentage()}%`;
 
 	if (availableClaims > 0) {
 		displayTime += ` <span style='color:yellow'>${availableClaims}</span>`;

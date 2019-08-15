@@ -24,29 +24,46 @@ class RemoteEnergyWorker extends RemoteCreep {
 
 	spawnedRoomAct() {
 
-		if (this.creep.carry.energy === this.creep.carryCapacity) {
+		if (this.state === "energyActing" || this.creep.carry.energy === this.creep.carryCapacity) {
 
 			this.moveToRemoteRoom();
 
 		} else if (this.state === "harvesting") {
 
-			EnergyCreep.prototype.harvest.call(this);
+			if (this.roomName !== this.spawnedRoomName) {
+				this.moveToSpawnedRoom();
+			} else {
+				EnergyCreep.prototype.harvest.call(this);
+			}
 		}
 	}
 
 	remoteRoomAct() {
 
-		if (this.creep.carry.energy === 0) {
+		if (this.state === "harvesting" || this.creep.carry.energy === 0) {
 
 			this.moveToSpawnedRoom();
 
-		} else if (this.state === "working") {
+		} else if (this.state === "energyActing") {
 
-			this.work();
+			if (this.roomName !== this.remoteRoomName) {
+				this.moveToRemoteRoom();
+			} else {
+				this.energyAct();
+			}
 		}
 	}
 
-	work(){
+	harvest() {
+
+		if (this.roomName !== this.spawnedRoomName) {
+			this.moveToSpawnedRoom();
+		} else {
+			EnergyCreep.prototype.harvest.call(this);
+		}
+	}
+
+	energyAct() {
 	}
 
 	harvestCompleteMove() {

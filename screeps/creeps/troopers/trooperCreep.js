@@ -73,7 +73,7 @@ class TrooperCreep extends BaseCreep {
 					}
 
 					if (this.isInTravelDistance(pos, 2)) {
-						this.travelNearTo(pos, true, 2);
+						this.travelTo(pos, 2, true);
 					}
 				}
 			}

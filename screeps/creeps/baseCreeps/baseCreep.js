@@ -53,10 +53,6 @@ class BaseCreep {
 
 		var acted = false;
 
-		if (spawnTools.isCreepInSpawnBuffer(this.creep)) {
-			this.creep.say("🙋" + this.creep.ticksToLive);
-		}
-
 		if (this.state === "suicide") {
 
 			this.creep.say("😡 .|.");
@@ -75,11 +71,9 @@ class BaseCreep {
 
 		} else if (this.isDying) {
 
-			this.creep.room.visual.circle(this.creep.pos, { radius: .15, stroke: "red", fill: "red", opacity: 1 });
-			this.creep.say("😡 " + this.creep.ticksToLive);
+			this.creep.say("😡 " + this.creep.ticksToLive, true);
 
 			var hasCarry = this.creep.body.some(bodyPart => bodyPart.type === "carry");
-
 			if (hasCarry) {
 
 				if (this.creep.carry.energy === 0) {
@@ -253,7 +247,7 @@ class BaseCreep {
 
 					// NOTE: Flags must be next to exits, alternating between 1 and 2 help the
 					//  creeps from getting stuck.
-					if (!this.creep.pos.inRangeTo(exitFlag, 3)) {
+					if (this.isInTravelDistance(exitFlag)) {
 						this.travelTo(exitFlag);
 					} else if (this.creep.pos.inRangeTo(exitFlag, Game.time % 4 >= 2 ? 1 : 2)) {
 						findPathAndExit = true;
@@ -264,7 +258,7 @@ class BaseCreep {
 
 					var exit = this.creep.pos.findClosestByRange(routeExit);
 
-					if (!this.creep.pos.inRangeTo(exit, 3)) {
+					if (this.isInTravelDistance(exit)) {
 						this.travelTo(exit);
 					} else {
 						findPathAndExit = true;
@@ -399,8 +393,8 @@ class BaseCreep {
 		return result;
 	}
 
-	travelNearTo(target, avoidCreeps = false, range = 3) {
-		this.travelTo(target, range, avoidCreeps);
+	travelNearTo(target, avoidCreeps,) {
+		this.travelTo(target, 3, avoidCreeps);
 	}
 
 	isInTravelDistance(target, range = 3) {

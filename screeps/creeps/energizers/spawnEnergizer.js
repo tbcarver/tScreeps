@@ -67,7 +67,7 @@ class SpawnEnergizer extends EnergyCreep {
 			}
 		} else {
 
-			if (this.creep.carry.energy / this.creep.carryCapacity < .30) {				
+			if (this.creep.carry.energy / this.creep.carryCapacity < .33) {				
 				this.state = "harvesting";
 				this.harvest();
 			} else {
@@ -75,7 +75,7 @@ class SpawnEnergizer extends EnergyCreep {
 				target = roomTools.getSpawn(this.roomName);
 				if (target) {
 					if (this.isInTravelDistance(target, 2)) {
-						this.travelNearTo(target, true, 2);
+						this.travelTo(target, 2, true);
 					}
 				} else {
 	

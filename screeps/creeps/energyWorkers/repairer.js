@@ -30,7 +30,7 @@ class Repairer extends EnergyCreep {
 
 			// debug.warning("Repairer cannot find any damaged structures");
 
-			if (this.creep.carry.energy / this.creep.carryCapacity < .30) {
+			if (this.creep.carry.energy / this.creep.carryCapacity < .33) {
 
 				this.state = "harvesting";
 			}

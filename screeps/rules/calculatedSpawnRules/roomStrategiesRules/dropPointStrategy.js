@@ -180,7 +180,7 @@ dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, remoteRoo
 	}
 }
 
-dropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, remoteRoomCreepsSpawnRule, creepsSpawnRule, currentSpawnedCounts) {
+dropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, remoteRoomCreepsSpawnRule, creepsSpawnRule, currentSpawnedCounts, creepsSpawnRuleKey) {
 
 	var remoteRoomName = creepsSpawnRule.roomName;
 
@@ -214,7 +214,7 @@ dropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, remoteRoomCre
 			debug.warning(`dropPointStrategy: room not found for ${remoteRoomName}`);
 		}
 	} else {
-		dropStrategyTools.setCanRecalculate(creepsSpawnRule, currentSpawnedCounts);
+		dropStrategyTools.setCanRecalculate(creepsSpawnRule, currentSpawnedCounts, creepsSpawnRuleKey);
 	}
 }
 
