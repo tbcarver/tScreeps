@@ -46,12 +46,20 @@ class BaseCreep {
 	}
 
 	set state(state) {
-		this.memory.state = state
+		this.memory.state = state;
+	}
+
+	get hasCarry() {
+		return this.creep.body.some(bodyPart => bodyPart.type === "carry");
 	}
 
 	act() {
 
 		var acted = false;
+
+		if (this.isDying){
+			this.creep.say("😡  " + this.creep.ticksToLive, true);
+		}
 
 		if (this.state === "suicide") {
 
@@ -69,29 +77,17 @@ class BaseCreep {
 
 			acted = true;
 
-		} else if (this.isDying) {
+		} else if (this.shouldTransferResourcesOnDying()) {
 
-			this.creep.say("😡 " + this.creep.ticksToLive, true);
+			this.creep.say(`😰 ${this.creep.carry.energy} ${this.creep.ticksToLive}`);
+			this.transferEnergy();
 
-			var hasCarry = this.creep.body.some(bodyPart => bodyPart.type === "carry");
-			if (hasCarry) {
-
-				if (this.creep.carry.energy === 0) {
-
-					var waitFlag = Game.flags[`wait-${this.roomName}`];
-					if (waitFlag) {
-						this.creep.moveTo(waitFlag);
-					} else {
-						this.creep.moveTo(this.creep.room.controller);
-					}
-				} else {
-
-					this.creep.say("😰 " + this.creep.ticksToLive);
-					this.transferEnergy();
-				}
-
-				acted = true;
+			if (this.creep.carry && this.creep.carry.energy === 0) {
+				this.creep.suicide();
 			}
+
+			acted = true;
+
 		} else if (this.memory.takeStepsIntoRoom && this.memory.takeStepsIntoRoom > 0) {
 
 			this.moveIntoRoom();
@@ -441,7 +437,7 @@ class BaseCreep {
 
 			if (resource) {
 				if (this.isInTravelDistance(resource)) {
-					this.travelNearTo(resource);
+					this.travelNearTo(resource, true);
 
 				} else {
 
@@ -468,7 +464,7 @@ class BaseCreep {
 			var dropFlag = roomTools.getDropFlag(this.roomName);
 			if (dropFlag) {
 				if (this.isInTravelDistance(dropFlag)) {
-					this.travelNearTo(dropFlag);
+					this.travelNearTo(dropFlag, true);
 				} else if (this.creep.pos.inRangeTo(dropFlag, 0)) {
 					this.creep.drop(RESOURCE_ENERGY);
 					this.creep.moveTo(this.creep.room.controller);
@@ -479,6 +475,38 @@ class BaseCreep {
 				this.creep.drop(RESOURCE_ENERGY);
 			}
 		}
+	}
+
+	shouldTransferResourcesOnDying() {
+
+		if (this.isDying && !this.creep.memory.shouldTransferResourcesOnDying) {
+			if (this.hasCarry && (this.creep.carry.energy / this.creep.carryCapacity > .10)) {
+	
+				var transferTarget;
+				if (roomTools.hasMinimumStorageCapacity(this.roomName)) {
+	
+					transferTarget = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+						filter: structure => (structure.structureType == STRUCTURE_STORAGE ||
+							structure.structureType == STRUCTURE_TERMINAL) &&
+							structure.storeCapacity - structure.store[RESOURCE_ENERGY] > this.creep.carry.energy
+					});
+				} else {
+					transferTarget = roomTools.getDropFlag(this.roomName);
+				}
+	
+				if (transferTarget) {
+					var path = this.creep.pos.findPathTo(transferTarget, {
+						costCallback: roomTools.getAvoidCostCallback(),
+					});
+	
+					if (this.creep.ticksToLive - 3 <= path.length) {
+						this.creep.memory.shouldTransferResourcesOnDying = true;
+					}
+				}
+			}
+		}
+
+		return this.creep.memory.shouldTransferResourcesOnDying;
 	}
 
 	shouldEvacuateRoom(roomName) {

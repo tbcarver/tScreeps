@@ -33,7 +33,9 @@ class EnergyCreep extends BaseCreep {
 					this.state = "harvesting";
 				}
 
-				this.harvest();
+				if (!this.isDying) {
+					this.harvest();
+				}
 			}
 
 			if (this.state === "energyActing" || this.creep.carry.energy === this.creep.carryCapacity) {

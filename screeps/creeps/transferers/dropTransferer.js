@@ -26,7 +26,9 @@ class DropTransferer extends BaseCreep {
 					this.state = "harvesting";
 				}
 
-				this.harvest();
+				if (!this.isDying) {
+					this.harvest();
+				}
 			}
 
 			if (this.state === "energizing" || this.creep.carry.energy === this.creep.carryCapacity) {

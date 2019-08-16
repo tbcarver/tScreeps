@@ -47,18 +47,11 @@ class BaseRemoteStorageTransferer extends RemoteCreep {
 						resource = droppedResources[0];
 					}
 
-				} else {
-					resource = findTools.findSourcesWritableDroppedResource(this.creep.pos, this.availableCarryCapacity);
 				}
 			}
 
 			if (!resource) {
-				resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
-					filter: structure =>
-						(structure.structureType === STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] / structure.storeCapacity > .01) ||
-						(structure.structureType === STRUCTURE_TERMINAL && structure.store[RESOURCE_ENERGY] / structure.storeCapacity > .01) ||
-						(structure.structureType === STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] / structure.storeCapacity > .35)
-				});
+				resource = findTools.findClosestStoredEnergy(this.creep.pos, this.availableCarryCapacity);
 			}
 
 			if (resource) {
@@ -75,7 +68,6 @@ class BaseRemoteStorageTransferer extends RemoteCreep {
 							if (resource.store.energy >= this.availableCarryCapacity * 2) {
 								moveToOtherRoom();
 							}
-
 						} else if (result == ERR_NOT_IN_RANGE) {
 							this.creep.moveTo(resource);
 						}

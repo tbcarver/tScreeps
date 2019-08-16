@@ -193,17 +193,18 @@ dropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, remoteRoomCre
 				// Dropped energy measurement only necessary if using remoteSpawnedStorageTransferer, not the case if in the spawned room
 				if (spawnRoomName !== remoteRoomName) {
 					resources = roomTools.GetDropFlagWritableDroppedResources(remoteRoomName);
-					dropStrategyTools.measureEnergy(creepsSpawnRule.measure.droppedEnergy, resources);
+					dropStrategyTools.measureWritableEnergy(creepsSpawnRule.measure.droppedEnergy, resources);
 				}
 
 				var sources = roomTools.getSources(remoteRoomName);
 
 				for (var source of sources) {
 					resources = roomTools.GetSourceWritableDroppedResources(remoteRoomName, source.id);
-					dropStrategyTools.measureEnergy(creepsSpawnRule.measure.harvestedEnergy[source.id], resources);
+					var additionalResources = roomTools.getSourcesWritableDropContainers(remoteRoomName, source.id);
 
-					resources = roomTools.getSourcesWritableDropContainers(remoteRoomName, source.id);
-					dropStrategyTools.measureEnergy(creepsSpawnRule.measure.harvestedEnergy[source.id], resources);
+					resources = [...resources, ...additionalResources];
+
+					dropStrategyTools.measureWritableEnergy(creepsSpawnRule.measure.harvestedEnergy[source.id], resources);
 				}
 
 			} else {

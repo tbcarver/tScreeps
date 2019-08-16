@@ -27,7 +27,9 @@ class RemoteSpawnedStorageTransferer extends BaseRemoteStorageTransferer {
 
 	remoteRoomAct() {
 
-		BaseRemoteStorageTransferer.prototype.harvest.call(this, this.moveToSpawnedRoom.bind(this));
+		if (!this.isDying) {
+			BaseRemoteStorageTransferer.prototype.harvest.call(this, this.moveToSpawnedRoom.bind(this));
+		}
 	}
 
 	static initializeSpawnCreepMemory(room) {

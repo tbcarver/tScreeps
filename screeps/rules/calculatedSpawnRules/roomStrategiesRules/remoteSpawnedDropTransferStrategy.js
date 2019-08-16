@@ -32,7 +32,7 @@ remoteSpawnedDropTransferStrategy.buildCreepsSpawnRule = function(spawnRoomName,
 					},
 				}
 
-				creepsSpawnRule.spawnOrderMaxSpawnedCounts.push({ remoteSpawnedStorageTransferer: 6 });
+				creepsSpawnRule.spawnOrderMaxSpawnedCounts.push({ remoteSpawnedStorageTransferer: 4 });
 
 			} else {
 				debug.danger(`remoteSpawnedDropTransferStrategy: drop flag not found for ${remoteRoomName}`);
@@ -102,17 +102,11 @@ remoteSpawnedDropTransferStrategy.measureCreepsSpawnRule = function(spawnRoomNam
 		if (roomTools.hasDropFlag(remoteRoomName)) {
 
 			var resources = roomTools.GetDropFlagWritableDroppedResources(room.name);
-			var measureMemory = creepsSpawnRule.measure.droppedEnergy;
-			var totalEnergy = sumBy(resources, "energy");
-
-			measureMemory.totalEnergyCount++;
-			measureMemory.totalEnergy += (totalEnergy * energyTransferPercent / 100);
-			measureMemory.averageTotalEnergy = Math.floor(measureMemory.totalEnergy / measureMemory.totalEnergyCount);
+			dropStrategyTools.measureWritableEnergy(creepsSpawnRule.measure.droppedEnergy, resources, energyTransferPercent);
 
 		} else {
 			debug.danger(`remoteSpawnedDropTransferStrategy: drop flag not found for ${remoteRoomName}`);
 		}
-
 	} else {
 		debug.warning(`remoteSpawnedDropTransferStrategy: room not found for ${remoteRoomName}`);
 	}

@@ -43,7 +43,9 @@ class RemoteSpawnedDropTransferer extends BaseRemoteStorageTransferer {
 
 		} else if (this.state === "harvesting") {
 
-			DropTransferer.prototype.harvest.call(this, this.moveToSpawnedRoom.bind(this));
+			if (!this.isDying) {
+				DropTransferer.prototype.harvest.call(this, this.moveToSpawnedRoom.bind(this));
+			}
 		}
 	}
 
@@ -86,7 +88,7 @@ class RemoteSpawnedDropTransferer extends BaseRemoteStorageTransferer {
 		}
 
 		if (creepMemory) {
-			creepMemory.bodyPartsType =  "moveCarry";
+			creepMemory.bodyPartsType = "moveCarry";
 			creepMemory.maximumSpawnCapacity = 750;
 			creepMemory.minimumSpawnCapacity = 600;
 		}
