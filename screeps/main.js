@@ -49,7 +49,7 @@ function loop() {
 
 		// Game.rooms["W8N8"].createFlag(35,1, "exit-from-W8N8-to-W8N9", COLOR_GREEN, COLOR_WHITE)
 		// Game.rooms["W12N16"].createFlag(7,12, "post-W12N16", COLOR_GREY, COLOR_ORANGE)
-		// Game.rooms["W12N16"].createFlag(21,21, "drop-W12N16", COLOR_YELLOW)
+		// Game.rooms["W4S9"].createFlag(23,32, "drop-W4S9", COLOR_YELLOW)
 		// Game.rooms["W7N8"].createFlag(13,24, "wait-W7N8", COLOR_RED, COLOR_YELLOW)
 
 		// Game.flags["post-W12N16"].setPosition(7,12)
