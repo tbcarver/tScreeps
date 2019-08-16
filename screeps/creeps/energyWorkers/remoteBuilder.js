@@ -8,10 +8,8 @@ class RemoteBuilder extends RemoteEnergyWorker {
 	/** @param {Creep} creep */
 	constructor(creep) {
 		super(creep);
-	}
 
-	act() {
-		return super.act();
+		this.canBuild = true;
 	}
 
 	energyAct() {

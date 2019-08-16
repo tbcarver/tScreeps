@@ -9,10 +9,6 @@ class Defender extends TrooperCreep {
 		super(creep);
 	}
 
-	act() {
-		return super.act();
-	}
-
 	static initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount) {
 
 		var creepMemory = TrooperCreep.initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount);

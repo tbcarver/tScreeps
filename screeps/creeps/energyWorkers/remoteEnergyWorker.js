@@ -8,10 +8,19 @@ class RemoteEnergyWorker extends RemoteCreep {
 	/** @param {Creep} creep */
 	constructor(creep) {
 		super(creep);
-	}
 
-	act() {
-		return super.act();
+		this.canHarvest;
+		this.canPickup;
+
+		if (this.creepsSpawnRule && this.creepsSpawnRule.canEnergyCreepsHarvest) {
+			this.canHarvest = true;
+		}
+
+		if (this.creepsSpawnRule && this.creepsSpawnRule.canEnergyCreepsPickup) {
+			this.canPickup = true;
+		}
+
+		this.availableCarryCapacity = this.creep.carryCapacity - this.creep.carry.energy;
 	}
 
 	arrivedAtSpawnedRoom() {
@@ -19,7 +28,7 @@ class RemoteEnergyWorker extends RemoteCreep {
 	}
 
 	arrivedAtRemoteRoom() {
-		this.state = "working";
+		this.state = "energyActing";
 	}
 
 	spawnedRoomAct() {

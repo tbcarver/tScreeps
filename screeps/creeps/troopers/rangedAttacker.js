@@ -9,10 +9,6 @@ class RangedAttacker extends TrooperCreep {
 		super(creep);
 	}
 
-	act() {
-		return super.act();
-	}
-
 	attack() {
 
 		var enemies = this.creep.room.find(FIND_HOSTILE_CREEPS);

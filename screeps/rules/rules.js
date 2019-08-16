@@ -17,7 +17,7 @@ var rules = {
 	observingRooms: [""],
 	upgradeControllerSpawnRule: "oneToEight", // oneToEight
 	upgradeControllerEnergyTransferPercent: 80,
-	oneToEightTogetherMinimum: 3,
+	upgradeControllerOneToEightTogetherMinimum: 1,
 	visualizeMovePaths: false,
 	visualizeTravelPaths: false,
 }

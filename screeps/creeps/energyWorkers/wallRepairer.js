@@ -8,10 +8,6 @@ class WallRepairer extends EnergyCreep {
 		super(creep);
 	}
 
-	act() {
-		return super.act();
-	}
-
 	energyAct() {
 
 		var target;

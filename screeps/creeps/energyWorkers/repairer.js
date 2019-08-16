@@ -8,10 +8,6 @@ class Repairer extends EnergyCreep {
 		super(creep);
 	}
 
-	act() {
-		return super.act();
-	}
-
 	energyAct() {
 
 		const target = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {

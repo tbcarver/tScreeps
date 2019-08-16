@@ -9,10 +9,6 @@ class StructureAttacker extends TrooperCreep {
 		super(creep);
 	}
 
-	act() {
-		return super.act();
-	}
-
 	attack() {
 
 		var target = this.creep.pos.findClosestByPath(FIND_STRUCTURES, {

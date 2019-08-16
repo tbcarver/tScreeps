@@ -9,10 +9,6 @@ class SpawnEnergizer extends EnergyCreep {
 		super(creep);
 	}
 
-	act() {
-		return super.act();
-	}
-
 	harvestCompleteMove() {
 
 		var target = roomTools.getSpawn(this.roomName);

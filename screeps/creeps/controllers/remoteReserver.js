@@ -8,10 +8,6 @@ class RemoteReserver extends RemoteCreep {
 		super(creep);
 	}
 
-	act() {
-		return super.act();
-	}
-
 	arrivedAtSpawnedRoom() {
 	}
 

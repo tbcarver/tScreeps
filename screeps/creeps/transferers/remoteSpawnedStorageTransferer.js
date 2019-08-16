@@ -8,10 +8,6 @@ class RemoteSpawnedStorageTransferer extends BaseRemoteStorageTransferer {
 		super(creep);
 	}
 
-	act() {
-		return super.act();
-	}
-
 	arrivedAtSpawnedRoom() {
 		this.state = "transferring";
 	}

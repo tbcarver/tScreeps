@@ -8,10 +8,6 @@ class RemoteClaimer extends RemoteCreep {
 		super(creep);
 	}
 
-	act() {
-		return super.act();
-	}
-
 	arrivedAtSpawnedRoom() {
 	}
 

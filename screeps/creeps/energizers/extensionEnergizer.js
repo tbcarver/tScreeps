@@ -9,10 +9,6 @@ class ExtensionEnergizer extends EnergyCreep {
 		super(creep);
 	}
 
-	act() {
-		return super.act();
-	}
-
 	harvestCompleteMove() {
 		
 		var target = Game.getObjectById(this.memory.extensions[this.memory.activeExtensionIndex].id);

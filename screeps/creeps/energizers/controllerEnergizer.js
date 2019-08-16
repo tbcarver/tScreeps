@@ -14,11 +14,8 @@ class ControllerEnergizer extends EnergyCreep {
 		}
 	}
 
-	act() {
-		return super.act();
-	}
-
 	harvest() {
+
 		delete this.creep.memory.upgradeControllerRange;
 		super.harvest();
 	}

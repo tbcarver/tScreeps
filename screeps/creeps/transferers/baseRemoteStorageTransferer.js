@@ -23,10 +23,6 @@ class BaseRemoteStorageTransferer extends RemoteCreep {
 		this.availableCarryCapacity = this.creep.carryCapacity - this.creep.carry.energy;
 	}
 
-	act() {
-		return super.act();
-	}
-
 	harvest(moveToOtherRoom) {
 
 		if (this.creep.carry.energy === this.creep.carryCapacity) {

@@ -32,7 +32,7 @@ function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 
 	var controllerToUpgrade;
 	var controllers = roomTools.getControllers();
-	var oneToEightTogetherMinimum = rules.oneToEightTogetherMinimum || 7;
+	var oneToEightTogetherMinimum = rules.upgradeControllerOneToEightTogetherMinimum || 7;
 	var filteredControllers = controllers.filter(controller => controller.level >= 1 && controller.level < oneToEightTogetherMinimum);
 
 	if (filteredControllers.length === 0) {
