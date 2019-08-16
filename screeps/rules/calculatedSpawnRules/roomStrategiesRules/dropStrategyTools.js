@@ -88,11 +88,14 @@ dropStrategyTools.getDropHarvesterCount = function(spawnRoom, remoteRoom, creeps
 	var resources = roomTools.getSources(remoteRoom.name);
 
 	for (var resource of resources) {
-		if (roomTools.getCountResourceHarvestPositions(resource.id) >= creepsPerResource) {
-			dropHarvesterCount += creepsPerResource;
-		} else {
-			dropHarvesterCount++;
+
+		var creepsCount = roomTools.getCountResourceHarvestPositions(resource.id);
+
+		if (creepsCount > creepsPerResource) {
+			creepsCount = creepsPerResource;
 		}
+
+		dropHarvesterCount += creepsCount;
 	}
 
 	return dropHarvesterCount;
