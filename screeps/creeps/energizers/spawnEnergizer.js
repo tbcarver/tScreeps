@@ -85,12 +85,12 @@ class SpawnEnergizer extends EnergyCreep {
 
 		var creepMemory = {
 			type: "spawnEnergizer",
-			bodyPartsType: "moveCarryWork",
+			bodyPartsType: "moveCarry",
 			maximumSpawnCapacity: 450,
 		}
 
-		if (!creepsSpawnRule.canEnergyCreepsHarvest) {
-			creepMemory.bodyPartsType = "moveCarry";
+		if (creepsSpawnRule.canEnergyCreepsHarvest) {
+			creepMemory.bodyPartsType = "moveCarryWork";
 		}
 
 		var spawns = room.find(FIND_STRUCTURES, {

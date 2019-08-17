@@ -24,7 +24,7 @@ creepsFactory.buildCreep = function(creep) {
 		// // // 			debug.temp("creep memory:", creep.memory)
 		// 		// }
 		// // 	}
-		// 	}
+			// }
 		// }
 
 	} else {

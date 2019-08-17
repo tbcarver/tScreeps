@@ -60,14 +60,14 @@ bodyPartsFactory.toBodyParts = function(bodyPartsObject) {
 		_.times(bodyPartsObject.claim, () => bodyParts.push(CLAIM));
 	}
 
-	if (bodyPartsObject.work) {
-
-		_.times(bodyPartsObject.work, () => bodyParts.push(WORK));
-	}
-
 	if (bodyPartsObject.carry) {
 
 		_.times(bodyPartsObject.carry, () => bodyParts.push(CARRY));
+	}
+
+	if (bodyPartsObject.work) {
+
+		_.times(bodyPartsObject.work, () => bodyParts.push(WORK));
 	}
 
 	if (bodyPartsObject.attack) {

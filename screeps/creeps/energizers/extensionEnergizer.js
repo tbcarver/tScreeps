@@ -73,7 +73,7 @@ class ExtensionEnergizer extends EnergyCreep {
 
 			creepMemory = {
 				type: "extensionEnergizer",
-				bodyPartsType: "moveCarryWork",
+				bodyPartsType: "moveCarry",
 				maximumSpawnCapacity: 450,
 				extensions: [{
 					id: "",
@@ -82,16 +82,12 @@ class ExtensionEnergizer extends EnergyCreep {
 				activeExtensionIndex: 0
 			};
 
-			if (room.controller.level >= 7) {
-				creepMemory.maximumSpawnCapacity = 600;
-			}
-
 			if (availableExtensions.length > 1) {
 				creepMemory.activeExtensionIndex = 1;
 			}
 
-			if (!creepsSpawnRule.canEnergyCreepsHarvest) {
-				creepMemory.bodyPartsType = "moveCarry";
+			if (creepsSpawnRule.canEnergyCreepsHarvest) {
+				creepMemory.bodyPartsType = "moveCarryWork";
 			}
 
 			creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, room, spawn, creepsSpawnRule);
@@ -103,7 +99,6 @@ class ExtensionEnergizer extends EnergyCreep {
 
 			creepMemory.extensions[0].id = nextExtension.id;
 			creepMemory.extensions[0].pos = nextExtension.pos;
-			// debug.temp("next", nextExtension.pos, 0);
 
 			for (var index = 1; index < creepsSpawnRule.maxExtensionsPerEnergizer; index++) {
 
@@ -128,12 +123,14 @@ class ExtensionEnergizer extends EnergyCreep {
 					break;
 				}
 
-				// debug.temp("next", nextExtension.pos, index);
-
 				creepMemory.extensions.push({
 					id: nextExtension.id,
 					pos: nextExtension.pos
 				});
+			}
+
+			if (creepMemory.extensions.length >= 8 || room.controller.level >= 7) {
+				creepMemory.maximumSpawnCapacity = 600;
 			}
 		}
 

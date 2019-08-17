@@ -66,7 +66,7 @@ dropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName,
 				creepsSpawnRule.spawnOrderMaxSpawnedCounts.push({ dropHarvester: dropHarvesterCount });
 
 			} else {
-				debug.danger(`dropPointStrategy: drop flag not found for ${remoteRoomName}`);
+				debug.danger(`dropPointStrategy: drop flag or storage not found for ${remoteRoomName}`);
 			}
 		} else {
 			roomTools.addObservingRoom(remoteRoomName);
@@ -208,7 +208,7 @@ dropPointStrategy.measureCreepsSpawnRule = function(spawnRoomName, remoteRoomCre
 				}
 
 			} else {
-				debug.danger(`dropPointStrategy: drop flag not found for ${remoteRoomName}`);
+				debug.danger(`dropPointStrategy: drop flag or storage not found for ${remoteRoomName}`);
 			}
 
 		} else {

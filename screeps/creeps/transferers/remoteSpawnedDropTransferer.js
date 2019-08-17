@@ -19,6 +19,10 @@ class RemoteSpawnedDropTransferer extends BaseRemoteStorageTransferer {
 			}
 		}
 
+		if (this.state === "harvesting" && this.roomName !== this.remoteRoomName) {
+			this.moveToRemoteRoom();
+		}
+
 		return super.act();
 	}
 
