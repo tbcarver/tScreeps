@@ -8,7 +8,8 @@ class ControllerEnergizer extends EnergyCreep {
 	constructor(creep) {
 		super(creep);
 
-		this.canBuild = false;
+		this.canBuild = this.memory.canBuild;
+
 		if (this.creepsSpawnRule && this.creepsSpawnRule.canControllerEnergizersBuild) {
 			this.canBuild = true;
 		}
@@ -106,6 +107,7 @@ class ControllerEnergizer extends EnergyCreep {
 		var creepMemory = {
 			type: "controllerEnergizer",
 			bodyPartsType: "moveCarryWork",
+			canBuild: creepsSpawnRule.canControllerEnergizersBuild,
 			maximumSpawnCapacity: 850,
 		}
 

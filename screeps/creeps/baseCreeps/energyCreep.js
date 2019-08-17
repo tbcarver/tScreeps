@@ -8,8 +8,8 @@ class EnergyCreep extends BaseCreep {
 	constructor(creep) {
 		super(creep);
 
-		this.canHarvest;
-		this.canPickup;
+		this.canHarvest = this.memory.canHarvest;
+		this.canPickup = this.memory.canPickup;
 
 		if (this.creepsSpawnRule && this.creepsSpawnRule.canEnergyCreepsHarvest) {
 			this.canHarvest = true;
@@ -24,7 +24,9 @@ class EnergyCreep extends BaseCreep {
 
 	act() {
 
+
 		if (!super.act()) {
+			
 
 			if ((this.state === "harvesting" && this.creep.carry.energy !== this.creep.carryCapacity) ||
 				this.creep.carry.energy === 0) {
@@ -125,6 +127,17 @@ class EnergyCreep extends BaseCreep {
 	}
 
 	static initializeSpawnCreepMemory(creepMemory, room, spawn, creepsSpawnRule) {
+
+		if (creepMemory) {
+
+			if (creepsSpawnRule.canEnergyCreepsHarvest) {
+				creepMemory.canHarvest = true;
+			}
+	
+			if (creepsSpawnRule.canEnergyCreepsPickup) {
+				creepMemory.canPickup = true;
+			}
+		}
 
 		return creepMemory;
 	}

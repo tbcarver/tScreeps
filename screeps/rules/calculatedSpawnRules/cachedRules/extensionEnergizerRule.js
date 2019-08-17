@@ -3,7 +3,7 @@ var creepsSpawnRuleTools = require("../../creepsSpawnRuleTools");
 var roomTools = require("../../../tools/roomTools");
 
 var extensionEnergizerRule = {
-	coolOffCount: 300,
+	coolOffCount: 50,
 	prepend: true,
 };
 

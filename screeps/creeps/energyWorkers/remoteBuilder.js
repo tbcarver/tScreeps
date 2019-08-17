@@ -1,6 +1,7 @@
 
 var roomTools = require("../../tools/roomTools");
 var Builder = require("./builder");
+var EnergyCreep = require("../baseCreeps/energyCreep");
 var RemoteEnergyWorker = require("./remoteEnergyWorker");
 
 class RemoteBuilder extends RemoteEnergyWorker {
@@ -17,7 +18,7 @@ class RemoteBuilder extends RemoteEnergyWorker {
 		Builder.prototype.energyAct.call(this);
 	}
 
-	static initializeSpawnCreepMemory(room) {
+	static initializeSpawnCreepMemory(room, spawn, creepsSpawnRule) {
 
 		var creepMemory;
 
@@ -28,6 +29,8 @@ class RemoteBuilder extends RemoteEnergyWorker {
 				bodyPartsType: "moveCarryWork",
 				maximumSpawnCapacity: 800,
 			};
+			
+			creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, room, spawn, creepsSpawnRule);
 		}
 
 		return creepMemory;

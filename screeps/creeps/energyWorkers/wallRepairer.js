@@ -53,7 +53,7 @@ class WallRepairer extends EnergyCreep {
 					maximumSpawnCapacity: 700,
 				}
 
-				creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, creepMemory, room, spawn);
+				creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, room, spawn, creepsSpawnRule);
 			}
 		}
 

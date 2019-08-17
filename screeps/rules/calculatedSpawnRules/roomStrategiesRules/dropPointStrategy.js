@@ -51,7 +51,7 @@ dropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName,
 
 				for (var source of sources) {
 
-					creepsSpawnRule.spawnOrderMaxSpawnedCounts.push({ dropTransferer: 2, creepSubType: source.id, creepMemory: { sourceId: source.id } });
+					creepsSpawnRule.spawnOrderMaxSpawnedCounts.push({ dropTransferer: 1, creepSubType: source.id, creepMemory: { sourceId: source.id } });
 
 					creepsSpawnRule.measure.harvestedEnergy[source.id] = {
 						totalEnergyCount: 0,

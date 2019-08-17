@@ -24,7 +24,7 @@ class Builder extends ControllerEnergizer {
 				maximumSpawnCapacity: 700,
 			};
 
-			creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, creepMemory, room, spawn);
+			creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, room, spawn, creepsSpawnRule);
 		}
 
 		return creepMemory;

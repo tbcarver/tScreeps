@@ -9,8 +9,8 @@ class RemoteEnergyWorker extends RemoteCreep {
 	constructor(creep) {
 		super(creep);
 
-		this.canHarvest;
-		this.canPickup;
+		this.canHarvest = this.memory.canHarvest;
+		this.canPickup = this.memory.canPickup;
 
 		if (this.creepsSpawnRule && this.creepsSpawnRule.canEnergyCreepsHarvest) {
 			this.canHarvest = true;
@@ -78,6 +78,22 @@ class RemoteEnergyWorker extends RemoteCreep {
 	harvestCompleteMove() {
 		this.moveToRemoteRoom();
 		this.memory.takeStepsIntoRoom = 1;
+	}
+
+	static initializeSpawnCreepMemory(creepMemory, room, spawn, creepsSpawnRule) {
+
+		if (creepMemory) {
+
+			if (creepsSpawnRule.canEnergyCreepsHarvest) {
+				creepMemory.canHarvest = true;
+			}
+	
+			if (creepsSpawnRule.canEnergyCreepsPickup) {
+				creepMemory.canPickup = true;
+			}
+		}
+
+		return creepMemory;
 	}
 }
 
