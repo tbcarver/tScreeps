@@ -9,11 +9,7 @@ class StorageTransferer extends BaseCreep {
 	constructor(creep) {
 		super(creep);
 
-		this.canPickup = false;
-		if (this.creepsSpawnRule && this.creepsSpawnRule.canStorageTransferersPickup) {
-			this.canPickup = true;
-		}
-
+		this.canPickup = this.memory.canPickup;
 		this.availableCarryCapacity = this.creep.carryCapacity - this.creep.carry.energy;
 	}
 

@@ -22,14 +22,6 @@ class BaseCreep {
 		this.spawnedRoomName = creep.memory.spawnedRoomName;
 		this.remoteRoomName = creep.memory.remoteRoomName;
 
-		var creepsSpawnRuleKey = this.memory.creepsSpawnRuleKey;
-		if (!creepsSpawnRuleKey) {
-			creepsSpawnRuleKey = creepsSpawnRuleTools.buildCreepsSpawnRuleKey(this.spawnedRoomName, this.remoteRoomName, "remote-room");
-		}
-
-		this.creepsSpawnRule = (Memory.state.ruleKeyCreepsSpawnRules && creepsSpawnRuleKey) ? Memory.state.ruleKeyCreepsSpawnRules[creepsSpawnRuleKey] : undefined;
-		this.spawnedRoomCreepsSpawnRule = (Memory.state.ruleKeyCreepsSpawnRules) ? Memory.state.ruleKeyCreepsSpawnRules[this.spawnedRoomName] : undefined;
-
 		this.suppressReturnToRooms = false;
 		this.isTrooper = false;
 

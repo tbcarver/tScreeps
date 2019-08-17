@@ -22,9 +22,7 @@ spawnEnergizerRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRule
 				countSpawnEnergizers = 3;
 			} else if (room.controller.level <= 4) {
 
-				var extensions = room.find(FIND_STRUCTURES, {
-					filter: { structureType: STRUCTURE_EXTENSION }
-				});
+				var extensions = roomTools.getExtensions(room.name);
 
 				if (extensions.length < 8) {
 					countSpawnEnergizers = 3;

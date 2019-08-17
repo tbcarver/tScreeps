@@ -25,8 +25,6 @@ var creepsSpawnRules = /** @type {CreepsSpawnRule[]} */ ([]);
 // NOTE: Order is important
 creepsSpawnRules.push(require("./rooms/W4S9"));
 
-var creepsSpawnRulesCopy = _.cloneDeep(creepsSpawnRules);
-creepsSpawnRuleTools.storeCreepsSpawnRules(creepsSpawnRulesCopy);
 
 module.exports.rules = rules;
 module.exports.creepsSpawnRules = creepsSpawnRules;

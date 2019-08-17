@@ -10,16 +10,7 @@ class BaseRemoteStorageTransferer extends RemoteCreep {
 	constructor(creep) {
 		super(creep);
 
-		this.canPickup = false;
-		if (this.creepsSpawnRule && this.creepsSpawnRule.canRemoteStorageTransferersPickup) {
-			this.canPickup = true;
-		}
-
-		this.canTransferToStorageOnly = false;
-		if (this.spawnedRoomCreepsSpawnRule && this.spawnedRoomCreepsSpawnRule.canTransferersTransferToStorageOnly) {
-			this.canTransferToStorageOnly = true;
-		}
-
+		this.canPickup = this.memory.canPickup;
 		this.availableCarryCapacity = this.creep.carryCapacity - this.creep.carry.energy;
 	}
 

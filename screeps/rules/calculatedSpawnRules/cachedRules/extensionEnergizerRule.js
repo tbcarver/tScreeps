@@ -16,9 +16,7 @@ extensionEnergizerRule.buildCreepsSpawnRules = function(creepsSpawnRules, cached
 
 		if (room.controller && room.controller.my && roomTools.hasSpawns(roomName)) {
 
-			var extensions = room.find(FIND_STRUCTURES, {
-				filter: { structureType: STRUCTURE_EXTENSION }
-			});
+			var extensions = roomTools.getExtensions(roomName);
 
 			if (extensions.length > 0) {
 

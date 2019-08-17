@@ -5,10 +5,7 @@ var creepsFactory = require("./creepsFactory");
 var creepsSpawner = require("./creepsSpawner");
 var { rules } = require("../rules/rules");
 
-var creepsController = {
-	// NOTE: The system must count creeps and spawn before all rules can be gathered and creeps can then act.
-	isCreepsControllerInitialized: false,
-};
+var creepsController = {};
 
 creepsController.tick = function() {
 
@@ -26,7 +23,7 @@ creepsController.tick = function() {
 
 		try {
 
-			if (!creep.spawning && this.isCreepsControllerInitialized) {
+			if (!creep.spawning) {
 
 				var baseCreep = creepsFactory.buildCreep(creep);
 				baseCreep.act();
@@ -85,8 +82,6 @@ creepsController.tick = function() {
 	} else {
 		debug.muted(displayCreepsTotal);
 	}
-
-	this.isCreepsControllerInitialized = true;
 }
 
 function cleanUpTheDead() {

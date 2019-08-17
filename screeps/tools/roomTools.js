@@ -153,6 +153,7 @@ roomTools.initialize = function() {
 	this.buildSourcesStats();
 	this.buildDroppedStats();
 	this.buildSpawnStats();
+	this.buildExtensionStats(myRooms);
 	this.buildTowerStats(myRooms);
 	this.buildStorageStats();
 	this.buildContainerStats(myRooms);
@@ -404,6 +405,44 @@ roomTools.getSpawn = function(roomName) {
 roomTools.areSpawnsFullEnergy = function(roomName) {
 
 	return (this.spawnStats.rooms[roomName]) ? this.spawnStats.rooms[roomName].areSpawnsFullEnergy : false;
+}
+
+roomTools.buildExtensionStats = function(myRooms) {
+
+	this.extensionStats = {
+		rooms: {},
+	};
+
+	for (var room of myRooms) {
+
+		var roomName = room.name;
+		if (!this.extensionStats.rooms[roomName]) {
+			this.extensionStats.rooms[roomName] = {
+				extensionsCount: 0,
+				extensions: [],
+			};
+		}
+
+		var extensions = /** @type {StructureExtension[]} */ (room.find(FIND_STRUCTURES, {
+			filter: structure => structure.structureType === STRUCTURE_EXTENSION
+		}));
+
+		for (var extension of extensions) {
+
+			this.extensionStats.rooms[roomName].extensionsCount++;
+			this.extensionStats.rooms[roomName].extensions.push(extension);
+		}
+	}
+}
+
+roomTools.getExtensionsCount = function(roomName) {
+
+	return (this.extensionStats.rooms[roomName]) ? this.extensionStats.rooms[roomName].extensionsCount : 0;
+}
+
+roomTools.getExtensions = function(roomName) {
+
+	return (this.extensionStats.rooms[roomName]) ? this.extensionStats.rooms[roomName].extensions : [];
 }
 
 roomTools.buildTowerStats = function(myRooms) {

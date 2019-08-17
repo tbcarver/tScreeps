@@ -1,5 +1,6 @@
 
-var roomTools = require("../../tools/roomTools");
+var roomTools = require("../../tools/roomTools");var spawnTools = require("../../tools/spawnTools");
+var spawnTools = require("../../tools/spawnTools");
 var EnergyCreep = require("../baseCreeps/energyCreep");
 
 class ControllerEnergizer extends EnergyCreep {
@@ -9,10 +10,6 @@ class ControllerEnergizer extends EnergyCreep {
 		super(creep);
 
 		this.canBuild = this.memory.canBuild;
-
-		if (this.creepsSpawnRule && this.creepsSpawnRule.canControllerEnergizersBuild) {
-			this.canBuild = true;
-		}
 	}
 
 	harvest() {
@@ -108,7 +105,17 @@ class ControllerEnergizer extends EnergyCreep {
 			type: "controllerEnergizer",
 			bodyPartsType: "moveCarryWork",
 			canBuild: creepsSpawnRule.canControllerEnergizersBuild,
-			maximumSpawnCapacity: 850,
+			maximumSpawnCapacity: 350,
+		}
+
+		var capacity = spawnTools.calculateSpawnCapacity(spawn);
+
+		if (capacity >= 550) {
+			creepMemory.maximumSpawnCapacity = 550;
+		}
+
+		if (capacity >= 850) {
+			creepMemory.maximumSpawnCapacity = 850;
 		}
 
 		creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, room, spawn, creepsSpawnRule);

@@ -1,5 +1,6 @@
 
 var roomTools = require("../../tools/roomTools");
+var spawnTools = require("../../tools/spawnTools");
 var Builder = require("./builder");
 var EnergyCreep = require("../baseCreeps/energyCreep");
 var RemoteEnergyWorker = require("./remoteEnergyWorker");
@@ -27,8 +28,18 @@ class RemoteBuilder extends RemoteEnergyWorker {
 			creepMemory = {
 				type: "remoteBuilder",
 				bodyPartsType: "moveCarryWork",
-				maximumSpawnCapacity: 800,
+				maximumSpawnCapacity: 350,
 			};
+
+			var capacity = spawnTools.calculateSpawnCapacity(spawn);
+	
+			if (capacity >= 550) {
+				creepMemory.maximumSpawnCapacity = 550;
+			}
+	
+			if (capacity >= 850) {
+				creepMemory.maximumSpawnCapacity = 850;
+			}
 			
 			creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, room, spawn, creepsSpawnRule);
 		}

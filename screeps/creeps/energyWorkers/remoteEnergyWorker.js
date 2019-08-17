@@ -12,14 +12,6 @@ class RemoteEnergyWorker extends RemoteCreep {
 		this.canHarvest = this.memory.canHarvest;
 		this.canPickup = this.memory.canPickup;
 
-		if (this.creepsSpawnRule && this.creepsSpawnRule.canEnergyCreepsHarvest) {
-			this.canHarvest = true;
-		}
-
-		if (this.creepsSpawnRule && this.creepsSpawnRule.canEnergyCreepsPickup) {
-			this.canPickup = true;
-		}
-
 		this.availableCarryCapacity = this.creep.carryCapacity - this.creep.carry.energy;
 	}
 

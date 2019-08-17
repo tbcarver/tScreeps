@@ -9,36 +9,11 @@ creepsSpawnRuleTools.buildCreepsSpawnRuleKey = function(spawnRoomName, remoteRoo
 }
 
 /** @param {CreepsSpawnRule[]} creepsSpawnRules */
-creepsSpawnRuleTools.storeCreepsSpawnRules = function(creepsSpawnRules) {
+creepsSpawnRuleTools.updateCreepsToSpawnTotal = function(creepsSpawnRules) {
 
 	if (!Memory.state) {
 		Memory.state = {};
 	}
-
-	var ruleKeyCreepsSpawnRules = {};
-
-	for (var creepsSpawnRule of creepsSpawnRules) {
-
-		var spawnCreepsSpawnRule = _.clone(creepsSpawnRule);
-		delete spawnCreepsSpawnRule.remoteRooms;
-
-		ruleKeyCreepsSpawnRules[spawnCreepsSpawnRule.roomName] = spawnCreepsSpawnRule;
-
-		for (var remoteRoom of creepsSpawnRule.remoteRooms) {
-
-			if (remoteRoom.creepsSpawnRuleKey) {
-
-				ruleKeyCreepsSpawnRules[remoteRoom.creepsSpawnRuleKey] = remoteRoom;
-
-			} else {
-
-				var creepsSpawnRuleKey = creepsSpawnRuleTools.buildCreepsSpawnRuleKey(spawnCreepsSpawnRule.roomName, remoteRoom.roomName, "remote-room");
-				ruleKeyCreepsSpawnRules[creepsSpawnRuleKey] = remoteRoom;
-			}
-		}
-	}
-
-	Memory.state.ruleKeyCreepsSpawnRules = ruleKeyCreepsSpawnRules;
 
 	var creepsToSpawnTotal = 0;
 	var spawnedRoomsCreepsToSpawnTotal = {};

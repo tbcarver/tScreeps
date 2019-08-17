@@ -1,4 +1,5 @@
 
+var roomTools = require("./roomTools");
 var coreMath = require("../../lib/core/extensions/coreMath");
 var { rules } = require("../rules/rules");
 var SpawnOrderMaxSpawnedCount = require("../rules/spawnOrderMaxSpawnedCount");
@@ -13,9 +14,7 @@ spawnTools.calculateSpawnCapacity = function(spawn) {
 	// Check if energy is still accumulating
 	if (Memory.state.rooms[room.name].lastRoomEnergyAvailable != room.energyAvailable) {
 
-		var extensions = room.find(FIND_MY_STRUCTURES, {
-			filter: { structureType: STRUCTURE_EXTENSION }
-		});
+		var extensions = roomTools.getExtensions(room.name);
 
 		var availableExtensionEnergy = extensions.reduce((total, extension) => total + (extension.energy), 0);
 
