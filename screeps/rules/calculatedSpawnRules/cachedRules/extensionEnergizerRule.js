@@ -20,7 +20,7 @@ extensionEnergizerRule.buildCreepsSpawnRules = function(creepsSpawnRules, cached
 
 			if (extensions.length > 0) {
 
-				var maxExtensionsPerEnergizer = extensions.length >= 16 ? 8 : 4;
+				var maxExtensionsPerEnergizer = extensions.length >= 20 ? 10 : 5;
 				var countExtensionEnergizers = Math.floor(extensions.length / maxExtensionsPerEnergizer);
 
 				remoteRoomCreepsSpawnRules[room.name] = { remoteRooms: [] };

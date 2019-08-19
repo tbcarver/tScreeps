@@ -147,8 +147,11 @@ function trySpawnCreep(room, isRemoteRoom, spawn, creepConstructor, creepsSpawnR
 			creepMemory.spawnedRoomName = spawn.room.name;
 
 			if (isRemoteRoom) {
-				creepMemory.state = "movingToRemoteRoom";
 				creepMemory.remoteRoomName = room.name;
+
+				if (room.roomName !== spawn.room.roomName) {
+					creepMemory.state = "movingToRemoteRoom";
+				}
 			}
 
 			var spawnResult = spawnCreep(spawn, creepMemory, creepsSpawnRule, spawnedRoomCreepsSpawnRule);

@@ -23,10 +23,8 @@ class RangedAttacker extends TrooperCreep {
 			}
 
 			if (enemy) {
-
-				if (this.creep.rangedAttack(enemy) == ERR_NOT_IN_RANGE) {
-					this.creep.moveTo(enemy);
-				}
+				this.creep.moveTo(enemy);
+				this.creep.attack(enemy);
 			}
 		}
 	}

@@ -1,5 +1,10 @@
 
+
+var { rules } = require("../rules/rules");
+
 var towersController = {};
+
+var maximumWallRepair = (rules.maximumWallRepair && rules.maximumWallRepair <= 1000) ? rules.maximumWallRepair : 0;
 
 towersController.tick = function() {
 
@@ -43,6 +48,22 @@ towersController.tick = function() {
 
 						for (var tower of towers) {
 							tower.heal(creeps[0]);
+						}
+					}
+
+					if (_.isEmpty(creeps)) {
+						var structures = room.find(FIND_STRUCTURES, {
+							filter: structure => (structure.structureType === STRUCTURE_WALL || structure.structureType === STRUCTURE_RAMPART) &&
+								structure.hits < structure.hitsMax && structure.hits <= maximumWallRepair
+						});
+
+						if (structures.length > 0) {
+							for (var index = 0; index < towers.length; index++) {
+
+								if (structures.length >= index + 1) {
+									towers[index].repair(structures[index]);
+								}
+							}
 						}
 					}
 				}

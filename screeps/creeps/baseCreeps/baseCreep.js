@@ -494,7 +494,7 @@ class BaseCreep {
 						costCallback: roomTools.getAvoidCostCallback(),
 					});
 
-					if (this.creep.ticksToLive - 3 <= path.length) {
+					if (this.creep.ticksToLive - 4 <= path.length) {
 						this.creep.memory.shouldTransferResourcesOnDying = true;
 					}
 				}

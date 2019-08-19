@@ -23,10 +23,8 @@ class Attacker extends TrooperCreep {
 			}
 
 			if (enemy) {
-
-				if (this.creep.attack(enemy) == ERR_NOT_IN_RANGE) {
-					this.creep.moveTo(enemy);
-				}
+				this.creep.moveTo(enemy);
+				this.creep.attack(enemy);
 			}
 		}
 	}

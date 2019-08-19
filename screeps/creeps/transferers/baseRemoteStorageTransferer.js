@@ -10,11 +10,14 @@ class BaseRemoteStorageTransferer extends RemoteCreep {
 	constructor(creep) {
 		super(creep);
 
-		this.canPickup = this.memory.canPickup;
 		this.availableCarryCapacity = this.creep.carryCapacity - this.creep.carry.energy;
 	}
 
 	harvest(moveToOtherRoom) {
+
+		if (this.state !== "harvesting") {
+			this.state = "harvesting";
+		}
 
 		if (this.creep.carry.energy === this.creep.carryCapacity) {
 
@@ -24,16 +27,12 @@ class BaseRemoteStorageTransferer extends RemoteCreep {
 
 			var resource;
 
-			if (this.canPickup) {
+			if (roomTools.hasDropFlag(this.roomName)) {
 
-				if (roomTools.hasDropFlag(this.roomName)) {
+				var droppedResources = roomTools.GetDropFlagWritableDroppedResources(this.roomName);
 
-					var droppedResources = roomTools.GetDropFlagWritableDroppedResources(this.roomName);
-
-					if (droppedResources.length > 0) {
-						resource = droppedResources[0];
-					}
-
+				if (droppedResources.length > 0) {
+					resource = droppedResources[0];
 				}
 			}
 
@@ -86,6 +85,10 @@ class BaseRemoteStorageTransferer extends RemoteCreep {
 
 	transfer(moveToOtherRoom) {
 
+		if (this.state !== "transferring") {
+			this.state = "transferring";
+		}
+
 		if (this.creep.carry.energy === 0) {
 
 			moveToOtherRoom();
@@ -93,7 +96,7 @@ class BaseRemoteStorageTransferer extends RemoteCreep {
 		} else if (this.state === "transferring") {
 
 			if (roomTools.hasMinimumStorageCapacity(this.roomName)) {
-			
+
 				var resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 					filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
 						structure.structureType === STRUCTURE_TERMINAL) &&

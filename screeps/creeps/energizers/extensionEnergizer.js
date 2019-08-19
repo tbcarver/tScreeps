@@ -10,7 +10,7 @@ class ExtensionEnergizer extends EnergyCreep {
 	}
 
 	harvestCompleteMove() {
-		
+
 		var target = Game.getObjectById(this.memory.extensions[this.memory.activeExtensionIndex].id);
 		if (target) {
 			this.moveToAndAvoid(target);
@@ -20,6 +20,9 @@ class ExtensionEnergizer extends EnergyCreep {
 	}
 
 	energyAct() {
+
+		// this.creep.say(this.memory.extensions.length)
+		// debug.temp(this.creep.name, this.memory.extensions.map(e => e.pos.x + " " + e.pos.y))
 
 		var activeExtension = Game.getObjectById(this.memory.extensions[this.memory.activeExtensionIndex].id);
 
@@ -74,17 +77,13 @@ class ExtensionEnergizer extends EnergyCreep {
 			creepMemory = {
 				type: "extensionEnergizer",
 				bodyPartsType: "moveCarry",
-				maximumSpawnCapacity: 450,
+				maximumSpawnCapacity: 550,
 				extensions: [{
 					id: "",
 					pos: {}
 				}],
 				activeExtensionIndex: 0
 			};
-
-			if (availableExtensions.length > 1) {
-				creepMemory.activeExtensionIndex = 1;
-			}
 
 			if (creepsSpawnRule.canEnergyCreepsHarvest) {
 				creepMemory.bodyPartsType = "moveCarryWork";
@@ -102,7 +101,7 @@ class ExtensionEnergizer extends EnergyCreep {
 
 			for (var index = 1; index < creepsSpawnRule.maxExtensionsPerEnergizer; index++) {
 
-				// NOTE: The find adjacent structures first
+				// Find adjacent structures first
 				var nextExtensions = nextExtension.pos.findInRange(FIND_STRUCTURES, 1, {
 					filter: nextStructure => nextStructure.structureType == STRUCTURE_EXTENSION &&
 						_.map(availableExtensions, availableExtension => availableExtension.id).includes(nextStructure.id) &&
@@ -112,11 +111,17 @@ class ExtensionEnergizer extends EnergyCreep {
 				if (nextExtensions.length > 0) {
 					nextExtension = nextExtensions[0];
 				} else {
-					nextExtension = nextExtension.pos.findClosestByRange(FIND_STRUCTURES, {
+					// Find a structure on the same x or y 2 positions away
+					nextExtensions = nextExtension.pos.findInRange(FIND_STRUCTURES, 2, {
 						filter: nextStructure => nextStructure.structureType == STRUCTURE_EXTENSION &&
+							(nextStructure.pos.x === nextExtension.pos.x || nextStructure.pos.y === nextExtension.pos.y) &&
 							_.map(availableExtensions, availableExtension => availableExtension.id).includes(nextStructure.id) &&
 							!_.map(creepMemory.extensions, extension => extension.id).includes(nextStructure.id)
 					});
+
+					if (nextExtensions.length > 0) {
+						nextExtension = nextExtensions[0];
+					}
 				}
 
 				if (!nextExtension) {
@@ -129,8 +134,12 @@ class ExtensionEnergizer extends EnergyCreep {
 				});
 			}
 
-			if (creepMemory.extensions.length >= 8 || room.controller.level >= 7) {
-				creepMemory.maximumSpawnCapacity = 600;
+			if (creepMemory.extensions.length > 1) {
+				creepMemory.activeExtensionIndex = 1;
+			}
+
+			if (creepMemory.extensions.length >= 10 || room.controller.level >= 7) {
+				creepMemory.maximumSpawnCapacity = 750;
 			}
 		}
 

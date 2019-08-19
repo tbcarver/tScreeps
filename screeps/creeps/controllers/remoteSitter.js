@@ -9,6 +9,7 @@ class RemoteSitter extends RemoteCreep {
 	}
 
 	arrivedAtSpawnedRoom() {
+		this.moveToRemoteRoom();
 	}
 
 	arrivedAtRemoteRoom() {
@@ -16,6 +17,7 @@ class RemoteSitter extends RemoteCreep {
 	}
 
 	spawnedRoomAct() {
+		this.moveToRemoteRoom();
 	}
 
 	remoteRoomAct() {

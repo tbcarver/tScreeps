@@ -9,11 +9,11 @@ var mobDefenseStrategy = {
 mobDefenseStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName, spawnCreepsSpawnRule, creepsSpawnRuleKey) {
 
 	var attackerCount = 4;
-	var healer = 3;
-	var rangedAttacker = 2;
+	var healer = 2;
+	var rangedAttacker = 1;
 
 	if (Game.rooms[spawnRoomName].energyCapacityAvailable >= 700) {
-		attackerCount = 3;
+		attackerCount = 2;
 		healer = 2;
 		rangedAttacker = 1;
 	}

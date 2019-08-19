@@ -46,6 +46,7 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 			if (spawnsCount > 0) {
 
 				var creepsCount = 0;
+				var remoteCreepsCount = 0;
 				var availableEnergy = 0;
 
 				if (roomTools.hasMinimumStoredEnergy(roomName)) {
@@ -59,7 +60,10 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 
 				creepsCount = Math.floor(availableEnergy / 50);
 
-				var remoteCreepsCount = creepsCount;
+				if (creepsCount <= 6) {
+					remoteCreepsCount = creepsCount;
+				}
+
 				var countBuildingCountControllerEnergizers = buildingCountControllerEnergizers[roomName] || 0;
 				creepsCount = creepsCount - countBuildingCountControllerEnergizers;
 
@@ -183,12 +187,25 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 
 		var creepsSpawnRuleKey = creepsSpawnRuleTools.buildCreepsSpawnRuleKey(spawnRoomName, remoteRoomName, "cached-" + cachedRuleName);
 		var partsPerMove = 2;
-		var roads = Game.rooms[remoteRoomName].find(FIND_STRUCTURES, {
+		var remoteRoads = Game.rooms[remoteRoomName].find(FIND_STRUCTURES, {
 			filter: { structureType: STRUCTURE_ROAD }
 		})
 
-		if (roads.length === 0) {
+		if (remoteRoads.length === 0) {
 			partsPerMove = 1;
+		}
+
+		if (creepType === "remoteBuilder" && spawnRoomName !== remoteRoomName) {
+
+			partsPerMove = 2;
+
+			var spawnRoads = Game.rooms[spawnRoomName].find(FIND_STRUCTURES, {
+				filter: { structureType: STRUCTURE_ROAD }
+			})
+
+			if (spawnRoads.length === 0 || remoteRoads.length === 0) {
+				partsPerMove = 1;
+			}
 		}
 
 		var creepsSpawnRule = {
