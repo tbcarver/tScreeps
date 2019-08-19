@@ -12,11 +12,9 @@ class RemoteSpawnedDropTransferer extends BaseRemoteStorageTransferer {
 
 	act() {
 
-		if (this.state === "movingToSpawnedRoom") {
-			var dropFlag = Game.flags[`drop-${this.roomName}`];
-			if (dropFlag) {
+		if (this.state === "movingToSpawnedRoom" && (roomTools.hasDropFlag(this.roomName) || roomTools.hasStorage(this.roomName))) {
 				this.state = "transferring";
-			}
+				this.cancelTravelTo();
 		}
 
 		if (this.state === "harvesting" && this.roomName !== this.remoteRoomName) {
@@ -43,7 +41,18 @@ class RemoteSpawnedDropTransferer extends BaseRemoteStorageTransferer {
 
 		if (this.creep.carry.energy === this.creep.carryCapacity) {
 
-			this.moveToSpawnedRoom();
+			if (roomTools.hasDropFlag(this.roomName) || roomTools.hasStorage(this.roomName)){
+
+				if (this.state !== "transferring") {
+					this.state = "transferring";
+				}
+
+				this.spawnedRoomAct();
+
+			} else {
+
+				this.moveToSpawnedRoom();
+			}
 
 		} else if (this.state === "harvesting") {
 

@@ -29,7 +29,7 @@ class BaseCreep {
 			(this.memory.travel.pathDestination.roomName !== this.roomName) ||
 			(this.memory.travel.pathDestination.x === this.creep.pos.x &&
 				this.memory.travel.pathDestination.y === this.creep.pos.y))) {
-			delete this.memory.travel;
+			this.cancelTravelTo();
 		}
 	}
 
@@ -49,7 +49,7 @@ class BaseCreep {
 
 		var acted = false;
 
-		if (this.isDying){
+		if (this.isDying) {
 			this.creep.say("😡  " + this.creep.ticksToLive, true);
 		}
 
@@ -149,7 +149,7 @@ class BaseCreep {
 
 				if (occupied) {
 					this.avoidCreepsOnTravel = true;
-					delete this.memory.travel;
+					this.cancelTravelTo();
 				} else {
 					var finalDestinationPos = new RoomPosition(this.memory.travel.finalDestination.x,
 						this.memory.travel.finalDestination.y, this.memory.travel.finalDestination.roomName);
@@ -174,7 +174,6 @@ class BaseCreep {
 				acted = true;
 			}
 		} else if (this.state === "movingToRemoteRoom") {
-
 
 			if (this.roomName === this.remoteRoomName) {
 
@@ -266,7 +265,7 @@ class BaseCreep {
 				}
 			}
 		} else {
-			debug.warning(`${this.type} ${this.creep.name} can't find a rout from ${this.roomName} to ${exitRoomName}`);
+			debug.warning(`${this.type} ${this.creep.name} can't find a route from ${this.roomName} to ${exitRoomName}`);
 		}
 	}
 
@@ -381,12 +380,16 @@ class BaseCreep {
 		return result;
 	}
 
-	travelNearTo(target, avoidCreeps,) {
+	travelNearTo(target, avoidCreeps, ) {
 		this.travelTo(target, 3, avoidCreeps);
 	}
 
 	isInTravelDistance(target, range = 3) {
 		return !this.creep.pos.inRangeTo(target, range);
+	}
+
+	cancelTravelTo() {
+		delete this.memory.travel;
 	}
 
 	travelToWaitFlag() {
@@ -473,10 +476,10 @@ class BaseCreep {
 
 		if (this.isDying && !this.creep.memory.shouldTransferResourcesOnDying) {
 			if (this.hasCarry && (this.creep.carry.energy / this.creep.carryCapacity > .10)) {
-	
+
 				var transferTarget;
 				if (roomTools.hasMinimumStorageCapacity(this.roomName)) {
-	
+
 					transferTarget = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 						filter: structure => (structure.structureType == STRUCTURE_STORAGE ||
 							structure.structureType == STRUCTURE_TERMINAL) &&
@@ -485,12 +488,12 @@ class BaseCreep {
 				} else {
 					transferTarget = roomTools.getDropFlag(this.roomName);
 				}
-	
+
 				if (transferTarget) {
 					var path = this.creep.pos.findPathTo(transferTarget, {
 						costCallback: roomTools.getAvoidCostCallback(),
 					});
-	
+
 					if (this.creep.ticksToLive - 3 <= path.length) {
 						this.creep.memory.shouldTransferResourcesOnDying = true;
 					}
