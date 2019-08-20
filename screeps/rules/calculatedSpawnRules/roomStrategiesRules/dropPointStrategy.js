@@ -17,7 +17,7 @@ dropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName,
 			if (roomTools.hasDropFlag(remoteRoomName) || roomTools.hasStorage(remoteRoomName)) {
 
 				var remoteReserverCount = dropStrategyTools.getRemoteReserverCount(spawnRoom, remoteRoom);
-				var dropHarvesterCount = dropStrategyTools.getDropHarvesterCount(spawnRoom, remoteRoom, spawnCreepsSpawnRule);
+				var dropHarvesterCount = dropStrategyTools.getDropHarvesterCount(spawnRoom, remoteRoom, spawnCreepsSpawnRule, remoteReserverCount);
 				var remoteSpawnedDropTransfererCount = spawnRoomName !== remoteRoomName ? 6 : 0;
 				var partsPerMove = 2;
 				var roads = remoteRoom.find(FIND_STRUCTURES, {
@@ -105,11 +105,12 @@ dropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, remoteRoo
 
 				var creepType = "remoteReserver";
 				var spawnOrderMaxSpawnedCount = SpawnOrderMaxSpawnedCount.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, creepType);
-				spawnOrderMaxSpawnedCount[creepType] = dropStrategyTools.getRemoteReserverCount(spawnRoom, remoteRoom);
+				var remoteReserverCount = dropStrategyTools.getRemoteReserverCount(spawnRoom, remoteRoom);
+				spawnOrderMaxSpawnedCount[creepType] = remoteReserverCount;
 
 				creepType = "dropHarvester";
 				spawnOrderMaxSpawnedCount = SpawnOrderMaxSpawnedCount.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, creepType);
-				spawnOrderMaxSpawnedCount[creepType] = dropStrategyTools.getDropHarvesterCount(spawnRoom, remoteRoom, creepsSpawnRule);
+				spawnOrderMaxSpawnedCount[creepType] = dropStrategyTools.getDropHarvesterCount(spawnRoom, remoteRoom, creepsSpawnRule, remoteReserverCount);
 
 				var maxSpawnedCount;
 				var storageStats = roomTools.getStorageStats(spawnRoomName);

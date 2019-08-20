@@ -216,6 +216,10 @@ roomTools.getControllers = function() {
 	return this.controllerStats.controllers;
 }
 
+roomTools.hasMyController = function(roomName) {
+	return (Game.rooms[roomName] && Game.rooms[roomName].controller && Game.rooms[roomName].controller.my);
+}
+
 roomTools.getHighestProgressPercentage = function() {
 	return this.controllerStats.highestProgressPercentage;
 }

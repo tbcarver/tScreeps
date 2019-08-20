@@ -47,32 +47,37 @@ class BaseRemoteStorageTransferer extends RemoteCreep {
 				} else {
 
 					if (resource.structureType) {
+						if (resource.store.energy >= this.availableCarryCapacity * 1.2) {
 
-						let result = this.creep.withdraw(resource, RESOURCE_ENERGY);
-						if (result === OK) {
+							let result = this.creep.withdraw(resource, RESOURCE_ENERGY);
+							if (result === OK) {
 
-							if (resource.store.energy >= this.availableCarryCapacity * 2) {
-								moveToOtherRoom();
+								if (resource.store.energy >= this.availableCarryCapacity * 2) {
+									moveToOtherRoom();
+								}
+							} else if (result == ERR_NOT_IN_RANGE) {
+								this.creep.moveTo(resource);
 							}
-						} else if (result == ERR_NOT_IN_RANGE) {
-							this.creep.moveTo(resource);
 						}
 					} else if (resource.resourceType) {
+						if (resource.writableAmount >= this.availableCarryCapacity * 1.2) {
 
-						let result = this.creep.pickup(resource);
-						if (result === OK) {
+							let result = this.creep.pickup(resource);
+							if (result === OK) {
 
-							var pickedUpAmount = resource.writableAmount;
+								var pickedUpAmount = resource.writableAmount;
 
-							if (pickedUpAmount >= this.availableCarryCapacity) {
-								pickedUpAmount = this.availableCarryCapacity;
-								moveToOtherRoom();
+								if (pickedUpAmount >= this.availableCarryCapacity) {
+									pickedUpAmount = this.availableCarryCapacity;
+									moveToOtherRoom();
+								}
+
+								resource.writableAmount -= pickedUpAmount;
+
+							} else if (result == ERR_NOT_IN_RANGE) {
+								this.creep.moveTo(resource);
 							}
 
-							resource.writableAmount -= pickedUpAmount;
-
-						} else if (result == ERR_NOT_IN_RANGE) {
-							this.creep.moveTo(resource);
 						}
 					}
 				}

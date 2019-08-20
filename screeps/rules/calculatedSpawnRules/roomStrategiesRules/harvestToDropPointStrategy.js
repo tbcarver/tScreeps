@@ -16,7 +16,7 @@ harvestToDropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remote
 		if (remoteRoom) {
 
 			var remoteReserverCount = dropStrategyTools.getRemoteReserverCount(spawnRoom, remoteRoom);
-			var dropHarvesterCount = dropStrategyTools.getDropHarvesterCount(spawnRoom, remoteRoom, spawnCreepsSpawnRule);
+			var dropHarvesterCount = dropStrategyTools.getDropHarvesterCount(spawnRoom, remoteRoom, spawnCreepsSpawnRule, remoteReserverCount);
 
 			creepsSpawnRule = {
 				creepsSpawnRuleKey: creepsSpawnRuleKey,
@@ -73,11 +73,13 @@ harvestToDropPointStrategy.recalculateCreepsSpawnRule = function(spawnRoomName, 
 
 				var creepType = "remoteReserver";
 				var spawnOrderMaxSpawnedCount = SpawnOrderMaxSpawnedCount.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, creepType);
-				spawnOrderMaxSpawnedCount[creepType] = dropStrategyTools.getRemoteReserverCount(spawnRoom, remoteRoom);
+				var remoteReserverCount = dropStrategyTools.getRemoteReserverCount(spawnRoom, remoteRoom);
+				spawnOrderMaxSpawnedCount[creepType] = remoteReserverCount;
+
 
 				creepType = "dropHarvester";
 				spawnOrderMaxSpawnedCount = SpawnOrderMaxSpawnedCount.find(creepsSpawnRule.spawnOrderMaxSpawnedCounts, creepType);
-				spawnOrderMaxSpawnedCount[creepType] = dropStrategyTools.getDropHarvesterCount(spawnRoom, remoteRoom, creepsSpawnRule);
+				spawnOrderMaxSpawnedCount[creepType] = dropStrategyTools.getDropHarvesterCount(spawnRoom, remoteRoom, creepsSpawnRule, remoteReserverCount);
 
 				var maxSpawnedCount;
 				var storageStats = roomTools.getStorageStats(spawnRoomName);

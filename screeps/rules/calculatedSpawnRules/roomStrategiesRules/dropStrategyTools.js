@@ -82,13 +82,17 @@ dropStrategyTools.getRemoteReserverCount = function(spawnRoom, remoteRoom) {
 	return (!remoteRoom.controller.my && spawnRoom.energyCapacityAvailable >= 700) ? 1 : 0;
 }
 
-dropStrategyTools.getDropHarvesterCount = function(spawnRoom, remoteRoom, creepsSpawnRule) {
+dropStrategyTools.getDropHarvesterCount = function(spawnRoom, remoteRoom, creepsSpawnRule, remoteReserverCount) {
 
 	var dropHarvesterCount = 0;
 	var creepsPerResource = (spawnRoom.energyCapacityAvailable >= 400) ? 2 : 3;
 
 	if (creepsSpawnRule.partsPerMove === 1) {
 		creepsPerResource = (spawnRoom.energyCapacityAvailable >= 450) ? 2 : 3;
+	}
+
+	if (remoteReserverCount < 1 && !roomTools.hasMyController(remoteRoom.name)) {
+		creepsPerResource--;
 	}
 
 	var resources = roomTools.getSources(remoteRoom.name);
