@@ -12,11 +12,11 @@ creepsFactory.buildCreep = function(creep) {
 		var baseCreep = new constructor(creep);
 
 		// if (!baseCreep.isTrooper) {
-		// if (creep.memory.type === "extensionEnergizer") {
-			// if (creep.room.name === "W11N16") {
+		// if (creep.memory.type === "controllerEnergizer") {
+			// if (creep.room.name === "W11N17") {
 		// 		// if (creep.memory.remoteRoomName && creep.memory.state === "movingToSpawnedRoom") {
 		// 			// creep.memory.takeStepsIntoRoom = 6
-		// 					creep.memory.spawnedRoomName = "W8N9";
+							// creep.memory.remoteRoomName = "W10N17";
 							// creep.memory.state = "suicide"
 							// creep.memory.canPickup = true;
 							// creep.suicide();

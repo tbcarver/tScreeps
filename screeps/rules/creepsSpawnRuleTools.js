@@ -18,36 +18,39 @@ creepsSpawnRuleTools.updateCreepsToSpawnStats = function(creepsSpawnRules) {
 	var creepsToSpawnTotal = 0;
 	var spawnedRoomsCreepsToSpawnTotal = {};
 	var spawnOrders = {};
+	var spawnOrder;
 
 	for (var creepsSpawnRule of creepsSpawnRules) {
 		spawnedRoomsCreepsToSpawnTotal[creepsSpawnRule.roomName] = 0;
+		var spawnRoomOrderKey = `${creepsSpawnRule.roomName}`;
+		spawnOrders[spawnRoomOrderKey] = [];
 
 		if (creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
 			for (var spawnOrderMaxSpawnedCount of creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
 
-				var spawnOrderKey = `${creepsSpawnRule.roomName}`;
-
-				if (!spawnOrders[spawnOrderKey]) {
-					spawnOrders[spawnOrderKey] = "";
+				if (!spawnOrder) {
+					spawnOrder = {[spawnRoomOrderKey]: ""};
+					spawnOrders[spawnRoomOrderKey].push(spawnOrder);
 				}
 
 				var creepType = SpawnOrderMaxSpawnedCount.getCreepType(spawnOrderMaxSpawnedCount);
 				creepsToSpawnTotal += spawnOrderMaxSpawnedCount[creepType];
 				spawnedRoomsCreepsToSpawnTotal[creepsSpawnRule.roomName] += spawnOrderMaxSpawnedCount[creepType];
-				spawnOrders[spawnOrderKey] += `${creepType}: ${spawnOrderMaxSpawnedCount[creepType]}, `;
+				spawnOrder[spawnRoomOrderKey] += `${creepType}: ${spawnOrderMaxSpawnedCount[creepType]}, `;
 			}
-
-			spawnOrders[creepsSpawnRule.roomName] = creepsSpawnRule.spawnOrderMaxSpawnedCounts;
 		}
 
+		var currentRemoteRoomOrderKey;
 		if (creepsSpawnRule.remoteRooms) {
 			for (var remoteRoom of creepsSpawnRule.remoteRooms) {
 				if (remoteRoom.spawnOrderMaxSpawnedCounts) {
 
-					spawnOrderKey = `${creepsSpawnRule.roomName}-${remoteRoom.roomName}`;
+					var remoteRoomOrderKey = `${creepsSpawnRule.roomName}-${remoteRoom.roomName}`;
 
-					if (!spawnOrders[spawnOrderKey]) {
-						spawnOrders[spawnOrderKey] = "";
+					if (remoteRoomOrderKey !== currentRemoteRoomOrderKey) {
+						currentRemoteRoomOrderKey = remoteRoomOrderKey;
+						spawnOrder = {[currentRemoteRoomOrderKey]: ""};
+						spawnOrders[spawnRoomOrderKey].push(spawnOrder);
 					}
 
 					for (var remoteSpawnOrderMaxSpawnedCount of remoteRoom.spawnOrderMaxSpawnedCounts) {
@@ -55,7 +58,7 @@ creepsSpawnRuleTools.updateCreepsToSpawnStats = function(creepsSpawnRules) {
 						creepType = SpawnOrderMaxSpawnedCount.getCreepType(remoteSpawnOrderMaxSpawnedCount);
 						creepsToSpawnTotal += remoteSpawnOrderMaxSpawnedCount[creepType];
 						spawnedRoomsCreepsToSpawnTotal[creepsSpawnRule.roomName] += remoteSpawnOrderMaxSpawnedCount[creepType];
-						spawnOrders[spawnOrderKey] += `${creepType}: ${remoteSpawnOrderMaxSpawnedCount[creepType]}, `;
+						spawnOrder[currentRemoteRoomOrderKey] += `${creepType}: ${remoteSpawnOrderMaxSpawnedCount[creepType]}, `;
 					}
 				}
 			}

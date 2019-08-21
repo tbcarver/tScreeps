@@ -8,6 +8,12 @@ var upgradeControllerRule = {
 	coolOffCount: 50,
 };
 
+var energyTransferPercent = 100;
+
+if (typeof rules.upgradeControllerEnergyTransferPercent === "number") {
+	energyTransferPercent = rules.upgradeControllerEnergyTransferPercent;
+}
+
 upgradeControllerRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 
 	var remoteRoomCreepsSpawnRules;
@@ -50,7 +56,6 @@ function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 	if (controllerToUpgrade) {
 
 		var roomName = controllerToUpgrade.room.name;
-		var energyTransferPercent = rules.upgradeControllerEnergyTransferPercent || 100;
 		var availableEnergy = 0;
 
 		if (roomTools.hasMinimumStoredEnergy(roomName)) {
@@ -77,7 +82,6 @@ function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 		if (upgradeRoomMaxCreepsCount > maxCreepsCount) {
 			upgradeRoomMaxCreepsCount = maxCreepsCount;
 		}
-
 
 		var spawningRooms = [];
 

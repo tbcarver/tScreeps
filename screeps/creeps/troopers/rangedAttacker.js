@@ -1,4 +1,5 @@
 
+var enemyTools = require("../../tools/enemyTools");
 var { rules } = require("../../rules/rules");
 var TrooperCreep = require("./trooperCreep");
 
@@ -27,6 +28,10 @@ class RangedAttacker extends TrooperCreep {
 				this.creep.attack(enemy);
 			}
 		}
+	}
+
+	isDamaged() {
+		return !(this.creep.body.find(bodyPart => bodyPart.type === RANGED_ATTACK && bodyPart.hits > 0));
 	}
 
 	static initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount) {

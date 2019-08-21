@@ -1,4 +1,5 @@
 
+var enemyTools = require("../../tools/enemyTools");
 var { rules } = require("../../rules/rules");
 var BaseCreep = require("../baseCreeps/baseCreep");
 var TrooperCreep = require("./trooperCreep");
@@ -72,6 +73,10 @@ class Healer extends TrooperCreep {
 		}
 
 		return healed;
+	}
+
+	isDamaged() {
+		return !(this.creep.body.find(bodyPart => bodyPart.type === HEAL && bodyPart.hits > 0));
 	}
 
 	static initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount) {

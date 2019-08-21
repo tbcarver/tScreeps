@@ -1,4 +1,5 @@
 
+var enemyTools = require("../../tools/enemyTools");
 var { rules } = require("../../rules/rules");
 var TrooperCreep = require("./trooperCreep");
 
@@ -23,10 +24,14 @@ class StructureAttacker extends TrooperCreep {
 
 		if (target) {
 
-			if (this.creep.rangedAttack(target) == ERR_NOT_IN_RANGE) {
+			if (this.creep.attack(target) == ERR_NOT_IN_RANGE) {
 				this.creep.moveTo(target);
 			}
 		}
+	}
+
+	isDamaged() {
+		return !(this.creep.body.find(bodyPart => bodyPart.type === ATTACK && bodyPart.hits > 0));
 	}
 
 	static initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount) {
@@ -35,9 +40,9 @@ class StructureAttacker extends TrooperCreep {
 
 		if (creepMemory) {
 			creepMemory.type = "structureAttacker";
-			creepMemory.bodyPartsType =  "rangedAttacker";
+			creepMemory.bodyPartsType =  "attacker";
 			creepMemory.isAttackTrooper = true;
-			creepMemory.maximumSpawnCapacity = rules.maximumRangedAttackerSpawnCapacity || 800;
+			creepMemory.maximumSpawnCapacity = rules.maximumAttackerSpawnCapacity || 800;
 		}
 
 		return creepMemory;

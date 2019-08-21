@@ -112,6 +112,11 @@ class EnergyCreep extends BaseCreep {
 	energyAct() {
 	}
 
+	isDamaged() {
+		return !(this.creep.body.find(bodyPart => (bodyPart.type === CARRY && bodyPart.hits > 0) ||
+			(bodyPart.type === MOVE && bodyPart.hits > 0)));
+	}
+
 	getInitialState() {
 		return "harvesting";
 	}

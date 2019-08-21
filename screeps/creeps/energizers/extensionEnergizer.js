@@ -21,33 +21,46 @@ class ExtensionEnergizer extends EnergyCreep {
 
 	energyAct() {
 
-		// this.creep.say(this.memory.extensions.length)
-		// debug.temp(this.creep.name, this.memory.extensions.map(e => e.pos.x + " " + e.pos.y))
+		var extensionsToEnergize = /** @type {StructureExtension[]} */ (this.memory.extensions.reduce((extensions, memoryExtension) => {
 
-		var activeExtension = Game.getObjectById(this.memory.extensions[this.memory.activeExtensionIndex].id);
+			var extension = Game.getObjectById(memoryExtension.id);
+			if (extension.energy < extension.energyCapacity) {
+				extensions.push(extension);
+			}
 
-		if (this.isInTravelDistance(activeExtension)) {
-			this.travelNearTo(activeExtension, true);
-		} else {
+			return extensions;
+		}, []));
 
-			var energizingExtensionIDs = this.memory.extensions.map(extension => extension.id);
-			var extension = this.creep.pos.findClosestByPath(FIND_STRUCTURES, {
-				filter: structure => structure.structureType === STRUCTURE_EXTENSION &&
-					structure.energy < structure.energyCapacity && energizingExtensionIDs.includes(structure.id)
-			});
 
-			if (extension) {
-				if (this.creep.transfer(extension, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+		var extension = this.creep.pos.findClosestByPath(extensionsToEnergize);
 
+		if (extension) {
+			if (this.creep.transfer(extension, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+				this.moveToAndAvoid(extension);
+			} else {
+
+				extension = this.creep.pos.findClosestByPath(extensionsToEnergize, {
+					filter: structure => structure.id != extension.id
+				});
+
+				if (extension) {
 					this.moveToAndAvoid(extension);
 				}
-			} else if (this.creep.carry.energy / this.creep.carryCapacity < .33) {
+			}
+		}
+
+		if (!extension) {
+			if (this.creep.carry.energy / this.creep.carryCapacity < .33) {
 
 				this.state = "harvesting";
 				this.harvest();
 
-			} else if (this.isInTravelDistance(activeExtension, 1)) {
-				this.moveToAndAvoid(activeExtension);
+			} else {
+				var activeExtension = Game.getObjectById(this.memory.extensions[this.memory.activeExtensionIndex].id);
+
+				if (this.isInTravelDistance(activeExtension, 1)) {
+					this.moveToAndAvoid(activeExtension);
+				}
 			}
 		}
 	}

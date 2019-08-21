@@ -1,4 +1,5 @@
 
+var enemyTools = require("../../tools/enemyTools");
 var { rules } = require("../../rules/rules");
 var TrooperCreep = require("./trooperCreep");
 
@@ -29,13 +30,17 @@ class Attacker extends TrooperCreep {
 		}
 	}
 
+	isDamaged() {
+		return !(this.creep.body.find(bodyPart => bodyPart.type === ATTACK && bodyPart.hits > 0));
+	}
+
 	static initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount) {
 
 		var creepMemory = TrooperCreep.initializeSpawnCreepMemory(room, spawn, creepsSpawnRule, spawnOrderMaxSpawnedCount, currentSpawnedCount);
 
 		if (creepMemory) {
 			creepMemory.type = "attacker";
-			creepMemory.bodyPartsType =  "attacker";
+			creepMemory.bodyPartsType = "attacker";
 			creepMemory.isAttackTrooper = true;
 			creepMemory.maximumSpawnCapacity = rules.maximumAttackerSpawnCapacity || 800;
 		}

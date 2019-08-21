@@ -31,6 +31,10 @@ class BaseCreep {
 				this.memory.travel.pathDestination.y === this.creep.pos.y))) {
 			this.cancelTravelTo();
 		}
+
+		if (!enemyTools.hasRoomEnemies(this.roomName) && this.isDamaged()) {
+			this.creep.suicide();
+		}
 	}
 
 	get state() {
@@ -42,7 +46,7 @@ class BaseCreep {
 	}
 
 	get hasCarry() {
-		return this.creep.body.some(bodyPart => bodyPart.type === "carry");
+		return this.creep.body.some(bodyPart => bodyPart.type === CARRY);
 	}
 
 	act() {
@@ -51,6 +55,10 @@ class BaseCreep {
 
 		if (this.isDying) {
 			this.creep.say("😡  " + this.creep.ticksToLive, true);
+
+			if (this.creep.ticksToLive <= 1 && this.hasCarry){
+				this.creep.drop(RESOURCE_ENERGY);
+			}
 		}
 
 		if (this.state === "suicide") {
@@ -204,6 +212,10 @@ class BaseCreep {
 		return acted;
 	}
 
+	isDamaged() {
+		return false;
+	}
+
 	getInitialState() {
 		return "initial";
 	}
@@ -264,7 +276,7 @@ class BaseCreep {
 					}
 				}
 			}
-		} else {
+		} else if (routes === ERR_NO_PATH) {
 			debug.warning(`${this.type} ${this.creep.name} can't find a route from ${this.roomName} to ${exitRoomName}`);
 		}
 	}
