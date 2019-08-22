@@ -40,69 +40,80 @@ function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 	if (controllerToUpgrade) {
 
 		var breakPointPercent = 1;
+		var slowDownBreakPointPercent = 5;
 		var transferringRooms = [];
 		var storageStats = roomTools.getStorageStats(controllerToUpgrade.room.name);
 		var receivingRoom = {
-			roomName: roomName,
+			roomName: controllerToUpgrade.room.name,
 			creepsCount: Math.floor(Math.ceil(((99 - storageStats.percentageStoredEnergy) / 10)) * 4),
 		};
 
-		for (var roomName in Game.rooms) {
+		if (receivingRoom.creepsCount > 0) {
 
-			var storageStats = roomTools.getStorageStats(roomName);
+			for (var roomName in Game.rooms) {
 
-			if (storageStats.hasStorage && controllerToUpgrade.room.name != roomName) {
+				var storageStats = roomTools.getStorageStats(roomName);
 
-				if (storageStats.percentageStoredEnergy > breakPointPercent) {
+				if (storageStats.hasStorage && controllerToUpgrade.room.name != roomName) {
 
-					var creepsCountMultiplier = 1;
+					if (storageStats.percentageStoredEnergy > breakPointPercent) {
 
-					if (roomTools.getSpawnsCount(roomName) >= 2) {
-						creepsCountMultiplier = 2;
-					}
+						var creepsCountMultiplier = 1;
 
-					transferringRoom = {
-						roomName: roomName,
-						creepsCount: Math.floor(Math.ceil(((storageStats.percentageStoredEnergy - breakPointPercent) / 10)) * creepsCountMultiplier),
-					};
+						if (roomTools.getSpawnsCount(roomName) >= 2) {
+							creepsCountMultiplier = 2;
+						}
 
-					transferringRooms.push(transferringRoom);
-				}
-			}
-		}
+						transferringRoom = {
+							roomName: roomName,
+							creepsCount: Math.floor(Math.ceil(((storageStats.percentageStoredEnergy - breakPointPercent) / 10)) * creepsCountMultiplier),
+						};
 
-		var remoteRoomCreepsSpawnRules = {};
-		var maxTransferringCreepsCount = transferringRooms.reduce((max, transferringRoom) =>
-			transferringRoom.creepsCount > max ? transferringRoom.creepsCount : max, 0);
+						if (storageStats.percentageStoredEnergy <= slowDownBreakPointPercent && transferringRoom.creepsCount > 0) {
+							transferringRoom.creepsCount = Math.floor(transferringRoom.creepsCount / 2);
+						}
 
-		// Adjacent rooms first
-		for (var count = 1; count <= maxTransferringCreepsCount; count++) {
-			for (var transferringRoom of transferringRooms) {
-
-				var adjacentRoomNames = roomTools.getAdjacentRoomNames(transferringRoom.roomName);
-
-				if (adjacentRoomNames.includes(receivingRoom.roomName)) {
-					if (transferringRoom.creepsCount > 0 && receivingRoom.creepsCount > 0) {
-
-						incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, transferringRoom.roomName, receivingRoom.roomName, cachedRuleName);
-						transferringRoom.creepsCount--;
-						receivingRoom.creepsCount--;
+						transferringRooms.push(transferringRoom);
 					}
 				}
 			}
-		}
 
-		var maxTransferringCreepsCount = transferringRooms.reduce((max, transferringRoom) =>
-			transferringRoom.creepsCount > max ? transferringRoom.creepsCount : max, 0);
+			var remoteRoomCreepsSpawnRules = {};
+			var maxTransferringCreepsCount = transferringRooms.reduce((max, transferringRoom) =>
+				transferringRoom.creepsCount > max ? transferringRoom.creepsCount : max, 0);
 
-		for (var count = 1; count <= maxTransferringCreepsCount; count++) {
-			for (var transferringRoom of transferringRooms) {
+			// Adjacent rooms first
+			for (var count = 1; count <= maxTransferringCreepsCount; count++) {
+				for (var transferringRoom of transferringRooms) {
 
-				if (transferringRoom.creepsCount > 0 && receivingRoom.creepsCount > 0) {
+					var adjacentRoomNames = roomTools.getAdjacentRoomNames(transferringRoom.roomName);
 
-					incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, transferringRoom.roomName, receivingRoom.roomName, cachedRuleName);
-					transferringRoom.creepsCount--;
-					receivingRoom.creepsCount--;
+					if (adjacentRoomNames.includes(receivingRoom.roomName)) {
+						if (transferringRoom.creepsCount > 0 && receivingRoom.creepsCount > 0) {
+
+							incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, transferringRoom.roomName, receivingRoom.roomName, cachedRuleName);
+							transferringRoom.creepsCount--;
+							receivingRoom.creepsCount--;
+						}
+					}
+				}
+			}
+
+			if (receivingRoom.creepsCount > 0) {
+
+				var maxTransferringCreepsCount = transferringRooms.reduce((max, transferringRoom) =>
+					transferringRoom.creepsCount > max ? transferringRoom.creepsCount : max, 0);
+
+				for (var count = 1; count <= maxTransferringCreepsCount; count++) {
+					for (var transferringRoom of transferringRooms) {
+
+						if (transferringRoom.creepsCount > 0 && receivingRoom.creepsCount > 0) {
+
+							incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, transferringRoom.roomName, receivingRoom.roomName, cachedRuleName);
+							transferringRoom.creepsCount--;
+							receivingRoom.creepsCount--;
+						}
+					}
 				}
 			}
 		}
@@ -245,14 +256,25 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 	if (!_.some(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName })) {
 
 		var creepsSpawnRuleKey = creepsSpawnRuleTools.buildCreepsSpawnRuleKey(spawnRoomName, remoteRoomName, "cached-" + cachedRuleName);
+		var partsPerMove = 1;
+		var spawnedRoads = Game.rooms[spawnRoomName].find(FIND_STRUCTURES, {
+			filter: { structureType: STRUCTURE_ROAD }
+		})
+		var remoteRoads = Game.rooms[remoteRoomName].find(FIND_STRUCTURES, {
+			filter: { structureType: STRUCTURE_ROAD }
+		})
 
+		if (spawnedRoads.length > 0 && remoteRoads.length > 0) {
+			partsPerMove = 2;
+		}
+		
 		remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms.push({
 			creepsSpawnRuleKey: creepsSpawnRuleKey,
 			roomName: remoteRoomName,
 			spawnOrderMaxSpawnedCounts: [
 				{ remoteStorageTransferer: 0 },
 			],
-			canTransferersTransferToStorageOnly: true,
+			partsPerMove: partsPerMove,
 		});
 	}
 

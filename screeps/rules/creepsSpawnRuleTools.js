@@ -18,12 +18,12 @@ creepsSpawnRuleTools.updateCreepsToSpawnStats = function(creepsSpawnRules) {
 	var creepsToSpawnTotal = 0;
 	var spawnedRoomsCreepsToSpawnTotal = {};
 	var spawnOrders = {};
-	var spawnOrder;
 
 	for (var creepsSpawnRule of creepsSpawnRules) {
 		spawnedRoomsCreepsToSpawnTotal[creepsSpawnRule.roomName] = 0;
 		var spawnRoomOrderKey = `${creepsSpawnRule.roomName}`;
 		spawnOrders[spawnRoomOrderKey] = [];
+		let spawnOrder;
 
 		if (creepsSpawnRule.spawnOrderMaxSpawnedCounts) {
 			for (var spawnOrderMaxSpawnedCount of creepsSpawnRule.spawnOrderMaxSpawnedCounts) {

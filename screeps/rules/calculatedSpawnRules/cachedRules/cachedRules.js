@@ -41,13 +41,6 @@ function addCalculatedSpawnRules(creepsSpawnRules, roomsCurrentSpawnedCounts) {
 
 					Memory.state.cachedCalculatedCreepsSpawnRules[cachedRuleName] = builtCreepsSpawnRules;
 
-				} else if (cachedBuiltCalculatedCreepsSpawnRules) {
-
-					if (calculatedSpawnRulesTools.hasRemoteRoomCurrentSpawnedCounts(cachedBuiltCalculatedCreepsSpawnRules, roomsCurrentSpawnedCounts)) {
-
-						calculatedSpawnRulesTools.zeroRemoteRoomSpawnOrderMaxSpawnedCounts(cachedBuiltCalculatedCreepsSpawnRules);
-						Memory.state.cachedCalculatedCreepsSpawnRules[cachedRuleName] = cachedBuiltCalculatedCreepsSpawnRules;
-					}
 				}
 
 				cachedBuiltCalculatedCreepsSpawnRules = Memory.state.cachedCalculatedCreepsSpawnRules[cachedRuleName];

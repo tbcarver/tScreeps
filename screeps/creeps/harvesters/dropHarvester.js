@@ -53,9 +53,9 @@ class DropHarvester extends BaseCreep {
 										return undefined;
 									},
 								});
-					
+
 								this.creep.moveByPath(path);
-	
+
 							} else {
 								this.creep.moveTo(resource);
 							}
@@ -141,7 +141,41 @@ class DropHarvester extends BaseCreep {
 		if (creepMemory) {
 			creepMemory.bodyPartsType = "moveWork";
 			creepMemory.state = "harvesting";
-			creepMemory.maximumSpawnCapacity = 500;
+			creepMemory.maximumSpawnCapacity = 400;
+		}
+
+		// NOTE: With 1 creep with 6 work parts will completely drain a source before the ticks to regeneration
+
+		var capacity = spawnTools.calculateSpawnCapacity(spawn);
+
+		if (capacity >= 400) {
+			creepMemory.minimumSpawnCapacity = 400;
+			creepMemory.maximumSpawnCapacity = 400;
+		}
+
+		if (creepsSpawnRule.partsPerMove === 1) {
+			if (capacity >= 450) {
+				creepMemory.minimumSpawnCapacity = 450;
+				creepMemory.maximumSpawnCapacity = 450;
+			}
+		}
+
+		if (creepMemory.resourceId) {
+			var countPositions = roomTools.getCountResourceHarvestPositions(creepMemory.resourceId);
+
+			if (countPositions === 1) {
+				if (spawn.energyCapacityAvailable >= 750) {
+					creepMemory.minimumSpawnCapacity = 750;
+					creepMemory.maximumSpawnCapacity = 750;
+				}
+
+				if (creepsSpawnRule.partsPerMove === 1) {
+					if (capacity >= 900) {
+						creepMemory.minimumSpawnCapacity = 900;
+						creepMemory.maximumSpawnCapacity = 900;
+					}
+				}
+			}
 		}
 
 		return creepMemory;

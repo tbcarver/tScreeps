@@ -13,7 +13,9 @@ dropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remoteRoomName,
 	var spawnRoom = Game.rooms[spawnRoomName];
 	if (spawnRoom) {
 		var remoteRoom = Game.rooms[remoteRoomName];
-		if (remoteRoom) {
+		if (remoteRoom) {			
+			roomTools.removeObservingRoom(remoteRoomName);
+			
 			if (roomTools.hasDropFlag(remoteRoomName) || roomTools.hasStorage(remoteRoomName)) {
 
 				var remoteReserverCount = dropStrategyTools.getRemoteReserverCount(spawnRoom, remoteRoom);

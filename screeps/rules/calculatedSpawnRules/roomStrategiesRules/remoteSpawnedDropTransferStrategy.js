@@ -15,6 +15,8 @@ remoteSpawnedDropTransferStrategy.buildCreepsSpawnRule = function(spawnRoomName,
 	if (spawnRoomName !== remoteRoomName) {
 		var room = Game.rooms[remoteRoomName];
 		if (room) {
+			roomTools.removeObservingRoom(remoteRoomName);
+			
 			if (roomTools.hasDropFlag(remoteRoomName)) {
 
 				creepsSpawnRule = {

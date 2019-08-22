@@ -78,10 +78,14 @@ class ControllerEnergizer extends EnergyCreep {
 				}
 
 				var range = this.creep.memory.upgradeControllerRange || 2;
+				var isInTravelDistance = this.isInTravelDistance(target, range);
+				var travelToResult;				
 
-				if (this.isInTravelDistance(target, range)) {
-					this.travelTo(target, range, true);
-				} else {
+				if (isInTravelDistance) {
+					travelToResult = this.travelTo(target, range, true);
+				} 
+				
+				if (!isInTravelDistance || travelToResult !== OK) {
 
 					var transferResult = this.creep.upgradeController(this.creep.room.controller);
 
@@ -105,17 +109,29 @@ class ControllerEnergizer extends EnergyCreep {
 			type: "controllerEnergizer",
 			bodyPartsType: "moveCarryWork",
 			canBuild: creepsSpawnRule.canControllerEnergizersBuild,
-			maximumSpawnCapacity: 350,
+			maximumSpawnCapacity: 300,
 		}
 
 		var capacity = spawnTools.calculateSpawnCapacity(spawn);
 
 		if (capacity >= 550) {
+			creepMemory.minimumSpawnCapacity = 550;
 			creepMemory.maximumSpawnCapacity = 550;
 		}
 
 		if (capacity >= 850) {
+			creepMemory.minimumSpawnCapacity = 850;
 			creepMemory.maximumSpawnCapacity = 850;
+		}
+
+		if (creepsSpawnRule.partsPerMove === 1) {
+
+			creepMemory.maximumSpawnCapacity = 350;
+
+			if (capacity >= 700) {
+				creepMemory.minimumSpawnCapacity = 700;
+				creepMemory.maximumSpawnCapacity = 700;
+			}
 		}
 
 		creepMemory = EnergyCreep.initializeSpawnCreepMemory(creepMemory, room, spawn, creepsSpawnRule);

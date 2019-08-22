@@ -14,6 +14,7 @@ harvestToDropPointStrategy.buildCreepsSpawnRule = function(spawnRoomName, remote
 	if (spawnRoom) {
 		var remoteRoom = Game.rooms[remoteRoomName];
 		if (remoteRoom) {
+			roomTools.removeObservingRoom(remoteRoomName);
 
 			var remoteReserverCount = dropStrategyTools.getRemoteReserverCount(spawnRoom, remoteRoom);
 			var dropHarvesterCount = dropStrategyTools.getDropHarvesterCount(spawnRoom, remoteRoom, spawnCreepsSpawnRule, remoteReserverCount);
