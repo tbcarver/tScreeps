@@ -235,7 +235,6 @@ class BaseCreep {
 
 			var routeRoomName = routes[0].room;
 			var routeExit = routes[0].exit
-			var moveToTarget;
 
 			if (!this.shouldEvacuateRoom(routeRoomName)) {
 

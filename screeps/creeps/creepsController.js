@@ -4,6 +4,7 @@ var spawnTools = require("../tools/spawnTools");
 var creepsFactory = require("./creepsFactory");
 var creepsSpawner = require("./creepsSpawner");
 var { rules } = require("../rules/rules");
+var sourceMap = require("../sourceMap");
 
 var creepsController = {};
 
@@ -33,7 +34,6 @@ creepsController.tick = function() {
 
 			if (error instanceof Error) {
 
-				let sourceMap = require("../sourceMap");
 				sourceMap.logStackTrace(error);
 
 			} else {

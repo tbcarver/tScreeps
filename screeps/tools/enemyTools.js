@@ -65,7 +65,7 @@ enemyTools.getMobAttackRoomName = function(mobPostRoomName) {
 		var watchRoomNames = roomTools.getAdjacentRoomNames(mobPostRoomName);
 		watchRoomNames.push(mobPostRoomName);
 
-		var watchedEnemyStats = _.filter(this.enemyStats.roomNameEnemyStats, roomNameEnemyStat => !roomNameEnemyStat.hasTower &&
+		var watchedEnemyStats = _.filter(this.enemyStats.roomNameEnemyStats, roomNameEnemyStat => !roomNameEnemyStat.hasTowers &&
 			watchRoomNames.includes(roomNameEnemyStat.roomName));
 
 		if (watchedEnemyStats.length > 0) {
@@ -110,6 +110,7 @@ function buildEnemyStats() {
 			});
 
 			enemyStats.roomNameEnemyStats[roomName].hasTower = towers.length > 0;
+			enemyStats.roomNameEnemyStats[roomName].hasTowers = towers.length > 1;
 
 			enemyStats.countRoomsWithEnemies++;
 

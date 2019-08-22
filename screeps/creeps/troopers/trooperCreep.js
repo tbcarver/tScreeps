@@ -43,7 +43,6 @@ class TrooperCreep extends BaseCreep {
 						// NOTE: Creep must step off the exit edge of the room immediately
 						//  or will be sent back to the other room
 						this.moveIntoRoom();
-						this.memory.takeStepsIntoRoom = 2;
 						this.state = "trooping";
 
 					} else {

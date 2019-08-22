@@ -34,7 +34,8 @@ upgradeControllerRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedR
 	return remoteRoomCreepsSpawnRules;
 }
 
-function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
+
+upgradeControllerRule.getControllerToUpgrade = function(creepsSpawnRules, cachedRuleName) {
 
 	var controllerToUpgrade;
 	var controllers = roomTools.getControllers();
@@ -51,7 +52,13 @@ function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 		controllerToUpgrade = filteredControllers[0];
 	}
 
+	return controllerToUpgrade;
+}
+
+function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
+
 	var remoteRoomCreepsSpawnRules = {};
+	var controllerToUpgrade = upgradeControllerRule.getControllerToUpgrade();
 
 	if (controllerToUpgrade) {
 

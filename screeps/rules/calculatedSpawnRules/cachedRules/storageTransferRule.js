@@ -1,6 +1,8 @@
 
 var creepsSpawnRuleTools = require("../../creepsSpawnRuleTools");
 var roomTools = require("../../../tools/roomTools");
+var { rules } = require("../../rules");
+var upgradeControllerRule = require("./upgradeControllerRule");
 
 var storageTransferRule = {
 	coolOffCount: 300,
@@ -8,6 +10,108 @@ var storageTransferRule = {
 };
 
 storageTransferRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
+
+
+	var remoteRoomCreepsSpawnRules;
+
+	if (rules.storageTransferSpawnRule) {
+
+		switch (rules.storageTransferSpawnRule) {
+			case "oneToEight":
+				remoteRoomCreepsSpawnRules = buildOneToEightRules(creepsSpawnRules, cachedRuleName);
+				break;
+
+			case "balanced":
+				remoteRoomCreepsSpawnRules = buildBalancedRules(creepsSpawnRules, cachedRuleName);
+				break;
+
+			default:
+				debug.danger(`Unknown storageTransferSpawnRule: ${rules.storageTransferSpawnRule}`);
+				break;
+		}
+	}
+
+	return remoteRoomCreepsSpawnRules;
+}
+
+function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
+
+	var controllerToUpgrade = upgradeControllerRule.getControllerToUpgrade();
+	if (controllerToUpgrade) {
+
+		var breakPointPercent = 1;
+		var transferringRooms = [];
+		var storageStats = roomTools.getStorageStats(controllerToUpgrade.room.name);
+		var receivingRoom = {
+			roomName: roomName,
+			creepsCount: Math.floor(Math.ceil(((99 - storageStats.percentageStoredEnergy) / 10)) * 4),
+		};
+
+		for (var roomName in Game.rooms) {
+
+			var storageStats = roomTools.getStorageStats(roomName);
+
+			if (storageStats.hasStorage && controllerToUpgrade.room.name != roomName) {
+
+				if (storageStats.percentageStoredEnergy > breakPointPercent) {
+
+					var creepsCountMultiplier = 1;
+
+					if (roomTools.getSpawnsCount(roomName) >= 2) {
+						creepsCountMultiplier = 2;
+					}
+
+					transferringRoom = {
+						roomName: roomName,
+						creepsCount: Math.floor(Math.ceil(((storageStats.percentageStoredEnergy - breakPointPercent) / 10)) * creepsCountMultiplier),
+					};
+
+					transferringRooms.push(transferringRoom);
+				}
+			}
+		}
+
+		var remoteRoomCreepsSpawnRules = {};
+		var maxTransferringCreepsCount = transferringRooms.reduce((max, transferringRoom) =>
+			transferringRoom.creepsCount > max ? transferringRoom.creepsCount : max, 0);
+
+		// Adjacent rooms first
+		for (var count = 1; count <= maxTransferringCreepsCount; count++) {
+			for (var transferringRoom of transferringRooms) {
+
+				var adjacentRoomNames = roomTools.getAdjacentRoomNames(transferringRoom.roomName);
+
+				if (adjacentRoomNames.includes(receivingRoom.roomName)) {
+					if (transferringRoom.creepsCount > 0 && receivingRoom.creepsCount > 0) {
+
+						incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, transferringRoom.roomName, receivingRoom.roomName, cachedRuleName);
+						transferringRoom.creepsCount--;
+						receivingRoom.creepsCount--;
+					}
+				}
+			}
+		}
+
+		var maxTransferringCreepsCount = transferringRooms.reduce((max, transferringRoom) =>
+			transferringRoom.creepsCount > max ? transferringRoom.creepsCount : max, 0);
+
+		for (var count = 1; count <= maxTransferringCreepsCount; count++) {
+			for (var transferringRoom of transferringRooms) {
+
+				if (transferringRoom.creepsCount > 0 && receivingRoom.creepsCount > 0) {
+
+					incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, transferringRoom.roomName, receivingRoom.roomName, cachedRuleName);
+					transferringRoom.creepsCount--;
+					receivingRoom.creepsCount--;
+				}
+			}
+		}
+	}
+
+	return remoteRoomCreepsSpawnRules;
+}
+
+function buildBalancedRules(creepsSpawnRules, cachedRuleName) {
 
 	var breakPointMultiplier = 50;
 	var transferringRooms;
@@ -17,7 +121,7 @@ storageTransferRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRul
 
 	for (var breakPointCount = 1; breakPointCount <= 3; breakPointCount++) {
 
-		var breakPoint = Math.floor(breakPointMultiplier / breakPointCount);
+		var breakPointPercent = Math.floor(breakPointMultiplier / breakPointCount);
 		var totalRooms = 0;
 		transferringRooms = [];
 		receivingRooms = [];
@@ -32,7 +136,7 @@ storageTransferRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRul
 
 				totalRooms++;
 
-				if (storageStats.percentageStoredEnergy > breakPoint) {
+				if (storageStats.percentageStoredEnergy > breakPointPercent) {
 
 					var creepsCountMultiplier = 1;
 
@@ -42,7 +146,7 @@ storageTransferRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRul
 
 					transferringRoom = {
 						roomName: roomName,
-						creepsCount: Math.floor(Math.ceil(((storageStats.percentageStoredEnergy - breakPoint) / 10)) * creepsCountMultiplier),
+						creepsCount: Math.floor(Math.ceil(((storageStats.percentageStoredEnergy - breakPointPercent) / 10)) * creepsCountMultiplier),
 					};
 
 					transferringRooms.push(transferringRoom);
@@ -61,7 +165,7 @@ storageTransferRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRul
 
 					receivingRooms.push({
 						roomName: roomName,
-						creepsCount: Math.floor(Math.ceil(((breakPoint - storageStats.percentageStoredEnergy) / 10)) * 4),
+						creepsCount: Math.floor(Math.ceil(((breakPointPercent - storageStats.percentageStoredEnergy) / 10)) * 4),
 					});
 				}
 			}
@@ -139,7 +243,7 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 	}
 
 	if (!_.some(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName })) {
-		
+
 		var creepsSpawnRuleKey = creepsSpawnRuleTools.buildCreepsSpawnRuleKey(spawnRoomName, remoteRoomName, "cached-" + cachedRuleName);
 
 		remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms.push({

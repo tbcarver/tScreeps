@@ -10,6 +10,7 @@ var calculatedSpawnRules = require("../rules/calculatedSpawnRules/calculatedSpaw
 var calculatedSpawnRulesTools = require("../rules/calculatedSpawnRules/calculatedSpawnRulesTools");
 var SpawnOrderMaxSpawnedCount = require("../rules/spawnOrderMaxSpawnedCount");
 var bodyPartsFactory = require("./bodies/bodyPartsFactory");
+var sourceMap = require("../sourceMap");
 
 var creepsSpawner = {};
 
@@ -61,7 +62,6 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 								} catch (error) {
 									if (error instanceof Error) {
 
-										let sourceMap = require("../sourceMap");
 										sourceMap.logStackTrace(error);
 
 									} else {
@@ -112,7 +112,6 @@ creepsSpawner.spawnCreep = function(roomsCurrentSpawnedCounts) {
 											} catch (error) {
 												if (error instanceof Error) {
 
-													let sourceMap = require("../sourceMap");
 													sourceMap.logStackTrace(error);
 
 												} else {
