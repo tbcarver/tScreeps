@@ -289,9 +289,9 @@ creepsSpawner.scheduleOneTimeOneCreepRemoteRoomCreepsSpawnRule = function(spawnR
 				spawnRoomRemoteRoomCreepsSpawnRule[spawnRoomName].remoteRooms.push(remoteRoomCreepsSpawnRule);
 
 				Memory.state.oneTimeOneCreepRemoteRoomCreepsSpawnRules[scheduleId] = spawnRoomRemoteRoomCreepsSpawnRule;
+			} else {
+				debug.warning("Add one time rule: single remote rule not found: ", spawnRoomRemoteRoomCreepsSpawnRule);
 			}
-		} else {
-			debug.warning("Add one time rule: single remote rule not found: ", spawnRoomRemoteRoomCreepsSpawnRule);
 		}
 	} else {
 		debug.warning(`Did not schedule one time creep remote rule: spawnRoomName: ${spawnRoomName} remoteRoomCreepsSpawnRule:`, remoteRoomCreepsSpawnRule)

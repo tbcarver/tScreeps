@@ -1,5 +1,5 @@
 
-var roomTools = require("../../tools/roomTools");var spawnTools = require("../../tools/spawnTools");
+var roomTools = require("../../tools/roomTools"); var spawnTools = require("../../tools/spawnTools");
 var spawnTools = require("../../tools/spawnTools");
 var EnergyCreep = require("../baseCreeps/energyCreep");
 
@@ -10,11 +10,13 @@ class ControllerEnergizer extends EnergyCreep {
 		super(creep);
 
 		this.canBuild = this.memory.canBuild;
+		this.energizingController = false;
 	}
 
 	harvest() {
 
 		delete this.creep.memory.upgradeControllerRange;
+		this.energizingController = false;
 		super.harvest();
 	}
 
@@ -29,7 +31,7 @@ class ControllerEnergizer extends EnergyCreep {
 		if (!target) {
 			target = this.creep.room.controller;
 		}
-		
+
 		if (target) {
 			this.moveToAndAvoid(target);
 		} else {
@@ -42,7 +44,29 @@ class ControllerEnergizer extends EnergyCreep {
 		var acted = false;
 		var target;
 
-		if (this.canBuild && roomTools.hasConstructionSites(this.roomName)) {
+		if (this.energizingController) {
+			
+			target = this.creep.room.controller.my ? this.creep.room.controller : undefined;
+
+			var transferResult = this.creep.upgradeController(target);
+
+			if (transferResult === OK) {
+	
+				acted = true;
+				
+			} else if (transferResult == ERR_NOT_IN_RANGE) {
+	
+				this.energizingController = false;
+	
+			} else if (transferResult == ERR_FULL && this.creep.carry.energy / this.creep.carryCapacity < .33) {
+	
+				this.state = "harvesting";
+				this.harvest();
+				acted = true;
+			}
+		}
+
+		if (!acted && this.canBuild && roomTools.hasConstructionSites(this.roomName)) {
 
 			target = this.creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
 
@@ -53,11 +77,15 @@ class ControllerEnergizer extends EnergyCreep {
 				}
 
 				var range = this.creep.memory.upgradeControllerRange || 2;
+				var isInTravelDistance = this.isInTravelDistance(target, range);
+				var travelToResult;
 
-				if (this.isInTravelDistance(target)) {
-					this.travelTo(target, range, true);
-				} else {
-	
+				if (isInTravelDistance) {
+					travelToResult = this.travelTo(target, range, true);
+				}
+
+				if (!isInTravelDistance || travelToResult !== OK) {
+
 					if (this.creep.build(target) == ERR_NOT_IN_RANGE) {
 						this.moveToAndAvoid(target);
 					}
@@ -69,7 +97,7 @@ class ControllerEnergizer extends EnergyCreep {
 
 		if (!acted) {
 
-			target = this.creep.room.controller;
+			target = this.creep.room.controller.my ? this.creep.room.controller : undefined;
 
 			if (target) {
 
@@ -79,19 +107,23 @@ class ControllerEnergizer extends EnergyCreep {
 
 				var range = this.creep.memory.upgradeControllerRange || 2;
 				var isInTravelDistance = this.isInTravelDistance(target, range);
-				var travelToResult;				
+				var travelToResult;
 
 				if (isInTravelDistance) {
 					travelToResult = this.travelTo(target, range, true);
-				} 
-				
+				}
+
 				if (!isInTravelDistance || travelToResult !== OK) {
 
-					var transferResult = this.creep.upgradeController(this.creep.room.controller);
+					var transferResult = this.creep.upgradeController(target);
 
-					if (transferResult == ERR_NOT_IN_RANGE) {
+					if (transferResult === OK) {
 
-						this.moveToAndAvoid(this.creep.room.controller);
+						this.energizingController = true;
+
+					} else if (transferResult == ERR_NOT_IN_RANGE) {
+
+						this.moveToAndAvoid(target);
 
 					} else if (transferResult == ERR_FULL && this.creep.carry.energy / this.creep.carryCapacity < .33) {
 
@@ -99,6 +131,8 @@ class ControllerEnergizer extends EnergyCreep {
 						this.harvest();
 					}
 				}
+			} else {
+				this.travelToWaitFlag();
 			}
 		}
 	}

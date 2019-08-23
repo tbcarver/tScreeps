@@ -129,7 +129,7 @@ class BaseCreep {
 
 				this.memory.evacuateToRoom = routes[0].room;
 			}
-		} else if (this.memory.travel && !this.memory.travel.isStuck) {
+		} else if (this.memory.travel && !this.memory.travel.isStuck) {			
 
 			if (this.creep.fatigue <= 2 && this.memory.travel.previousX === this.creep.pos.x && this.memory.travel.previousY === this.creep.pos.y) {
 				this.memory.travel.stuckCount++;

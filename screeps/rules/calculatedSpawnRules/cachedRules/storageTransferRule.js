@@ -37,6 +37,7 @@ storageTransferRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRul
 function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 
 	var controllerToUpgrade = upgradeControllerRule.getControllerToUpgrade();
+
 	if (controllerToUpgrade) {
 
 		var breakPointPercent = 1;
@@ -47,6 +48,15 @@ function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 			roomName: controllerToUpgrade.room.name,
 			creepsCount: Math.floor(Math.ceil(((99 - storageStats.percentageStoredEnergy) / 10)) * 4),
 		};
+
+		if (receivingRoom.creepsCount > 0 && storageStats.percentageStoredEnergy >= slowDownBreakPointPercent) {
+			receivingRoom.creepsCount = Math.floor(receivingRoom.creepsCount / 2);
+		}
+
+		var controllerToUpgradeHasStorage = roomTools.hasStorage(controllerToUpgrade.room.name);
+		if (!controllerToUpgradeHasStorage) {
+			receivingRoom.creepsCount = 10;
+		}
 
 		if (receivingRoom.creepsCount > 0) {
 
@@ -69,7 +79,7 @@ function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 							creepsCount: Math.floor(Math.ceil(((storageStats.percentageStoredEnergy - breakPointPercent) / 10)) * creepsCountMultiplier),
 						};
 
-						if (storageStats.percentageStoredEnergy <= slowDownBreakPointPercent && transferringRoom.creepsCount > 0) {
+						if (transferringRoom.creepsCount > 0 && storageStats.percentageStoredEnergy <= slowDownBreakPointPercent) {
 							transferringRoom.creepsCount = Math.floor(transferringRoom.creepsCount / 2);
 						}
 

@@ -59,6 +59,7 @@ builderRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedRuleName) {
 				}
 
 				creepsCount = Math.floor(availableEnergy / 50);
+				creepsCount = creepsCount * roomTools.getSpawnsCount(roomName);
 
 				if (creepsCount <= 6) {
 					remoteCreepsCount = creepsCount;
