@@ -46,6 +46,8 @@ class ControllerEnergizer extends EnergyCreep {
 		var acted = false;
 		var target;
 		var range;
+		var isInTravelDistance;
+		var travelToResult;
 
 		if (this.energizingController) {
 			
@@ -80,8 +82,7 @@ class ControllerEnergizer extends EnergyCreep {
 				}
 
 				range = this.creep.memory.upgradeControllerRange || 2;
-				var isInTravelDistance = this.isInTravelDistance(target, range);
-				var travelToResult;
+				isInTravelDistance = this.isInTravelDistance(target, range);
 
 				if (isInTravelDistance) {
 					travelToResult = this.travelTo(target, range, true);
@@ -104,17 +105,17 @@ class ControllerEnergizer extends EnergyCreep {
 
 			if (target) {
 
-				if (this.avoidCreepsOnTravel) {
-					this.creep.memory.upgradeControllerRange = 3;
-				}
-
-				range = (rules.upgradeControllerUseTransferers) ? 3 : 2;
-				range = this.creep.memory.upgradeControllerRange || range;
-				var isInTravelDistance = this.isInTravelDistance(target, range);
-				var travelToResult;
-
-				if (isInTravelDistance) {
-					travelToResult = this.travelTo(target, range, true);
+				if (!rules.upgradeControllerUseTransferers) {
+					if (this.avoidCreepsOnTravel) {
+						this.creep.memory.upgradeControllerRange = 3;
+					}
+	
+					range = this.creep.memory.upgradeControllerRange || 2;
+					isInTravelDistance = this.isInTravelDistance(target, range);
+	
+					if (isInTravelDistance) {
+						travelToResult = this.travelTo(target, range, true);
+					}
 				}
 
 				if (!isInTravelDistance || travelToResult !== OK) {

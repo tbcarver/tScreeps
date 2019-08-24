@@ -23,12 +23,14 @@ creepsFactory.buildCreep = function(creep) {
 function adjustCreep(creep, memory, baseCreep) {
 
 	// if (!baseCreep.isTrooper) {
-	// if (memory.type === "controllerEnergizer") {
-		// if (creep.room.name === "W11N17") {
+	// if (memory.type === "remoteStorageTransferer") {
+		// if (creep.room.name === "W11N16") {
+			// if (memory.spawnedRoomName === "W11N17" && memory.remoteRoomName === "W11N17") {
+			// if (creep.ticksToLive < 200) {
 			// 		// if (memory.remoteRoomName && memory.state === "movingToSpawnedRoom") {
 			// 			// memory.takeStepsIntoRoom = 6
-			// memory.spawnedRoomName = "W10N17";
-			// memory.remoteRoomName = "W11N17";
+			// memory.spawnedRoomName = "W11N16";
+			// memory.remoteRoomName = "W11N16";
 			// memory.state = "movingToRemoteRoom"
 			// memory.state = "suicide"
 			// memory.canPickup = true;
@@ -38,7 +40,7 @@ function adjustCreep(creep, memory, baseCreep) {
 			// // // 			// // 		// debug.temp("creep:", creep)
 			// // // 			debug.temp("creep memory:", memory)
 			// 		// }
-			// // 	}
+				// }
 		// }
 	// }
 }

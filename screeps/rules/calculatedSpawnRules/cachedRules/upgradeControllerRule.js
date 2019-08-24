@@ -1,5 +1,4 @@
 
-var creepsSpawnRuleTools = require("../../creepsSpawnRuleTools");
 var roomTools = require("../../../tools/roomTools");
 var { rules } = require("../../rules")
 var orderBy = require("lodash/orderBy");
@@ -33,7 +32,6 @@ upgradeControllerRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedR
 
 	return remoteRoomCreepsSpawnRules;
 }
-
 
 upgradeControllerRule.getControllerToUpgrade = function(creepsSpawnRules, cachedRuleName) {
 
@@ -92,6 +90,7 @@ function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 
 		if (rules.upgradeControllerUseTransferers) {
 			maxCreepsCount = roomTools.getCountControllerUpgradePositionsOneDeep(controllerToUpgrade);
+			maxCreepsCount += Math.floor(maxCreepsCount * .05);
 		}
 
 		if (upgradeRoomMaxCreepsCount > maxCreepsCount) {
@@ -136,7 +135,8 @@ function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 			}
 		}
 
-		if (rules.upgradeControllerUseTransferers && !_.isEmpty(remoteRoomCreepsSpawnRules) && upgradeRoomMaxCreepsCount > 0) {
+		if (rules.upgradeControllerUseTransferers && !_.isEmpty(remoteRoomCreepsSpawnRules) &&
+			upgradeRoomMaxCreepsCount > 0 && roomTools.hasSpawns(controllerToUpgrade.room.name)) {
 
 			var spawnRoomName = controllerToUpgrade.room.name;
 			var remoteRoomName = controllerToUpgrade.room.name;
@@ -165,17 +165,26 @@ function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 			}
 
 			var remoteRoom = /** @type {RemoteRoomCreepsSpawnRule} */(_.find(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName }));
-			var transfererCount = Math.ceil(upgradeRoomMaxCreepsCount / 6);
+			var transfererCount = Math.round(upgradeRoomMaxCreepsCount / 6);
 			var rangeToStorage;
 
 			if (roomTools.hasStorage(controllerToUpgrade.room.name)) {
-				// TODO: get closest storage
+
+				var storage = controllerToUpgrade.pos.findClosestByRange(FIND_STRUCTURES, {
+					filter: structure => structure.structureType === STRUCTURE_STORAGE ||
+						structure.structureType === STRUCTURE_TERMINAL
+				});
+
+				rangeToStorage = controllerToUpgrade.pos.getRangeTo(storage);
+
 			} else if (roomTools.hasDropFlag(controllerToUpgrade.room.name)) {
 
+				var dropFlag = roomTools.getDropFlag(controllerToUpgrade.room.name);
+				rangeToStorage = controllerToUpgrade.pos.getRangeTo(dropFlag);
 			}
 
 			if (rangeToStorage) {
-				transfererCount = Math.ceil(transfererCount * rangeToStorage / 8);
+				transfererCount = Math.round(transfererCount * rangeToStorage / 8);
 			}
 
 			remoteRoom.spawnOrderMaxSpawnedCounts.unshift({ controllerEnergizerTransferer: transfererCount });
