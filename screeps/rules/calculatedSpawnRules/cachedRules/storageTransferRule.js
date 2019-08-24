@@ -49,7 +49,7 @@ function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 			creepsCount: Math.floor(Math.ceil(((99 - storageStats.percentageStoredEnergy) / 10)) * 4),
 		};
 
-		if (receivingRoom.creepsCount > 0 && storageStats.percentageStoredEnergy >= slowDownBreakPointPercent) {
+		if (receivingRoom.creepsCount > 0 && storageStats.percentageStoredEnergy >= 100 - slowDownBreakPointPercent) {
 			receivingRoom.creepsCount = Math.floor(receivingRoom.creepsCount / 2);
 		}
 
@@ -76,7 +76,7 @@ function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 
 						transferringRoom = {
 							roomName: roomName,
-							creepsCount: Math.floor(Math.ceil(((storageStats.percentageStoredEnergy - breakPointPercent) / 10)) * creepsCountMultiplier),
+							creepsCount: Math.floor(Math.ceil(((storageStats.percentageStoredEnergy - breakPointPercent) / 7.5)) * creepsCountMultiplier),
 						};
 
 						if (transferringRoom.creepsCount > 0 && storageStats.percentageStoredEnergy <= slowDownBreakPointPercent) {

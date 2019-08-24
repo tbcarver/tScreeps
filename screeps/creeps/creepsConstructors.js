@@ -3,6 +3,7 @@ var Attacker = require("./troopers/attacker");
 var Builder = require("./energyWorkers/builder");
 var ContainerHarvester = require("./harvesters/containerHarvester");
 var ControllerEnergizer = require("./energizers/controllerEnergizer");
+var ControllerEnergizerTransferer = require("./transferers/controllerEnergizerTransferer");
 var Decoy = require("./troopers/decoy");
 var Defender = require("./troopers/defender");
 var DropContainerHarvester = require("./harvesters/dropContainerHarvester");
@@ -32,6 +33,7 @@ var creepConstructors = {
 	builder: Builder,
 	containerHarvester: ContainerHarvester,
 	controllerEnergizer: ControllerEnergizer,
+	controllerEnergizerTransferer: ControllerEnergizerTransferer,
 	decoy: Decoy,
 	defender: Defender,
 	dropContainerHarvester: DropContainerHarvester,

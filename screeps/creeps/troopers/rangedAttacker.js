@@ -23,9 +23,8 @@ class RangedAttacker extends TrooperCreep {
 				enemy = this.creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
 			}
 
-			if (enemy) {
+			if (this.creep.rangedAttack(enemy) == ERR_NOT_IN_RANGE) {
 				this.creep.moveTo(enemy);
-				this.creep.attack(enemy);
 			}
 		}
 	}

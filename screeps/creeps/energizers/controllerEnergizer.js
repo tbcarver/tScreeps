@@ -1,7 +1,9 @@
 
-var roomTools = require("../../tools/roomTools"); var spawnTools = require("../../tools/spawnTools");
+var roomTools = require("../../tools/roomTools");
+ var spawnTools = require("../../tools/spawnTools");
 var spawnTools = require("../../tools/spawnTools");
 var EnergyCreep = require("../baseCreeps/energyCreep");
+var { rules } = require("../../rules/rules");
 
 class ControllerEnergizer extends EnergyCreep {
 
@@ -43,6 +45,7 @@ class ControllerEnergizer extends EnergyCreep {
 
 		var acted = false;
 		var target;
+		var range;
 
 		if (this.energizingController) {
 			
@@ -76,7 +79,7 @@ class ControllerEnergizer extends EnergyCreep {
 					this.creep.memory.upgradeControllerRange = 3;
 				}
 
-				var range = this.creep.memory.upgradeControllerRange || 2;
+				range = this.creep.memory.upgradeControllerRange || 2;
 				var isInTravelDistance = this.isInTravelDistance(target, range);
 				var travelToResult;
 
@@ -105,7 +108,8 @@ class ControllerEnergizer extends EnergyCreep {
 					this.creep.memory.upgradeControllerRange = 3;
 				}
 
-				var range = this.creep.memory.upgradeControllerRange || 2;
+				range = (rules.upgradeControllerUseTransferers) ? 3 : 2;
+				range = this.creep.memory.upgradeControllerRange || range;
 				var isInTravelDistance = this.isInTravelDistance(target, range);
 				var travelToResult;
 

@@ -83,8 +83,16 @@ function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 			upgradeRoomMaxCreepsCount = 4;
 		}
 
-		var maxCreepsCount = roomTools.getCountControllerUpgradePositions(controllerToUpgrade);
+		if (rules.upgradeControllerUseTransferers) {
+
+		}
+
+		var maxCreepsCount = roomTools.getCountControllerUpgradePositionsTwoDeep(controllerToUpgrade);
 		maxCreepsCount += Math.floor(maxCreepsCount * .25);
+
+		if (rules.upgradeControllerUseTransferers) {
+			maxCreepsCount = roomTools.getCountControllerUpgradePositionsOneDeep(controllerToUpgrade);
+		}
 
 		if (upgradeRoomMaxCreepsCount > maxCreepsCount) {
 			upgradeRoomMaxCreepsCount = maxCreepsCount;
@@ -127,6 +135,51 @@ function buildOneToEightRules(creepsSpawnRules, cachedRuleName) {
 				}
 			}
 		}
+
+		if (rules.upgradeControllerUseTransferers && !_.isEmpty(remoteRoomCreepsSpawnRules) && upgradeRoomMaxCreepsCount > 0) {
+
+			var spawnRoomName = controllerToUpgrade.room.name;
+			var remoteRoomName = controllerToUpgrade.room.name;
+
+			if (!_.some(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName })) {
+
+				var partsPerMove = 2;
+				var hasStoredEnergy = roomTools.hasMinimumStoredEnergy(remoteRoomName);
+				var roads = Game.rooms[remoteRoomName].find(FIND_STRUCTURES, {
+					filter: { structureType: STRUCTURE_ROAD }
+				})
+
+				if (roads.length === 0) {
+					partsPerMove = 1;
+				}
+
+				var creepsSpawnRule = {
+					roomName: remoteRoomName,
+					spawnOrderMaxSpawnedCounts: [],
+					canControllerEnergizersBuild: true,
+					canEnergyCreepsPickup: !hasStoredEnergy,
+					partsPerMove: partsPerMove,
+				}
+
+				remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms.push(creepsSpawnRule);
+			}
+
+			var remoteRoom = /** @type {RemoteRoomCreepsSpawnRule} */(_.find(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName }));
+			var transfererCount = Math.ceil(upgradeRoomMaxCreepsCount / 6);
+			var rangeToStorage;
+
+			if (roomTools.hasStorage(controllerToUpgrade.room.name)) {
+				// TODO: get closest storage
+			} else if (roomTools.hasDropFlag(controllerToUpgrade.room.name)) {
+
+			}
+
+			if (rangeToStorage) {
+				transfererCount = Math.ceil(transfererCount * rangeToStorage / 8);
+			}
+
+			remoteRoom.spawnOrderMaxSpawnedCounts.unshift({ controllerEnergizerTransferer: transfererCount });
+		}
 	}
 
 	return remoteRoomCreepsSpawnRules;
@@ -140,7 +193,6 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 
 	if (!_.some(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName })) {
 
-		var creepsSpawnRuleKey = creepsSpawnRuleTools.buildCreepsSpawnRuleKey(spawnRoomName, remoteRoomName, "cached-" + cachedRuleName);
 		var partsPerMove = 2;
 		var hasStoredEnergy = roomTools.hasMinimumStoredEnergy(remoteRoomName);
 		var roads = Game.rooms[remoteRoomName].find(FIND_STRUCTURES, {
@@ -152,7 +204,6 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 		}
 
 		var creepsSpawnRule = {
-			creepsSpawnRuleKey: creepsSpawnRuleKey,
 			roomName: remoteRoomName,
 			spawnOrderMaxSpawnedCounts: [
 				{ controllerEnergizer: 0 },
@@ -166,7 +217,6 @@ function incrementRemoteRoomCreepsSpawnRule(remoteRoomCreepsSpawnRules, spawnRoo
 	}
 
 	var remoteRoom = /** @type {RemoteRoomCreepsSpawnRule} */(_.find(remoteRoomCreepsSpawnRules[spawnRoomName].remoteRooms, { roomName: remoteRoomName }));
-
 	remoteRoom.spawnOrderMaxSpawnedCounts[0]["controllerEnergizer"]++;
 }
 

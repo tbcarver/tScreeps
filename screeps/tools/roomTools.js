@@ -752,17 +752,61 @@ roomTools.getCountResourceHarvestPositions = function(resourceId) {
 	return countResourceHarvestPositions;
 }
 
-roomTools.getCountControllerUpgradePositions = function(controller) {
+roomTools.getCountControllerUpgradePositionsOneDeep = function(controller) {
 
-	if (!Memory.state.roomTools.getCountControllerUpgradePositions) {
-		Memory.state.roomTools.getCountControllerUpgradePositions = {};
+	if (!Memory.state.roomTools.getCountControllerUpgradePositionsOneDeep) {
+		Memory.state.roomTools.getCountControllerUpgradePositionsOneDeep = {};
 	}
 
 	var countControllerUpgradePositions = 0;
 
-	if (Memory.state.roomTools.getCountControllerUpgradePositions[controller.id]) {
+	if (Memory.state.roomTools.getCountControllerUpgradePositionsOneDeep[controller.id]) {
 
-		countControllerUpgradePositions = Memory.state.roomTools.getCountControllerUpgradePositions[controller.id]
+		countControllerUpgradePositions = Memory.state.roomTools.getCountControllerUpgradePositionsOneDeep[controller.id]
+
+	} else {
+
+		var differentialStart = 3;
+
+		for (var xDifferential = -1 * differentialStart; xDifferential <= differentialStart; xDifferential++) {
+
+			if (roomTools.isPlainTerrain(controller.pos.x + xDifferential, controller.pos.y - differentialStart, controller.room.name)) {
+				countControllerUpgradePositions++;
+			}
+
+			if (roomTools.isPlainTerrain(controller.pos.x + xDifferential, controller.pos.y + differentialStart, controller.room.name)) {
+				countControllerUpgradePositions++;
+			}
+		}
+
+		for (var yDifferential = -1 * differentialStart + 1; yDifferential <= differentialStart - 1; yDifferential++) {
+
+			if (roomTools.isPlainTerrain(controller.pos.x - differentialStart, controller.pos.y + yDifferential, controller.room.name)) {
+				countControllerUpgradePositions++;
+			}
+
+			if (roomTools.isPlainTerrain(controller.pos.x + differentialStart, controller.pos.y + yDifferential, controller.room.name)) {
+				countControllerUpgradePositions++;
+			}
+		}
+
+		Memory.state.roomTools.getCountControllerUpgradePositionsOneDeep[controller.id] = countControllerUpgradePositions;
+	}
+
+	return countControllerUpgradePositions;
+}
+
+roomTools.getCountControllerUpgradePositionsTwoDeep = function(controller) {
+
+	if (!Memory.state.roomTools.getCountControllerUpgradePositionsTwoDeep) {
+		Memory.state.roomTools.getCountControllerUpgradePositionsTwoDeep = {};
+	}
+
+	var countControllerUpgradePositions = 0;
+
+	if (Memory.state.roomTools.getCountControllerUpgradePositionsTwoDeep[controller.id]) {
+
+		countControllerUpgradePositions = Memory.state.roomTools.getCountControllerUpgradePositionsTwoDeep[controller.id]
 
 	} else {
 
@@ -791,10 +835,43 @@ roomTools.getCountControllerUpgradePositions = function(controller) {
 			}
 		}
 
-		Memory.state.roomTools.getCountControllerUpgradePositions[controller.id] = countControllerUpgradePositions;
+		Memory.state.roomTools.getCountControllerUpgradePositionsTwoDeep[controller.id] = countControllerUpgradePositions;
 	}
 
 	return countControllerUpgradePositions;
+}
+
+roomTools.getControllerPositionsWithinEnergizingRange = function(controller) {
+
+	if (!Memory.state.roomTools.getControllerPositionsWithinEnergizingRange) {
+		Memory.state.roomTools.getControllerPositionsWithinEnergizingRange = {};
+	}
+
+	var controllerPositionsWithinEnergizingRange = 0;
+
+	if (Memory.state.roomTools.getControllerPositionsWithinEnergizingRange[controller.id]) {
+
+		controllerPositionsWithinEnergizingRange = Memory.state.roomTools.getControllerPositionsWithinEnergizingRange[controller.id]
+
+	} else {
+
+		var x = controller.pos.x;
+		var y = controller.pos.y;
+
+		var objects = controller.room.lookAtArea(y - 2, x - 2, y + 2, x + 2, true);
+		var positions = objects.filter(object => object.type === "terrain");
+		var positions = objects.map(object => {
+			return {
+				x: object.x,
+				y: object.y,
+			};
+		});
+
+		controllerPositionsWithinEnergizingRange = positions;
+		Memory.state.roomTools.getControllerPositionsWithinEnergizingRange[controller.id] = controllerPositionsWithinEnergizingRange;
+	}
+
+	return controllerPositionsWithinEnergizingRange;
 }
 
 roomTools.getDropFlag = function(roomName) {
