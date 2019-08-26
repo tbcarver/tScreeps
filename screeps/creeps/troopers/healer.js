@@ -53,9 +53,8 @@ class Healer extends TrooperCreep {
 
 		if (creep) {
 
-			if (this.creep.rangedHeal(creep) == ERR_NOT_IN_RANGE) {
-				this.creep.moveTo(creep);
-			}
+			this.creep.rangedHeal(creep)
+			this.creep.moveTo(creep);
 			healed = true;
 
 		} else if (this.creep.hits < this.creep.hitsMax) {

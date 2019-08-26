@@ -1,6 +1,6 @@
 
 var roomTools = require("../../tools/roomTools");
- var spawnTools = require("../../tools/spawnTools");
+var spawnTools = require("../../tools/spawnTools");
 var spawnTools = require("../../tools/spawnTools");
 var EnergyCreep = require("../baseCreeps/energyCreep");
 var { rules } = require("../../rules/rules");
@@ -50,21 +50,21 @@ class ControllerEnergizer extends EnergyCreep {
 		var travelToResult;
 
 		if (this.energizingController) {
-			
+
 			target = this.creep.room.controller.my ? this.creep.room.controller : undefined;
 
 			var transferResult = this.creep.upgradeController(target);
 
 			if (transferResult === OK) {
-	
+
 				acted = true;
-				
+
 			} else if (transferResult == ERR_NOT_IN_RANGE) {
-	
+
 				this.energizingController = false;
-	
+
 			} else if (transferResult == ERR_FULL && this.creep.carry.energy / this.creep.carryCapacity < .33) {
-	
+
 				this.state = "harvesting";
 				this.harvest();
 				acted = true;
@@ -109,10 +109,10 @@ class ControllerEnergizer extends EnergyCreep {
 					if (this.avoidCreepsOnTravel) {
 						this.creep.memory.upgradeControllerRange = 3;
 					}
-	
+
 					range = this.creep.memory.upgradeControllerRange || 2;
 					isInTravelDistance = this.isInTravelDistance(target, range);
-	
+
 					if (isInTravelDistance) {
 						travelToResult = this.travelTo(target, range, true);
 					}
@@ -128,8 +128,11 @@ class ControllerEnergizer extends EnergyCreep {
 
 					} else if (transferResult == ERR_NOT_IN_RANGE) {
 
-						this.moveToAndAvoid(target);
-
+						if (this.hasPathTo(target)) {
+							this.moveToAndAvoid(target);
+						} else {
+							this.travelToWaitFlag();
+						}
 					} else if (transferResult == ERR_FULL && this.creep.carry.energy / this.creep.carryCapacity < .33) {
 
 						this.state = "harvesting";

@@ -847,7 +847,7 @@ roomTools.getControllerPositionsWithinEnergizingRange = function(controller) {
 		Memory.state.roomTools.getControllerPositionsWithinEnergizingRange = {};
 	}
 
-	var controllerPositionsWithinEnergizingRange = 0;
+	var controllerPositionsWithinEnergizingRange = [];
 
 	if (Memory.state.roomTools.getControllerPositionsWithinEnergizingRange[controller.id]) {
 
@@ -859,15 +859,15 @@ roomTools.getControllerPositionsWithinEnergizingRange = function(controller) {
 		var y = controller.pos.y;
 
 		var objects = controller.room.lookAtArea(y - 2, x - 2, y + 2, x + 2, true);
-		var positions = objects.filter(object => object.type === "terrain");
-		var positions = objects.map(object => {
+		objects = objects.filter(object => object.type === "terrain");
+		objects = objects.map(object => {
 			return {
 				x: object.x,
 				y: object.y,
 			};
 		});
 
-		controllerPositionsWithinEnergizingRange = positions;
+		controllerPositionsWithinEnergizingRange = objects;
 		Memory.state.roomTools.getControllerPositionsWithinEnergizingRange[controller.id] = controllerPositionsWithinEnergizingRange;
 	}
 

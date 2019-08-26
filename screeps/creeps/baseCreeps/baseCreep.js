@@ -422,14 +422,33 @@ class BaseCreep {
 		return this.creep.moveByPath(path);
 	}
 
-	// creepTo(target) {
+	hasPathTo(target) {
 
-	// 	var result = this.creep.moveTo(target, {
-	// 		reusePath: 1,
-	// 	});
+		var hasPathTo = false;
+		var path = this.creep.pos.findPathTo(target, {
+			costCallback: roomTools.getAvoidCostCallback(),
+		});
 
-	// 	return result;
-	// }
+		if (path.length > 0) {
+			var destination = path[path.length - 1];
+
+			if (target.pos.isEqualTo(destination.x, destination.y)) {
+				hasPathTo = true;
+			}
+		}
+
+
+		return hasPathTo;
+	}
+
+	creepTo(target) {
+
+		var result = this.creep.moveTo(target, {
+			reusePath: 1,
+		});
+
+		return result;
+	}
 
 	transferEnergy() {
 

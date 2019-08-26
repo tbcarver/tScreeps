@@ -1,6 +1,7 @@
 
 var roomTools = require("../../tools/roomTools");
 var spawnTools = require("../../tools/spawnTools");
+var BaseCreep = require("../baseCreeps/baseCreep");
 var EnergyCreep = require("../baseCreeps/energyCreep");
 
 class ControllerEnergizerTransferer extends EnergyCreep {
@@ -30,8 +31,11 @@ class ControllerEnergizerTransferer extends EnergyCreep {
 			var result = this.creep.transfer(creep, RESOURCE_ENERGY);
 
 			if (result === OK) {
+
+				BaseCreep.prototype.cancelTravelTo.call(creep);
 				creep = this.findCreepToEnergize(creep.name);
 				this.moveToCreep(creep);
+
 			} else if (result == ERR_NOT_IN_RANGE) {
 				this.moveToCreep(creep);
 			}
