@@ -112,9 +112,8 @@ class StorageTransferer extends BaseCreep {
 
 			var resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 				filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
-					structure.structureType === STRUCTURE_TERMINAL ||
-					structure.structureType === STRUCTURE_CONTAINER) && !roomTools.isDropContainer(structure, 2) &&
-					structure.store[RESOURCE_ENERGY] / structure.storeCapacity < .95
+					structure.structureType === STRUCTURE_TERMINAL) &&
+					structure.storeCapacity - structure.store[RESOURCE_ENERGY] >= this.availableCarryCapacity * 2
 			});
 
 			var transferResult = this.creep.transfer(resource, RESOURCE_ENERGY);

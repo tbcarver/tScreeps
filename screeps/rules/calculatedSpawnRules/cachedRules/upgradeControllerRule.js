@@ -36,18 +36,28 @@ upgradeControllerRule.buildCreepsSpawnRules = function(creepsSpawnRules, cachedR
 upgradeControllerRule.getControllerToUpgrade = function(creepsSpawnRules, cachedRuleName) {
 
 	var controllerToUpgrade;
-	var controllers = roomTools.getControllers();
-	var oneToEightTogetherMinimum = rules.upgradeControllerOneToEightTogetherMinimum || 7;
-	var filteredControllers = controllers.filter(controller => controller.level >= 1 && controller.level < oneToEightTogetherMinimum);
 
-	if (filteredControllers.length === 0) {
-		filteredControllers = controllers.filter(controller => controller.level >= 1 && controller.level <= 7);
+	if (rules.upgradeControllerControllerToUpgrade) {
+
+		if (Game.rooms[rules.upgradeControllerControllerToUpgrade] && Game.rooms[rules.upgradeControllerControllerToUpgrade].controller.my) {
+			controllerToUpgrade = Game.rooms[rules.upgradeControllerControllerToUpgrade].controller;
+		}
 	}
 
-	if (filteredControllers.length > 0) {
-		filteredControllers = orderBy(filteredControllers, "level", "desc");
-		filteredControllers = orderBy(filteredControllers, "progress", "desc");
-		controllerToUpgrade = filteredControllers[0];
+	if (!controllerToUpgrade) {
+
+		var controllers = roomTools.getControllers();
+		var oneToEightTogetherMinimum = rules.upgradeControllerOneToEightTogetherMinimum || 7;
+		var filteredControllers = controllers.filter(controller => controller.level >= 1 && controller.level < oneToEightTogetherMinimum);
+
+		if (filteredControllers.length === 0) {
+			filteredControllers = controllers.filter(controller => controller.level >= 1 && controller.level <= 7);
+		}
+
+		if (filteredControllers.length > 0) {
+			filteredControllers = orderBy(filteredControllers, ['level', 'progress'], ['desc', 'desc']);
+			controllerToUpgrade = filteredControllers[0];
+		}
 	}
 
 	return controllerToUpgrade;

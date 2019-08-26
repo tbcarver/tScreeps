@@ -105,7 +105,7 @@ class BaseRemoteStorageTransferer extends RemoteCreep {
 				var resource = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
 					filter: structure => (structure.structureType === STRUCTURE_STORAGE ||
 						structure.structureType === STRUCTURE_TERMINAL) &&
-						structure.store[RESOURCE_ENERGY] / structure.storeCapacity < .95
+						structure.storeCapacity - structure.store[RESOURCE_ENERGY] >= this.availableCarryCapacity * 2
 				});
 
 				if (resource) {
