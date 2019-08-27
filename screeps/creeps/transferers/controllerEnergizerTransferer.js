@@ -52,7 +52,8 @@ class ControllerEnergizerTransferer extends EnergyCreep {
 
 		return this.creep.pos.findClosestByPath(FIND_MY_CREEPS, {
 			filter: creep => creep.memory.type === "controllerEnergizer" &&
-				creep.carry.energy / creep.carryCapacity < .80 && lastCreepName !== creep.name
+				creep.carry.energy / creep.carryCapacity < .80 && lastCreepName !== creep.name  &&
+				creep.ticksToLive > 25
 		});
 	}
 
